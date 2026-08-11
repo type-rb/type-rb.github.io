@@ -1,0 +1,10 @@
+{
+	"transport": "wasm",
+	"mode": "go",
+	"modes": [
+		"go",
+		"ruby",
+		"typescript"
+	],
+	"version": "0.2.2-dev"
+}
