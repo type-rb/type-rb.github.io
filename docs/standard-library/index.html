@@ -311,15 +311,13 @@ data set shared by all targets:</p>
 classification. <code>unicode.version()</code> reports the pinned data version.</p>
 <h2 id="arrays-and-hashes">Arrays and hashes</h2>
 <p>Collection contracts infer their type parameters from the receiver or
-arguments:</p>
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/arrays</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/hashes</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> values </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">]</span></span>
+arguments. Array and Hash operations use receiver methods; there are no public
+<code>trb/std/arrays</code> or <code>trb/std/hashes</code> packages:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> values </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">]</span></span>
 <span class="line"><span style="color:#E6EDF3">values.</span><span style="color:#D2A8FF">push</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#E6EDF3">first </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">shift</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"><span style="color:#E6EDF3">values.</span><span style="color:#D2A8FF">unshift</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">)</span></span>
-<span class="line"><span style="color:#E6EDF3">reversed </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> arrays.</span><span style="color:#D2A8FF">reverse</span><span style="color:#E6EDF3">(values)</span></span>
+<span class="line"><span style="color:#E6EDF3">reversed </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">reverse</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"><span style="color:#E6EDF3">ascending </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">sort</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"><span style="color:#E6EDF3">descending </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">sort_descending</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"><span style="color:#E6EDF3">ranked </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#A5D6FF">"second"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"first"</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">sort_by</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">label</span><span style="color:#FF7B72">|</span></span>
@@ -329,7 +327,7 @@ arguments:</p>
 <span class="line"><span style="color:#E6EDF3">combined_values </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">concat</span><span style="color:#E6EDF3">([</span><span style="color:#79C0FF">4</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">])</span></span>
 <span class="line"><span style="color:#E6EDF3">known </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">include?</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#E6EDF3">position </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">index</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">)</span></span>
-<span class="line"><span style="color:#E6EDF3">occurrences </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> arrays.</span><span style="color:#D2A8FF">count</span><span style="color:#E6EDF3">(values, </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">occurrences </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">count</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#E6EDF3">has_even </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">any?</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">value</span><span style="color:#FF7B72">|</span></span>
 <span class="line"><span style="color:#E6EDF3">	value </span><span style="color:#FF7B72">%</span><span style="color:#79C0FF"> 2</span><span style="color:#FF7B72"> ==</span><span style="color:#79C0FF"> 0</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
@@ -351,13 +349,13 @@ arguments:</p>
 <span class="line"><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> labels: </span><span style="color:#79C0FF">Hash</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#FF7B72"> :=</span><span style="color:#E6EDF3"> {</span><span style="color:#79C0FF">1</span><span style="color:#FF7B72"> =></span><span style="color:#A5D6FF"> "one"</span><span style="color:#E6EDF3">}</span></span>
 <span class="line"><span style="color:#E6EDF3">known_label </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> labels.</span><span style="color:#D2A8FF">key?</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#E6EDF3">label </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> labels.</span><span style="color:#D2A8FF">try_fetch</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">)</span></span>
-<span class="line"><span style="color:#E6EDF3">keys </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> hashes.</span><span style="color:#D2A8FF">keys</span><span style="color:#E6EDF3">(labels)</span></span>
+<span class="line"><span style="color:#E6EDF3">keys </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> labels.</span><span style="color:#D2A8FF">keys</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"><span style="color:#E6EDF3">combined </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> labels.</span><span style="color:#D2A8FF">merge</span><span style="color:#E6EDF3">({</span><span style="color:#79C0FF">2</span><span style="color:#FF7B72"> =></span><span style="color:#A5D6FF"> "two"</span><span style="color:#E6EDF3">})</span></span>
 <span class="line"><span style="color:#E6EDF3">labels.</span><span style="color:#D2A8FF">update</span><span style="color:#E6EDF3">({</span><span style="color:#79C0FF">2</span><span style="color:#FF7B72"> =></span><span style="color:#A5D6FF"> "two"</span><span style="color:#E6EDF3">})</span></span>
 <span class="line"><span style="color:#E6EDF3">labels.</span><span style="color:#D2A8FF">each</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">key, value</span><span style="color:#FF7B72">|</span></span>
 <span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(key.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">+</span><span style="color:#A5D6FF"> ": "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> value)</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
-<span class="line"><span style="color:#E6EDF3">removed </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> hashes.</span><span style="color:#D2A8FF">delete</span><span style="color:#E6EDF3">(labels, </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">removed </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> labels.</span><span style="color:#D2A8FF">delete</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"></span></code></pre>
 <p>Arrays provide size, emptiness, strict <code>[]</code>, safe <code>try_fetch</code>, <code>slice</code>,
 <code>try_slice</code>, <code>first</code>,
@@ -388,12 +386,11 @@ right and stop as soon as the result is known. Empty Arrays return <code>false</
 its position as <code>Integer?</code>. Both short-circuit and return <code>nil</code> when no element
 matches. A nullable element type remains nullable, so finding a stored <code>nil</code>
 and finding no element intentionally have the same result.</p>
-<p>Value membership is <code>include?</code> on a receiver and <code>arrays.contains</code> in package
-form. <code>index(value)</code> returns the first matching position as <code>Integer?</code>, and
-<code>count(value)</code> counts all matches. These operations use portable <code>==</code> semantics
-and are available when the element type is numeric, Boolean, String, or a
-payloadless enum. They do not inherit target-native structural equality for
-Arrays, Hashes, records, or payload-bearing enums.</p>
+<p>Value membership uses <code>include?</code>. <code>index(value)</code> returns the first matching
+position as <code>Integer?</code>, and <code>count(value)</code> counts all matches. These operations
+use portable <code>==</code> semantics and are available when the element type is numeric,
+Boolean, String, or a payloadless enum. They do not inherit target-native
+structural equality for Arrays, Hashes, records, or payload-bearing enums.</p>
 <p>Hashes provide size, emptiness, strict <code>fetch</code>/<code>delete</code>, safe <code>try_fetch</code>, key
 checks, keys, values, shallow <code>dup</code>/<code>merge</code>, and mutable <code>update</code>. <code>merge</code>
 returns a new shallow Hash, while <code>update</code> mutates its receiver; duplicate keys
@@ -589,9 +586,7 @@ See the <a href="/docs/guides/testing/">testing guide</a>.</p>
 <li><code>trb/std/secure_compare</code></li>
 <li><code>trb/std/string_builder</code></li>
 <li><code>trb/std/unicode</code></li>
-<li><code>trb/std/arrays</code></li>
 <li><code>trb/std/ranges</code></li>
-<li><code>trb/std/hashes</code></li>
 <li><code>trb/std/path</code></li>
 <li><code>trb/std/url</code></li>
 <li><code>trb/std/filesystem</code></li>
