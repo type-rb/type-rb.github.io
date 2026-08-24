@@ -4,8 +4,8 @@
 		"chapter": "Start",
 		"title": "First TypeRB",
 		"eyebrow": "01 · Start",
-		"description": "A TypeRB program can start with ordinary expressions. Comments begin with #, and the portable puts function writes values to standard output.",
-		"source": "# Change either value and run the program again.\nputs(\"Hello, TypeRB!\")\nputs(1 + 2)\n",
+		"description": "The browser scratch runner evaluates ordinary expressions directly. Comments begin with #, and the portable puts function writes values to standard output.",
+		"source": "# Change either value and evaluate the scratch source again.\nputs(\"Hello, TypeRB!\")\nputs(1 + 2)\n",
 		"expected": "Hello, TypeRB!\n3\n",
 		"hint": "Change the message or arithmetic expression, then press Run or Cmd/Ctrl-Enter."
 	},

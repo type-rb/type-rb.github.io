@@ -84,7 +84,7 @@ same portable source to Go, Ruby, and TypeScript.</p>
 <h2 id="try-in-the-browser">Try in the browser</h2>
 <p>Use <a href="https://type-rb.github.io/tour/">A Tour of TypeRB</a> for guided executable
 lessons, or open the <a href="https://type-rb.github.io/play/">TypeRB Playground</a> to
-write, run, format, and transpile a standalone program.</p>
+evaluate, format, and transpile isolated scratch source in the browser.</p>
 <h2 id="install-the-compiler">Install the compiler</h2>
 <p>Install the current stable release with Homebrew:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">brew</span><span style="color:#A5D6FF"> install</span><span style="color:#A5D6FF"> type-rb/tap/trb</span></span>
@@ -104,8 +104,11 @@ write, run, format, and transpile a standalone program.</p>
 layouts for each target.</p>
 <h2 id="run-a-standalone-program">Run a standalone program</h2>
 <p>Create <code>hello.trb</code>:</p>
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">name </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "TypeRB"</span></span>
-<span class="line"><span style="color:#79C0FF">puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Hello, "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> name </span><span style="color:#FF7B72">+</span><span style="color:#A5D6FF"> "!"</span><span style="color:#E6EDF3">)</span></span>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> main</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">	name </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "TypeRB"</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Hello, "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> name </span><span style="color:#FF7B72">+</span><span style="color:#A5D6FF"> "!"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
 <p>Run it in Go mode, or select another target explicitly:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> hello.trb</span></span>
@@ -129,10 +132,9 @@ project configuration is present:</p>
 <span class="line"><span style="color:#FF7B72">	return</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
-<p>Then format, lint, test, and run the project:</p>
+<p>Then format, lint, and run the project:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> fmt</span></span>
 <span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span></span>
-<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> test</span></span>
 <span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span></span>
 <span class="line"></span></code></pre>
 <p>Use <code>trb build</code> to keep generated target source. Go projects can also produce
