@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Database schema workflow — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/guides/database/">
+		<title>Database schema workflow — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a class="active" aria-current="page" href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a class="active" aria-current="page" href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="database-schema-workflow">Database schema workflow</h1>
+<p><code>trb db</code> provides a stable TypeRB workflow around an external schema engine.
+The first engine is <a href="https://github.com/sqldef/sqldef">sqldef</a>, while
+<code>trb/orm</code> remains usable with any migration system.</p>
+<h2 id="configuration">Configuration</h2>
+<p>Add a mode-independent <code>db</code> section to <code>trbconfig.jsonc</code>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "db"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "adapter"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"postgresql"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "database"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "environment"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"DATABASE_URL"</span></span>
+<span class="line"><span style="color:#E6EDF3">    },</span></span>
+<span class="line"><span style="color:#7EE787">    "schema"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"db/schema.sql"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "lock"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"db/schema.lock.json"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "sqldef"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "command"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"psqldef"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "version"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"3.11.19"</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>Adapters are <code>sqlite</code>, <code>postgresql</code>, and <code>mysql</code>. Their default commands are
+<code>sqlite3def</code>, <code>psqldef</code>, and <code>mysqldef</code>. Schema and lock paths default to the
+values above.</p>
+<p>Install the configured sqldef executable for the current operating system and
+architecture. TypeRB checks its exact version before invoking it and does not
+download or update external binaries. A project can test and pin a newer
+version explicitly through <code>db.sqldef.version</code>.</p>
+<h2 id="workflow">Workflow</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Preview the SQL needed to reach db/schema.sql.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> plan</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Apply non-destructive changes, then refresh the lock from the database.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> apply</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Explicitly permit DROP operations.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> apply</span><span style="color:#79C0FF"> --allow-destructive</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Build or verify the deterministic portable type contract without a database.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> lock</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> check</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Build or verify the same contract from the live database.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> lock</span><span style="color:#79C0FF"> --from-db</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> check</span><span style="color:#79C0FF"> --from-db</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Print the live database schema, or write it only when requested.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> export</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> export</span><span style="color:#79C0FF"> --output</span><span style="color:#A5D6FF"> db/exported.sql</span></span>
+<span class="line"></span></code></pre>
+<p><code>db/schema.lock.json</code> uses name-keyed objects, sorted JSON keys, and no
+timestamps, connection strings, tool versions, or generated constraint names.
+It records the portable column and relationship contract used by TypeRB. Full
+database-specific drift, such as a varchar length change, remains the concern
+of <code>trb db plan</code>.</p>
+<p><code>trb db lock</code> and <code>trb db check</code> do not invoke sqldef. The <code>--from-db</code> variants
+use TypeRB's database introspection. <code>plan</code>, <code>apply</code>, and <code>export</code> require the
+configured sqldef executable. Passwords parsed from PostgreSQL URLs, MySQL
+URLs, and MySQL DSNs are passed through process environment variables rather
+than command-line arguments.</p>
+<p>MySQL database sources may use either the portable
+<code>mysql://user:password@host/database</code> URL accepted by the generated runtimes or
+a Go driver DSN such as <code>user:password@tcp(host:3306)/database</code>.</p>
+<p>For a trusted local MySQL 8 connection without TLS, an application may opt in
+to RSA public-key retrieval with
+<code>mysql://user:password@host/database?allowPublicKeyRetrieval=true</code>. The
+TypeScript/Bun runtimes convert this explicit URL parameter to Bun SQL's
+connection option. Go runtimes validate and remove the Bun-specific parameter
+before passing the DSN to go-sql-driver/mysql, so the same URL can be shared
+across backend modes. The option permits a network peer to substitute the
+authentication key, so do not enable it on an untrusted network; configure TLS
+instead for deployed databases.</p>
+<h2 id="using-another-migration-system">Using another migration system</h2>
+<p>The <code>db</code> section and every <code>trb db</code> command are optional. A project can manage
+its schema with another tool and use <code>trb/orm</code> through live introspection as
+before. To make compiler checks independent of a live database, generate the
+default lock after the other tool applies its schema:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> lock</span><span style="color:#79C0FF"> --from-db</span></span>
+<span class="line"></span></code></pre>
+<p>The migration engine never becomes a runtime dependency of <code>trb/orm</code>.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/guides/database.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

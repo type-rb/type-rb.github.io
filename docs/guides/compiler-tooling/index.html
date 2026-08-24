@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Compiler tooling protocol — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/guides/compiler-tooling/">
+		<title>Compiler tooling protocol — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a class="active" aria-current="page" href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a class="active" aria-current="page" href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="compiler-tooling-protocol">Compiler tooling protocol</h1>
+<p><code>trb compiler inspect</code> exposes one checked project snapshot as versioned JSON.
+It is intended for explicit tools, editor adapters, static analysis, and AI
+agents that need compiler facts without importing TypeRB's internal Go
+packages.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Inspect the configured project discovered from the current directory.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> compiler</span><span style="color:#A5D6FF"> inspect</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Select a configuration explicitly.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> compiler</span><span style="color:#A5D6FF"> inspect</span><span style="color:#79C0FF"> --config</span><span style="color:#A5D6FF"> trbconfig.typescript.jsonc</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Inspect one config-free file and its explicit local import closure.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> compiler</span><span style="color:#A5D6FF"> inspect</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> ruby</span><span style="color:#A5D6FF"> app.trb</span></span>
+<span class="line"></span></code></pre>
+<p>The command writes only the JSON report to standard output. It returns a
+nonzero status when the report contains errors, while still returning the
+available sources, modules, and diagnostics. Command-line usage errors remain
+ordinary CLI errors on standard error.</p>
+<h2 id="version-2-snapshot">Version 2 snapshot</h2>
+<p>Every report contains these top-level fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>protocolVersion</code></td>
+<td>Integer version of this JSON contract. Version 2 adds authored <code>newtype</code> declarations.</td>
+</tr>
+<tr>
+<td><code>compilerVersion</code></td>
+<td>Exact TypeRB compiler build that produced the snapshot.</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td>The configured or standalone <code>go</code>, <code>ruby</code>, or <code>typescript</code> mode.</td>
+</tr>
+<tr>
+<td><code>sources</code></td>
+<td>Exact source paths and contents analyzed by the compiler service. <code>encoding</code> is <code>utf-8</code> or <code>base64</code>; <code>content</code> uses that encoding.</td>
+</tr>
+<tr>
+<td><code>modules</code></td>
+<td>Module identities, source ownership flags, and authored imports.</td>
+</tr>
+<tr>
+<td><code>declarations</code></td>
+<td>Flattened, checked authored declarations with stable IDs, ownership, locations, and semantic types.</td>
+</tr>
+<tr>
+<td><code>diagnostics</code></td>
+<td>Stable diagnostic codes, messages, locations, related information, and fixes.</td>
+</tr>
+<tr>
+<td><code>summary</code></td>
+<td>Error and warning counts.</td>
+</tr>
+</tbody>
+</table>
+<p>Locations use zero-based UTF-8 byte offsets and one-based lines and columns,
+matching <code>trb check --diagnostic-format json</code>. Source and diagnostic paths are
+absolute so an invoking tool can open them without depending on its current
+directory.</p>
+<p>Declaration entries include public and private authored declarations. Nested
+members refer to their owner through <code>ownerId</code>; <code>classMember</code> distinguishes a
+class method from an instance method. Semantic types use a recursive
+<code>kind</code>/<code>name</code>/<code>arguments</code> representation and retain nullability and readonly
+facts. A <code>newtype</code> declaration has declaration kind <code>newtype</code> and exposes its
+concrete representation through <code>type</code>; a transparent alias remains
+<code>type_alias</code>. Declaration IDs are compiler-owned opaque identifiers within the
+protocol: consumers should store and compare them, not parse their spelling.</p>
+<p>Compiler-generated TypeRB helpers and implicit runtime imports are omitted.
+They are implementation details rather than authored declarations. When a
+project cannot produce checked artifacts, <code>sources</code>, <code>modules</code>, and
+<code>diagnostics</code> remain available but <code>declarations</code> is empty.</p>
+<h2 id="version-policy-and-scope">Version policy and scope</h2>
+<p>Consumers must check <code>protocolVersion</code> before interpreting a report and should
+record <code>compilerVersion</code> when snapshots are persisted. An incompatible JSON
+shape receives a new protocol version. TypeRB is currently alpha, so tooling
+that requires reproducible output should pin the TypeRB compiler version even
+when the protocol version is unchanged.</p>
+<p>Version 2 remains a one-shot, read-only CLI boundary. It does not
+expose mutable syntax trees, typed IR objects, backend hooks, target source,
+an embedded Go SDK, or a long-lived JSON-RPC server. It is also separate from
+the package extension protocol: importing a package never runs a compiler
+tooling client.</p>
+<p>The report contains complete application and package source text. Treat it as
+source code when storing logs, attaching CI artifacts, or sending it to another
+service.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/guides/compiler-tooling.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

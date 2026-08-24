@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Standard library — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/standard-library/">
+		<title>Standard library — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a class="active" aria-current="page" href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a class="active" aria-current="page" href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="standard-library">Standard library</h1>
+<p>Portable packages use the <code>trb/std/*</code> namespace. They resolve to
+compiler-owned contracts and typed IR, so their argument types, results, and
+runtime behavior remain consistent across Go, Ruby, and TypeScript.</p>
+<p>Target-only functionality belongs to explicit <code>trb/platform/&lt;mode&gt;/*</code>
+packages.</p>
+<h2 id="output">Output</h2>
+<p><code>puts</code> is available in the small portable prelude and is the simplest way to
+write a line:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#79C0FF">puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Hello, TypeRB!"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#79C0FF">puts</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#FF7B72"> +</span><span style="color:#79C0FF"> 2</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p>Import <code>trb/std/io</code> when namespaced access is useful. Both forms resolve to the
+same operation:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/io</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">io.</span><span style="color:#D2A8FF">puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Hello, TypeRB!"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<h2 id="scalars-and-strings">Scalars and strings</h2>
+<p>Portable built-in types expose receiver methods backed by the same contracts
+as <code>trb/std/numbers</code>, <code>trb/std/booleans</code>, and <code>trb/std/strings</code>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/math</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/strings</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">text </span><span style="color:#FF7B72">:=</span><span style="color:#79C0FF"> 123</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">ratio_text </span><span style="color:#FF7B72">:=</span><span style="color:#79C0FF"> 0.25</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">ratio </span><span style="color:#FF7B72">:=</span><span style="color:#79C0FF"> 25</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_f</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">whole </span><span style="color:#FF7B72">:=</span><span style="color:#79C0FF"> 2.75</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_i</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">distance </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> (</span><span style="color:#FF7B72">-</span><span style="color:#79C0FF">8</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">abs</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">bounded </span><span style="color:#FF7B72">:=</span><span style="color:#79C0FF"> 12</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">clamp</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">rounded </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> (</span><span style="color:#FF7B72">-</span><span style="color:#79C0FF">2.5</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">round</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">root </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> math.</span><span style="color:#D2A8FF">sqrt</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">9</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">even </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> distance.</span><span style="color:#D2A8FF">even?</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">ordinary </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> ratio.</span><span style="color:#D2A8FF">finite?</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">enabled </span><span style="color:#FF7B72">:=</span><span style="color:#79C0FF"> true</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">number </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "123"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_i</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">safe_number </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "123"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">try_to_i</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">decimal </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "12.5"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_f</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">safe_decimal </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "+.5e1"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">try_to_f</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">length </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "Hello"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">size</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">character </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀"</span><span style="color:#E6EDF3">[</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">]</span></span>
+<span class="line"><span style="color:#E6EDF3">last_character </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀"</span><span style="color:#E6EDF3">[</span><span style="color:#FF7B72">-</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">]</span></span>
+<span class="line"><span style="color:#E6EDF3">safe_character </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">try_fetch</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">middle </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀BC"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">slice</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#FF7B72">...</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">safe_middle </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀BC"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">try_slice</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#FF7B72">..</span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">first_emoji </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀B😀"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">index</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"😀"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">last_emoji </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀B😀"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">rindex</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"😀"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">characters </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">chars</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">reversed </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">reverse</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">replaced </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "a😀a"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">replace_all</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"a"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"$&#x26;"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">upper </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> strings.</span><span style="color:#D2A8FF">uppercase</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Hello"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p>Integer parsing accepts a complete ASCII decimal integer with an optional sign.
+<code>to_i()</code> raises on invalid or non-portable input; <code>try_to_i()</code> returns
+<code>Result&lt;Integer, NumberParseError&gt;</code>. The error preserves its
+<code>NumberParseErrorKind</code>, input, and message. Parsed integers use the portable
+exact range <code>-9007199254740991..9007199254740991</code>.</p>
+<p>Float parsing accepts a complete ASCII decimal with an optional sign, decimal
+point, and exponent. At least one digit is required. <code>to_f()</code> raises on an
+invalid spelling or a value that overflows the portable binary64 range;
+<code>try_to_f()</code> returns <code>Result&lt;Float, NumberParseError&gt;</code>. Non-finite spellings
+such as <code>NaN</code> and <code>Infinity</code> are not accepted. Values smaller than the binary64
+range round to signed zero consistently across backends. Package forms are
+<code>numbers.parse_float</code> and <code>numbers.try_parse_float</code>.</p>
+<p><code>Integer#to_f()</code> is an exact widening conversion. <code>Float#to_i()</code> truncates
+toward zero and raises for non-finite or out-of-range values. <code>Float#to_s()</code>
+uses a portable fixed decimal spelling without exponent notation, including
+<code>.0</code> for integral Float values. Their package forms are <code>numbers.to_float</code>,
+<code>numbers.truncate</code>, and <code>numbers.float_to_string</code>.</p>
+<p>Integers provide <code>abs()</code>, <code>zero?()</code>, <code>positive?()</code>, <code>negative?()</code>, <code>even?()</code>,
+<code>odd?()</code>, <code>min()</code>, <code>max()</code>, and <code>clamp()</code>. An invalid clamp range raises.
+Floats provide <code>abs()</code>, <code>floor()</code>, <code>ceil()</code>, <code>round()</code>, <code>truncate()</code>,
+<code>finite?()</code>, <code>infinite?()</code>, and <code>nan?()</code>; the integer conversions reject
+non-finite and out-of-range results. <code>round()</code> resolves halfway values away
+from zero. <code>abs()</code> converts negative zero to positive zero and leaves NaN as
+NaN.</p>
+<p><code>trb/std/math</code> provides <code>sqrt</code>, <code>exp</code>, <code>log</code>, <code>log2</code>, and <code>log10</code>, returning
+Float. Integer arguments use the ordinary safe widening to Float. Negative
+square roots and logarithms are NaN, and logarithms of zero are negative
+infinity. Exponentiation remains the <code>**</code> operator.</p>
+<p><code>Boolean#to_s()</code> returns lowercase <code>&quot;true&quot;</code> or <code>&quot;false&quot;</code>. Package forms use
+<code>numbers.absolute</code>, <code>numbers.zero</code>, <code>numbers.positive</code>, <code>numbers.negative</code>,
+<code>numbers.even</code>, <code>numbers.odd</code>, <code>numbers.float_absolute</code>, <code>numbers.finite</code>,
+<code>numbers.infinite</code>, and <code>numbers.nan</code>, plus <code>numbers.min</code>, <code>numbers.max</code>,
+<code>numbers.clamp</code>, <code>numbers.floor</code>, <code>numbers.ceil</code>, <code>numbers.round</code>,
+<code>numbers.truncate</code>, and <code>booleans.to_string</code>.</p>
+<p><code>String#size</code>, <code>[]</code>, <code>try_fetch</code>, <code>slice</code>, <code>try_slice</code>, <code>index</code>, and <code>rindex</code>
+operate on Unicode code points rather than encoded bytes. Indexes are
+zero-based from the start; a negative index counts from the end, with <code>-1</code>
+naming the final code point. <code>value[index]</code> is the sole strict single-element
+form; it raises when the normalized index is outside the string, while
+<code>try_fetch()</code> returns <code>Result&lt;String, IndexLookupError&gt;</code> and preserves the
+requested index in an error. <code>slice(range)</code> accepts an inclusive <code>..</code> or
+exclusive <code>...</code> <code>Range&lt;Integer&gt;</code> and raises for negative, reversed, or
+out-of-bounds limits. <code>try_slice()</code> returns
+<code>Result&lt;String, SliceRangeError&gt;</code> instead. An exclusive <code>size...size</code> range is
+a valid empty slice. <code>index()</code> and <code>rindex()</code> search for literal substrings and
+return a code-point offset as <code>Integer?</code>; an empty substring is found at zero
+or at the string size, respectively. Additional receiver operations include
+<code>chars</code>, <code>codepoints</code>, <code>reverse</code>, <code>empty?</code>, <code>strip</code>, <code>lstrip</code>, <code>rstrip</code>,
+<code>include?</code>, <code>start_with?</code>, <code>end_with?</code>, <code>split</code>, <code>replace_all</code>, <code>upcase</code>, and
+<code>downcase</code>.
+<code>chars()</code> returns one String per code point, and <code>reverse()</code> reverses that same
+sequence. String trimming uses the pinned Unicode 17.0 <code>White_Space</code> set,
+preserves internal whitespace, and does not remove U+FEFF. <code>replace_all()</code>
+replaces every non-overlapping literal occurrence. The replacement is also
+literal, so strings such as <code>$&amp;</code> and <code>$1</code> have no special meaning; an empty
+pattern raises. Package forms use <code>characters</code>, <code>reverse</code>, and <code>replace_all</code>
+from <code>trb/std/strings</code>.</p>
+<h2 id="bytes">Bytes</h2>
+<p><code>Bytes</code> is an immutable binary sequence distinct from <code>String</code> and
+<code>Array&lt;Integer&gt;</code>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/bytes</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">payload </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_bytes</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">byte_length </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> payload.</span><span style="color:#D2A8FF">size</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">first </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> payload.</span><span style="color:#D2A8FF">at</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">text </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> bytes.</span><span style="color:#D2A8FF">to_string</span><span style="color:#E6EDF3">(payload)</span></span>
+<span class="line"></span></code></pre>
+<p>String conversion uses UTF-8. Decoding invalid input replaces it with U+FFFD;
+call <code>valid_utf8()</code> first when invalid bytes must be rejected. Byte indexing is
+strict and concatenation is non-mutating.</p>
+<h2 id="binary-encoding">Binary encoding</h2>
+<p><code>trb/std/encoding/hex</code> converts between <code>Bytes</code> and hexadecimal text:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { decode, encode } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/encoding/hex</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">text </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> encode</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"A😀"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_bytes</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#E6EDF3">decoded </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> decode</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"41F09F9880"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p>Encoding uses lowercase ASCII. Decoding accepts uppercase or lowercase input
+and returns <code>Result&lt;Bytes, HexDecodeError&gt;</code>. Invalid characters and odd-length
+input are distinguished by <code>HexDecodeErrorKind</code>; the error also preserves the
+input, a zero-based character position, and a message. For odd-length input,
+the position is the missing character at the end of the string.</p>
+<p><code>trb/std/encoding/base64</code> provides strict standard and URL-safe Base64:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { decode, encode, url_decode, url_encode } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/encoding/base64</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">text </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> encode</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"A😀"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_bytes</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#E6EDF3">url_text </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> url_encode</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"???"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_bytes</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#E6EDF3">decoded </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> decode</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"QfCfmIA="</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">url_decoded </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> url_decode</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Pz8_"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p><code>encode()</code> emits padded RFC 4648 Base64. <code>url_encode()</code> uses the URL-safe
+alphabet without padding. Their matching decode functions accept only the
+canonical form they emit and return <code>Result&lt;Bytes, Base64DecodeError&gt;</code>.
+<code>Base64DecodeErrorKind</code> distinguishes invalid length, characters, padding, and
+non-canonical trailing bits; the error includes the input, zero-based position,
+and a message.</p>
+<h2 id="hashing">Hashing</h2>
+<p><code>trb/std/hash</code> computes one-shot SHA-256 and SHA-512 digests. It also provides
+SHA-1 and MD5 for legacy compatibility and non-security checksums:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { md5, sha1, sha256, sha512 } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/hash</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { encode } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/encoding/hex</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">digest </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> sha256</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"message"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_bytes</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#E6EDF3">text </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> encode</span><span style="color:#E6EDF3">(digest)</span></span>
+<span class="line"><span style="color:#E6EDF3">larger_digest </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> sha512</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"message"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_bytes</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#E6EDF3">legacy_digest </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> sha1</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"legacy identifier"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_bytes</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#E6EDF3">checksum </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> md5</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"legacy payload"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_bytes</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"></span></code></pre>
+<p>All four functions accept and return <code>Bytes</code>. Digest formatting stays explicit by
+passing the result to hexadecimal or Base64 encoding. These synchronous APIs
+have the same behavior in browsers, Bun, Node, Go, and Ruby.</p>
+<p>SHA-1 and MD5 are not suitable for passwords, signatures, certificates, or
+other collision-resistant security decisions. Prefer SHA-256 or SHA-512 unless
+an external legacy format specifically requires the older digest.</p>
+<p><code>trb/std/hmac</code> provides HMAC-SHA-256, HMAC-SHA-512, and tag comparison:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { equal, sha256 } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/hmac</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> valid_tag?</span><span style="color:#E6EDF3">(key: </span><span style="color:#79C0FF">Bytes</span><span style="color:#E6EDF3">, message: </span><span style="color:#79C0FF">Bytes</span><span style="color:#E6EDF3">, expected: </span><span style="color:#79C0FF">Bytes</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">Boolean</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> equal</span><span style="color:#E6EDF3">(</span><span style="color:#D2A8FF">sha256</span><span style="color:#E6EDF3">(key, message), expected)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Keys, messages, and tags are <code>Bytes</code>. <code>equal()</code> compares equal-length tags
+without content-dependent branching and returns <code>false</code> when their lengths
+differ. Use it instead of ordinary collection comparison when verifying a tag.</p>
+<p>Use <code>trb/std/secure_compare</code> for the same comparison contract outside HMAC:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/secure_compare</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">matches </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> secure_compare.</span><span style="color:#D2A8FF">equal</span><span style="color:#E6EDF3">(actual_digest, expected_digest)</span></span>
+<span class="line"></span></code></pre>
+<p><code>equal()</code> accepts two <code>Bytes</code> values. For equal-length values it examines every
+byte without content-dependent branching. A length mismatch returns <code>false</code>;
+the input lengths are not treated as secret.</p>
+<h2 id="randomness">Randomness</h2>
+<p><code>trb/std/random</code> provides non-cryptographic random values for sampling,
+simulation, and user-interface behavior:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/random</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">fraction </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> random.</span><span style="color:#D2A8FF">float</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">index </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> random.</span><span style="color:#D2A8FF">integer</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p><code>float()</code> returns a <code>Float</code> in the half-open interval <code>[0.0, 1.0)</code>.
+<code>integer(upper)</code> returns an <code>Integer</code> in <code>[0, upper)</code> and fails at runtime when
+<code>upper</code> is not positive. The generator and its sequence are backend-defined;
+these functions must not be used for secrets, tokens, or other security
+decisions.</p>
+<p>Use <code>trb/std/secure_random</code> when bytes must be unpredictable:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/secure_random</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">token </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> secure_random.</span><span style="color:#D2A8FF">bytes</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">32</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p><code>bytes(length)</code> returns cryptographically secure <code>Bytes</code>. The portable
+synchronous contract accepts lengths from 0 through 65,536 bytes so it can use
+the browser Web Crypto source as well as native Go and Ruby sources. An invalid
+length or unavailable secure source is a runtime failure; it never falls back
+to the non-cryptographic generator.</p>
+<h2 id="stringbuilder-and-unicode">StringBuilder and Unicode</h2>
+<p>Use <code>StringBuilder</code> for incremental text construction:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/string_builder</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> builder </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> string_builder.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">builder.</span><span style="color:#D2A8FF">append</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Hello"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">builder.</span><span style="color:#D2A8FF">append_codepoint</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">33</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">blank </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> builder.</span><span style="color:#D2A8FF">empty?</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">message </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> builder.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"></span></code></pre>
+<p>Destructive operations require a <code>mut</code> binding. <code>to_s()</code> returns an immutable
+snapshot, and size counts Unicode code points.</p>
+<p><code>trb/std/unicode</code> provides scalar and identifier classification from one pinned
+data set shared by all targets:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/unicode</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">hiragana_a </span><span style="color:#FF7B72">:=</span><span style="color:#79C0FF"> 12354</span></span>
+<span class="line"><span style="color:#E6EDF3">is_letter </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> unicode.</span><span style="color:#D2A8FF">letter</span><span style="color:#E6EDF3">(hiragana_a)</span></span>
+<span class="line"><span style="color:#E6EDF3">character </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> unicode.</span><span style="color:#D2A8FF">from_codepoint</span><span style="color:#E6EDF3">(hiragana_a)</span></span>
+<span class="line"><span style="color:#E6EDF3">points </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">codepoints</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"></span></code></pre>
+<p>The package also exposes digit, case, whitespace, valid-scalar, and identifier
+classification. <code>unicode.version()</code> reports the pinned data version.</p>
+<h2 id="arrays-and-hashes">Arrays and hashes</h2>
+<p>Collection contracts infer their type parameters from the receiver or
+arguments:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/arrays</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/hashes</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> values </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">]</span></span>
+<span class="line"><span style="color:#E6EDF3">values.</span><span style="color:#D2A8FF">push</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">first </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">shift</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">values.</span><span style="color:#D2A8FF">unshift</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">reversed </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> arrays.</span><span style="color:#D2A8FF">reverse</span><span style="color:#E6EDF3">(values)</span></span>
+<span class="line"><span style="color:#E6EDF3">ascending </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">sort</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">descending </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">sort_descending</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">ranked </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#A5D6FF">"second"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"first"</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">sort_by</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">label</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	label.</span><span style="color:#D2A8FF">size</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"><span style="color:#E6EDF3">deduplicated </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">uniq</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">combined_values </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">concat</span><span style="color:#E6EDF3">([</span><span style="color:#79C0FF">4</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">])</span></span>
+<span class="line"><span style="color:#E6EDF3">known </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">include?</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">position </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">index</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">occurrences </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> arrays.</span><span style="color:#D2A8FF">count</span><span style="color:#E6EDF3">(values, </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">has_even </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">any?</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	value </span><span style="color:#FF7B72">%</span><span style="color:#79C0FF"> 2</span><span style="color:#FF7B72"> ==</span><span style="color:#79C0FF"> 0</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"><span style="color:#E6EDF3">all_positive </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">all?</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	value </span><span style="color:#FF7B72">></span><span style="color:#79C0FF"> 0</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"><span style="color:#E6EDF3">none_negative </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">none?</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	value </span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF"> 0</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"><span style="color:#E6EDF3">first_even </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">find</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	value </span><span style="color:#FF7B72">%</span><span style="color:#79C0FF"> 2</span><span style="color:#FF7B72"> ==</span><span style="color:#79C0FF"> 0</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"><span style="color:#E6EDF3">first_even_index </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">find_index</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	value </span><span style="color:#FF7B72">%</span><span style="color:#79C0FF"> 2</span><span style="color:#FF7B72"> ==</span><span style="color:#79C0FF"> 0</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"><span style="color:#E6EDF3">inclusive_values </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> (</span><span style="color:#79C0FF">1</span><span style="color:#FF7B72">..</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">to_a</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">exclusive_values </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> (</span><span style="color:#79C0FF">1</span><span style="color:#FF7B72">...</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">to_a</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> labels: </span><span style="color:#79C0FF">Hash</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#FF7B72"> :=</span><span style="color:#E6EDF3"> {</span><span style="color:#79C0FF">1</span><span style="color:#FF7B72"> =></span><span style="color:#A5D6FF"> "one"</span><span style="color:#E6EDF3">}</span></span>
+<span class="line"><span style="color:#E6EDF3">known_label </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> labels.</span><span style="color:#D2A8FF">key?</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">label </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> labels.</span><span style="color:#D2A8FF">try_fetch</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">keys </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> hashes.</span><span style="color:#D2A8FF">keys</span><span style="color:#E6EDF3">(labels)</span></span>
+<span class="line"><span style="color:#E6EDF3">combined </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> labels.</span><span style="color:#D2A8FF">merge</span><span style="color:#E6EDF3">({</span><span style="color:#79C0FF">2</span><span style="color:#FF7B72"> =></span><span style="color:#A5D6FF"> "two"</span><span style="color:#E6EDF3">})</span></span>
+<span class="line"><span style="color:#E6EDF3">labels.</span><span style="color:#D2A8FF">update</span><span style="color:#E6EDF3">({</span><span style="color:#79C0FF">2</span><span style="color:#FF7B72"> =></span><span style="color:#A5D6FF"> "two"</span><span style="color:#E6EDF3">})</span></span>
+<span class="line"><span style="color:#E6EDF3">labels.</span><span style="color:#D2A8FF">each</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">key, value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(key.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">+</span><span style="color:#A5D6FF"> ": "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> value)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"><span style="color:#E6EDF3">removed </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> hashes.</span><span style="color:#D2A8FF">delete</span><span style="color:#E6EDF3">(labels, </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p>Arrays provide size, emptiness, strict <code>[]</code>, safe <code>try_fetch</code>, <code>slice</code>,
+<code>try_slice</code>, <code>first</code>,
+<code>last</code>, shallow <code>dup</code>, mutable <code>push</code>/<code>unshift</code>, mutable strict <code>pop</code>/<code>shift</code>,
+non-destructive shallow <code>reverse</code>, stable non-destructive sorting, value
+membership, first-position lookup with <code>index(value)</code>, and occurrence counting.
+<code>Array&lt;String&gt;</code> also provides <code>join</code>.</p>
+<p><code>Range&lt;Integer&gt;#to_a()</code> returns a new Array containing the same sequence that
+Range iteration would visit. Inclusive and exclusive ends are honored; an
+inclusive equal-bound Range contains one value, while exclusive equal-bound
+and reversed Ranges are empty. The package form is <code>ranges.to_array(range)</code>.</p>
+<p><code>sort()</code> and <code>sort_descending()</code> order an Array of <code>Integer</code>, <code>Float</code>, or
+<code>String</code>. <code>sort_by</code> and <code>sort_by_descending</code> evaluate one non-fallible key
+expression per element and accept the same key types. All four operations are
+stable, including descending order. Strings use Unicode code point order,
+independent of locale. Float <code>NaN</code> values sort after ordinary values in either
+direction, and negative and positive zero compare as equal. Custom comparator
+and locale-sensitive ordering APIs remain future design work.</p>
+<p><code>uniq()</code> returns the first occurrence of each element in input order and uses
+the same portable equality contract as <code>include?</code> and <code>count</code>. <code>concat(other)</code>
+returns a new shallow Array containing both inputs in order. Neither method
+mutates its receiver; specifically, TypeRB <code>concat()</code> is not Ruby's destructive
+<code>Array#concat</code>.</p>
+<p><code>any?</code>, <code>all?</code>, and <code>none?</code> evaluate a typed Boolean predicate from left to
+right and stop as soon as the result is known. Empty Arrays return <code>false</code> for
+<code>any?</code> and <code>true</code> for <code>all?</code> and <code>none?</code>.</p>
+<p><code>find</code> returns the first matching element as <code>T?</code>, while <code>find_index</code> returns
+its position as <code>Integer?</code>. Both short-circuit and return <code>nil</code> when no element
+matches. A nullable element type remains nullable, so finding a stored <code>nil</code>
+and finding no element intentionally have the same result.</p>
+<p>Value membership is <code>include?</code> on a receiver and <code>arrays.contains</code> in package
+form. <code>index(value)</code> returns the first matching position as <code>Integer?</code>, and
+<code>count(value)</code> counts all matches. These operations use portable <code>==</code> semantics
+and are available when the element type is numeric, Boolean, String, or a
+payloadless enum. They do not inherit target-native structural equality for
+Arrays, Hashes, records, or payload-bearing enums.</p>
+<p>Hashes provide size, emptiness, strict <code>fetch</code>/<code>delete</code>, safe <code>try_fetch</code>, key
+checks, keys, values, shallow <code>dup</code>/<code>merge</code>, and mutable <code>update</code>. <code>merge</code>
+returns a new shallow Hash, while <code>update</code> mutates its receiver; duplicate keys
+use the right-hand value. <code>delete</code> requires <code>mut</code>, returns the removed value,
+and fails when the key is absent. Existing Hash arguments keep their exact key
+and value types. <code>each</code> binds the key and value with their respective generic
+types and traverses a shallow entry snapshot. Hash enumeration order is
+unspecified.</p>
+<p>Strict operations fail at runtime for missing keys, invalid indexes, ranges,
+or empty edge removals. Array element access uses <code>value[index]</code>; safe fetch
+returns <code>Result&lt;T, IndexLookupError&gt;</code> with the requested index and collection
+size. Nonnegative indexes count from the start and negative indexes count from
+the end, with <code>-1</code> naming the last element. Array subsequences use
+<code>slice(range)</code> and <code>try_slice(range)</code> with the same
+range rules as String. The safe form returns
+<code>Result&lt;Array&lt;T&gt;, SliceRangeError&gt;</code> and both forms return a new shallow Array.
+Hash safe fetch returns
+<code>Result&lt;V, KeyLookupError&gt;</code> with the missing <code>String | Integer</code> key. Both errors
+also carry a stable message.</p>
+<p>Array <code>map</code>, <code>select</code>, and <code>reduce</code> are structured language expressions rather
+than target callbacks. See the
+<a href="/docs/language/#arrays-hashes-and-iteration">language guide</a> for examples.</p>
+<h2 id="logical-paths">Logical paths</h2>
+<p><code>trb/std/path</code> manipulates portable <code>/</code>-separated logical paths without
+accessing the host filesystem:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/path</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">config_path </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> path.</span><span style="color:#D2A8FF">join</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"config"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"../trbconfig.jsonc"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">directory </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> path.</span><span style="color:#D2A8FF">directory</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"src/compiler/main.trb"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">parts </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> path.</span><span style="color:#D2A8FF">components</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"/srv/type-rb"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p>The package provides <code>clean</code>, two-part <code>join</code>, <code>absolute</code>, <code>components</code>,
+<code>base</code>, <code>directory</code>, and <code>separator</code>. Its behavior does not depend on the
+target OS or current directory.</p>
+<h2 id="url-encoding">URL encoding</h2>
+<p><code>trb/std/url</code> encodes individual URL components and ordered query parameters:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">PercentDecodeError</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">QueryParameter</span><span style="color:#E6EDF3">, build_query, decode_component, encode_component, parse_query } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/url</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">encoded </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> encode_component</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"todos/日本語"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">query </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> build_query</span><span style="color:#E6EDF3">([</span></span>
+<span class="line"><span style="color:#FFA657">	QueryParameter</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(name: </span><span style="color:#A5D6FF">"tag"</span><span style="color:#E6EDF3">, value: </span><span style="color:#A5D6FF">"type rb"</span><span style="color:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#FFA657">	QueryParameter</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(name: </span><span style="color:#A5D6FF">"tag"</span><span style="color:#E6EDF3">, value: </span><span style="color:#A5D6FF">"go"</span><span style="color:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#E6EDF3">])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> decode_segment</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">PercentDecodeError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> decode_component</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> decode_query</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">QueryParameter</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">PercentDecodeError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> parse_query</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>encode_component</code> preserves only RFC 3986 unreserved ASCII characters and
+encodes all other UTF-8 bytes with uppercase hexadecimal escapes. It does not
+encode spaces as <code>+</code>. <code>decode_component</code> likewise preserves a literal <code>+</code> and
+returns <code>Result&lt;String, PercentDecodeError&gt;</code> for malformed escapes or decoded
+bytes that are not valid UTF-8.</p>
+<p><code>parse_query</code> and <code>build_query</code> use an ordered <code>Array&lt;QueryParameter&gt;</code> so
+duplicate names and their global order are preserved. They accept and produce
+query strings without a leading <code>?</code>. Parsing treats <code>+</code> as a space, skips empty
+<code>&amp;</code> segments, and normalizes a name without <code>=</code> to an empty value. Building
+uses <code>+</code> for spaces and percent-encodes reserved bytes. Invalid escapes and
+decoded bytes that are not valid UTF-8 return <code>PercentDecodeError</code>.</p>
+<p>Complete URL parsing remains a future addition to the package.</p>
+<h2 id="filesystem">Filesystem</h2>
+<p><code>trb/std/filesystem</code> is the explicit host-filesystem bridge. Every operation
+returns a <code>Result</code>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">FileError</span><span style="color:#E6EDF3">, read_text } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/filesystem</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> load_config</span><span style="color:#E6EDF3">(path: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">FileError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> read_text</span><span style="color:#E6EDF3">(path)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The package provides existence checks, UTF-8 and raw-byte reads and writes,
+recursive directory creation, and sorted immediate-child listing. Failures
+carry <code>operation</code>, <code>path</code>, and <code>message</code> instead of exposing target exceptions.</p>
+<p>Writes and directory creation return <code>Result&lt;Unit, FileError&gt;</code>. <code>Unit</code> is a
+storable value representing successful completion; it is distinct from the
+internal <code>Void</code> return category.</p>
+<p>Filesystem paths are host paths. Use <code>trb/std/path</code> separately for portable
+lexical path operations.</p>
+<h2 id="process">Process</h2>
+<p><code>trb/std/process</code> provides argument, environment, working-directory, and
+shell-free process operations:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">ProcessError</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">ProcessResult</span><span style="color:#E6EDF3">, run } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/process</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> run_formatter</span><span style="color:#E6EDF3">(files: </span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">ProcessResult</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">ProcessError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> run</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"formatter"</span><span style="color:#E6EDF3">, files)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>run</code> takes a command and separate <code>Array&lt;String&gt;</code> arguments. It captures
+stdout and stderr. A started process with any exit status is
+<code>Ok(ProcessResult)</code>; launch or host failures are <code>Err(ProcessError)</code>.</p>
+<h2 id="json-and-jsonc">JSON and JSONC</h2>
+<p><code>trb/std/json</code> provides an explicit JSON value enum plus typed record codecs:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">JsonError</span><span style="color:#E6EDF3">, decode, encode } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/json</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> User</span></span>
+<span class="line"><span style="color:#E6EDF3">	id: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3"> @json(</span><span style="color:#A5D6FF">"user_id"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">	name: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#E6EDF3">	nickname: </span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">?</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> decode_user</span><span style="color:#E6EDF3">(source: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">User</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">JsonError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> decode</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">User</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">(source)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> encode_user</span><span style="color:#E6EDF3">(user: </span><span style="color:#FFA657">User</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">JsonError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> encode</span><span style="color:#E6EDF3">(user)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Typed codecs support booleans, numbers, strings, nullable values, arrays,
+<code>Hash&lt;String, V&gt;</code>, nested records, raw-value enums, and <code>@json</code> record-field
+wire names. Raw-value enums encode as their declared String or Integer raw
+value and reject unknown values during decode. Unknown object fields are
+ignored. Schema information remains in typed IR; generated code does not
+reflect over target objects.</p>
+<p><code>json.parse</code> accepts strict JSON. <code>jsonc.parse</code> additionally accepts line and
+block comments. Both reject trailing commas. Parse, stringify, encode, decode,
+and accessors return typed errors with JSON Pointer paths where applicable.</p>
+<p>Go output currently uses the stable <code>encoding/json</code> API. The experimental
+<code>encoding/json/v2</code> package is not required by generated projects.</p>
+<h2 id="date-and-time">Date and time</h2>
+<p><code>trb/std/time</code> separates exact instants from timezone-free civil values:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Date</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">DateTime</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Duration</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Instant</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">TimeZone</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/time</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">release_date </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Date</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">parse</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"2026-08-11"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#79C0FF">puts</span><span style="color:#E6EDF3">(release_date.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#E6EDF3">local_start </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> DateTime</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">parse</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"2026-08-11T09:30:00"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">tokyo </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> TimeZone</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">get</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Asia/Tokyo"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">start </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> local_start.</span><span style="color:#D2A8FF">to_instant</span><span style="color:#E6EDF3">(tokyo)</span></span>
+<span class="line"><span style="color:#E6EDF3">finish </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> start.</span><span style="color:#D2A8FF">add</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">Duration</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">minutes</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">90</span><span style="color:#E6EDF3">))</span></span>
+<span class="line"><span style="color:#79C0FF">puts</span><span style="color:#E6EDF3">(finish.</span><span style="color:#D2A8FF">to_datetime</span><span style="color:#E6EDF3">(tokyo).</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"></span></code></pre>
+<p>The initial immutable types are <code>Date</code>, <code>TimeOfDay</code>, <code>DateTime</code>, <code>Instant</code>,
+<code>Duration</code>, and <code>TimeZone</code>. <code>DateTime</code> is a civil value and has no implicit
+timezone. <code>Instant</code> is an exact point and formats in UTC. Converting a local
+<code>DateTime</code> through <code>try_to_instant()</code> reports nonexistent and ambiguous DST
+times as <code>DateTimeError</code>; <code>to_instant()</code> is the strict convenience form.</p>
+<p>Constructors and strict <code>parse()</code> reject invalid values. <code>try_new()</code>,
+<code>try_parse()</code>, and <code>TimeZone.try_get()</code> return typed errors. Values support
+component access, canonical <code>to_s()</code>, <code>before?()</code>, <code>after?()</code>, and <code>same?()</code>.
+<code>Date</code> adds whole civil days. <code>Instant</code> adds or subtracts fixed <code>Duration</code>
+values and computes <code>duration_since()</code>. <code>Instant.now()</code> and package-level
+<code>now()</code> read the current clock.</p>
+<p>Canonical JSON codecs use strings: ISO dates and local date-times, RFC 3339
+UTC instants, named timezone identifiers, and <code>PT...S</code> durations. The portable
+range is Gregorian year 0001 through 9999 with nanosecond fields. A target or
+database with lower storage precision may round-trip only the precision its
+schema supports. Calendar periods, zoned date-time objects, locale formatting,
+and injectable clocks are not part of the initial package.</p>
+<h2 id="result-and-unit">Result and Unit</h2>
+<p>Import <code>Result&lt;T, E&gt;</code> explicitly:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"></span></code></pre>
+<p>Construct <code>Result::Ok(value)</code> or <code>Result::Err(error)</code> and handle it with an
+exhaustive enum <code>case</code>. Prefix <code>try</code> unwraps <code>Ok</code> and returns <code>Err</code> from the
+nearest compatible Result-returning function. Postfix <code>catch</code> unwraps <code>Ok</code> and
+evaluates a local fallback or control transfer for <code>Err</code>. These constructs are
+described in the <a href="/docs/language/#result-control-flow">language guide</a>.</p>
+<p><code>trb/std/unit</code> provides <code>Unit</code> for successful generic operations with no
+application payload, including <code>Result&lt;Unit, E&gt;</code> operations.</p>
+<p><code>trb/std/errors</code> provides <code>EnumValueError</code> for an unsuccessful raw-value enum
+conversion. <code>from_raw()</code> infers this error type and its runtime dependency; an
+explicit import is needed only when source code names <code>EnumValueError</code> itself.</p>
+<h2 id="tests">Tests</h2>
+<p><code>trb/std/test</code> exports <code>describe</code>, <code>test</code>, and <code>expect</code>. Suites and cases take
+literal names and parameterless blocks so the compiler, CLI, language server,
+and editor use one deterministic discovery model. <code>expect()</code> returns a typed
+<code>Expectation&lt;T&gt;</code> with equality, inequality, Boolean, and nil assertions.</p>
+<p>The package is portable compiler-owned source plus a small target runtime.
+Assertion failures retain their original <code>.trb</code> path, line, and column. The
+runtime protocol is consumed by <code>trb test</code> and editor integrations; application
+code should use the public assertion API rather than its internal functions.
+See the <a href="/docs/guides/testing/">testing guide</a>.</p>
+<h2 id="package-index">Package index</h2>
+<p>The current portable standard library includes:</p>
+<ul>
+<li><code>trb/std/io</code></li>
+<li><code>trb/std/strings</code></li>
+<li><code>trb/std/numbers</code></li>
+<li><code>trb/std/math</code></li>
+<li><code>trb/std/booleans</code></li>
+<li><code>trb/std/bytes</code></li>
+<li><code>trb/std/encoding/hex</code></li>
+<li><code>trb/std/encoding/base64</code></li>
+<li><code>trb/std/hash</code></li>
+<li><code>trb/std/hmac</code></li>
+<li><code>trb/std/secure_compare</code></li>
+<li><code>trb/std/string_builder</code></li>
+<li><code>trb/std/unicode</code></li>
+<li><code>trb/std/arrays</code></li>
+<li><code>trb/std/ranges</code></li>
+<li><code>trb/std/hashes</code></li>
+<li><code>trb/std/path</code></li>
+<li><code>trb/std/url</code></li>
+<li><code>trb/std/filesystem</code></li>
+<li><code>trb/std/process</code></li>
+<li><code>trb/std/json</code></li>
+<li><code>trb/std/jsonc</code></li>
+<li><code>trb/std/time</code></li>
+<li><code>trb/std/result</code></li>
+<li><code>trb/std/errors</code></li>
+<li><code>trb/std/unit</code></li>
+<li><code>trb/std/test</code></li>
+</ul>
+<p>Platform packages are mode checked and remain separate from the portable
+standard library. Portable official application packages are documented in the
+<a href="/docs/guides/http/"><code>trb/http</code></a>, <a href="/docs/guides/web/"><code>trb/web</code></a>, and
+<a href="/docs/guides/orm/"><code>trb/orm</code></a> guides.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/standard-library.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

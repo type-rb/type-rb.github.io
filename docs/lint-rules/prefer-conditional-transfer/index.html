@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="trb/prefer-conditional-transfer — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/lint-rules/prefer-conditional-transfer/">
+		<title>trb/prefer-conditional-transfer — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="trbprefer-conditional-transfer"><code>trb/prefer-conditional-transfer</code></h1>
+<p>Prefer a conditional control-transfer statement when a simple <code>if</code> guard
+contains exactly one <code>return</code>, <code>break</code>, or <code>next</code>.</p>
+<ul>
+<li>Default: <code>warning</code></li>
+<li>Recommended: yes</li>
+<li>First available: TypeRB 0.3.25</li>
+<li>Safe fix: yes, for the cases reported by the initial rule</li>
+</ul>
+<h2 id="why">Why</h2>
+<p>Guard clauses keep the main path at the surrounding indentation level. The
+conditional-transfer syntax expresses that shape directly without making
+trailing <code>if</code> a general modifier for calls or assignments.</p>
+<h2 id="examples">Examples</h2>
+<p>The rule reports:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">if</span><span style="color:#E6EDF3"> cached </span><span style="color:#FF7B72">!=</span><span style="color:#79C0FF"> nil</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> cached</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Use:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">return</span><span style="color:#E6EDF3"> cached </span><span style="color:#FF7B72">if</span><span style="color:#E6EDF3"> cached </span><span style="color:#FF7B72">!=</span><span style="color:#79C0FF"> nil</span></span>
+<span class="line"></span></code></pre>
+<p>The same rule applies inside a loop:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">next</span><span style="color:#FF7B72"> if</span><span style="color:#E6EDF3"> item.</span><span style="color:#D2A8FF">hidden?</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">break</span><span style="color:#FF7B72"> if</span><span style="color:#E6EDF3"> complete</span></span>
+<span class="line"></span></code></pre>
+<h2 id="fix-boundary">Fix boundary</h2>
+<p>The initial rule reports only a block that can be rewritten without moving or
+discarding comments, joining multiline expressions, or producing a line over
+120 display columns. Tabs and Unicode display width are included. The edit
+replaces the complete <code>if</code>/<code>end</code> block, preserves
+the existing leading indentation, and retains the original transfer and
+condition text. More complex guards remain valid and are left unchanged.</p>
+<p>The 120-column boundary is a conservative limit on when this rule may
+collapse a block into one line. It is not a general maximum line length for
+TypeRB source.</p>
+<p>This rule does not report <code>if</code> with <code>else</code> or <code>elsif</code>, multiple body
+statements, value-producing <code>if</code>, or an already-authored conditional transfer.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/lint-rules/prefer-conditional-transfer.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

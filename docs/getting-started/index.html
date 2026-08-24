@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Getting started — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/getting-started/">
+		<title>Getting started — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a class="active" aria-current="page" href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a class="active" aria-current="page" href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="getting-started">Getting started</h1>
+<p>TypeRB is an alpha, statically typed programming language that compiles the
+same portable source to Go, Ruby, and TypeScript.</p>
+<h2 id="try-in-the-browser">Try in the browser</h2>
+<p>Use <a href="https://type-rb.github.io/tour/">A Tour of TypeRB</a> for guided executable
+lessons, or open the <a href="https://type-rb.github.io/play/">TypeRB Playground</a> to
+write, run, format, and transpile a standalone program.</p>
+<h2 id="install-the-compiler">Install the compiler</h2>
+<p>Install the current stable release with Homebrew:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">brew</span><span style="color:#A5D6FF"> install</span><span style="color:#A5D6FF"> type-rb/tap/trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> version</span></span>
+<span class="line"></span></code></pre>
+<p>To build the compiler from source, use Go 1.27:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">go</span><span style="color:#A5D6FF"> install</span><span style="color:#A5D6FF"> github.com/type-rb/type-rb/cmd/trb@latest</span></span>
+<span class="line"></span></code></pre>
+<p>Container builds can copy the compiler from the matching release image:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">ARG</span><span style="color:#E6EDF3"> TYPERB_VERSION=X.Y.Z</span></span>
+<span class="line"><span style="color:#FF7B72">FROM</span><span style="color:#E6EDF3"> ghcr.io/type-rb/trb:${TYPERB_VERSION} </span><span style="color:#FF7B72">AS</span><span style="color:#E6EDF3"> typerb</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">FROM</span><span style="color:#E6EDF3"> golang:1.27-bookworm</span></span>
+<span class="line"><span style="color:#FF7B72">COPY</span><span style="color:#E6EDF3"> --from=typerb /usr/local/bin/trb /usr/local/bin/trb</span></span>
+<span class="line"></span></code></pre>
+<p>See <a href="/docs/containers/">TypeRB in containers</a> for complete build and runtime
+layouts for each target.</p>
+<h2 id="run-a-standalone-program">Run a standalone program</h2>
+<p>Create <code>hello.trb</code>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">name </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "TypeRB"</span></span>
+<span class="line"><span style="color:#79C0FF">puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Hello, "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> name </span><span style="color:#FF7B72">+</span><span style="color:#A5D6FF"> "!"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p>Run it in Go mode, or select another target explicitly:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> hello.trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> ruby</span><span style="color:#A5D6FF"> hello.trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> typescript</span><span style="color:#79C0FF"> --runtime</span><span style="color:#A5D6FF"> bun</span><span style="color:#A5D6FF"> hello.trb</span></span>
+<span class="line"></span></code></pre>
+<p>Start the typed REPL from any directory with <code>trb</code>. It uses Go mode when no
+project configuration is present:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">$</span><span style="color:#A5D6FF"> trb</span></span>
+<span class="line"><span style="color:#FFA657">trb:go</span><span style="color:#E6EDF3">> </span><span style="color:#79C0FF">1</span><span style="color:#A5D6FF"> +</span><span style="color:#79C0FF"> 2</span></span>
+<span class="line"><span style="color:#FFA657">3</span><span style="color:#A5D6FF"> :</span><span style="color:#A5D6FF"> Integer</span></span>
+<span class="line"></span></code></pre>
+<h2 id="create-a-project">Create a project</h2>
+<p>Create a Go project:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> init</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> go</span><span style="color:#79C0FF"> --module</span><span style="color:#A5D6FF"> example.com/hello</span><span style="color:#A5D6FF"> hello</span></span>
+<span class="line"><span style="color:#79C0FF">cd</span><span style="color:#A5D6FF"> hello</span></span>
+<span class="line"></span></code></pre>
+<p>Create <code>main.trb</code>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> main</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Hello from TypeRB"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Then format, lint, test, and run the project:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> fmt</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> test</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span></span>
+<span class="line"></span></code></pre>
+<p>Use <code>trb build</code> to keep generated target source. Go projects can also produce
+an executable with <code>trb build --compile</code>.</p>
+<h2 id="choose-a-target">Choose a target</h2>
+<ul>
+<li>Go is suitable for native binaries and services.</li>
+<li>Ruby is suitable for server and application development.</li>
+<li>TypeScript is suitable for browser and server applications.</li>
+</ul>
+<p>A target mode selects the backend, toolchain, and package ecosystem. It does
+not change TypeRB grammar or portable semantics. Continue with the
+<a href="/docs/learning/">learning path</a>, or use the <a href="/docs/language/">language guide</a> as a
+practical reference.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/getting-started.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

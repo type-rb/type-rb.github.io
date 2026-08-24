@@ -1,0 +1,1216 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="TypeRB Specification Draft v0.3 — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/specification/">
+		<title>TypeRB Specification Draft v0.3 — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a class="active" aria-current="page" href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a class="active" aria-current="page" href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="typerb-specification-draft-v03">TypeRB Specification Draft v0.3</h1>
+<p>Last updated: 2026-08-24</p>
+<h2 id="1-language-goals">1. Language Goals</h2>
+<p>TypeRB is a class-based, statically typed language. Its compiler is implemented
+in Go and targets Go, Ruby, and TypeScript.</p>
+<p>Design principles:</p>
+<ul>
+<li>Keep the source concise while removing implicit behavior.</li>
+<li>Prefer explicit, simple, Go-like rules.</li>
+<li>Prefer one canonical spelling for each common operation. Add alternatives
+only when they express a meaningful semantic distinction or application
+experience demonstrates substantial value.</li>
+<li>Keep syntax and semantics consistent across transpile targets.</li>
+</ul>
+<h2 id="2-project-target-modes">2. Project Target Modes</h2>
+<p>A project declares exactly one output mode in <code>trbconfig.jsonc</code>: <code>go</code>, <code>ruby</code>,
+or <code>typescript</code>. Source files do not contain mode declarations. A standalone
+CLI or editor session without a discoverable project configuration may select
+the same mode as session metadata; Go is the default. This selection does not
+create a fourth configuration source or change the source language.</p>
+<p>Mode selection controls transpilation output and target package/toolchain
+integration. The concrete manifest and toolchain settings belong to the
+<a href="/docs/configuration/">project configuration reference</a>.</p>
+<p>Mode never changes TypeRB grammar or relaxes its portable type rules. The same
+source syntax has the same meaning in every mode. Target-specific APIs,
+framework integration, native escape syntax, and compatibility behavior are
+available only through an explicit <code>trb/platform/&lt;mode&gt;/*</code> import; selecting a
+mode by itself does not enable them.</p>
+<p>Portable packages may expose cancellable operations without adding a context
+or <code>async</code> parameter to TypeRB source. Whole-project analysis forwards a hidden
+execution scope through the generated call graph, including interface methods
+and function values. Request disconnects and middleware deadlines cancel that
+scope; generated control-flow checkpoints and supported native APIs observe it.
+The scope belongs to backend lowering, is absent from the source type system
+and typed IR signatures, and must not create mode-dependent source semantics.</p>
+<h2 id="3-core-syntax-and-semantics-confirmed">3. Core Syntax and Semantics (Confirmed)</h2>
+<h3 id="31-declarations-and-style">3.1 Declarations and Style</h3>
+<ul>
+<li>TypeRB source files use UTF-8. An invalid byte sequence is a syntax error
+before tokenization, formatting, or semantic analysis.</li>
+<li>Class-based language.</li>
+<li>Method declaration keyword: <code>def</code>.</li>
+<li>Block terminator: <code>end</code>.</li>
+<li>Parentheses are never omitted in ordinary calls. Portable iterator blocks
+use <code>values.each do |value| ... end</code> syntax.</li>
+<li>Functions and methods with an explicit return type must return a value on
+every reachable path. Final expressions are not implicit returns.</li>
+<li>Complete <code>if</code> flow and exhaustive enum or union <code>case</code> flow can satisfy the
+return rule. A return inside a loop alone does not prove that the function
+returns because initial loop analysis is conservative.</li>
+<li>A terminal unresolved expression enabled by an explicit Ruby-native import
+delegates its return behavior to Ruby and is outside this portable check.
+Known TypeRB expressions do not gain implicit return behavior from that
+import.</li>
+<li>No explicit <code>void</code> type notation (Go-like). Methods with no return value omit
+the return type and may fall through or use a bare <code>return</code>.</li>
+<li>A trailing positional parameter may declare a default with
+<code>name: Type = expression</code>. All following positional parameters must also
+have defaults. Defaults are evaluated when the function or method is called,
+may reference earlier parameters, and are used only for omitted arguments.</li>
+<li>Outside <code>()</code>, <code>[]</code>, and <code>{}</code>, <code>;</code> is equivalent to a newline between
+complete statements. This is common syntax in every mode, so compact input
+such as <code>class Empty; end</code> has the same meaning as its multiline form.</li>
+<li><code>trb fmt</code> expands top-level <code>;</code> separators into canonical lines. Semicolons
+inside opaque literals and the compact iterator form
+<code>values.each { |value| puts(value); puts(value) }</code> remain intact.</li>
+</ul>
+<h4 id="callable-names-ending-in--or-">Callable names ending in <code>?</code> or <code>!</code></h4>
+<ul>
+<li>A function or method name may end in one <code>?</code> or <code>!</code>. The suffix is part of
+the source-level name and is preserved in the AST, typed IR, diagnostics,
+imports, completion, interface checks, and inheritance.</li>
+<li>A callable suffix is a naming convention only. <code>?</code> does not imply a Boolean return
+type, and <code>!</code> does not imply mutation, failure, exception behavior, or
+<code>Result</code> propagation. Those properties remain explicit in the signature and
+implementation.</li>
+<li>Ruby output retains the source spelling. Backends whose ordinary identifiers
+cannot contain the suffix encode the complete UTF-8 source name in a
+compiler-reserved namespace. This makes the lowering deterministic and keeps
+distinct TypeRB names from silently colliding. Encoded target names are a
+compiler implementation detail rather than a target-language API contract.</li>
+</ul>
+<h4 id="function-values">Function values</h4>
+<ul>
+<li><code>fn(parameters) ... end</code> creates a first-class, lexically scoped function
+value. Every parameter has an explicit type. An absent return annotation
+means no return value; a non-Void function uses <code>: Type</code> and must return that
+type on every reachable path.</li>
+<li>Function types are written <code>(ParameterType, ...) -&gt; ReturnType</code>. <code>Void</code> is
+permitted in a function type, for example <code>(String) -&gt; Void</code>, but remains
+omitted from the corresponding <code>fn</code> declaration.</li>
+<li>A function value that may return a recoverable error declares an ordinary
+<code>Result</code> return, such as <code>fn(): Result&lt;User, LoadError&gt; ... end</code>. Its type is
+written <code>() -&gt; Result&lt;User, LoadError&gt;</code>. Prefix <code>try</code>, postfix <code>catch</code>, and
+exhaustive <code>case</code> use the same Result rules as named functions.</li>
+<li>A function value owns <code>return</code> statements in its body. It may capture outer
+lexical bindings, while ordinary immutability and <code>mut</code> assignment rules
+continue to apply to captured values.</li>
+<li>Function values take required positional parameters in the initial syntax;
+defaults, keyword parameters, rest parameters, call blocks, and generic
+lambda parameters are not accepted.</li>
+<li>The compact spelling uses the ordinary statement separator rather than a
+second lambda syntax: <code>double := fn(value: Integer): Integer; return value * 2; end</code>. <code>trb fmt</code> expands it to the canonical multiline form.</li>
+<li>TypeScript alone may lower a function value to an <code>async</code> callback when its
+body reaches a Promise-based platform API. Suspension remains a backend
+implementation detail rather than TypeRB syntax. A Result-returning function
+value has an explicit portable boundary and may suspend with a non-Void
+success value. A pure suspending function value with another non-Void result
+remains rejected until a higher-order suspension contract is available.</li>
+</ul>
+<h4 id="jsx-expressions">JSX expressions</h4>
+<ul>
+<li>JSX is structured shared grammar represented in the syntax AST and typed IR.
+Its element types and runtime meaning come from an explicitly imported JSX
+provider; JSX without a provider is rejected.</li>
+<li>The initial provider is <code>trb/platform/typescript/react</code>. It is a TypeScript
+platform package and emits ordinary TSX for the React toolchain. This target
+boundary does not make the grammar itself React- or TypeScript-specific.</li>
+<li>Within JSX only, a lowercase name is an intrinsic element and an uppercase
+name is a component reference. This rule does not change ordinary TypeRB
+function or constant naming.</li>
+<li>A component may be a checked member of another imported component, such as
+<code>Table.Row</code> or <code>Sidebar.Item</code>. Package-owned declaration adapters declare
+these compound component members and their props; generated TSX retains the
+member expression unchanged.</li>
+<li>JSX attribute names retain their source spelling. The compiler does not
+translate names such as <code>className</code> or <code>onClick</code> to or from snake case.</li>
+<li>A JSX provider may declare checked intrinsic attributes. The initial React
+provider distinguishes mouse, change, form, and keyboard callbacks and maps
+their event objects to the corresponding React and DOM types.</li>
+<li>A TypeRB component returns the provider's node type. It accepts either no
+parameters or one record parameter; that record defines its checked props.
+Unknown, missing, duplicate, and incompatible component props are errors.</li>
+<li>Text, numbers, Booleans, nullable values, provider nodes, and recursively
+renderable arrays and unions may be JSX children. Other values are rejected.</li>
+<li><code>trb fmt</code> prints returned JSX directly after <code>return</code> without adding
+parentheses. It recursively indents structure-only element and embedded
+expression children, while preserving text-bearing elements inline so
+formatting does not change provider-visible text whitespace.</li>
+</ul>
+<h3 id="32-typing">3.2 Typing</h3>
+<ul>
+<li>Parameter/type annotation form is <code>name: Type</code>.</li>
+<li>Local variable initialization uses <code>:=</code>.</li>
+<li>Type inference is enabled for <code>:=</code>.</li>
+<li>Explicit type with initialization is allowed: <code>x: T := expr</code>.</li>
+<li>Type names are case-sensitive. Portable built-in type names use exactly one
+source spelling: <code>Any</code>, <code>Boolean</code>, <code>Integer</code>, <code>Float</code>, <code>String</code>, <code>Bytes</code>,
+<code>StringBuilder</code>, <code>Array</code>, <code>Hash</code>, <code>Range</code>, and <code>Iterable</code>. Target-language
+spellings and shorthand aliases such as <code>bool</code>, <code>Int</code>, <code>int</code>, <code>number</code>, and
+<code>Map</code> are not TypeRB type names. Every other type reference must name a type
+parameter, a declaration in the project, or an explicitly imported type.</li>
+<li>Integer literals use the portable exact range
+<code>-9007199254740991..9007199254740991</code>. A literal outside that range is a
+compile error in every mode rather than a target-dependent rounded value.</li>
+<li>Every runtime <code>Integer</code> uses that same range. Checked arithmetic and
+compiler-owned ingress adapters reject an out-of-range result or value with
+the runtime failure <code>Integer is outside the portable range</code>. This includes
+String and JSON conversion and ORM reads. Handwritten native code is
+responsible for honoring the same contract when it constructs a typed
+<code>Integer</code>. A generated native adapter
+that exposes Integer values must apply the same boundary check; the current
+String-envelope runtime adapter does not expose Integer directly.</li>
+<li><code>Float</code> is IEEE 754 binary64. A source Float literal must be finite and fit
+binary64; overflow is a compile error, while underflow rounds to signed zero.
+Runtime arithmetic may produce positive or negative infinity and NaN. These
+values are ordinary <code>Float</code> values, not <code>Integer</code> values, and have no source
+literal spelling in the current grammar.</li>
+</ul>
+<h4 id="aliases-and-nominal-newtypes">Aliases and nominal newtypes</h4>
+<ul>
+<li><code>alias Name = Target</code> declares a transparent type shorthand. A generic alias
+uses <code>alias Name&lt;T&gt; = Target&lt;T&gt;</code>. Assignment and member checking expand the
+alias while diagnostics, completion, imports, and generated signatures may
+retain its authored name.</li>
+<li>The former <code>type Name = Target</code> spelling is not accepted as current syntax.
+It produces a migration diagnostic because an existing declaration must be
+classified as either a transparent <code>alias</code> or a nominal <code>newtype</code>.</li>
+<li><code>newtype Name = Representation</code> declares a nominal type. Its representation
+may be any concrete, fully instantiated type, including
+<code>Array&lt;ProductId&gt;</code>, but the representation must not itself be nullable.
+Generic newtype declarations such as <code>newtype Id&lt;T&gt; = T</code> are not supported.</li>
+<li>Construction is explicit with <code>Name.new(value)</code>, and <code>value()</code> returns the
+representation. After ordinary argument type checking, <code>new()</code> is
+infallible and performs no user-defined domain validation. Newtype
+declarations cannot currently define custom members or replace these
+generated methods; fallible invariant checks use ordinary Result-returning
+functions. No other representation members are forwarded. Ordinary
+parameters, returns, assignments, collection elements, and record fields do
+not implicitly convert between a newtype, its representation, or a different
+newtype with the same representation.</li>
+<li>Optionality is applied outside the nominal type as <code>Name?</code>. Rejecting a
+nullable representation keeps an erased backend representation from
+conflating a wrapped <code>nil</code> with absence of the newtype value.</li>
+<li><code>==</code> and <code>!=</code> accept two values of the same newtype only when the recursively
+expanded representation supports portable equality. Ordering, arithmetic,
+indexing, iteration, and other representation operations require explicit
+<code>value()</code> unless a future newtype API specifies them.</li>
+<li>A package declaration may mark a typed serialization or persistence
+parameter as a representation boundary. At that boundary only, a newtype is
+checked through its recursively expanded representation. JSON codecs,
+<code>trb/web</code> binding, Jobs payload generation, and ORM column-value parameters
+use representation metadata rather than checker logic tied to those package
+names.</li>
+<li>Typed IR retains construction, unwrapping, nominal identity, and
+representation metadata. Go, Ruby, and TypeScript backends may erase the
+physical wrapper; target-native code is not a source-level nominality
+guarantee.</li>
+</ul>
+<h4 id="fresh-empty-mutable-collections">Fresh empty mutable collections</h4>
+<ul>
+<li>An unannotated <code>mut values := []</code> or <code>mut values := {}</code> starts with a
+pending collection type. The first later statement in the binding's lexical
+statement sequence that constrains the collection is its inference region.
+A statement that only observes the collection, such as <code>values.empty?()</code>,
+does not end the pending state.</li>
+<li>All statically checked writes in that one statement contribute, including
+writes nested in its <code>if</code> or <code>case</code> branches, iteration blocks, call blocks,
+and literal <code>fn</code> bodies. Array elements and Hash values use the same common
+type and union normalization as non-empty literals. A fully typed assignment,
+argument, or return context instead supplies the exact collection type.</li>
+<li>The type is fixed after that statement. A later statement must conform and
+never widens the collection. Branches join into one collection type; they do
+not retain separate flow-sensitive Array or Hash types.</li>
+<li>A syntactically present callback body participates even when the callback may
+execute later. The implementation body of a separately named function or
+method never constrains a caller's pending collection; only its declared
+parameter or return signature can do so.</li>
+<li>A pending collection that reaches an untyped boundary, is aliased without a
+concrete collection context, or remains unresolved at the end of its lexical
+scope is an error and requires an explicit annotation. Interactive top-level
+REPL bindings may remain pending across submissions and are refined when a
+later submission supplies their first constraint.</li>
+<li>Hash keys do not use value-union inference. The first write fixes one
+homogeneous, non-nullable <code>String</code> or <code>Integer</code> key type for the entire Hash;
+another key type in the same inference region is an error. Hash values still
+use common-type and union inference.</li>
+</ul>
+<h4 id="union-types">Union types</h4>
+<ul>
+<li><code>A | B</code> is a portable union type. Unions are flattened, duplicate
+alternatives are removed, and their displayed order is deterministic.</li>
+<li>Collection inference first retains an equivalent type, then selects the most
+specific type available through safe implicit conversion, and otherwise
+constructs a union. Because Integer widens safely to Float,
+<code>Integer | Float</code> normalizes to <code>Float</code> rather than remaining a union.</li>
+<li>A value is assignable to a union when it is assignable to one of the union's
+alternatives. A union is assignable to another union only when every source
+alternative is accepted by the target. A union does not implicitly narrow
+to one alternative.</li>
+<li>Direct operators and receiver methods are not selected from a union. Code
+must first narrow the value with an exhaustive type case. The initial
+portable type patterns are non-nullable Boolean, Integer, Float, and String:</li>
+</ul>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> describe</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72"> |</span><span style="color:#79C0FF"> String</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> value</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#79C0FF"> Integer</span><span style="color:#E6EDF3">(number)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> number.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#79C0FF"> String</span><span style="color:#E6EDF3">(text)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> text</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<ul>
+<li>A type pattern binds exactly one narrowed value. The exact <code>_</code> discards it,
+while <code>_name</code> follows the ordinary readable unused-binding opt-out rule.
+Without <code>else</code>, every union alternative must be handled exactly once. An
+<code>else</code> handles the remaining alternatives.</li>
+<li>More complex values may be retained in a union and passed through compatible
+annotations or <code>Any</code>, but type patterns for nullable, collection, enum,
+record, and class alternatives are staged until one runtime test model is
+specified across all backends.</li>
+</ul>
+<h4 id="nullable-narrowing">Nullable narrowing</h4>
+<ul>
+<li>Comparing a nullable lexical binding directly with <code>nil</code> narrows the
+non-<code>nil</code> path. <code>value != nil</code> narrows the matching <code>if</code>, <code>elsif</code>, or <code>while</code>
+body; <code>value == nil</code> narrows the unmatched <code>elsif</code> and <code>else</code> paths. The
+operands may be written in either order.</li>
+<li>Short-circuit Boolean evaluation carries the same fact into the right-hand
+side: <code>value != nil and use(value)</code> and <code>value == nil or use(value)</code> may use
+<code>value</code> as non-nullable in <code>use(value)</code>.</li>
+<li>A guard without <code>else</code> narrows the following statements when every matching
+branch returns. For example, after <code>if value == nil; return fallback; end</code>,
+<code>value</code> has its non-nullable type.</li>
+<li>Reassignment invalidates the narrowing immediately. The assignment itself is
+checked against the binding's declared nullable type, and subsequent uses
+must narrow again.</li>
+<li>A direct nullable data field may also narrow when its receiver is a stable
+lexical binding and the field cannot change: record fields are always
+stable, and class fields must be declared <code>readonly</code>. Reassigning the
+receiver invalidates every field fact derived from it. Imported record and
+class fields retain the same stability metadata.</li>
+<li>Mutable class fields, indexes, calls, and chained member paths are not
+assumed to produce the same value when evaluated again. Typed IR records
+each nullable unwrap explicitly so Go, Ruby, TypeScript, and the REPL use the
+same checked flow facts.</li>
+</ul>
+<h4 id="literal-types-and-discriminated-unions">Literal types and discriminated unions</h4>
+<ul>
+<li>An explicit Integer or String literal may appear in a type position, for
+example <code>status: 201</code> or <code>kind: &quot;created&quot;</code>. It constrains that value to the
+one written literal. A literal value widens safely to its ordinary
+<code>Integer</code> or <code>String</code> type; an arbitrary scalar does not narrow implicitly to
+a literal type.</li>
+<li>Literal types may form unions such as <code>200 | 404</code>. A scalar alternative
+subsumes its literals, so <code>200 | Integer</code> normalizes to <code>Integer</code>. Nullable,
+array, and generic modifiers are not accepted on a literal type.</li>
+<li><code>case</code> accepts explicit Integer and String values. A case over an ordinary
+scalar may be open and normally uses <code>else</code>; a case over a literal union is
+exhaustive and may omit <code>else</code> after handling every alternative.</li>
+<li>One literal branch may list multiple comma-separated values, such as
+<code>when &quot;index&quot;, &quot;show&quot;</code>. The values share one body. Enum and union patterns,
+including payload bindings, use separate <code>when</code> branches.</li>
+<li>A union of records or classes exposes a data member only when every
+alternative exposes that member through the same storage model. The member
+type is the normalized union of the alternative field types. This rule does
+not select methods from a union.</li>
+<li>When such a common member has a literal type in every alternative, a case on
+<code>binding.member</code> narrows the complete lexical <code>binding</code> in each branch.
+Record fields are immutable discriminants. A class field must be declared
+<code>readonly</code>; imported fields retain their exported readonly flag.</li>
+<li>Alternatives may share a discriminant. That branch retains their union
+rather than choosing one arbitrarily. An <code>else</code> branch, when present, narrows
+to the unhandled alternatives.</li>
+</ul>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> CreatedResponse</span></span>
+<span class="line"><span style="color:#E6EDF3">	status: </span><span style="color:#79C0FF">201</span></span>
+<span class="line"><span style="color:#E6EDF3">	body: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> InvalidResponse</span></span>
+<span class="line"><span style="color:#E6EDF3">	status: </span><span style="color:#79C0FF">422</span></span>
+<span class="line"><span style="color:#E6EDF3">	body: </span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">alias</span><span style="color:#FFA657"> CreateResponse</span><span style="color:#FF7B72"> =</span><span style="color:#FFA657"> CreatedResponse</span><span style="color:#FF7B72"> |</span><span style="color:#FFA657"> InvalidResponse</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> body_text</span><span style="color:#E6EDF3">(response: </span><span style="color:#FFA657">CreateResponse</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> response.</span><span style="color:#D2A8FF">status</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#79C0FF"> 201</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> response.</span><span style="color:#D2A8FF">body</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#79C0FF"> 422</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> response.</span><span style="color:#D2A8FF">body</span><span style="color:#E6EDF3">[</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">]</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Literal types are compile-time constraints rather than new runtime scalar
+representations. TypeScript output retains them in generated types. Go and
+Ruby erase them to the corresponding scalar while typed IR preserves the
+discriminant and Go lowers erased-union field access through checked type
+switches.</p>
+<h4 id="indexes-ranges-and-subsequences">Indexes, ranges, and subsequences</h4>
+<ul>
+<li>Array and String single-element access uses <code>value[index]</code>. Nonnegative
+indexes are zero-based from the start, while negative indexes count from the
+end (<code>-1</code> is the last element). An index that remains outside the collection
+after this normalization fails at runtime. String indexing counts Unicode
+code points rather than encoded bytes.</li>
+<li>The safe single-element form is <code>value.try_fetch(index)</code>, returning a
+structured <code>IndexLookupError</code> with the originally requested index. It uses
+the same negative-index normalization. Array and String do not provide a
+second strict <code>fetch</code> spelling.</li>
+<li>Subsequence access uses <code>value.slice(range)</code>. <code>value[range]</code>,
+<code>slice(start, length)</code>, and a one-argument tail slice are not part of the
+initial language. <code>try_slice(range)</code> is the safe counterpart and returns a
+structured <code>SliceRangeError</code>.</li>
+<li>Both <code>start..finish</code> and <code>start...finish</code> are accepted. Bounds must be
+nonnegative, ordered, and within the collection. The exclusive
+<code>size...size</code> range is a valid empty slice; an inclusive finish always names
+an existing element. Array slices return a new shallow Array.</li>
+<li>Range values retain their bounds and inclusivity through variables and
+function boundaries. Converting <code>Range&lt;Integer&gt;</code> to <code>Iterable&lt;Integer&gt;</code>
+enumerates the represented values without changing slice semantics.
+<code>range.to_a()</code> materializes those values as a new <code>Array&lt;Integer&gt;</code>; a
+reversed Range materializes an empty Array.</li>
+<li>Array <code>index(value)</code> returns the zero-based position of the first value that
+is equal under portable <code>==</code>, or <code>nil</code> when no value matches.</li>
+<li>String <code>index(substring)</code> and <code>rindex(substring)</code> search literal substrings
+and return a code-point position as <code>Integer?</code>. They return <code>nil</code> when the
+substring is absent. An empty substring is found at position zero for
+<code>index</code> and at the String size for <code>rindex</code>.</li>
+</ul>
+<h3 id="33-access-rules-private">3.3 Access Rules (Private)</h3>
+<ul>
+<li>Private class/method names must start with <code>_</code>.</li>
+<li>External access to private members is forbidden and must be a compile-time error.</li>
+</ul>
+<h3 id="34-instance-variables">3.4 Instance Variables</h3>
+<ul>
+<li>Instance variables are declared at class scope (TypeScript-like), not implicitly introduced inside <code>initialize</code>.</li>
+<li>Instance variable names use <code>@name</code>.</li>
+<li>Private instance variables use <code>@_name</code>.</li>
+<li>Zero-value initialization is not adopted initially.
+<ul>
+<li>Therefore, initialization must be explicit (e.g., in <code>initialize</code>).</li>
+</ul>
+</li>
+</ul>
+<h3 id="35-assignment-rules">3.5 Assignment Rules</h3>
+<ul>
+<li><code>:=</code> introduces an immutable local binding. It cannot be rebound or used as
+the receiver of a destructive collection operation.</li>
+<li><code>mut x := expr</code> introduces a mutable local binding. <code>mut</code> is required for
+later <code>=</code>/compound assignment and destructive operations such as
+<code>values.push(item)</code>, <code>values.shift()</code>, or their package forms.</li>
+<li>A readonly reference cannot be made mutable merely by assigning it to a new
+<code>mut</code> binding.</li>
+<li>A non-nullable value is assignable to the corresponding nullable type. The
+typed IR records this conversion explicitly so pointer-based backends do not
+expose their representation through portable semantics.</li>
+<li>A non-nullable <code>Integer</code> is assignable to a non-nullable <code>Float</code>. The checker
+records this widening explicitly and typed IR lowers it in initializers,
+assignments, arguments, record and enum payloads, defaults, and returns.
+<code>Float</code> does not narrow implicitly to <code>Integer</code>.</li>
+<li>Method parameters and iterator block parameters are mutable bindings in the
+current language. Class fields use their existing <code>readonly</code> modifier
+instead of <code>mut</code>.</li>
+<li><code>@ivar := expr</code> is disallowed; instance variables use declared fields and <code>=</code> updates.</li>
+<li>The REPL appends <code> [mut]</code> to the displayed value and type when a submission
+directly declares, assigns, or evaluates a mutable binding. The marker is
+REPL metadata about the binding rather than part of its value or type, and
+it does not propagate through a derived expression.</li>
+</ul>
+<h3 id="36-constants">3.6 Constants</h3>
+<ul>
+<li>An identifier beginning with an uppercase letter is a constant; no <code>const</code>
+or <code>let</code> keyword is added.</li>
+<li>Constants use declaration syntax such as <code>MAX_ITEMS := 100</code>.</li>
+<li>Constants may be declared only at top level or directly inside a <code>module</code> or
+<code>class</code>, never inside a method or control-flow block.</li>
+<li>Constant initializers are ordinary runtime expressions; a constant is not
+restricted to a target language's compile-time constant subset.</li>
+<li>Constants are always immutable and cannot be declared with <code>mut</code>, rebound,
+or passed to destructive APIs. For example,
+<code>DEFAULT_TAGS.push(&quot;work&quot;)</code> is a compile-time error.</li>
+</ul>
+<h3 id="37-imports-and-formatting">3.7 Imports and Formatting</h3>
+<ul>
+<li>Imports are explicit in every mode and are resolved before type checking.</li>
+<li>A package provider may define a declaration-only reference position for a
+declarative API. The initial case is the first model argument of
+<code>trb/orm</code>'s <code>belongs_to</code>, <code>has_many</code>, and <code>has_one</code>: model declarations in
+the same source directory resolve there without an import. The name is not
+made visible to ordinary expressions or type annotations, and a subdirectory
+begins a different ORM model group.</li>
+<li>Every ordinary import must be used. A package import is used by referencing
+one of its members; every symbol in a named import list must be referenced.
+Imports that explicitly activate a compiler integration, such as a native
+syntax or type provider package, and imports that activate an external fixed
+declaration provider count as semantic uses.</li>
+<li>Project module identities come from paths below <code>sourceDir</code>; source files do
+not declare target packages.</li>
+<li>A project import may omit a terminal <code>/index</code>. The omitted form is the
+canonical authored spelling when it resolves uniquely to the directory's
+<code>index.trb</code>; an explicit <code>/index</code> remains accepted. If both <code>name.trb</code> and
+<code>name/index.trb</code> exist, <code>from name</code> resolves <code>name.trb</code>, so tooling retains
+<code>/index</code> when it is needed to select the directory entry. Project-aware
+formatting removes an explicit <code>/index</code> only when resolving the shortened
+path selects the same module. Unresolved paths and source-only formatting
+without a project snapshot retain an explicit <code>/index</code>.</li>
+<li>External TypeRB packages declare a canonical identity in
+<code>trbpackage.json</code>. A project lock may map an explicit short import to that
+identity. Alias mappings are scoped to the application or declaring package,
+so two dependencies may use the same short name for different packages.
+Package source passes through the ordinary parser, checker, typed IR, and
+selected backend.</li>
+<li>A REPL may add hidden imports for public declarations whose names resolve to
+exactly one project module, and for public types exported by portable
+standard packages. Ambiguous declarations still require an explicit import.
+This is an interactive convenience only; project source keeps the same
+explicit-import rule.</li>
+<li>Portable packages use <code>trb/std/*</code>. Mode-specific APIs use mode-checked
+<code>trb/platform/&lt;mode&gt;/*</code> packages.</li>
+<li>In TypeScript mode, a named import whose path belongs to a configured native
+dependency resolves through the declaration index produced by <code>trb install</code>.
+Its generated import keeps the original package specifier. Declaration
+shapes that cannot be represented safely are errors and never fall back to
+<code>Any</code>. A declarative adapter from an installed TypeRB package may replace
+indexed exports and records without changing the application import. An
+adapter may describe generic functions, classes with distinct instance and
+class members, non-constructible interfaces with readonly properties and
+instance methods, records, and transparent type aliases. Calls continue to
+use TypeRB's explicit type arguments, and
+generated TypeScript imports any transitive target types required by the
+selected contracts without exposing those helper names to TypeRB source. An
+adapter may mark a Result-returning function field or parameter with the
+<code>result_to_promise_rejection</code> bridge. The TypeScript backend then unwraps the
+callback's <code>Result</code>, resolves <code>Ok(value)</code>, and rejects the exact <code>Err(error)</code>
+payload only at that native boundary. A native function or instance member
+may instead use the call-level <code>promise_rejection_to_result</code> bridge and
+declare <code>Result&lt;T, String&gt;</code>. The call becomes a TypeScript suspension root;
+resolution produces <code>Ok</code>, and a synchronous throw or Promise rejection
+produces <code>Err</code> from <code>Error.message</code> or <code>String(value)</code>. <code>Promise&lt;void&gt;</code> maps
+to <code>Result&lt;Unit, String&gt;</code>. If String conversion throws, the error is
+<code>&quot;Unknown native rejection&quot;</code>. Other error projections are not yet accepted.</li>
+<li>A package-owned declaration adapter uses a versioned, mode-independent
+semantic catalog selected for one native ecosystem by
+<code>declarationAdapters.&lt;mode&gt;</code> in the package manifest. The common host
+strictly decodes the catalog and validates its protocol shape and checksum.
+The selected ecosystem adapter validates native-dependency ownership, name
+conflicts, and adapter-specific bridge kinds before import. Direct import
+from an installed native declaration system is currently available only for
+TypeScript. A declaration adapter cannot execute compiler code, access
+compiler AST or typed IR, or emit target source.</li>
+<li>A Ruby TypeRB package may select a fixed Declaration Protocol version 2
+catalog with <code>declarationProviders.ruby</code>. The package must declare at least
+one Ruby native dependency and provide a root <code>index.trb</code>; importing that
+root activates the catalog and retains the root module's ordinary runtime
+loading. The catalog provider identity must equal the package's canonical
+name. It may declare fixed external types, modules, properties, methods,
+generics, overloads, and literal-dependent signatures. It cannot execute
+compiler code, emit source, claim project source declarations, supply
+project rules or runtime types, select runtime operations or call
+specializers, declare compiler-controlled block behavior, or weaken nominal
+representation boundaries. Strict decoding rejects unknown fields, trailing
+data, empty catalogs, symlinked catalogs, unsafe <code>Any</code> or invalid signature
+types, and compiler-derived representation metadata. A declaration name that
+conflicts with another active provider or a project declaration is an error.
+Other modes and project-aware external providers are not supported by this
+capability.</li>
+<li>A package may pair <code>declarationAdapters.&lt;mode&gt;</code> with
+<code>runtimeAdapters.&lt;mode&gt;</code> in Go, Ruby, or TypeScript mode. Native Runtime
+Adapter Protocol version 1 maps a canonical <code>module#export</code> identity to a
+declared native dependency, target module, and top-level function symbol.
+Every export in a runtime-backed declaration module must have the exact
+non-generic <code>(String) -&gt; String</code> signature; direct and runtime-backed exports
+cannot share a module. The runtime binding may declare that the call suspends
+and that the generated backend passes its hidden execution scope before the
+string argument. Runtime adapter data is strictly decoded and validated but
+never executed by package resolution or checking. Target shims and ordinary
+TypeRB package source own JSON envelopes, SDK error normalization, and
+conversion to domain <code>Result</code> values.</li>
+<li>A package may declare one explicit declaration-adapter conformance project
+per mode with <code>adapterTests.&lt;mode&gt;</code>. Its config path stays below the package
+root and its native check is a structured argument vector rather than a
+shell string. Only <code>trb adapter test</code> executes that command, after validating
+the adapter, verifying that the project installs the current package, and
+building the project. Package resolution, installation, compilation, and
+import never execute adapter tests, and the test command does not install
+dependencies implicitly.</li>
+<li>Official formatter command: <code>trb fmt</code>.</li>
+<li>Formatting must preserve program meaning. Before removing whitespace between
+ordinary TypeRB tokens, the formatter verifies that re-lexing does not fuse
+them into a different token or operator. It retains a separating space when
+the boundary would change.</li>
+<li><code>NativeStatement</code>, <code>NativeExpression</code>, and <code>NativeBlock</code> are opaque
+formatting islands. Their internal bytes, including whitespace, newlines,
+and comments, are preserved. Only their shared leading indentation is moved
+to match the surrounding TypeRB block. Ordinary TypeRB outside an island is
+still formatted canonically.</li>
+<li>Canonical TypeRB indentation is one tab per nesting level. Formatter
+configuration is not part of the current language; a future configuration
+surface may select a different indentation style without changing language
+semantics.</li>
+<li>Interactive multiline REPL input displays each indentation level as two
+spaces while it is open and after the accepted input remains on screen.
+Enter reindents the open submission and inserts the indentation for the next
+line; accepting a complete submission converts the value passed to the
+compiler and stored in history to canonical tab indentation without changing
+the displayed width.</li>
+<li>REPL diagnostics identify the accumulated interactive source as <code>(trb)</code> and
+retain one-based line and column positions. Locations inside the active
+project use paths relative to the project root, while locations outside it
+retain absolute paths. Runtime evaluation failures use the innermost typed-IR
+source location when one is available; REPL operation errors without a source
+location retain the <code>trb: repl:</code> prefix.</li>
+</ul>
+<h4 id="unused-bindings">Unused bindings</h4>
+<ul>
+<li>A local binding declared inside a method must be referenced. Iterator block
+parameters and payload-pattern bindings follow the same rule.</li>
+<li>The exact name <code>_</code> explicitly discards an iterator or pattern value and
+cannot be read as an expression or used as a local declaration name. A name
+that begins with <code>_</code>, such as <code>_value</code>, remains a normal readable binding but
+is exempt from the unused-binding error. This opt-out applies consistently to
+method-local, iterator, and payload-pattern bindings. More than one binding
+with the same name, including <code>_</code>, remains a duplicate in one block or
+pattern.</li>
+<li>Leading <code>_</code> therefore remains context-sensitive but unambiguous: it marks a
+class member private in a member declaration and opts a lexical binding out
+of required-use checking in a local, iterator, or pattern declaration. A
+lexical binding keeps ordinary scope precedence over a same-named member.</li>
+<li>Method parameters, fields, constants, and top-level bindings are not subject
+to the local unused-binding rule. The REPL also permits an import-only
+submission because a later submission may use it; project builds still
+enforce ordinary import usage.</li>
+</ul>
+<h3 id="38-program-entry">3.8 Program Entry</h3>
+<ul>
+<li>A runnable project defines exactly one top-level <code>def main()</code>. The runnable
+declaration takes no parameters or type parameters and has no return
+annotation. A class, enum, interface, or module member named <code>main</code> is an
+ordinary non-entrypoint method and follows the usual method rules.</li>
+<li>A standalone file-root program also starts from one top-level <code>def main()</code>
+in its selected entry file. The entry and the transitive closure of its
+explicit project imports form the program; unrelated sibling files are not
+discovered implicitly.</li>
+<li>Project and standalone entrypoints have the same signature and
+startup rules. Selecting a file never turns top-level statements into a
+second script execution model or makes a function named <code>main</code> ordinary.</li>
+<li><code>main</code> is a language convention and is not configurable in
+<code>trbconfig.jsonc</code>.</li>
+<li>Projects intended only as libraries may omit <code>main</code>.</li>
+</ul>
+<p>Build and execution behavior belongs to the <a href="/docs/cli/">CLI reference</a>.</p>
+<h3 id="39-boolean-conditions">3.9 Boolean Conditions</h3>
+<ul>
+<li>Conditions in <code>if</code>, <code>elsif</code>, <code>while</code>, a conditional expression, and a
+conditional control-transfer statement must have the non-nullable <code>Boolean</code>
+type.</li>
+<li>TypeRB does not apply Ruby, JavaScript, or target-specific truthiness to
+portable conditions. Values such as <code>0</code>, <code>&quot;&quot;</code>, <code>nil</code>, collections,
+<code>Boolean?</code>, and <code>Any</code> are rejected as conditions.</li>
+<li>An explicit Ruby-native project may use an <code>Any</code> condition as a compatibility
+escape hatch while compiler-owned library providers are still incomplete.</li>
+</ul>
+<h3 id="310-operators">3.10 Operators</h3>
+<ul>
+<li><code>!</code> and <code>not</code> accept non-nullable <code>Boolean</code>; unary <code>+</code> and <code>-</code> accept a
+non-nullable <code>Integer</code> or <code>Float</code> and preserve that type.</li>
+<li><code>+</code> accepts numeric values or two <code>String</code> values. <code>-</code>, <code>*</code>, <code>/</code>, and <code>**</code>
+accept numeric values. When one numeric operand is <code>Float</code>, an <code>Integer</code>
+operand is widened and the result is <code>Float</code>; two <code>Integer</code> operands retain
+an <code>Integer</code> result. <code>%</code> accepts two <code>Integer</code> values.</li>
+<li><code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, and <code>&gt;=</code> compare numeric values with the same widening rule.
+Portable <code>==</code> and <code>!=</code> compare numeric values, matching non-nullable
+<code>Boolean</code> or <code>String</code> values, two values of the same payloadless enum type,
+or a nullable value with <code>nil</code>. Equality for payload-bearing enums is
+reserved until one structural rule can be implemented identically by every
+backend.</li>
+<li><code>&amp;&amp;</code>, <code>||</code>, <code>and</code>, and <code>or</code> accept two non-nullable <code>Boolean</code> values and
+return <code>Boolean</code>. Compound assignments apply the corresponding binary rule
+before checking that the result remains assignable to the mutable target.</li>
+<li>Integer <code>/</code> truncates toward zero, <code>%</code> is its corresponding remainder, and a
+negative exponent is invalid for Integer <code>**</code>. Backends and the REPL preserve
+these semantics instead of inheriting different target-language behavior.</li>
+<li>Integer <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, <code>**</code>, unary <code>-</code>, and their supported
+compound assignments are checked against the portable Integer range. An
+out-of-range result is a runtime failure rather than wraparound, rounding, or
+a recoverable <code>Result</code>.</li>
+<li>Float arithmetic follows binary64 edge behavior in every backend and the
+REPL. Division by positive or negative zero produces the corresponding
+infinity, <code>0.0 / 0.0</code> produces NaN, overflow produces infinity, and a
+negative base raised to a non-integral Float exponent produces NaN rather
+than a target-specific complex value.</li>
+<li>Parenthesized TypeRB expressions retain their AST precedence in generated
+code. Ruby-specific matching, comparison, and bitwise operators (<code>=~</code>, <code>!~</code>,
+<code>&lt;=&gt;</code>, <code>~</code>, <code>|</code>, <code>&amp;</code>, <code>^</code>, <code>&lt;&lt;</code>, and <code>&gt;&gt;</code>) require an explicit Ruby-native
+import until portable semantics are defined.</li>
+</ul>
+<h4 id="conditional-expression">Conditional expression</h4>
+<ul>
+<li><code>condition ? then_expression : else_expression</code> is the conditional
+expression. It is the only ternary operator and has lower precedence than
+every binary operator.</li>
+<li>The condition is evaluated once. Exactly one branch is then evaluated, so
+side effects and failing operations in the unselected branch do not run.</li>
+<li>Its branch types use the same safe common-type rule as a value-producing
+<code>if</code>. The compiler does not choose <code>Any</code> or synthesize a union merely to
+combine incompatible alternatives.</li>
+<li>An unparenthesized conditional expression cannot contain another conditional
+expression. Parentheses make the intended grouping explicit; the official
+linter may still discourage nesting when a complete <code>if</code> is clearer.</li>
+<li>The canonical formatter writes one space on each side of <code>?</code> and <code>:</code>. A
+callable suffix remains part of its identifier, so
+<code>ready?() ? &quot;ready&quot; : &quot;waiting&quot;</code> is unambiguous.</li>
+</ul>
+<h3 id="311-loop-control">3.11 Loop Control</h3>
+<ul>
+<li><code>break</code> exits the innermost enclosing <code>while</code>, <code>each</code>, <code>each_slice</code>, or
+<code>each.with_index</code> loop.</li>
+<li><code>next</code> skips the remainder of the current iteration of that innermost loop.</li>
+<li>Both are statements with no value form. They are compile errors outside a
+loop and have identical semantics in every mode.</li>
+<li><code>return</code> remains distinct: it exits the enclosing method, including when it
+appears inside an iteration block.</li>
+<li>A simple transfer may add a trailing <code>if</code> condition:
+<code>return value if condition</code>, <code>return if condition</code>, <code>break if condition</code>, or
+<code>next if condition</code>. The formal construct is a conditional control-transfer
+statement, shortened to conditional transfer. Its value, when present, is
+evaluated only when the condition is true.</li>
+<li>Trailing <code>if</code> is not a general statement modifier. Calls, assignments, and
+other statements such as <code>notify() if condition</code> are syntax errors.
+<code>unless</code> is not part of the portable grammar.</li>
+<li>Because <code>return if condition</code> is the bare conditional-return form, a complete
+value-producing <code>if</code> should be assigned and returned separately or replaced
+by a conditional expression.</li>
+</ul>
+<p>Compiler-owned package declarations may mark a block operation as structured.
+Unlike a target-language callback, a structured block remains in typed IR and
+may produce the declared call result without changing lexical control flow. A
+whole structured block call can be used as an initializer, assignment value,
+or return value:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">result </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> records.</span><span style="color:#D2A8FF">process_each</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">do</span><span style="color:#FF7B72"> |record|</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(</span><span style="color:#FF7B72">record</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The result must be assigned or returned; silently discarding it is an error.
+An ordinary structured iteration retains the same <code>return</code>, <code>break</code>, and
+<code>next</code> owners as a portable iteration. A Result-boundary structured block is a
+cleanup boundary: authored <code>return</code> cannot cross it, and <code>break</code> or <code>next</code>
+cannot cross it to an outer loop. A loop or function value nested inside the
+block still owns its local transfers. A Result-boundary structured iteration
+also rejects authored <code>return</code>, while <code>break</code> and <code>next</code> retain their local
+iteration meaning. Prefix <code>try</code> may return an Err to the structured boundary;
+the operation completes its rollback or cleanup before an outer <code>catch</code>
+handler runs. Ordinary call blocks are not value-producing unless their
+package declaration explicitly provides structured lowering.</p>
+<p>Portable Array transformations <code>map</code>, <code>select</code>, and <code>reduce</code> use the same
+typed-IR boundary. The short-circuit predicates <code>any?</code>, <code>all?</code>, and <code>none?</code>
+and searches <code>find</code> and <code>find_index</code> require one non-nullable Boolean result
+expression at the end of their block. Transformation blocks may contain
+ordinary statements before that final expression; their locals are scoped to
+one element evaluation. They evaluate from left to right and stop when the
+result is known.
+Empty Arrays produce <code>false</code>, <code>true</code>, and <code>true</code> for the predicates;
+<code>find</code> and <code>find_index</code> return a nullable element and nullable <code>Integer</code>, with
+<code>nil</code> for no match. <code>return</code>, <code>break</code>, and <code>next</code> are not accepted inside a
+value-producing transformation block; use <code>each</code> when control must leave or
+skip the enclosing iteration. Indexed predicate blocks are not currently
+enabled.</p>
+<p>Array sorting is stable and non-destructive. <code>sort()</code> and
+<code>sort_descending()</code> use the element's portable natural order. <code>sort_by</code> and
+<code>sort_by_descending</code> use their block's final expression as a key evaluated
+exactly once per element; no statement in the block may use an operation that
+may fail. Equal
+elements or keys retain their input order in both directions. Portable natural
+order currently covers non-nullable <code>Integer</code>, <code>Float</code>, and <code>String</code>: numeric
+values use numeric order, Strings use Unicode code point order without locale
+collation, and Float <code>NaN</code> values follow all ordinary numbers in both
+directions. Negative and positive zero compare as equal. Arbitrary comparators
+and mixed-direction multi-key ordering are not part of the current language.</p>
+<p><code>uniq()</code> returns a new Array containing the first occurrence of each value in
+input order. It uses portable <code>==</code> and is therefore available only when that
+equality is defined for the element type. <code>concat(other)</code> returns a new Array
+with the receiver's elements followed by <code>other</code>; neither input is mutated.
+Unlike Ruby's destructive <code>Array#concat</code>, TypeRB <code>concat()</code> follows the
+language's non-destructive collection default and does not require <code>mut</code>.
+<code>index(value)</code> uses the same equality contract and returns the first matching
+position as <code>Integer?</code> without a block.</p>
+<h3 id="312-hashes">3.12 Hashes</h3>
+<ul>
+<li>A portable hash type is written <code>Hash&lt;K, V&gt;</code> with exactly two type
+arguments. Bare <code>Hash</code> is rejected outside the explicit Ruby-native
+compatibility surface.</li>
+<li>Portable keys are currently non-nullable <code>String</code> or <code>Integer</code> values. A
+literal must use one homogeneous key type. The label-style <code>name: value</code> literal
+spelling has a <code>String</code> key in portable TypeRB; it becomes a Ruby <code>Symbol</code>
+only under an explicit Ruby-native import.</li>
+<li>Non-empty literals infer their key and value types. Equivalent values retain
+their type; values with a safe most-specific common type use that type and
+receive the required implicit conversions. For example, Integer and Float
+values infer Float. Values without a safe common type retain their
+alternatives in a normalized union such as <code>Integer | String</code>. An empty <code>{}</code>
+receives its type from a declared variable, field, parameter, record field,
+assignment target, or return type, or from the first constraining statement
+of a fresh unannotated mutable binding as defined in section 3.2.</li>
+<li>A fresh literal may be contextually widened when every entry is assignable,
+for example <code>Hash&lt;String, Any&gt; := {&quot;count&quot; =&gt; 1}</code>. Existing mutable Hash
+values are invariant in both arguments, preventing an alias from inserting
+a value that violates the original Hash type.</li>
+<li>Updating an entry requires a <code>mut</code> receiver. <code>hash[key] = value</code> may insert
+or replace an entry and checks both key and value types.</li>
+<li><code>hash.each do |key, value| ... end</code> binds a <code>K</code> key and its <code>V</code> value through
+structured iteration IR. It requires exactly two block parameters and has
+the same <code>break</code>, <code>next</code>, and enclosing-method <code>return</code> behavior as Array
+iteration. Iteration uses a shallow entry snapshot captured before the first
+block call, while enumeration order is unspecified.</li>
+<li><code>hash[key]</code> is a required lookup and raises a runtime error when the key is
+absent in every backend and the REPL.</li>
+<li>Compound assignment to a Hash entry is reserved until its evaluate-once and
+missing-key behavior is represented directly in typed IR. Write
+<code>hash[key] = hash[key] + value</code> in the current language.</li>
+</ul>
+<p>Arrays and Hashes describe homogeneous collections. A union element type
+retains the alternatives of heterogeneous collection values, while a future
+Tuple retains the type of each array-like position and a <code>record</code> retains the
+type of each named field. <code>Array&lt;Integer | String&gt;[0]</code> therefore remains
+<code>Integer | String</code>; exact constant-index inference belongs to Tuple.</p>
+<p>The complete collection receiver and package API belongs to the
+<a href="/docs/standard-library/">standard-library reference</a>.</p>
+<h3 id="313-enums-raw-values-and-sum-types">3.13 Enums, raw values, and sum types</h3>
+<p>An <code>enum</code> declaration defines a closed nominal set of uppercase variants. It
+is allowed at top level or directly inside a module. TypeRB uses the shared
+variant and exhaustive-case model for two related but distinct purposes.</p>
+<h4 id="3131-enumerated-values-and-raw-values">3.13.1 Enumerated values and raw values</h4>
+<ul>
+<li>An ordinary member is a payloadless value such as <code>Ready</code>.</li>
+<li>A raw-value enum assigns every payloadless member an explicit String or
+Integer literal, such as <code>Pending = &quot;PENDING&quot;</code> or <code>Unknown = -1</code>. This adds
+an external representation to the ordinary enumeration model.</li>
+<li>Once one member has a raw value, every member must have one of exactly the
+same type. Raw expressions, duplicate raw values, payload fields, implicit
+numbering, and generic raw-value enums are rejected.</li>
+<li>A raw-value enum remains nominal. It does not implicitly become its raw
+String or Integer type. <code>value.raw_value()</code> performs the outward conversion;
+<code>EnumName.from_raw(raw)</code> returns
+<code>Result&lt;EnumName, EnumValueError&gt;</code>. These generated names are reserved only
+inside enum declarations.</li>
+</ul>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> OrderStatus</span></span>
+<span class="line"><span style="color:#FFA657">	Pending</span><span style="color:#FF7B72"> =</span><span style="color:#A5D6FF"> "PENDING"</span></span>
+<span class="line"><span style="color:#FFA657">	Completed</span><span style="color:#FF7B72"> =</span><span style="color:#A5D6FF"> "COMPLETED"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">	def</span><span style="color:#D2A8FF"> terminal?</span><span style="color:#E6EDF3">(): </span><span style="color:#79C0FF">Boolean</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#79C0FF"> self</span><span style="color:#FF7B72"> ==</span><span style="color:#FFA657"> OrderStatus</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Completed</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">status </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> OrderStatus</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Completed</span></span>
+<span class="line"><span style="color:#E6EDF3">raw </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> status.</span><span style="color:#D2A8FF">raw_value</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">parsed </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> OrderStatus</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">from_raw</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"PENDING"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p>Typed JSON codecs encode a raw-value enum as its raw String or Integer and
+decode only declared raw values. Unknown input produces <code>JsonError</code>; the
+target-language object representation never determines the wire value.</p>
+<h4 id="3132-payload-enums-as-sum-types">3.13.2 Payload enums as sum types</h4>
+<ul>
+<li>A payload enum has at least one payload-bearing variant such as
+<code>Value(value: String)</code>. It may also contain payloadless variants. Payload
+variants use one or more required, positional, typed fields; default,
+keyword, rest, and untyped fields are rejected.</li>
+<li>A payload enum cannot also be a raw-value enum. The payload is variant data,
+not the external representation of an enumerated constant.</li>
+<li>A payload value is constructed with <code>EnumName::Member(value, ...)</code>.
+Payloadless members are values and are not callable.</li>
+<li>A separate <code>sum</code> declaration is not introduced. Payload-bearing enum
+variants provide TypeRB's closed sum-type model.</li>
+</ul>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> Token</span></span>
+<span class="line"><span style="color:#FFA657">	Text</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#79C0FF">	Integer</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#79C0FF">	EOF</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> describe</span><span style="color:#E6EDF3">(token: </span><span style="color:#FFA657">Token</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> token</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Text</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> value</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> value.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">EOF</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#A5D6FF"> "eof"</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<h4 id="3133-shared-enum-behavior">3.13.3 Shared enum behavior</h4>
+<ul>
+<li>Members are explicitly qualified with <code>EnumName::Member</code>. They infer the
+enum's nominal type and cannot be mixed with members of another enum even
+when the member names match.</li>
+<li>Enums may declare instance methods after all members. <code>self</code> has the enum's
+nominal type, and the same method surface applies to ordinary, raw-value,
+and payload enums. Enum class methods are not yet user-definable.</li>
+<li>Portable <code>case</code> dispatches on variants. A payload pattern such as
+<code>when Token::Text(value)</code> introduces immutable bindings whose types come from
+the variant declaration. Current patterns bind every payload field
+positionally; partial patterns, guards, nested patterns, and wildcard syntax
+are reserved. Duplicate branches and duplicate bindings are errors.</li>
+<li>Without <code>else</code>, a case must list every member. With <code>else</code>, omitted members
+are handled by that branch. The selector is evaluated exactly once in every
+backend and the REPL.</li>
+</ul>
+<h3 id="314-value-producing-control-flow">3.14 Value-producing control flow</h3>
+<ul>
+<li><code>if</code> and <code>case</code> retain their statement forms and may also appear wherever an
+expression is accepted.</li>
+<li>A conditional expression is the compact two-value form of an <code>if</code>
+expression. It shares Boolean checking, branch narrowing, lazy evaluation,
+common-type selection, typed IR, and backend behavior with the complete
+form.</li>
+<li>An <code>if</code> expression must contain an <code>else</code>, even when it has one or more
+<code>elsif</code> branches. A <code>case</code> expression must be exhaustive under the ordinary
+enum or union rules; an <code>else</code> may cover the remaining alternatives.</li>
+<li>A branch must end in a result expression or transfer control with <code>return</code>,
+<code>break</code>, or <code>next</code>. Blank lines and comments after the final expression or
+transfer do not change the branch. Earlier statements execute within the
+branch scope first. The ordinary function and loop placement rules for each
+transfer still apply.</li>
+<li>Branch result types must be equivalent or admit one safe common type. The
+checker applies the same explicit Integer-to-Float widening used by ordinary
+assignment. It does not choose <code>Any</code> or synthesize a new union merely to
+combine incompatible branch results. Diverging branches are excluded from
+this common-type calculation.</li>
+<li>The checker represents divergence with the internal bottom type <code>Never</code>.
+When every branch diverges, the control-flow expression also has <code>Never</code>;
+otherwise its type is the common type of the value-producing branches.
+<code>Never</code> is not a source-level type name.</li>
+<li>Typed IR records each branch result and whether that branch diverges. Go and
+TypeScript hoist expressions containing enclosing transfers into structured
+statements and compiler-owned temporaries, preserving the function or loop
+that owns <code>return</code>, <code>break</code>, or <code>next</code>. Ruby uses native value-producing
+control flow, and the REPL propagates the same transfer directly.</li>
+<li>Divergence is supported in ordinary expression positions. Value-producing
+collection transformations accept statements followed by one final result
+expression, but still reject an enclosing <code>return</code>; explicit <code>each</code> remains
+the portable alternative when control must leave the transformation.
+This rule does not make loops into expressions, add values to <code>break</code> or
+<code>next</code>, or introduce additional unreachable-code diagnostics.</li>
+</ul>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">label </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> if</span><span style="color:#E6EDF3"> ready</span></span>
+<span class="line"><span style="color:#A5D6FF">	"ready"</span></span>
+<span class="line"><span style="color:#FF7B72">else</span></span>
+<span class="line"><span style="color:#A5D6FF">	"waiting"</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">short_label </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> ready </span><span style="color:#FF7B72">?</span><span style="color:#A5D6FF"> "ready"</span><span style="color:#E6EDF3"> : </span><span style="color:#A5D6FF">"waiting"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">text </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> case</span><span style="color:#E6EDF3"> result</span></span>
+<span class="line"><span style="color:#FF7B72">when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Ok</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#E6EDF3">	value.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Err</span><span style="color:#E6EDF3">(error)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> fallback</span><span style="color:#E6EDF3">(error)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<h3 id="315-class-member-model-and-deferred-design">3.15 Class member model and deferred design</h3>
+<ul>
+<li>Instance fields and instance methods are accessed through an instance. A
+method declared with <code>def self.name()</code> is a class member and is accessed
+through the class. Using either member kind through the wrong receiver is a
+compile-time error, including for imported and inherited classes.</li>
+<li>A <code>readonly</code> field may be assigned while its declaring object is being
+initialized, but external assignment is a compile-time error. This rule is
+retained across project imports.</li>
+<li>Class constants are runtime-initialized immutable bindings and are available
+to both instance and class methods.</li>
+<li>A class value is assignable to an interface only when the class explicitly
+names that interface with <code>implements</code>, or inherits that declaration from a
+superclass. Matching members alone do not create structural conformance.
+The rule applies to parameters, returns, bindings, and imported classes.</li>
+<li>Interfaces may declare invariant type parameters, such as
+<code>interface Repository&lt;T&gt;</code>. Classes implement a concrete application such as
+<code>class MemoryRepository implements Repository&lt;User&gt;</code>, and every interface
+method signature is checked after substituting those arguments. A generic
+class may implement an interface using its own parameter. Generic interface
+methods, interface inheritance, constraints, and variance are not implied by
+this declaration model.</li>
+<li>A fresh collection literal is contextually typed when an interface element
+type is expected, so <code>Array&lt;Named&gt; := [User.new()]</code> is valid when <code>User</code>
+implements <code>Named</code>. Existing mutable collection values remain invariant;
+an <code>Array&lt;User&gt;</code> binding is not assignable to <code>Array&lt;Named&gt;</code>.</li>
+</ul>
+<p>The following class semantics remain deliberately unsettled rather than being
+inferred from Go, Ruby, or TypeScript:</p>
+<ul>
+<li>portable <code>super(...)</code>, superclass constructor chaining, field initialization
+order, and the Go representation of an initialized superclass;</li>
+<li>method mutation effects and whether calling a mutating method requires a
+mutable receiver binding;</li>
+<li>variance and generic class methods;</li>
+<li>override compatibility and whether an explicit <code>override</code> marker is useful;</li>
+<li>whether a field and method may share one source-level member name. Until a
+common backend-safe rule is chosen, portable code should use a private
+backing field such as <code>@_name</code> for a public <code>name()</code> accessor;</li>
+<li>whether abstract, final, or protected class members add enough value to
+justify new syntax. They are not part of the current language.</li>
+</ul>
+<h2 id="4-user-defined-generics">4. User-defined generics</h2>
+<ul>
+<li>Generic declarations include payload enums, transparent type aliases,
+records, classes, interfaces, top-level functions, and instance methods:
+<code>enum Result&lt;T, E&gt;</code>, <code>alias DbResult&lt;T&gt; = Result&lt;T, DbError&gt;</code>, <code>record Pair&lt;T, U&gt;</code>, <code>class Response&lt;T&gt;</code>, <code>interface Repository&lt;T&gt;</code>, <code>def identity&lt;T&gt;(value: T): T</code>, and
+<code>response.json&lt;T&gt;()</code>.</li>
+<li><code>alias Alias&lt;T&gt; = Target&lt;T, ...&gt;</code> creates a transparent alias rather than a
+nominal type. Assignment and member checking use the expanded target, while
+diagnostics, completion, imports, and generated signatures retain the alias.
+An alias of an enum also qualifies its variants, such as
+<code>DbResult&lt;Integer&gt;::Ok(1)</code> and <code>when DbResult::Err(error)</code>.</li>
+<li>Calls, construction, and generic method selection use explicit type
+arguments in this phase. Examples are
+<code>Result&lt;Integer, String&gt;::Ok(1)</code> and <code>identity&lt;String&gt;(&quot;value&quot;)</code>. The checker
+also accepts <code>Box&lt;Integer&gt;.new(1)</code>, <code>Pair&lt;Integer, String&gt;.new(...)</code>, and
+<code>response.json&lt;Todo&gt;()</code>. It substitutes arguments through parameters,
+returns, fields, enum payloads, case bindings, and cross-file signatures
+before producing typed IR.</li>
+<li>A compiler-owned package function may define an argument-inferred type
+contract where the package API would otherwise expose target-only machinery.
+For example, <code>use_state(0)</code> from the explicit React platform package returns
+<code>ReactState&lt;Integer&gt;</code>. This does not add general type-argument inference to
+user-defined or native-package functions.</li>
+<li>Generic enum patterns omit repeated type arguments because the selector
+supplies them: a <code>case</code> over <code>Result&lt;Integer, String&gt;</code> uses
+<code>when Result::Ok(value)</code> and binds <code>value</code> as <code>Integer</code>.</li>
+<li>User-defined generic arguments are invariant. Missing, extra, and mismatched
+arguments are compile-time errors in every mode. A method type parameter may
+not duplicate one owned by its class.</li>
+<li>Payloadless variants of generic enums are reserved until typed singleton
+construction has a portable representation. Generic class and interface
+methods, constraints, variance declarations, and type-argument inference are
+staged work rather than implicit target-language behavior. Go output requires
+Go 1.27 and emits a generic class instance method as a native generic method.
+A target or receiver representation without native generic methods lowers
+the same checked operation through an equivalent representation.</li>
+</ul>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> Pair</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">T</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">U</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#E6EDF3">	left: </span><span style="color:#FFA657">T</span></span>
+<span class="line"><span style="color:#E6EDF3">	right: </span><span style="color:#FFA657">U</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> Box</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">T</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#E6EDF3">	@value: </span><span style="color:#FFA657">T</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">	def</span><span style="color:#D2A8FF"> initialize</span><span style="color:#E6EDF3">(value: </span><span style="color:#FFA657">T</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">		@value </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> value</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">	def</span><span style="color:#D2A8FF"> pair</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">U</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">(other: </span><span style="color:#FFA657">U</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Pair</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">T</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">U</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#FFA657"> Pair</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">T</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">U</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(left: @value, right: other)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">pair </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Box</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">pair</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"one"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<h3 id="41-standard-result">4.1 Standard Result</h3>
+<ul>
+<li><code>trb/std/result</code> exports the portable <code>Result&lt;T, E&gt;</code> payload enum with
+<code>Ok(value: T)</code> and <code>Err(error: E)</code> variants. It is imported explicitly with
+<code>import { Result } from trb/std/result</code>.</li>
+<li>Construction and handling use the ordinary generic enum rules. The baseline
+keeps both control-flow paths visible with explicit constructors and
+exhaustive pattern matching:</li>
+</ul>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> unwrap</span><span style="color:#E6EDF3">(result: </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">Integer</span></span>
+<span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> result</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Ok</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> value</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Err</span><span style="color:#E6EDF3">(error)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#79C0FF"> 0</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<ul>
+<li>The declaration is compiler-owned TypeRB source and passes through the same
+AST, checker, typed IR, and backend pipeline as application enums. Project
+builds emit its runtime module into the generated target tree.</li>
+<li>A standard-library operation may infer a <code>Result&lt;T, E&gt;</code> without a source
+import, for example <code>missing := values.try_fetch(9)</code>. The checker records the
+compiler-owned runtime dependencies and project compilation emits and
+imports <code>Result</code> and structured error declarations automatically. Members of
+an inferred error value remain typed without an error-package import. Source
+references to a declaration itself—including type annotations, constructors,
+and case patterns—still require an explicit import such as
+<code>import { Result } from trb/std/result</code> or
+<code>import { IndexLookupError } from trb/std/errors</code>.</li>
+<li>Postfix propagation with <code>?</code> or <code>!</code>, implicit exceptions, and unchecked
+<code>unwrap</code> are not part of the language. Callable names may still end in <code>?</code>
+or <code>!</code>; those suffixes are ordinary naming conventions. Recoverable failure
+remains an ordinary <code>Result</code> value.</li>
+</ul>
+<h3 id="42-result-control-flow">4.2 Result control flow</h3>
+<ul>
+<li>The exact lowercase words <code>try</code> and <code>catch</code> are reserved for Result control
+flow in authored declarations and bindings. Longer callable names such as
+<code>try_fetch</code> and <code>catch?</code> remain ordinary names.</li>
+<li>Prefix <code>try expression</code> requires the compiler-owned <code>Result&lt;T, E&gt;</code> or a
+transparent alias. It evaluates the operand once. <code>Ok(value)</code> makes the
+expression produce <code>value: T</code>; <code>Err(error)</code> returns a new Err from the
+nearest compatible Result-returning function or compiler-declared structured
+Result boundary.</li>
+<li>The operand error type must be assignable to the enclosing Result error type
+using the ordinary safe assignment conversions. TypeRB has no implicit
+error-mapping protocol. Use <code>catch</code> and construct the outer error explicitly
+when the types are incompatible.</li>
+<li>Prefix <code>try</code> binds to its immediate postfix expression chain before binary
+operators. It is not permitted at module or REPL top level, in a non-Result
+function, or inside a value-producing collection transformation. Ordinary
+<code>each</code> remains transparent to the enclosing function boundary.</li>
+<li><code>expression catch |error| ... end</code> also evaluates its Result operand once.
+<code>Ok(value)</code> produces <code>value: T</code>. On <code>Err(error)</code>, the immutable binding has
+type <code>E</code> and the handler must either produce a value assignable to <code>T</code> or
+transfer control with <code>return</code>, <code>break</code>, or <code>next</code> to a valid lexical owner.
+<code>catch</code> handles only <code>Result::Err</code>; it does not intercept a target-language
+exception, Promise rejection, or panic.</li>
+<li>In the initial grammar, <code>catch</code> wraps a complete statement value or the
+complete result of a compiler-declared call block. A structured Result call,
+and its optional direct <code>try</code> or <code>catch</code> wrapper, must be the direct value of
+a variable declaration or return. Arbitrary argument, collection-element,
+and member-chain composition is reserved until application evidence requires
+it.</li>
+<li>A discarded standard Result is a compile error. This required-use rule
+covers bare Result expression statements and unread local Result bindings,
+including names beginning with <code>_</code>. <code>try</code>, <code>catch</code>, exhaustive <code>case</code>,
+<code>return</code>, passing, and storing the value are explicit handling or ownership
+transfer. The rule is intentionally shallow: it does not recursively inspect
+containers or perform whole-program liveness analysis. The REPL top level is
+exempt because it displays the Result value.</li>
+<li>An operation with no success value uses <code>Result&lt;Unit, E&gt;</code>. TypeRB does not
+add an implicit Unit success, a one-argument Result shorthand, or a
+zero-argument <code>Ok()</code> constructor.</li>
+<li>Typed IR represents Result branching and structured boundaries explicitly.
+Backends may choose a native representation internally, but source control
+flow is identical in Go, Ruby, and TypeScript modes.</li>
+</ul>
+<h3 id="43-test-declarations">4.3 Test declarations</h3>
+<ul>
+<li>A project test file has the suffix <code>_test.trb</code>. Ordinary builds and runs do
+not emit or execute these files; configured-project <code>trb check</code>, <code>trb lsp</code>,
+and <code>trb test</code> validate them with the complete project. A config-free
+file-root closure excludes imported test modules, while a test file selected
+as the language-server entry is still analyzed.</li>
+<li>The portable <code>trb/std/test</code> package exports <code>describe</code>, <code>test</code>, and <code>expect</code>.
+Test DSL functions are available only through explicit named imports.</li>
+<li>A test file has one or more top-level <code>describe(&quot;literal&quot;) do ... end</code>
+declarations. A suite contains only nested <code>describe</code> and <code>test</code>
+declarations. A <code>test</code> must be nested inside a suite.</li>
+<li>Suite and test names are nonempty String literals. Their slash-separated
+nesting path is the stable full test name used by filters and tools.
+Duplicate full names in one file are an error.</li>
+<li>Suite and test blocks take no parameters. Test bodies otherwise use ordinary
+statements, helpers, Results, and imports. Expected errors are inspected with
+exhaustive <code>case</code>; the test package does not add an implicit Result boundary,
+change language scoping, or introduce implicit setup state.</li>
+<li><code>return</code>, <code>break</code>, and <code>next</code> cannot transfer control across a <code>describe()</code> or
+<code>test()</code> block boundary. A nested function still owns its own <code>return</code>, and
+a <code>while</code> or iteration inside a test body still owns its local <code>break</code> and
+<code>next</code> statements.</li>
+<li><code>expect&lt;T&gt;(actual)</code> preserves <code>T</code> in <code>Expectation&lt;T&gt;</code>. An assertion failure
+aborts the current case, records the assertion's <code>.trb</code> location, and does
+not abort subsequent cases.</li>
+<li><code>trb test</code> creates a temporary entrypoint, invokes each test module in
+deterministic module order, and returns a nonzero status when a case fails.
+It suppresses application <code>main()</code> entrypoints for this compilation only.</li>
+</ul>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/specification.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

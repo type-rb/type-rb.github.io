@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="TypeRB in containers — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/containers/">
+		<title>TypeRB in containers — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a class="active" aria-current="page" href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a class="active" aria-current="page" href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="typerb-in-containers">TypeRB in containers</h1>
+<p>TypeRB publishes the compiler binary as a small multi-platform OCI image:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span>ghcr.io/type-rb/trb:&#x3C;version></span></span>
+<span class="line"><span></span></span></code></pre>
+<p>The image supports Linux on <code>amd64</code> and <code>arm64</code>. It contains only the static
+<code>trb</code> binary and its license. It intentionally does not select or bundle a Go,
+Ruby, Node, or Bun toolchain.</p>
+<h2 id="try-the-compiler-without-installing-it">Try the compiler without installing it</h2>
+<p>For an existing TypeRB project, mount the project and run the compiler-only
+image directly:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">docker</span><span style="color:#A5D6FF"> run</span><span style="color:#79C0FF"> --rm</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --volume</span><span style="color:#A5D6FF"> "</span><span style="color:#E6EDF3">$PWD</span><span style="color:#A5D6FF">:/workspace"</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --workdir</span><span style="color:#A5D6FF"> /workspace</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#A5D6FF">  ghcr.io/type-rb/trb:X.Y.Z</span><span style="color:#A5D6FF"> check</span></span>
+<span class="line"></span></code></pre>
+<p>The same pattern supports formatting and source generation. For example,
+<code>fmt --check</code> verifies formatting, and this command transpiles one standalone
+file to Go on standard output:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">docker</span><span style="color:#A5D6FF"> run</span><span style="color:#79C0FF"> --rm</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --volume</span><span style="color:#A5D6FF"> "</span><span style="color:#E6EDF3">$PWD</span><span style="color:#A5D6FF">:/workspace"</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --workdir</span><span style="color:#A5D6FF"> /workspace</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#A5D6FF">  ghcr.io/type-rb/trb:X.Y.Z</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#A5D6FF">  build</span><span style="color:#79C0FF"> --stdout</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> go</span><span style="color:#A5D6FF"> hello.trb</span></span>
+<span class="line"></span></code></pre>
+<p>These commands need no TypeRB installation on the host. Running generated
+programs or installing native dependencies still requires the selected target
+toolchain. Compose the compiler image with a Go, Ruby, Node, or Bun image as
+shown below when the container must build or run the application.</p>
+<h2 id="verify-an-image">Verify an image</h2>
+<p>Run an exact release image to print its compiler version:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">docker</span><span style="color:#A5D6FF"> run</span><span style="color:#79C0FF"> --rm</span><span style="color:#A5D6FF"> ghcr.io/type-rb/trb:X.Y.Z</span></span>
+<span class="line"></span></code></pre>
+<p>An exact tag always identifies the corresponding TypeRB release. Projects
+should select an exact version, and may also pin the multi-platform digest when
+the complete container input must be byte-for-byte reproducible:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">FROM</span><span style="color:#E6EDF3"> ghcr.io/type-rb/trb:X.Y.Z@sha256:&#x3C;digest> </span><span style="color:#FF7B72">AS</span><span style="color:#E6EDF3"> typerb</span></span>
+<span class="line"></span></code></pre>
+<p>The floating <code>&lt;major&gt;.&lt;minor&gt;</code> and <code>latest</code> tags are conveniences for local
+experimentation. Do not use them for reproducible application builds.</p>
+<h2 id="add-typerb-to-a-target-toolchain">Add TypeRB to a target toolchain</h2>
+<p>Use the compiler image as an external build stage, then copy <code>trb</code> into the
+native toolchain selected by the project.</p>
+<h3 id="go">Go</h3>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">ARG</span><span style="color:#E6EDF3"> TYPERB_VERSION=X.Y.Z</span></span>
+<span class="line"><span style="color:#FF7B72">ARG</span><span style="color:#E6EDF3"> GO_VERSION=1.27</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">FROM</span><span style="color:#E6EDF3"> ghcr.io/type-rb/trb:${TYPERB_VERSION} </span><span style="color:#FF7B72">AS</span><span style="color:#E6EDF3"> typerb</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">FROM</span><span style="color:#E6EDF3"> golang:${GO_VERSION}-bookworm </span><span style="color:#FF7B72">AS</span><span style="color:#E6EDF3"> build</span></span>
+<span class="line"><span style="color:#FF7B72">COPY</span><span style="color:#E6EDF3"> --from=typerb /usr/local/bin/trb /usr/local/bin/trb</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">WORKDIR</span><span style="color:#E6EDF3"> /src</span></span>
+<span class="line"><span style="color:#FF7B72">COPY</span><span style="color:#E6EDF3"> . .</span></span>
+<span class="line"><span style="color:#FF7B72">RUN</span><span style="color:#E6EDF3"> trb install --frozen</span></span>
+<span class="line"><span style="color:#FF7B72">RUN</span><span style="color:#E6EDF3"> CGO_ENABLED=0 trb build --compile --outfile /out/app</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">FROM</span><span style="color:#E6EDF3"> scratch </span><span style="color:#FF7B72">AS</span><span style="color:#E6EDF3"> runtime</span></span>
+<span class="line"><span style="color:#FF7B72">COPY</span><span style="color:#E6EDF3"> --from=build /out/app /app</span></span>
+<span class="line"><span style="color:#FF7B72">ENTRYPOINT</span><span style="color:#E6EDF3"> [</span><span style="color:#A5D6FF">"/app"</span><span style="color:#E6EDF3">]</span></span>
+<span class="line"></span></code></pre>
+<p>The final stage needs neither TypeRB nor the Go toolchain. Replace <code>scratch</code>
+with an appropriate minimal operating-system image when the application needs
+CA certificates, time-zone data, native libraries, or files that are not
+embedded in the executable. <code>trb build --compile</code> does not remove system
+library requirements introduced by dependencies or embed application files.</p>
+<h3 id="ruby">Ruby</h3>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">ARG</span><span style="color:#E6EDF3"> TYPERB_VERSION=X.Y.Z</span></span>
+<span class="line"><span style="color:#FF7B72">ARG</span><span style="color:#E6EDF3"> RUBY_VERSION=4.0</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">FROM</span><span style="color:#E6EDF3"> ghcr.io/type-rb/trb:${TYPERB_VERSION} </span><span style="color:#FF7B72">AS</span><span style="color:#E6EDF3"> typerb</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">FROM</span><span style="color:#E6EDF3"> ruby:${RUBY_VERSION}-slim </span><span style="color:#FF7B72">AS</span><span style="color:#E6EDF3"> build</span></span>
+<span class="line"><span style="color:#FF7B72">COPY</span><span style="color:#E6EDF3"> --from=typerb /usr/local/bin/trb /usr/local/bin/trb</span></span>
+<span class="line"></span></code></pre>
+<p>Ruby applications retain Ruby in their runtime stage, but do not need to copy
+the TypeRB compiler into that stage after generating the application source.</p>
+<h3 id="typescript">TypeScript</h3>
+<p>Choose the JavaScript runtime separately from the TypeScript output mode:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">ARG</span><span style="color:#E6EDF3"> TYPERB_VERSION=X.Y.Z</span></span>
+<span class="line"><span style="color:#FF7B72">ARG</span><span style="color:#E6EDF3"> BUN_VERSION=1.4</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">FROM</span><span style="color:#E6EDF3"> ghcr.io/type-rb/trb:${TYPERB_VERSION} </span><span style="color:#FF7B72">AS</span><span style="color:#E6EDF3"> typerb</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">FROM</span><span style="color:#E6EDF3"> oven/bun:${BUN_VERSION} </span><span style="color:#FF7B72">AS</span><span style="color:#E6EDF3"> build</span></span>
+<span class="line"><span style="color:#FF7B72">COPY</span><span style="color:#E6EDF3"> --from=typerb /usr/local/bin/trb /usr/local/bin/trb</span></span>
+<span class="line"></span></code></pre>
+<p>A browser application can copy its built assets into a static web-server
+image. A Bun or Node server keeps its selected JavaScript runtime in the final
+stage. TypeRB does not publish combined compiler-and-runtime images because
+native runtime versions, operating systems, and application dependencies are
+owned by each project.</p>
+<h2 id="image-scope">Image scope</h2>
+<p>The compiler image is an artifact carrier rather than a general-purpose
+development environment. It has no shell, Git client, certificate store, or
+target toolchain. The supported direct invocation is the version check shown
+above; application checks, builds, package installation, and execution belong
+in a project image that supplies the required native tools.</p>
+<p>Every stable TypeRB release publishes the exact release tag, the matching
+<code>&lt;major&gt;.&lt;minor&gt;</code> tag, and <code>latest</code>. The image is built from the same Linux
+release binaries published on GitHub, and its build provenance is attached to
+the image digest.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/containers.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

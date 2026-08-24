@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Linting — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/guides/linting/">
+		<title>Linting — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a class="active" aria-current="page" href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a class="active" aria-current="page" href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="linting">Linting</h1>
+<p>TypeRB keeps correctness, canonical formatting, and maintainability checks as
+three explicit surfaces:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Owns</th>
+<th>Configuration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>trb check</code></td>
+<td>Syntax, resolution, types, and portable semantics</td>
+<td>Not suppressible</td>
+</tr>
+<tr>
+<td><code>trb fmt</code></td>
+<td>Deterministic source layout</td>
+<td>Intentionally minimal</td>
+</tr>
+<tr>
+<td><code>trb lint</code></td>
+<td>Optional style and maintainability guidance</td>
+<td>Presets and per-rule levels</td>
+</tr>
+</tbody>
+</table>
+<p><code>trb lint</code> runs the complete <code>trb check</code> pipeline first. Lint rules never make
+invalid source valid and cannot hide compiler diagnostics. Once the project is
+valid, lint analyzes authored project files and excludes compiler-owned,
+official-package, and external-package source.</p>
+<h2 id="running-lint">Running lint</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span><span style="color:#79C0FF"> --fix</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span><span style="color:#79C0FF"> --deny-warnings</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span><span style="color:#79C0FF"> --diagnostic-format</span><span style="color:#A5D6FF"> json</span></span>
+<span class="line"></span></code></pre>
+<p>The default <code>recommended</code> preset reports warnings without failing the command.
+<code>--deny-warnings</code> is the CI switch for treating every remaining warning as a
+failure. A rule explicitly configured as <code>error</code> always fails. <code>--fix</code> applies
+only edits the rule declares safe, preserves file permissions, and reports any
+remaining findings afterward.</p>
+<p>Standalone operation follows the same file-root model as <code>trb check</code>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span><span style="color:#A5D6FF"> app.trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> typescript</span><span style="color:#A5D6FF"> app.trb</span></span>
+<span class="line"></span></code></pre>
+<p>When <code>trbconfig.jsonc</code> is discoverable, the configured project and mode win.</p>
+<h2 id="configuration">Configuration</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "lint"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "preset"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"recommended"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "rules"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "trb/prefer-conditional-transfer"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"error"</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>The available presets are <code>recommended</code> and <code>none</code>. Rule levels are <code>off</code>,
+<code>warning</code>, and <code>error</code>. Unknown IDs are errors so a typo or removed rule cannot
+silently weaken CI. The <a href="/docs/lint-rules/">rule index</a> records each rule's
+default, first TypeRB release, fix support, and full rationale.</p>
+<h2 id="versions-and-compatibility">Versions and compatibility</h2>
+<p>Built-in rules are part of TypeRB and share the <code>trb</code> version. Patch releases
+may fix false positives, crashes, messages, or unsafe fixes without intending
+to add new findings. New rules, a broader rule scope, or a change to the
+recommended preset belongs to a minor release.</p>
+<p>JSON output uses the shared diagnostic envelope. <code>schemaVersion</code> versions the
+report shape, <code>toolVersion</code> identifies the running TypeRB release, and a lint
+diagnostic's <code>code</code> is its rule ID. This separation lets integrations track a
+stable protocol without inventing a second built-in-linter SemVer.</p>
+<h2 id="extension-boundary">Extension boundary</h2>
+<p>The initial linter intentionally contains only a built-in registry and
+project configuration. It does not execute third-party rules during checking
+or compilation. A future external rule protocol must define versioning,
+resource limits, package trust, deterministic inputs, and editor behavior
+before it becomes public. Independent tools can consume
+<code>trb compiler inspect</code> today, but that tooling protocol does not grant a rule
+access to compiler internals or raw mutable AST state.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/guides/linting.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

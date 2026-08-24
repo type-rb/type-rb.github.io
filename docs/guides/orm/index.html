@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="trb/orm — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/guides/orm/">
+		<title>trb/orm — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a class="active" aria-current="page" href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a class="active" aria-current="page" href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="trborm"><code>trb/orm</code></h1>
+<p><code>trb/orm</code> is an experimental official package for typed database access. Its
+generated runtime supports Go, Ruby, and TypeScript with SQLite, PostgreSQL,
+and MySQL. TypeScript server applications currently use the Bun runtime.</p>
+<p>When <code>db/schema.lock.json</code> exists, the compiler reads its deterministic type
+contract and does not require a database connection during checks or builds.
+Without a lock, it falls back to live schema introspection. The generated
+application still connects to the database at runtime.</p>
+<p>Migrations are not a runtime dependency of <code>trb/orm</code>. Use any schema tool, or
+use the optional <a href="/docs/guides/database/"><code>trb db</code> workflow</a> backed by sqldef.</p>
+<h2 id="configuration">Configuration</h2>
+<p>Configure the adapter and database source in <code>trbconfig.jsonc</code>. An environment
+variable avoids embedding a database location in source or generated code:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">	"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"my-app"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">	"mode"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"go"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">	"sourceDir"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"src"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">	"packageOptions"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">		"trb/orm"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">			"adapter"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"sqlite"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">			"database"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">				"environment"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"DATABASE_URL"</span></span>
+<span class="line"><span style="color:#E6EDF3">			}</span></span>
+<span class="line"><span style="color:#E6EDF3">		}</span></span>
+<span class="line"><span style="color:#E6EDF3">	},</span></span>
+<span class="line"><span style="color:#7EE787">	"go"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">		"module"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"example.com/my-app"</span></span>
+<span class="line"><span style="color:#E6EDF3">	}</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>SQLite environment values must be absolute paths. Adapter names are <code>sqlite</code>,
+<code>postgresql</code>, and <code>mysql</code>. Set <code>mode</code> to <code>ruby</code> to generate a Ruby application;
+the ORM source and package options stay the same. TypeScript projects must set
+<code>typescript.runtime</code> to <code>&quot;bun&quot;</code>.</p>
+<p>The compiler looks for <code>db/schema.lock.json</code> by default. Set the optional
+<code>schemaLock</code> package option to another project-relative path. If an explicitly
+configured lock is missing or invalid, compilation fails instead of silently
+using the live database.</p>
+<p>Any database column mapped to TypeRB <code>Integer</code> uses TypeRB's portable exact
+range <code>-9007199254740991..9007199254740991</code>; generated adapters report an
+out-of-range column value as invalid database data.</p>
+<h2 id="date-and-time-columns">Date and time columns</h2>
+<p>Schema introspection and schema locks expose portable time types without model
+annotations:</p>
+<table>
+<thead>
+<tr>
+<th>TypeRB</th>
+<th>PostgreSQL</th>
+<th>MySQL</th>
+<th>SQLite declared type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Date</code></td>
+<td><code>date</code></td>
+<td><code>date</code></td>
+<td><code>DATE</code></td>
+</tr>
+<tr>
+<td><code>TimeOfDay</code></td>
+<td><code>time without time zone</code></td>
+<td><code>time</code></td>
+<td><code>TIME</code></td>
+</tr>
+<tr>
+<td><code>DateTime</code></td>
+<td><code>timestamp without time zone</code></td>
+<td><code>datetime</code></td>
+<td><code>DATETIME</code> or <code>TIMESTAMP</code></td>
+</tr>
+<tr>
+<td><code>Instant</code></td>
+<td><code>timestamp with time zone</code></td>
+<td><code>timestamp</code></td>
+<td><code>TIMESTAMPTZ</code> or <code>INSTANT</code></td>
+</tr>
+</tbody>
+</table>
+<p>These values work in model fields, typed predicates, writes, projections, and
+<code>minimum()</code> / <code>maximum()</code>. <code>Instant</code> database traffic is normalized through
+UTC, and generated runtimes use UTC database sessions so server-evaluated
+defaults behave consistently across targets. <code>DateTime</code> never gains an implicit
+timezone. MySQL <code>TIME</code> is accepted only within the portable <code>TimeOfDay</code> range
+from <code>00:00:00</code> through <code>23:59:59.999999</code>. Database precision remains controlled
+by the column declaration, such as <code>timestamp(6)</code>.</p>
+<h2 id="models-and-associations">Models and associations</h2>
+<p>Model and table names follow conventions. Fields, nullability, primary keys,
+unique constraints, and foreign keys come from the live schema.</p>
+<p>Each source directory is one ORM model group. Models in separate files within
+that directory reference one another in association declarations without
+source imports:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># src/models/user.trb</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Model</span><span style="color:#E6EDF3">, has_many } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/orm</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> User</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#FFA657"> Model</span></span>
+<span class="line"><span style="color:#D2A8FF">	has_many</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">Post</span><span style="color:#E6EDF3">, dependent: </span><span style="color:#79C0FF">:destroy</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># src/models/post.trb</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Model</span><span style="color:#E6EDF3">, belongs_to } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/orm</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> Post</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#FFA657"> Model</span></span>
+<span class="line"><span style="color:#D2A8FF">	belongs_to</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">User</span><span style="color:#E6EDF3">, name: </span><span style="color:#79C0FF">:author</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The first argument of <code>belongs_to</code>, <code>has_many</code>, and <code>has_one</code> is a
+compiler-resolved declaration reference. This exception does not make the
+target model available to ordinary expressions or type annotations. Import it
+normally when using it as a query root, constructor, parameter, or return type:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Post</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> models/post</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">DbResult</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/orm</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> recent_posts</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">DbResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Post</span><span style="color:#FF7B72">>></span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> Post</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">order</span><span style="color:#E6EDF3">(created_at: </span><span style="color:#79C0FF">:desc</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">limit</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">20</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">all</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>A subdirectory starts another model group. Every model traversed by a direct or
+through association must remain in one group; direct association inverses and
+dependent lifecycle targets follow the same boundary. The compiler reports
+both declarations when that boundary is crossed. Database foreign-key columns
+may still cross groups. Keep the identifier and load the other record through
+an application query or repository instead of ORM object navigation. Model
+class names are currently unique across the project.</p>
+<p>Completion, hover, definition, references, and rename understand declaration
+references in association arguments and do not insert target-model imports.
+Generated runnable entrypoints bootstrap Ruby and TypeScript model registration
+without introducing model-to-model initialization imports; Go emits the group
+as one generated package. A model module must not import the runnable
+entrypoint directly or transitively, because the registration bootstrap would
+close an initialization cycle. Move declarations shared with the entrypoint
+into a separate module; the compiler reports the complete cycle.</p>
+<p>Use <code>name</code>, <code>foreign_key</code>, <code>references</code>, <code>inverse</code>, <code>through</code>, and <code>source</code>
+only when conventions are insufficient. Association scopes are typed blocks:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> User</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#FFA657"> Model</span></span>
+<span class="line"><span style="color:#D2A8FF">	has_many</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">Post</span><span style="color:#E6EDF3">, name: </span><span style="color:#79C0FF">:published_posts</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">posts</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">		posts.</span><span style="color:#D2A8FF">where</span><span style="color:#E6EDF3">(published: </span><span style="color:#79C0FF">true</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">order</span><span style="color:#E6EDF3">(created_at: </span><span style="color:#79C0FF">:desc</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<h2 id="enum-columns">Enum columns</h2>
+<p>Use <code>enum_column</code> when a schema column stores a domain enum. Model fields,
+query values, writes, and REPL results then use the nominal enum type rather
+than its database scalar type:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Model</span><span style="color:#E6EDF3">, enum_column } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/orm</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> OrderStatus</span></span>
+<span class="line"><span style="color:#FFA657">	Pending</span><span style="color:#FF7B72"> =</span><span style="color:#A5D6FF"> "PENDING"</span></span>
+<span class="line"><span style="color:#FFA657">	Completed</span><span style="color:#FF7B72"> =</span><span style="color:#A5D6FF"> "COMPLETED"</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> FulfillmentPhase</span></span>
+<span class="line"><span style="color:#FFA657">	PendingReview</span></span>
+<span class="line"><span style="color:#FFA657">	ReadyToShip</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> Order</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#FFA657"> Model</span></span>
+<span class="line"><span style="color:#D2A8FF">	enum_column</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">:status</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">OrderStatus</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#D2A8FF">	enum_column</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">:phase</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">FulfillmentPhase</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Raw-value enums store their exact String or Integer raw values. Ordinary enums
+use lower snake case, so <code>PendingReview</code> maps to <code>pending_review</code>. Every mapping
+is checked against the schema or schema lock during compilation. Nullability
+still comes from the database column, and an unknown stored value is reported
+as <code>DbErrorKind::InvalidData</code> instead of being accepted as an enum member.
+The enum may be declared in the application or imported from a TypeRB package;
+package aliases use the same resolution rules as ordinary imports.</p>
+<h2 id="queries-and-results">Queries and Results</h2>
+<p>Model classes are query roots; an empty <code>where()</code> is unnecessary. Query values
+are immutable, and database terminals return <code>DbResult&lt;T&gt;</code>, the package alias
+for <code>Result&lt;T, DbError&gt;</code>.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">DbResult</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/orm</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> recent_posts</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">DbResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Post</span><span style="color:#FF7B72">>></span></span>
+<span class="line"><span style="color:#E6EDF3">	query </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Post</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">where</span><span style="color:#E6EDF3">(published: </span><span style="color:#79C0FF">true</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">order</span><span style="color:#E6EDF3">(created_at: </span><span style="color:#79C0FF">:desc</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">limit</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">20</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> query.</span><span style="color:#D2A8FF">all</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Use prefix <code>try</code> when a function performs more work after a successful
+database operation. Use <code>catch</code> when the caller resolves the database error
+locally:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> main</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">	posts </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> recent_posts</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">catch</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">error</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#79C0FF">		puts</span><span style="color:#E6EDF3">(error.</span><span style="color:#D2A8FF">message</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(posts.</span><span style="color:#D2A8FF">size</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Associations use the same Result rules. <code>user.posts</code> and <code>post.author</code> return a
+<code>DbResult</code> that loads on first access and caches its success value. Preload
+fills the same cache. <code>load()</code> and <code>reload()</code> also return <code>DbResult</code>; <code>loaded?()</code>
+remains an ordinary Boolean cache query.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">DbResult</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/orm</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> print_posts</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">DbResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#E6EDF3">	users </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> try</span><span style="color:#FFA657"> User</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">preload</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">:posts</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">all</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">	users.</span><span style="color:#D2A8FF">each</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">user</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">		posts </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> try</span><span style="color:#E6EDF3"> user.</span><span style="color:#D2A8FF">posts</span></span>
+<span class="line"><span style="color:#E6EDF3">		posts.</span><span style="color:#D2A8FF">each</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">post</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#79C0FF">			puts</span><span style="color:#E6EDF3">(post.</span><span style="color:#D2A8FF">title</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">		end</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> DbResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72">>::</span><span style="color:#FFA657">Ok</span><span style="color:#E6EDF3">(users.</span><span style="color:#D2A8FF">size</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<h3 id="streaming-in-batches">Streaming in batches</h3>
+<p><code>find_each()</code> and <code>find_in_batches()</code> are structured Result boundaries. They
+return <code>DbResult&lt;Integer&gt;</code>, where the success value is the number of records
+visited. Assign the raw Result when both outcomes matter, use prefix <code>try</code>
+inside a function returning a compatible Result, or use <code>catch</code> to recover at
+the call site:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">DbResult</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/orm</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> print_recent_posts</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">DbResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#E6EDF3">	count </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> try</span><span style="color:#FFA657"> Post</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">where</span><span style="color:#E6EDF3">(published: </span><span style="color:#79C0FF">true</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">find_each</span><span style="color:#E6EDF3">(batch_size: </span><span style="color:#79C0FF">100</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">post</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#79C0FF">		puts</span><span style="color:#E6EDF3">(post.</span><span style="color:#D2A8FF">title</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> DbResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72">>::</span><span style="color:#FFA657">Ok</span><span style="color:#E6EDF3">(count)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> main</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">	count </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> print_recent_posts</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">catch</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">error</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#79C0FF">		puts</span><span style="color:#E6EDF3">(error.</span><span style="color:#D2A8FF">message</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#79C0FF">		0</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(count)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Prefix <code>try</code> inside the streaming block stops iteration and returns <code>Err</code> from
+the streaming operation. <code>break</code> and <code>next</code> keep their ordinary local
+iteration behavior. An authored <code>return</code> cannot cross this Result boundary;
+return after the operation instead. When streaming runs inside
+<code>Database.transaction()</code>, an Err propagated with <code>try</code> rolls the transaction
+back before an outer <code>catch</code> handler runs.</p>
+<h2 id="writes-and-transactions">Writes and transactions</h2>
+<p>Drafts and pending changes keep inserts and updates distinct:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">DbResult</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/orm</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> create_post</span><span style="color:#E6EDF3">(user: </span><span style="color:#FFA657">User</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">DbResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Post</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#E6EDF3">	draft </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Post</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">build</span><span style="color:#E6EDF3">(user_id: user.</span><span style="color:#D2A8FF">id</span><span style="color:#E6EDF3">, title: </span><span style="color:#A5D6FF">"First post"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">	post </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> try</span><span style="color:#E6EDF3"> draft.</span><span style="color:#D2A8FF">save</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> post.</span><span style="color:#D2A8FF">with</span><span style="color:#E6EDF3">(title: </span><span style="color:#A5D6FF">"Updated post"</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">save</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Bulk insert, conflict-aware insert, upsert, relation update/delete, batching,
+aggregates, joins, subqueries, row locks, and destroy lifecycles are available.
+Transactions use an explicit scope:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">DbResult</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/orm</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> publish_all</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">DbResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> Database</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">transaction</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">transaction</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">		posts </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Post</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">using</span><span style="color:#E6EDF3">(transaction)</span></span>
+<span class="line"><span style="color:#FF7B72">		try</span><span style="color:#E6EDF3"> posts.</span><span style="color:#D2A8FF">where</span><span style="color:#E6EDF3">(published: </span><span style="color:#79C0FF">false</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">update_all</span><span style="color:#E6EDF3">(published: </span><span style="color:#79C0FF">true</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>Database.transaction()</code> is a structured Result boundary. A Result propagated
+with <code>try</code> from its body rolls the transaction back; an outer <code>catch</code> runs only
+after rollback completes. The block's final successful value becomes the
+transaction's <code>Ok</code> payload. An authored <code>return</code> cannot cross the transaction
+boundary.</p>
+<p>Model classes and filtered relations both support <code>update_all()</code>, <code>delete_all()</code>,
+and <code>destroy_all()</code>. Direct deletes skip lifecycle behavior; destroy operations
+run the configured <code>dependent: destroy</code>, <code>delete</code>, <code>nullify</code>, or <code>restrict</code> rule.</p>
+<h2 id="repl">REPL</h2>
+<p>Start <code>trb</code> or <code>trb repl</code> in the project. The REPL loads the same schema and can
+execute reads, associations, transactions, batching, writes, conflicts, and
+destroy lifecycles. A top-level database Result displays <code>Ok</code> or its structured
+<code>DbError</code> without ending the session. Top-level <code>try</code> is rejected; inspect the
+Result directly or recover with <code>catch</code> so an error cannot terminate the
+interactive session implicitly.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/guides/orm.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

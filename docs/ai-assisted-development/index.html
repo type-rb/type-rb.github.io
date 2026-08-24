@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="AI-assisted TypeRB development — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/ai-assisted-development/">
+		<title>AI-assisted TypeRB development — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a class="active" aria-current="page" href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a class="active" aria-current="page" href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="ai-assisted-typerb-development">AI-assisted TypeRB development</h1>
+<p>AI agents can work effectively with TypeRB before the language appears in
+general model training data. The reliable boundary is the checked project and
+its machine-readable diagnostics, not the model's memory of Ruby, Go, or
+TypeScript.</p>
+<h2 id="repository-setup">Repository setup</h2>
+<p>Keep <code>AGENTS.md</code>, <code>.agents/skills</code>, TypeRB source, and <code>trbconfig.jsonc</code> in the
+repository presented to the agent. This repository provides the <code>use-typerb</code>
+skill for application work. Claude-compatible setups can expose the same skill
+directory through <code>.claude/skills</code>.</p>
+<p>For another TypeRB repository, copy or install an equivalent concise skill and
+point it at the documentation for the compiler version used by that project.
+Do not copy the complete language specification into every prompt.</p>
+<h2 id="source-of-truth-order">Source-of-truth order</h2>
+<p>Give the agent this lookup order:</p>
+<ol>
+<li>existing project source and <code>trbconfig.jsonc</code>;</li>
+<li>the relevant TypeRB guide or reference;</li>
+<li><code>docs/specification.md</code> for exact language semantics; and</li>
+<li>package declarations or compiler implementation only when public
+documentation is incomplete.</li>
+</ol>
+<p>This keeps application code aligned with the selected TypeRB version and makes
+missing documentation visible instead of hiding it behind a guessed API.</p>
+<h2 id="machine-feedback-loop">Machine feedback loop</h2>
+<p>Use the formatter before checking so later locations match canonical source:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> fmt</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> check</span><span style="color:#79C0FF"> --diagnostic-format</span><span style="color:#A5D6FF"> json</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span><span style="color:#79C0FF"> --diagnostic-format</span><span style="color:#A5D6FF"> json</span></span>
+<span class="line"></span></code></pre>
+<p>The JSON report contains a schema version, stable <code>TRBxxxx</code> diagnostic codes,
+source spans, related locations, and atomic fixes when available. Agents should
+consume those fields directly. Diagnostic message wording may improve without
+changing the code. Lint reports additionally contain <code>toolVersion</code>, and use the
+documented rule ID as the diagnostic code.</p>
+<p>After the project checks, run the narrowest executable boundary that proves the
+change: a focused command, <code>trb run</code>, or <code>trb build</code>. Never repair generated Go,
+Ruby, or TypeScript directly; change the <code>.trb</code> source or report a compiler
+defect.</p>
+<h2 id="useful-prompts">Useful prompts</h2>
+<p>For application work:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span>Use $use-typerb. Inspect this project's configuration and existing modules,</span></span>
+<span class="line"><span>implement the requested feature in TypeRB, then run the formatter and JSON</span></span>
+<span class="line"><span>diagnostics. Do not invent APIs or edit generated target files.</span></span>
+<span class="line"><span></span></span></code></pre>
+<p>For guided learning:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span>Use $use-typerb as an interactive tutor. Give me one executable exercise at a</span></span>
+<span class="line"><span>time, let me attempt it, and explain the compiler diagnostics before showing a</span></span>
+<span class="line"><span>complete solution.</span></span>
+<span class="line"><span></span></span></code></pre>
+<p>For a compiler or language change, use the repository's <code>develop-typerb</code> skill
+instead. It carries the additional AST, checker, typed IR, backend, formatter,
+and conformance requirements that application work should not load by default.</p>
+<h2 id="current-limits">Current limits</h2>
+<p>The compiler service and LSP already expose structured diagnostics,
+completion, hover, signatures, navigation, rename, formatting, and quick fixes.
+Incremental compilation, a language-level test runner, runtime source maps, and
+an agent-specific protocol beyond LSP and JSON diagnostics remain roadmap work.
+The current workflow deliberately reuses compiler-owned interfaces so those
+future tools do not create a second semantic implementation.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/ai-assisted-development.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

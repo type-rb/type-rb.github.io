@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="trb/jobs — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/guides/jobs/">
+		<title>trb/jobs — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a class="active" aria-current="page" href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a class="active" aria-current="page" href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="trbjobs"><code>trb/jobs</code></h1>
+<p><code>trb/jobs</code> is an experimental portable contract for durable background work.
+The same typed Job source runs in generated Go, Ruby, and Bun applications.
+Storage is selected separately; the official <code>trb/jobs/sql</code> adapter supports
+SQLite, PostgreSQL, and MySQL.</p>
+<h2 id="define-and-enqueue-a-job">Define and enqueue a Job</h2>
+<p>Job argument types come from the instance <code>perform</code> method. The initial
+portable payload contract accepts Boolean, Integer, Float, and String values.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Job</span><span style="color:#E6EDF3">, maximum_attempts, priority, queue } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/jobs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> SendReceiptJob</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#FFA657"> Job</span></span>
+<span class="line"><span style="color:#D2A8FF">	queue</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"mail"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#D2A8FF">	priority</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#D2A8FF">	maximum_attempts</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">	def</span><span style="color:#D2A8FF"> perform</span><span style="color:#E6EDF3">(order_id: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">, destination: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#79C0FF">		puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"sending order "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> order_id.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">+</span><span style="color:#A5D6FF"> " to "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> destination)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The compiler derives typed enqueue methods from <code>perform</code>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">EnqueueError</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">JobReference</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/jobs</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Duration</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Instant</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/time</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> enqueue_receipt</span><span style="color:#E6EDF3">(order_id: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">JobReference</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">EnqueueError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#E6EDF3">	reference </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> try</span><span style="color:#FFA657"> SendReceiptJob</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">perform_later</span><span style="color:#E6EDF3">(order_id, </span><span style="color:#A5D6FF">"ada@example.test"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(reference.</span><span style="color:#D2A8FF">id</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">	try</span><span style="color:#FFA657"> SendReceiptJob</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">perform_in</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">Duration</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">minutes</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">), order_id, </span><span style="color:#A5D6FF">"later@example.test"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> SendReceiptJob</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">perform_at</span><span style="color:#E6EDF3">(</span></span>
+<span class="line"><span style="color:#FFA657">		Instant</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">now</span><span style="color:#E6EDF3">().</span><span style="color:#D2A8FF">add</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">Duration</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">hours</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">)),</span></span>
+<span class="line"><span style="color:#E6EDF3">		order_id,</span></span>
+<span class="line"><span style="color:#A5D6FF">		"scheduled@example.test"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">	)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Enqueue operations return <code>Result&lt;JobReference, EnqueueError&gt;</code>. Prefix <code>try</code>
+propagates an enqueue error from another Result-returning function, while
+<code>catch</code> handles it at a boundary that returns another type. <code>EnqueueErrorKind</code>
+distinguishes serialization, invalid arguments, cancellation, and adapter
+failures.</p>
+<p>Cancellation is checked before an adapter submits durable work. Once the
+native storage operation reports a successful commit, the adapter returns
+<code>Ok</code> even if the execution scope is cancelled immediately afterward; a known
+success must not be rewritten as <code>Cancelled</code>. A storage client can still
+report cancellation after a request has reached the server while its commit
+outcome is unknown. <code>Cancelled</code> therefore does not prove that no Job was
+enqueued, and callers must not assume that an unconditional retry cannot
+duplicate work.</p>
+<p><code>perform_in</code> schedules relative to now; <code>perform_at</code> accepts an absolute
+portable <code>Instant</code>. A past <code>Instant</code> is ready immediately. <code>queue</code>, <code>priority</code>,
+and <code>maximum_attempts</code> are compile-time Job settings. The
+default queue is <code>default</code>, the default priority is <code>0</code>, and lower priority
+numbers run first. If a Job omits <code>maximum_attempts</code>, the adapter default is
+used.</p>
+<p>The derived methods are portable TypeRB wrappers rather than backend-specific
+enqueue implementations. They encode the typed arguments as JSON, build an
+<code>EnqueueRequest</code>, reject a negative relative delay, and normalize <code>perform_in</code>
+to an absolute <code>Instant</code>. Applications normally call the derived methods and
+do not construct an <code>EnqueueRequest</code> directly.</p>
+<h2 id="fallible-jobs">Fallible Jobs</h2>
+<p>An infallible <code>perform</code> method omits its return type. A Job that needs worker
+retry returns the exact <code>JobResult</code> contract instead:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Job</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">JobError</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">JobResult</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/jobs</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Unit</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/unit</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> ImportReceiptJob</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#FFA657"> Job</span></span>
+<span class="line"><span style="color:#FF7B72">	def</span><span style="color:#D2A8FF"> perform</span><span style="color:#E6EDF3">(source: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">JobResult</span></span>
+<span class="line"><span style="color:#FF7B72">		if</span><span style="color:#E6EDF3"> source.</span><span style="color:#D2A8FF">empty?</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">			return</span><span style="color:#FFA657"> JobResult</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Err</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">JobError</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(message: </span><span style="color:#A5D6FF">"receipt source is empty"</span><span style="color:#E6EDF3">))</span></span>
+<span class="line"><span style="color:#FF7B72">		end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D2A8FF">		import_receipt</span><span style="color:#E6EDF3">(source)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#FFA657"> JobResult</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Ok</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">Unit</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>JobResult</code> is <code>Result&lt;Unit, JobError&gt;</code>. <code>Ok(Unit.new())</code> acknowledges the Job
+after <code>perform</code> completes. <code>Err(error)</code> stores exactly <code>error.message</code> and uses
+the configured retry, backoff, and maximum-attempt policy. A Job maps database,
+HTTP, and domain errors to <code>JobError</code> at this boundary so every backend records
+the same operational message.</p>
+<h2 id="configure-the-sql-adapter">Configure the SQL adapter</h2>
+<p>Add a typed composition module to the project configuration:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">	"jobs"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">		"configuration"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"config/jobs"</span></span>
+<span class="line"><span style="color:#E6EDF3">	}</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>Then select the adapter without coupling application Job modules to SQL:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">JobAdapter</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/jobs</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">SQLAdapter</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">SQLDialect</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/jobs/sql</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Duration</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/time</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79C0FF">JOBS_ADAPTER</span><span style="color:#E6EDF3">: </span><span style="color:#FFA657">JobAdapter</span><span style="color:#FF7B72"> :=</span><span style="color:#FFA657"> SQLAdapter</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(</span></span>
+<span class="line"><span style="color:#E6EDF3">	dialect: </span><span style="color:#FFA657">SQLDialect</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">PostgreSQL</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">	source: </span><span style="color:#A5D6FF">"postgres://localhost/jobs"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">	source_environment: </span><span style="color:#A5D6FF">"JOBS_DATABASE_URL"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">	poll_interval: </span><span style="color:#FFA657">Duration</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">seconds</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#E6EDF3">	lease_timeout: </span><span style="color:#FFA657">Duration</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">seconds</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">60</span><span style="color:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#E6EDF3">	default_maximum_attempts: </span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">	retry_base_delay: </span><span style="color:#FFA657">Duration</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">seconds</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p>When <code>source_environment</code> is present, its environment variable is required at
+runtime and replaces <code>source</code>. A missing or empty value fails startup instead
+of silently connecting to another database.
+MySQL source URLs use the same authentication and TLS options documented in
+the <a href="/docs/guides/database/">database schema guide</a>.
+The configuration module is also the native dependency boundary: application
+Job source imports only <code>trb/jobs</code>, while an adapter package owns its target
+drivers and worker implementation.
+<code>JOBS_ADAPTER</code> is an ordinary immutable TypeRB constant. Its initializer runs
+once when the configuration module loads, and every generated enqueue wrapper
+reuses that application-scoped adapter instance. This explicit lifetime also
+allows a future stateful adapter to own a connection pool or metrics state;
+the configuration is not called as a per-enqueue factory.</p>
+<h2 id="adapter-contract">Adapter contract</h2>
+<p><code>JobAdapter</code> deliberately has only two enqueue operations:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">interface</span><span style="color:#FFA657"> JobAdapter</span></span>
+<span class="line"><span style="color:#D2A8FF">	enqueue</span><span style="color:#E6EDF3">(request: </span><span style="color:#FFA657">EnqueueRequest</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">JobReference</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">EnqueueError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#D2A8FF">	enqueue_at</span><span style="color:#E6EDF3">(request: </span><span style="color:#FFA657">EnqueueRequest</span><span style="color:#E6EDF3">, scheduled_at: </span><span style="color:#FFA657">Instant</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">JobReference</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">EnqueueError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>EnqueueRequest</code> carries the stable Job name, serialized payload and payload
+version, queue, priority, and an optional maximum-attempt override. <code>nil</code>
+leaves maximum attempts to the adapter default. An adapter owns ID generation,
+durable persistence, and conversion of native cancellation or storage failures
+to <code>EnqueueError</code>. Worker claims, acknowledgements, retries, administration,
+and process lifecycle are intentionally outside this small enqueue contract.</p>
+<p>The official SQL adapter implements these methods in ordinary TypeRB source
+and delegates only the final persistence operation to an internal native
+primitive. That primitive remains a bundled implementation detail rather than
+a generic external runtime ABI. The alpha compiler still recognizes a direct
+<code>SQLAdapter.new(...)</code> composition so native dependencies and worker generation
+remain deterministic.</p>
+<h2 id="run-and-inspect-workers">Run and inspect workers</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> jobs</span><span style="color:#A5D6FF"> start</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> jobs</span><span style="color:#A5D6FF"> start</span><span style="color:#79C0FF"> --queue</span><span style="color:#A5D6FF"> mail</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> jobs</span><span style="color:#A5D6FF"> start</span><span style="color:#79C0FF"> --once</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> jobs</span><span style="color:#A5D6FF"> list</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> jobs</span><span style="color:#A5D6FF"> retry</span><span style="color:#A5D6FF"> JOB_ID</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> jobs</span><span style="color:#A5D6FF"> discard</span><span style="color:#A5D6FF"> JOB_ID</span></span>
+<span class="line"></span></code></pre>
+<p>One command process runs one worker. PostgreSQL and MySQL support multiple
+worker processes through short atomic claims. SQLite is for local and small
+single-worker use only. <code>--once</code> claims at most one ready Job and is useful for
+tests and operational scripts.</p>
+<p>Workers retry failures with adapter-configured backoff, move exhausted Jobs to
+<code>failed</code>, heartbeat active claims, and recover stale claims. Shutdown stops new
+claims and lets the current Job return before releasing it. Delivery is at
+least once, so Job implementations must be idempotent.</p>
+<p><code>trb jobs list</code> shows persisted state. <code>retry</code> returns a failed Job to the ready
+queue, and <code>discard</code> removes a non-running Job.</p>
+<h2 id="application-and-repl-behavior">Application and REPL behavior</h2>
+<p>Jobs may call other portable packages, including <code>trb/orm</code>. The compiler-owned
+execution scope crosses the worker dispatch boundary, so signal cancellation
+can reach nested database and HTTP operations without adding a public context
+parameter to <code>perform</code>. Payload encoding, relative-delay validation, adapter
+dispatch, payload decoding, and typed Job selection are generated once as
+portable TypeRB and compiled in every mode. The selected adapter and backend
+retain queue persistence, claims, retries, signals, and process lifecycle.</p>
+<p>In a configured project REPL, import a Job and call the same derived methods:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb:go</span><span style="color:#E6EDF3">> </span><span style="color:#A5D6FF">import</span><span style="color:#A5D6FF"> {</span><span style="color:#A5D6FF"> SendReceiptJob</span><span style="color:#A5D6FF"> }</span><span style="color:#A5D6FF"> from</span><span style="color:#A5D6FF"> jobs/send_receipt_job</span></span>
+<span class="line"><span style="color:#FFA657">trb:go</span><span style="color:#E6EDF3">> </span><span style="color:#A5D6FF">SendReceiptJob.perform_later</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">42,</span><span style="color:#A5D6FF"> "ada@example.test"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FFA657">Ok(...</span><span style="color:#E6EDF3">) </span><span style="color:#79C0FF">:</span><span style="color:#E6EDF3"> Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#E6EDF3">JobReference, EnqueueError</span><span style="color:#FF7B72">></span></span>
+<span class="line"></span></code></pre>
+<p>The REPL persists through the configured adapter. Run <code>trb jobs start --once</code>
+from another terminal to perform the queued Job.</p>
+<p>Queue storage is intentionally separate from application transactions in this
+initial contract. It provides durable enqueue after a successful call, not an
+implicit cross-database transactional outbox.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/guides/jobs.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Language guide — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/language/">
+		<title>Language guide — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a class="active" aria-current="page" href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a class="active" aria-current="page" href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="language-guide">Language guide</h1>
+<p>TypeRB uses one grammar and one set of portable semantics in every mode. The
+mode selects code generation and package tooling, while explicit imports expose
+target-specific APIs.</p>
+<p>This guide summarizes the implemented language. The
+<a href="/docs/specification/">specification</a> is the detailed source of truth.</p>
+<h2 id="program-structure">Program structure</h2>
+<p>A runnable project contains exactly one top-level <code>main()</code> function:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> main</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Hello from TypeRB"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Functions and methods use <code>def</code> and <code>end</code>. Calls include parentheses. A
+function that returns no value omits the return annotation and may either fall
+through or use a bare <code>return</code>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> print_name</span><span style="color:#E6EDF3">(name: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(name)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>A function with an explicit return type must use a value-bearing <code>return</code> on
+every path. Final expressions are not implicit returns. Complete <code>if</code> flow and
+exhaustive enum or union <code>case</code> flow can satisfy this rule without a trailing
+return after the construct:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> label</span><span style="color:#E6EDF3">(ready: </span><span style="color:#79C0FF">Boolean</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">	if</span><span style="color:#E6EDF3"> ready</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#A5D6FF"> "ready"</span></span>
+<span class="line"><span style="color:#FF7B72">	else</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#A5D6FF"> "waiting"</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Writing <code>: Void</code> on a <code>def</code> or <code>fn</code> declaration is an error; omit the return
+annotation instead. <code>Void</code> appears in function types when a stored callable
+has no result, for example <code>(String) -&gt; Void</code>.</p>
+<p>Typed function values use <code>fn</code> and capture their lexical environment:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> apply</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">, callable: (</span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">-></span><span style="color:#79C0FF"> String</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> callable</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">prefix </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "item "</span></span>
+<span class="line"><span style="color:#E6EDF3">label </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> fn</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> prefix </span><span style="color:#FF7B72">+</span><span style="color:#E6EDF3"> value.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Each <code>fn</code> parameter has a type. A function value with no result omits its
+return annotation, just like <code>def</code>. Its <code>return</code> exits the function value, not
+the enclosing method. A function value that may return a recoverable error uses
+the same ordinary Result return in its declaration and type:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">loader: () </span><span style="color:#FF7B72">-></span><span style="color:#FFA657"> Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">LoadError</span><span style="color:#FF7B72">></span><span style="color:#FF7B72"> :=</span><span style="color:#FF7B72"> fn</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">LoadError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> read_name</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">result </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> loader</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"></span></code></pre>
+<p>TypeScript may lower a Result-returning callback to <code>async</code> when it reaches a
+Promise-based platform API. The TypeRB signature and Result control flow remain
+the same.</p>
+<p>Outside delimiters, <code>;</code> can separate complete statements:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> Empty</span><span style="color:#E6EDF3">; </span><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>trb fmt</code> expands separators into canonical lines.</p>
+<h2 id="imports-and-modes">Imports and modes</h2>
+<p>Imports are explicit and resolved before type checking:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> app/models/user</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">UserRepo</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> app/repos/user_repo</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Contract</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> acme/contracts</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/strings</span></span>
+<span class="line"></span></code></pre>
+<p>Portable libraries use <code>trb/std/*</code>. Target-specific APIs use
+<code>trb/platform/&lt;mode&gt;/*</code> and are rejected when imported from another mode:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/platform/go/http</span></span>
+<span class="line"></span></code></pre>
+<p>Project package identities come from paths below <code>sourceDir</code>; source files do
+not declare target packages. External TypeRB packages also use explicit
+imports. A project may configure a short import such as <code>acme/contracts</code>; its
+lock maps that name to the canonical package identity without changing source
+syntax by target mode.</p>
+<p>Ordinary imports must be used. Package imports require a member reference, and
+each symbol named inside <code>{ ... }</code> must be referenced. Compiler integration
+imports count as semantic uses when they activate their documented syntax or
+type provider.</p>
+<h2 id="types-and-bindings">Types and bindings</h2>
+<p>Type annotations use <code>name: Type</code>. <code>:=</code> declares a local binding and infers its
+type when no annotation is present:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">name </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "Ada"</span></span>
+<span class="line"><span style="color:#E6EDF3">count: </span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72"> :=</span><span style="color:#79C0FF"> 3</span></span>
+<span class="line"><span style="color:#E6EDF3">nickname: </span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">?</span><span style="color:#FF7B72"> :=</span><span style="color:#79C0FF"> nil</span></span>
+<span class="line"><span style="color:#E6EDF3">names: </span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#FF7B72"> :=</span><span style="color:#E6EDF3"> [</span><span style="color:#A5D6FF">"Ada"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"Grace"</span><span style="color:#E6EDF3">]</span></span>
+<span class="line"><span style="color:#E6EDF3">scores: </span><span style="color:#79C0FF">Hash</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72">></span><span style="color:#FF7B72"> :=</span><span style="color:#E6EDF3"> {ada: </span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>Type names are case-sensitive and have one canonical spelling. Use
+<code>Integer</code>, <code>Boolean</code>, <code>String</code>, <code>Float</code>, <code>Array</code>, and <code>Hash</code>; aliases from
+target languages such as <code>Int</code>, <code>int</code>, <code>bool</code>, <code>number</code>, and <code>Map</code> are errors.
+User-defined types must be declared in the project or imported explicitly.</p>
+<p>Bindings declared with <code>:=</code> are immutable. Add <code>mut</code> at declaration time when
+the binding will be reassigned or used by a destructive collection operation:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> count </span><span style="color:#FF7B72">:=</span><span style="color:#79C0FF"> 0</span></span>
+<span class="line"><span style="color:#E6EDF3">count </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> count </span><span style="color:#FF7B72">+</span><span style="color:#79C0FF"> 1</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> names </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#A5D6FF">"Ada"</span><span style="color:#E6EDF3">]</span></span>
+<span class="line"><span style="color:#E6EDF3">names.</span><span style="color:#D2A8FF">push</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Grace"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p>An immutable reference cannot become mutable by assigning it to a new <code>mut</code>
+binding.</p>
+<p>Compare a nullable binding with <code>nil</code> to narrow its non-<code>nil</code> path. A returning
+guard also narrows the statements that follow it:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> display_name</span><span style="color:#E6EDF3">(name: </span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">?</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">	if</span><span style="color:#E6EDF3"> name </span><span style="color:#FF7B72">==</span><span style="color:#79C0FF"> nil</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#A5D6FF"> "Anonymous"</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> name </span><span style="color:#FF7B72">+</span><span style="color:#A5D6FF"> "!"</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The same narrowing is available in the matching branch of <code>name != nil</code>, in
+the remaining <code>elsif</code> or <code>else</code> path of <code>name == nil</code>, in <code>while</code>, and on the
+right side of a compatible short-circuit <code>and</code> or <code>or</code>. Reassigning the binding
+invalidates the narrowed type.</p>
+<p>A direct nullable record field or <code>readonly</code> class field follows the same
+rule when its receiver is a lexical binding:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> display_profile</span><span style="color:#E6EDF3">(profile: </span><span style="color:#FFA657">Profile</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">	if</span><span style="color:#E6EDF3"> profile.</span><span style="color:#D2A8FF">nickname</span><span style="color:#FF7B72"> ==</span><span style="color:#79C0FF"> nil</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#A5D6FF"> "Anonymous"</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> profile.</span><span style="color:#D2A8FF">nickname</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Reassigning <code>profile</code> invalidates the field narrowing. Mutable class fields,
+indexes, calls, and chained member paths must be read into a local binding
+before narrowing.</p>
+<p>Identifiers beginning with an uppercase letter are immutable constants. They
+are allowed at top level or directly inside a module or class:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#79C0FF">API_NAME</span><span style="color:#FF7B72"> :=</span><span style="color:#A5D6FF"> "TypeRB"</span></span>
+<span class="line"><span style="color:#79C0FF">DEFAULT_LIMIT</span><span style="color:#FF7B72"> :=</span><span style="color:#79C0FF"> 100</span></span>
+<span class="line"></span></code></pre>
+<p>Constant initializers may be runtime expressions, but constants cannot be
+rebound or passed to destructive APIs.</p>
+<p>Local bindings declared inside methods must be used. Iterator and enum-pattern
+bindings follow the same rule. The exact name <code>_</code> discards a value and cannot
+be read. A descriptive name beginning with <code>_</code> remains readable but does not
+produce an unused-binding error:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">values.</span><span style="color:#D2A8FF">each</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">_value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"tick"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">values.</span><span style="color:#D2A8FF">each</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">_value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(_value) </span><span style="color:#8B949E"># _value remains readable</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">case</span><span style="color:#E6EDF3"> result</span></span>
+<span class="line"><span style="color:#FF7B72">when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Ok</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#FF7B72">when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Err</span><span style="color:#E6EDF3">(_error)</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"failed"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Use <code>_</code> for a value that is intentionally inaccessible and <code>_name</code> when the
+role should remain visible or the binding may be referenced later.
+This does not make a local binding private. Leading <code>_</code> denotes privacy only on
+class members; ordinary lexical scope still distinguishes a local <code>_value</code>
+from a private <code>_value()</code> method.</p>
+<p>Method parameters, fields, constants, and top-level bindings are not rejected
+solely for being unused.</p>
+<h3 id="aliases-and-newtypes">Aliases and newtypes</h3>
+<p>Use <code>alias</code> for a transparent shorthand. It does not create a distinct type:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">alias</span><span style="color:#FFA657"> UserList</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">User</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">alias</span><span style="color:#FFA657"> LoadResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">T</span><span style="color:#FF7B72">></span><span style="color:#FF7B72"> =</span><span style="color:#FFA657"> Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">T</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">LoadError</span><span style="color:#FF7B72">></span></span>
+<span class="line"></span></code></pre>
+<p>Use <code>newtype</code> when a domain value must remain distinct even if it has the same
+representation as another value:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">newtype</span><span style="color:#FFA657"> UserId</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> Integer</span></span>
+<span class="line"><span style="color:#FF7B72">newtype</span><span style="color:#FFA657"> ProductId</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> Integer</span></span>
+<span class="line"><span style="color:#FF7B72">newtype</span><span style="color:#FFA657"> ProductIds</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">ProductId</span><span style="color:#FF7B72">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> load</span><span style="color:#E6EDF3">(id: </span><span style="color:#FFA657">UserId</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">UserId</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> UserId</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(id.</span><span style="color:#D2A8FF">value</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>A newtype target may be any concrete, fully instantiated, non-nullable type.
+The declaration itself is not generic in the initial design, so
+<code>newtype Id&lt;T&gt; = T</code> is rejected while <code>newtype ProductIds = Array&lt;ProductId&gt;</code>
+is valid. Express absence outside the newtype as <code>UserId?</code>; a nullable target
+such as <code>newtype MaybeUserId = Integer?</code> is rejected.</p>
+<p>Newtypes are nominal in ordinary TypeRB code. A base value, another newtype
+with the same representation, and the newtype itself are not interchangeable.
+Construct one with <code>UserId.new(value)</code> and unwrap it with <code>id.value()</code>.
+The generated <code>new()</code> is an infallible nominal wrap after its argument passes
+ordinary type checking; it does not validate domain invariants. Keep fallible
+validation in an ordinary Result-returning function and call <code>new()</code> only
+after that validation succeeds.
+Underlying members are not forwarded. Two values of the same newtype support
+<code>==</code> only when their representation has portable equality.</p>
+<p>Typed serialization and persistence boundaries may explicitly use a
+newtype's representation. The built-in JSON codecs, <code>trb/web</code> binding, Jobs
+payloads, and ORM value parameters use this rule. Other functions and package
+APIs remain nominal unless their declaration marks the same boundary. Backend
+output may erase the physical wrapper while the TypeRB checker and typed IR
+retain the nominal distinction.</p>
+<h2 id="conditions-and-operators">Conditions and operators</h2>
+<p>Conditions must have the non-nullable <code>Boolean</code> type. TypeRB does not inherit
+truthiness rules from a target:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">if</span><span style="color:#E6EDF3"> count </span><span style="color:#FF7B72">></span><span style="color:#79C0FF"> 0</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"non-empty"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">else</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"empty"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Use a conditional expression for a short two-value choice. Its condition is
+strictly Boolean, only the selected branch is evaluated, and branch types use
+the same safe common-type rule as a value-producing <code>if</code>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">label </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> enabled </span><span style="color:#FF7B72">?</span><span style="color:#A5D6FF"> "enabled"</span><span style="color:#E6EDF3"> : </span><span style="color:#A5D6FF">"disabled"</span></span>
+<span class="line"><span style="color:#E6EDF3">predicate_label </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> ready?</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">?</span><span style="color:#A5D6FF"> "ready"</span><span style="color:#E6EDF3"> : </span><span style="color:#A5D6FF">"waiting"</span></span>
+<span class="line"></span></code></pre>
+<p>Nested conditional expressions require explicit parentheses and are usually
+clearer as a complete <code>if</code>. The formatter writes spaces around <code>?</code> and <code>:</code>.</p>
+<p>A simple early exit or loop transfer can use the conditional-transfer form:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">return</span><span style="color:#E6EDF3"> cached </span><span style="color:#FF7B72">if</span><span style="color:#E6EDF3"> cached </span><span style="color:#FF7B72">!=</span><span style="color:#79C0FF"> nil</span></span>
+<span class="line"><span style="color:#FF7B72">return</span><span style="color:#FF7B72"> if</span><span style="color:#E6EDF3"> finished</span></span>
+<span class="line"><span style="color:#FF7B72">next</span><span style="color:#FF7B72"> if</span><span style="color:#E6EDF3"> item.</span><span style="color:#D2A8FF">hidden?</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">break</span><span style="color:#FF7B72"> if</span><span style="color:#E6EDF3"> complete</span></span>
+<span class="line"></span></code></pre>
+<p>Only <code>return</code>, <code>next</code>, and <code>break</code> accept trailing <code>if</code>. TypeRB does not admit
+a general modifier form such as <code>notify() if ready</code>, and it does not add
+<code>unless</code>. The transfer value is evaluated only when its condition is true.</p>
+<p>Numeric expressions may mix <code>Integer</code> and <code>Float</code>. The <code>Integer</code> operand is
+widened to <code>Float</code>, and typed IR retains that conversion for every backend and
+the REPL. The same safe widening is available in typed initialization,
+assignment, arguments, and returns; narrowing to <code>Integer</code> remains explicit.
+Integer division truncates toward zero in every target.</p>
+<h2 id="classes-interfaces-and-modules">Classes, interfaces, and modules</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">interface</span><span style="color:#FFA657"> Named</span></span>
+<span class="line"><span style="color:#D2A8FF">	name</span><span style="color:#E6EDF3">(): </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">interface</span><span style="color:#FFA657"> Repository</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">T</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#D2A8FF">	find</span><span style="color:#E6EDF3">(id: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">T</span><span style="color:#FF7B72">?</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> User</span><span style="color:#FF7B72"> implements</span><span style="color:#FFA657"> Named</span></span>
+<span class="line"><span style="color:#FF7B72">	readonly</span><span style="color:#E6EDF3"> @id: </span><span style="color:#79C0FF">Integer</span></span>
+<span class="line"><span style="color:#E6EDF3">	@_name: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">	def</span><span style="color:#D2A8FF"> initialize</span><span style="color:#E6EDF3">(id: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">, name: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">		@id </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> id</span></span>
+<span class="line"><span style="color:#E6EDF3">		@_name </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> name</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">	def</span><span style="color:#D2A8FF"> name</span><span style="color:#E6EDF3">(): </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> @_name</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Instance fields are declared at class scope. Names beginning with <code>_</code> and
+<code>@_</code> are private. <code>readonly</code> fields can be assigned during initialization but
+not externally. Class methods use <code>def self.name()</code>.</p>
+<p>Classes support inheritance, generic interfaces, modules, class constants, and
+checked instance/class member access. Superclass construction, override rules,
+generic interface methods, and a final field/method collision rule remain alpha
+design work.</p>
+<p>Classes explicitly marked with <code>implements</code> can be passed and returned through
+that interface type. Subclasses inherit the declared conformance, while a class
+with merely matching methods does not conform implicitly. Fresh literals such
+as <code>values: Array&lt;Named&gt; := [User.new(...)]</code> use the expected interface element
+type; existing mutable arrays remain invariant.</p>
+<p>Generic interface arguments specialize every method in the contract. A class
+may implement a concrete application such as <code>Repository&lt;User&gt;</code>, or a generic
+class may pass through one of its own type parameters. Generic interfaces are
+invariant and conformance remains explicit.</p>
+<h2 id="records">Records</h2>
+<p><code>record</code> declares a closed product type for data shared across targets:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> Message</span></span>
+<span class="line"><span style="color:#E6EDF3">	id: </span><span style="color:#79C0FF">Integer</span></span>
+<span class="line"><span style="color:#E6EDF3">	text: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#E6EDF3">	delivered: </span><span style="color:#79C0FF">Boolean</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">message </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Message</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(id: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, text: </span><span style="color:#A5D6FF">"Hello"</span><span style="color:#E6EDF3">, delivered: </span><span style="color:#79C0FF">false</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p>Construction is keyword-only and checks the complete field set. Records cannot
+inherit. Go emits a value struct, Ruby emits <code>Data</code>, and TypeScript emits an
+interface.</p>
+<h2 id="enums-raw-values-and-sum-types">Enums, raw values, and sum types</h2>
+<p>TypeRB uses <code>enum</code> for two related but distinct models. An ordinary enum is a
+closed set of named values:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> TrafficLight</span></span>
+<span class="line"><span style="color:#FFA657">	Red</span></span>
+<span class="line"><span style="color:#FFA657">	Yellow</span></span>
+<span class="line"><span style="color:#FFA657">	Green</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Every member may instead bind an explicit String or Integer representation for
+storage and JSON boundaries. This is a raw-value enum: it extends the ordinary
+enumeration model rather than introducing a different runtime type.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> OrderStatus</span></span>
+<span class="line"><span style="color:#FFA657">	Pending</span><span style="color:#FF7B72"> =</span><span style="color:#A5D6FF"> "PENDING"</span></span>
+<span class="line"><span style="color:#FFA657">	Completed</span><span style="color:#FF7B72"> =</span><span style="color:#A5D6FF"> "COMPLETED"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">	def</span><span style="color:#D2A8FF"> terminal?</span><span style="color:#E6EDF3">(): </span><span style="color:#79C0FF">Boolean</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#79C0FF"> self</span><span style="color:#FF7B72"> ==</span><span style="color:#FFA657"> OrderStatus</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Completed</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">status </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> OrderStatus</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Completed</span></span>
+<span class="line"><span style="color:#79C0FF">puts</span><span style="color:#E6EDF3">(status.</span><span style="color:#D2A8FF">terminal?</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#79C0FF">puts</span><span style="color:#E6EDF3">(status.</span><span style="color:#D2A8FF">raw_value</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#E6EDF3">parsed </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> OrderStatus</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">from_raw</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"PENDING"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p>The enum remains a nominal <code>OrderStatus</code>; conversion is never implicit.
+<code>from_raw()</code> returns <code>Result&lt;OrderStatus, EnumValueError&gt;</code>. Every member of a
+raw-value enum must declare a distinct raw value of the same type.</p>
+<p>A payload enum is TypeRB's closed sum-type model. Its alternatives may carry
+different typed data, and it may mix payload-bearing and payloadless variants:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> Token</span></span>
+<span class="line"><span style="color:#FFA657">	Text</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#79C0FF">	Integer</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#79C0FF">	EOF</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> describe</span><span style="color:#E6EDF3">(token: </span><span style="color:#FFA657">Token</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> token</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Text</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> value</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> value.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">EOF</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#A5D6FF"> "eof"</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>A <code>case</code> without <code>else</code> must handle every member. Payload patterns introduce
+immutable bindings with types from the variant declaration. A payload enum
+cannot also declare raw values. <code>Result&lt;T, E&gt;</code> is the standard generic payload
+enum, with <code>Ok(value: T)</code> and <code>Err(error: E)</code> variants.</p>
+<p>Ordinary, raw-value, and payload enums all remain nominal, use qualified member
+names, support exhaustive <code>case</code>, and may define instance methods after their
+members. TypeRB does not add a separate <code>sum</code> declaration.</p>
+<p>User-defined generics support payload enums, transparent aliases, records,
+classes, top-level functions, and instance methods with explicit type
+arguments:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> identity</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">T</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">(value: </span><span style="color:#FFA657">T</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">T</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> value</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">text </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> identity</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"value"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> Box</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">T</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#E6EDF3">	@value: </span><span style="color:#FFA657">T</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">	def</span><span style="color:#D2A8FF"> initialize</span><span style="color:#E6EDF3">(value: </span><span style="color:#FFA657">T</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">		@value </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> value</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">	def</span><span style="color:#D2A8FF"> echo</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">U</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">(value: </span><span style="color:#FFA657">U</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">U</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> value</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">box </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Box</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">label </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> box.</span><span style="color:#D2A8FF">echo</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"one"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p>Generic arguments are invariant. Type-argument inference, generic interface
+methods, and generic class methods are not part of the current language.</p>
+<h2 id="control-flow-expressions">Control-flow expressions</h2>
+<p>Complete <code>if</code> and exhaustive <code>case</code> constructs can produce values. An <code>if</code>
+expression always requires <code>else</code>; a <code>case</code> expression requires either an
+<code>else</code> branch or exhaustive enum/union coverage:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">label </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> if</span><span style="color:#E6EDF3"> enabled</span></span>
+<span class="line"><span style="color:#A5D6FF">	"enabled"</span></span>
+<span class="line"><span style="color:#FF7B72">else</span></span>
+<span class="line"><span style="color:#A5D6FF">	"disabled"</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">short_label </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> enabled </span><span style="color:#FF7B72">?</span><span style="color:#A5D6FF"> "enabled"</span><span style="color:#E6EDF3"> : </span><span style="color:#A5D6FF">"disabled"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">description </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> case</span><span style="color:#E6EDF3"> token</span></span>
+<span class="line"><span style="color:#FF7B72">when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Text</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#A5D6FF">	"text: "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> value</span></span>
+<span class="line"><span style="color:#FF7B72">when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#E6EDF3">	value.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">EOF</span></span>
+<span class="line"><span style="color:#A5D6FF">	"eof"</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Each branch ends with its result expression. Earlier statements in that branch
+run before the result is evaluated. Branch types must be equivalent or have a
+safe common type such as <code>Float</code> for <code>Integer</code> and <code>Float</code>; TypeRB does not
+silently fall back to <code>Any</code> or create a new union for incompatible branches.
+A branch may instead leave its enclosing function or loop with <code>return</code>,
+<code>break</code>, or <code>next</code>. Such a branch does not participate in the common result
+type:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">value </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> case</span><span style="color:#E6EDF3"> result</span></span>
+<span class="line"><span style="color:#FF7B72">when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Ok</span><span style="color:#E6EDF3">(found)</span></span>
+<span class="line"><span style="color:#E6EDF3">	found</span></span>
+<span class="line"><span style="color:#FF7B72">when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Err</span><span style="color:#E6EDF3">(error)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> fallback</span><span style="color:#E6EDF3">(error)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The ordinary placement rules still apply: <code>return</code> requires a function or
+method, while <code>break</code> and <code>next</code> require a loop. The internal <code>Never</code> type used
+to model these paths is not source syntax. A <code>return</code> inside a value-producing
+collection block remains unsupported; use explicit <code>each</code> when a transformation
+needs enclosing control flow. The statement forms remain available when no
+value is needed. Prefer the conditional expression only for a short two-value
+choice; complete branch bodies remain clearer as <code>if</code>/<code>else</code>.</p>
+<h2 id="literal-types-and-discriminated-unions">Literal types and discriminated unions</h2>
+<p>Integer and String literals can constrain data fields. An exhaustive <code>case</code>
+on a readonly literal field narrows the complete union value:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> Created</span></span>
+<span class="line"><span style="color:#E6EDF3">	status: </span><span style="color:#79C0FF">201</span></span>
+<span class="line"><span style="color:#E6EDF3">	body: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> Invalid</span></span>
+<span class="line"><span style="color:#E6EDF3">	status: </span><span style="color:#79C0FF">422</span></span>
+<span class="line"><span style="color:#E6EDF3">	body: </span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">alias</span><span style="color:#FFA657"> Response</span><span style="color:#FF7B72"> =</span><span style="color:#FFA657"> Created</span><span style="color:#FF7B72"> |</span><span style="color:#FFA657"> Invalid</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> message</span><span style="color:#E6EDF3">(response: </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> response.</span><span style="color:#D2A8FF">status</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#79C0FF"> 201</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> response.</span><span style="color:#D2A8FF">body</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#79C0FF"> 422</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> response.</span><span style="color:#D2A8FF">body</span><span style="color:#E6EDF3">[</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">]</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Record fields are immutable. A class field used as a discriminant must be
+<code>readonly</code>. Alternatives may share a literal, in which case that branch keeps
+their remaining union. Ordinary scalar cases are also available when no
+contract is present:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">case</span><span style="color:#E6EDF3"> response.</span><span style="color:#D2A8FF">status</span></span>
+<span class="line"><span style="color:#FF7B72">when</span><span style="color:#79C0FF"> 200</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"ok"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">when</span><span style="color:#79C0FF"> 404</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"missing"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">else</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"unexpected response"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<h2 id="arrays-hashes-and-iteration">Arrays, hashes, and iteration</h2>
+<p>Arrays and hashes are homogeneous collections. Hash keys are non-nullable
+<code>String</code> or <code>Integer</code> values in the current alpha:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">numbers </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">2.5</span><span style="color:#E6EDF3">]                 </span><span style="color:#8B949E"># Array&#x3C;Float></span></span>
+<span class="line"><span style="color:#E6EDF3">values </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"two"</span><span style="color:#E6EDF3">]                </span><span style="color:#8B949E"># Array&#x3C;Integer | String></span></span>
+<span class="line"><span style="color:#E6EDF3">fields </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> {count: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, name: </span><span style="color:#A5D6FF">"Ada"</span><span style="color:#E6EDF3">}  </span><span style="color:#8B949E"># Hash&#x3C;String, Integer | String></span></span>
+<span class="line"></span></code></pre>
+<p>Literal inference retains one equivalent type, uses a safe common type such as
+Float for mixed Integer and Float values, and otherwise constructs a union.
+Narrow a scalar union with an exhaustive type case before using
+alternative-specific operations:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">case</span><span style="color:#E6EDF3"> fields[</span><span style="color:#79C0FF">:count</span><span style="color:#E6EDF3">]</span></span>
+<span class="line"><span style="color:#FF7B72">when</span><span style="color:#79C0FF"> Integer</span><span style="color:#E6EDF3">(number)</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(number </span><span style="color:#FF7B72">+</span><span style="color:#79C0FF"> 1</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">when</span><span style="color:#79C0FF"> String</span><span style="color:#E6EDF3">(text)</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(text)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>An unannotated fresh mutable collection is refined by its first constraining
+statement. Every write nested in that statement participates before the type
+is fixed; later statements are checked against the fixed type:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> numbers </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> []</span></span>
+<span class="line"><span style="color:#E6EDF3">[</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">2.5</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">each</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">number</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	numbers.</span><span style="color:#D2A8FF">push</span><span style="color:#E6EDF3">(number)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"><span style="color:#8B949E"># numbers is Array&#x3C;Float></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">include_name </span><span style="color:#FF7B72">:=</span><span style="color:#79C0FF"> true</span></span>
+<span class="line"><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> fields </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> {}</span></span>
+<span class="line"><span style="color:#FF7B72">if</span><span style="color:#E6EDF3"> include_name</span></span>
+<span class="line"><span style="color:#E6EDF3">	fields[</span><span style="color:#A5D6FF">"value"</span><span style="color:#E6EDF3">] </span><span style="color:#FF7B72">=</span><span style="color:#79C0FF"> 1</span></span>
+<span class="line"><span style="color:#FF7B72">else</span></span>
+<span class="line"><span style="color:#E6EDF3">	fields[</span><span style="color:#A5D6FF">"value"</span><span style="color:#E6EDF3">] </span><span style="color:#FF7B72">=</span><span style="color:#A5D6FF"> "unknown"</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"><span style="color:#8B949E"># fields is Hash&#x3C;String, Integer | String></span></span>
+<span class="line"></span></code></pre>
+<p>A fully typed assignment, parameter, or return context can provide the type
+instead. Hash keys remain one homogeneous <code>String</code> or <code>Integer</code> type and never
+form a key union. A named function's implementation is not inspected to refine
+its caller, and a pending collection that reaches an untyped boundary or the
+end of its scope requires an explicit annotation. At the interactive REPL,
+top-level pending bindings can instead be refined by a later submission.</p>
+<p>Ordinary homogeneous collection operations remain unchanged:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> scores: </span><span style="color:#79C0FF">Hash</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72">></span><span style="color:#FF7B72"> :=</span><span style="color:#E6EDF3"> {ada: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">}</span></span>
+<span class="line"><span style="color:#E6EDF3">scores[</span><span style="color:#A5D6FF">"grace"</span><span style="color:#E6EDF3">] </span><span style="color:#FF7B72">=</span><span style="color:#79C0FF"> 2</span></span>
+<span class="line"><span style="color:#79C0FF">puts</span><span style="color:#E6EDF3">(scores[</span><span style="color:#A5D6FF">"ada"</span><span style="color:#E6EDF3">])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">snapshot </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> scores.</span><span style="color:#D2A8FF">merge</span><span style="color:#E6EDF3">({linus: </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">})</span></span>
+<span class="line"><span style="color:#E6EDF3">scores.</span><span style="color:#D2A8FF">update</span><span style="color:#E6EDF3">({ada: </span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">})</span></span>
+<span class="line"><span style="color:#E6EDF3">removed </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> scores.</span><span style="color:#D2A8FF">delete</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"grace"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">scores.</span><span style="color:#D2A8FF">each</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">name, score</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(name </span><span style="color:#FF7B72">+</span><span style="color:#A5D6FF"> ": "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> score.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Array and String element lookup uses the single canonical strict form
+<code>value[index]</code>. Nonnegative indexes count from the start, while negative
+indexes count from the end (<code>-1</code> is the last element); lookup fails at runtime
+when the normalized position is absent. Hash lookup and deletion are strict as
+well. Safe <code>Result</code>-returning lookup is available with <code>try_fetch</code> and follows
+the same index rules. Subsequences deliberately use <code>slice(range)</code> rather than
+<code>value[range]</code>; <code>try_slice(range)</code> is its safe counterpart. Lookup failures use
+<code>IndexLookupError</code>, <code>SliceRangeError</code>, and <code>KeyLookupError</code> values from
+<code>trb/std/errors</code>. <code>merge</code> is non-destructive; <code>update</code> and <code>delete</code> require a
+<code>mut</code> receiver.
+Destructive Array operations require a <code>mut</code> binding, while <code>reverse</code> returns
+a new shallow Array:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> values </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">]</span></span>
+<span class="line"><span style="color:#E6EDF3">first </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">shift</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">values.</span><span style="color:#D2A8FF">unshift</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">reversed </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">reverse</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">known </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">include?</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">position </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">index</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">occurrences </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">count</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p>Membership and occurrence counting use portable <code>==</code> and are therefore
+available for numeric, Boolean, String, and payloadless enum elements. They do
+not implicitly enable target-native structural equality for nested values.
+<code>index(value)</code> uses that same equality and returns the first position as
+<code>Integer?</code>, while the block-based <code>find_index</code> remains the predicate search.</p>
+<p>Array sorting is stable and returns a new Array:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">ascending </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">sort</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">descending </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">sort_descending</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">shortest_first </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#A5D6FF">"three"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"one"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"four"</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">sort_by</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">word</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	word.</span><span style="color:#D2A8FF">size</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Natural ordering and <code>sort_by</code> keys currently support non-nullable <code>Integer</code>,
+<code>Float</code>, and <code>String</code>. Key expressions are evaluated exactly once per element
+and cannot use an operation that may fail. Equal values retain their original
+order, including with <code>sort_descending</code> and <code>sort_by_descending</code>.</p>
+<p><code>uniq()</code> removes later duplicates without changing the receiver, while
+<code>concat()</code> returns a new Array in left-to-right order:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">values </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">]</span></span>
+<span class="line"><span style="color:#E6EDF3">deduplicated </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">uniq</span><span style="color:#E6EDF3">()       </span><span style="color:#8B949E"># [3, 1, 2]</span></span>
+<span class="line"><span style="color:#E6EDF3">combined </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">concat</span><span style="color:#E6EDF3">([</span><span style="color:#79C0FF">4</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">])  </span><span style="color:#8B949E"># [3, 1, 3, 2, 4, 5]</span></span>
+<span class="line"></span></code></pre>
+<p><code>uniq()</code> uses portable <code>==</code> and retains the first occurrence. TypeRB
+<code>concat()</code> is non-destructive, unlike Ruby's <code>Array#concat</code>.</p>
+<p>Arrays, integer ranges, and hashes support structured iteration:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">[</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">each</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">0</span><span style="color:#FF7B72">...</span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">each</span><span style="color:#E6EDF3"> { </span><span style="color:#FF7B72">|</span><span style="color:#E6EDF3">index</span><span style="color:#FF7B72">|</span><span style="color:#79C0FF"> puts</span><span style="color:#E6EDF3">(index) }</span></span>
+<span class="line"><span style="color:#E6EDF3">digits </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> (</span><span style="color:#79C0FF">0</span><span style="color:#FF7B72">...</span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">to_a</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">values.</span><span style="color:#D2A8FF">each_slice</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">with_index</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">slice, index</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(index)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">scores.</span><span style="color:#D2A8FF">each</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">name, score</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(name)</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(score)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>break</code> exits the innermost loop and <code>next</code> skips to its next iteration.
+<code>return</code> exits the enclosing function, including from an iterator block.
+Hash iteration always binds key and value separately. Its enumeration order is
+unspecified, and the entries are captured in a shallow snapshot before the
+first iteration.</p>
+<p>Value-producing collection blocks are part of the typed IR:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">labels </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">map</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	prefix </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "item-"</span></span>
+<span class="line"><span style="color:#E6EDF3">	prefix </span><span style="color:#FF7B72">+</span><span style="color:#E6EDF3"> value.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">visible </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> labels.</span><span style="color:#D2A8FF">select</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">with_index</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">label, index</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">	!</span><span style="color:#E6EDF3">label.</span><span style="color:#D2A8FF">empty?</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">and</span><span style="color:#E6EDF3"> index </span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF"> 2</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">total </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">reduce</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">sum, value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	next_sum </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> sum </span><span style="color:#FF7B72">+</span><span style="color:#E6EDF3"> value</span></span>
+<span class="line"><span style="color:#E6EDF3">	next_sum</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">has_large </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">20</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">any?</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	value </span><span style="color:#FF7B72">></span><span style="color:#79C0FF"> 10</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">all_positive </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">20</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">all?</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	value </span><span style="color:#FF7B72">></span><span style="color:#79C0FF"> 0</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">none_negative </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">20</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">none?</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	value </span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF"> 0</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">first_large </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">20</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">find</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	value </span><span style="color:#FF7B72">></span><span style="color:#79C0FF"> 10</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">first_large_index </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">20</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">].</span><span style="color:#D2A8FF">find_index</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">value</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">	value </span><span style="color:#FF7B72">></span><span style="color:#79C0FF"> 10</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>These transformations currently operate on Arrays. A block may contain
+ordinary statements and must end with the expression that produces its value.
+The block locals are evaluated separately for each element. First-class <code>fn</code>
+values are available independently.</p>
+<p><code>any?</code>, <code>all?</code>, and <code>none?</code> short-circuit and require a non-nullable Boolean
+result. On an empty Array, they return <code>false</code>, <code>true</code>, and <code>true</code>,
+respectively. <code>find</code> and <code>find_index</code> use the same predicate and stop at the
+first match. They return a nullable element or nullable <code>Integer</code>; an empty or
+unmatched Array returns <code>nil</code>.</p>
+<h2 id="result-control-flow">Result control flow</h2>
+<p><code>trb/std/result</code> provides <code>Result&lt;T, E&gt;</code> with <code>Ok</code> and <code>Err</code> variants:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> unwrap</span><span style="color:#E6EDF3">(result: </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">Integer</span></span>
+<span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> result</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Ok</span><span style="color:#E6EDF3">(value)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> value</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Err</span><span style="color:#E6EDF3">(error)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#79C0FF"> 0</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>Result</code> is an ordinary value: it can be stored, returned, and handled
+explicitly with exhaustive <code>case</code>. Prefix <code>try</code> unwraps <code>Ok</code> and returns <code>Err</code>
+from the nearest compatible Result-returning function:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> recent_posts</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">DbResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Post</span><span style="color:#FF7B72">>></span></span>
+<span class="line"><span style="color:#E6EDF3">	posts </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> try</span><span style="color:#FFA657"> Post</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">order</span><span style="color:#E6EDF3">(created_at: </span><span style="color:#79C0FF">:desc</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">limit</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">20</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">all</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> DbResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Post</span><span style="color:#FF7B72">>>::</span><span style="color:#FFA657">Ok</span><span style="color:#E6EDF3">(posts)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Postfix <code>catch</code> handles <code>Err</code> locally while yielding the success value on the
+ordinary path:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">posts </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> recent_posts</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">catch</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">error</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#79C0FF">	puts</span><span style="color:#E6EDF3">(error.</span><span style="color:#D2A8FF">message</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> []</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The catch handler must produce the same success type or transfer control with a
+valid <code>return</code>, <code>break</code>, or <code>next</code>. It handles only <code>Result::Err</code>, not native
+exceptions. Standard Result values must be used with <code>try</code>, <code>catch</code>, exhaustive
+<code>case</code>, <code>return</code>, passing, or storage. At the REPL top level, a Result is shown
+as <code>Ok</code> or <code>Err</code>; top-level <code>try</code> is rejected so the session remains a stable
+inspection boundary.</p>
+<h2 id="formatting">Formatting</h2>
+<p>The canonical indentation is one tab per nesting level. <code>trb fmt</code> preserves
+comments, literal spelling, heredoc contents, and supported platform DSL
+syntax. Formatting is deterministic and idempotent.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/language.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

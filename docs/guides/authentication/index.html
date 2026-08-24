@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="OIDC Bearer Authentication — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/guides/authentication/">
+		<title>OIDC Bearer Authentication — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a class="active" aria-current="page" href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a class="active" aria-current="page" href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="oidc-bearer-authentication">OIDC Bearer Authentication</h1>
+<p>The experimental <code>trb/auth/oidc</code> and <code>trb/web/auth/bearer</code> packages validate
+OpenID Connect bearer tokens in Go, Ruby, and TypeScript server applications.
+The public contract is portable; backend-specific networking and cryptography
+remain behind the package boundary.</p>
+<p>Create a configuration from the provider issuer and API audience:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { bearer_options } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/auth/oidc</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79C0FF">OIDC</span><span style="color:#FF7B72"> :=</span><span style="color:#D2A8FF"> bearer_options</span><span style="color:#E6EDF3">(</span></span>
+<span class="line"><span style="color:#E6EDF3">	issuer: </span><span style="color:#A5D6FF">"https://identity.example.com/"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">	audience: </span><span style="color:#A5D6FF">"type-rb-api"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p><code>bearer_options</code> discovers the JWKS URI from the issuer's OpenID Provider
+Configuration. Construct <code>OidcBearerOptions</code> directly to select a fixed JWKS
+URI, a provider-specific roles claim, or a different non-negative clock skew.
+The default roles claim is <code>roles</code>, and the default clock skew is 60 seconds.</p>
+<p>Protect a file-route subtree with <code>_middleware.trb</code>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Next</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/web/auth/bearer</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#79C0FF">OIDC</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> auth_config</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> call</span><span style="color:#E6EDF3">(context: </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, next_handler: </span><span style="color:#FFA657">Next</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> bearer.</span><span style="color:#D2A8FF">authenticate</span><span style="color:#E6EDF3">(context, next_handler, </span><span style="color:#79C0FF">OIDC</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The middleware returns a JSON 401 response with <code>WWW-Authenticate: Bearer</code>
+when credentials are missing or invalid. A verified <code>OidcPrincipal</code> is stored
+in the immutable request context. Handlers retrieve it without sharing a
+string key or performing a cast:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3">, text } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/web/auth/bearer</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> get</span><span style="color:#E6EDF3">(context: </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
+<span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> bearer.</span><span style="color:#D2A8FF">principal</span><span style="color:#E6EDF3">(context)</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Ok</span><span style="color:#E6EDF3">(principal)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> text</span><span style="color:#E6EDF3">(principal.</span><span style="color:#D2A8FF">subject</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Err</span><span style="color:#E6EDF3">(_error)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> text</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"unauthorized"</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">401</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Use <code>bearer.verify(request, options)</code> when an application needs verification
+without the standard middleware response. It returns
+<code>Result&lt;OidcPrincipal, OidcAuthError&gt;</code> and distinguishes missing credentials,
+invalid credentials, provider failures, and invalid configuration.</p>
+<p>The initial profile accepts RS256 JWTs with a signing key ID. It validates the
+signature, issuer, audience, expiration, optional not-before time, subject, and
+the configured roles claim. Provider metadata and JWKS documents are bounded
+to 1 MiB and cached for five minutes. An unknown key ID triggers one
+rate-limited JWKS refresh so normal signing-key rotation does not create an
+unbounded provider request path.</p>
+<p>Server-managed browser sessions, authorization-code PKCE, cookie-key rotation,
+and pluggable session stores are not part of this first bearer profile. Keep
+production issuers and JWKS endpoints on HTTPS and apply authorization policy
+to the verified principal separately from authentication.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/guides/authentication.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

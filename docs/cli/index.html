@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Command-line reference — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/cli/">
+		<title>Command-line reference — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a class="active" aria-current="page" href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a class="active" aria-current="page" href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="command-line-reference">Command-line reference</h1>
+<p>Run commands from a directory containing <code>trbconfig.jsonc</code> unless the command
+explicitly supports a standalone file or scratch session.</p>
+<h2 id="projects-and-dependencies">Projects and dependencies</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Create trbconfig.jsonc and the target manifest.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> init</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> go</span><span style="color:#79C0FF"> --module</span><span style="color:#A5D6FF"> example.com/acme/app</span><span style="color:#A5D6FF"> .</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> init</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> ruby</span><span style="color:#A5D6FF"> .</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> init</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> typescript</span><span style="color:#A5D6FF"> .</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> init</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> typescript</span><span style="color:#79C0FF"> --runtime</span><span style="color:#A5D6FF"> bun</span><span style="color:#A5D6FF"> .</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Generate a portable JSON API project for any target.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> init</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> go</span><span style="color:#79C0FF"> --module</span><span style="color:#A5D6FF"> example.com/acme/api</span><span style="color:#79C0FF"> --template</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> .</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Generate go.mod, Gemfile, or package.json from trbconfig.jsonc.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> sync</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Add, remove, or update portable TypeRB packages.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> add</span><span style="color:#A5D6FF"> acme/contracts</span><span style="color:#A5D6FF"> v1.2.3</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> add</span><span style="color:#79C0FF"> --source</span><span style="color:#A5D6FF"> gitlab.com/company/auth</span><span style="color:#A5D6FF"> company/auth</span><span style="color:#A5D6FF"> v2.0.0</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> add</span><span style="color:#79C0FF"> --path</span><span style="color:#A5D6FF"> ../contracts</span><span style="color:#A5D6FF"> local/contracts</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> remove</span><span style="color:#A5D6FF"> acme/contracts</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> update</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> update</span><span style="color:#A5D6FF"> acme/contracts</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Manage a Go module, gem, or npm/Bun package in the target manifest.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> add</span><span style="color:#79C0FF"> --native</span><span style="color:#A5D6FF"> PACKAGE</span><span style="color:#A5D6FF"> VERSION</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> add</span><span style="color:#79C0FF"> --native</span><span style="color:#79C0FF"> --dev</span><span style="color:#A5D6FF"> PACKAGE</span><span style="color:#A5D6FF"> VERSION</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> remove</span><span style="color:#79C0FF"> --native</span><span style="color:#A5D6FF"> PACKAGE</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Resolve TypeRB packages, then install native target dependencies.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> install</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> install</span><span style="color:#79C0FF"> --frozen</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> install</span><span style="color:#79C0FF"> --offline</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> install</span><span style="color:#79C0FF"> --config</span><span style="color:#A5D6FF"> trbconfig.ruby.jsonc</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Validate a package-owned declaration adapter before publishing it.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> adapter</span><span style="color:#A5D6FF"> check</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> adapter</span><span style="color:#A5D6FF"> check</span><span style="color:#79C0FF"> --format</span><span style="color:#A5D6FF"> json</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> adapter</span><span style="color:#A5D6FF"> check</span><span style="color:#A5D6FF"> ../ui-types</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Build and run its explicitly declared native conformance project.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> adapter</span><span style="color:#A5D6FF"> test</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> adapter</span><span style="color:#A5D6FF"> test</span><span style="color:#79C0FF"> --format</span><span style="color:#A5D6FF"> json</span><span style="color:#A5D6FF"> ../ui-types</span></span>
+<span class="line"></span></code></pre>
+<p>TypeRB packages are ordinary typed source compiled through the same AST, typed
+IR, and backend as application code. <code>trb.lock</code> pins their canonical identity,
+transitive graph, Git revision, and content checksum. <code>--frozen</code> rejects config
+drift, while <code>--offline</code> uses only local packages and the existing project
+cache. <code>--config</code> selects an explicit project configuration, including when a
+single source tree has separate target configurations. See the
+<a href="/docs/guides/packages/">package guide</a>.</p>
+<p><code>trb update</code> re-resolves the complete TypeRB package graph. Passing one or more
+direct project aliases re-resolves only those packages and the dependencies
+reached from their new manifests. Other direct package graphs remain pinned.
+A selective update requires a current <code>trb.lock</code>; run <code>trb install</code> first after
+editing project package requirements. If a selected graph requests a different
+version of a canonical package still pinned by an unselected graph, resolution
+reports the existing incompatible-requirements error instead of choosing a
+version implicitly.</p>
+<p><code>trb adapter check</code> runs from a TypeRB package root by default, or accepts one
+explicit package-root directory. It validates <code>trbpackage.json</code>, every
+configured <code>declarationAdapters.&lt;mode&gt;</code> catalog and paired
+<code>runtimeAdapters.&lt;mode&gt;</code> mapping, native-dependency ownership,
+catalog-internal export/supporting-record conflicts, bridge kinds, runtime
+coverage, and target symbol rules through the same selected ecosystem adapter
+used by installation and compilation. Human output is the default. <code>--format json</code> writes a versioned report to standard output on both success and failure
+and returns a nonzero status when diagnostics contain errors.</p>
+<p>The check command does not install native dependencies or compare the
+projected contract with their declarations. An adapter package may declare one
+<code>adapterTests.&lt;mode&gt;</code> conformance project with a project config and a structured
+command argument vector. After installing that project's dependencies with a
+frozen lock, <code>trb adapter test</code> runs catalog validation, a TypeRB project build,
+and the declared native check in order. It verifies that the conformance
+project installs the package under test from the current package root.</p>
+<p><code>adapter test</code> never runs during ordinary package installation, compilation,
+or import. Invoking it explicitly authorizes the declared command. TypeRB
+passes its argument vector directly to the executable instead of interpreting
+a shell command string; the invoked tool may retain its own script, process,
+and network behavior. TypeRB performs no implicit dependency installation or
+network access before that command. Human output is concise; <code>--format json</code>
+emits stable phase states and diagnostics while failed native-tool output
+remains on standard error.</p>
+<p>The <code>web</code> template uses <code>src</code> as the source root and creates <code>main.trb</code>, an
+index route, and an explicit root middleware stack with request IDs and JSONL
+access logging. It never replaces an existing source file.</p>
+<h2 id="format">Format</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Format all .trb files below the current directory in place.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> fmt</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Check formatting in CI without changing files.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> fmt</span><span style="color:#79C0FF"> --check</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Format stdin to stdout.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> fmt</span><span style="color:#A5D6FF"> -</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Format selected paths.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> fmt</span><span style="color:#A5D6FF"> src</span><span style="color:#A5D6FF"> test.trb</span></span>
+<span class="line"></span></code></pre>
+<p><code>trb fmt</code> is deterministic and idempotent. It emits one tab per nesting level,
+preserves comments and opaque literal contents, and removes a terminal
+<code>/index</code> from a project import when the shorter path resolves to the same
+module. It retains <code>/index</code> when a direct file would otherwise win or when the
+import cannot be resolved. Stdin formatting has no project snapshot and
+therefore does not remove <code>/index</code>.</p>
+<h2 id="lint">Lint</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Run project checking followed by the recommended lint rules.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Apply fixes that a rule marks safe.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span><span style="color:#79C0FF"> --fix</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Make remaining warnings fail CI.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span><span style="color:#79C0FF"> --deny-warnings</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Emit a versioned machine-readable report.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span><span style="color:#79C0FF"> --diagnostic-format</span><span style="color:#A5D6FF"> json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Lint a config-free file and its explicit imports.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span><span style="color:#A5D6FF"> report.trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> ruby</span><span style="color:#A5D6FF"> report.trb</span></span>
+<span class="line"></span></code></pre>
+<p><code>trb lint</code> is a style and maintainability layer over <code>trb check</code>: it first
+requires the same project to parse, resolve, and type check, then runs the
+configured lint rules on authored application source. Compiler-owned modules,
+official packages, and external packages are not linted. <code>trb check</code> remains
+the correctness-only command and its errors cannot be disabled by lint
+configuration.</p>
+<p>Warnings are reported without failing the command. A rule configured as
+<code>error</code>, or any warning under <code>--deny-warnings</code>, returns a nonzero status.
+<code>--fix</code> applies only source edits declared safe by the rule and reruns linting
+on the changed files. JSON output uses the shared diagnostic schema, adds the
+running <code>toolVersion</code>, and uses each lint rule ID as its stable diagnostic
+code. See the <a href="/docs/guides/linting/">linting guide</a> and
+<a href="/docs/lint-rules/">rule index</a>.</p>
+<h2 id="check-build-and-run">Check, build, and run</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Check the configured project without writing generated source.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> check</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Emit stable, machine-readable diagnostics for editors and agents.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> check</span><span style="color:#79C0FF"> --diagnostic-format</span><span style="color:#A5D6FF"> json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Check a config-free file and its explicit imports, using Go by default.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> check</span><span style="color:#A5D6FF"> report.trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> check</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> ruby</span><span style="color:#A5D6FF"> report.trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> check</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> typescript</span><span style="color:#A5D6FF"> report.trb</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Compile a project to its configured output directory.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> build</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Choose a project output directory.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> build</span><span style="color:#79C0FF"> --out-dir</span><span style="color:#A5D6FF"> dist</span><span style="color:#A5D6FF"> .</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Compile one file to stdout.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> build</span><span style="color:#79C0FF"> --stdout</span><span style="color:#A5D6FF"> app/models/post.trb</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Build a Go project into bin/&#x3C;project-name>.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> build</span><span style="color:#79C0FF"> --compile</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Choose the executable output file.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> build</span><span style="color:#79C0FF"> --compile</span><span style="color:#79C0FF"> --outfile</span><span style="color:#A5D6FF"> bin/api</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Include TypeRB source locations and unoptimized Go debug information.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> build</span><span style="color:#79C0FF"> --compile</span><span style="color:#79C0FF"> --debug</span><span style="color:#79C0FF"> --outfile</span><span style="color:#A5D6FF"> .trb/debug/api</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Build a config-free Go file-root program and its explicit imports.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> build</span><span style="color:#79C0FF"> --compile</span><span style="color:#A5D6FF"> report.trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> build</span><span style="color:#79C0FF"> --compile</span><span style="color:#79C0FF"> --debug</span><span style="color:#79C0FF"> --outfile</span><span style="color:#A5D6FF"> /tmp/report-debug</span><span style="color:#A5D6FF"> report.trb</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Build in a temporary directory and run the project's main().</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span><span style="color:#79C0FF"> --</span><span style="color:#A5D6FF"> first-argument</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Run one file without a project, using Go by default.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> test.trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span><span style="color:#A5D6FF"> test.trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> ruby</span><span style="color:#A5D6FF"> test.trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> typescript</span><span style="color:#79C0FF"> --runtime</span><span style="color:#A5D6FF"> node</span><span style="color:#A5D6FF"> test.trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> typescript</span><span style="color:#79C0FF"> --runtime</span><span style="color:#A5D6FF"> bun</span><span style="color:#A5D6FF"> test.trb</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Retain the exact generated target tree for inspection.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span><span style="color:#79C0FF"> --keep-generated</span></span>
+<span class="line"></span></code></pre>
+<p><code>trb check</code> is the canonical validation command. It parses, resolves, type
+checks, and validates source without writing generated files or starting a
+target toolchain. Without a source path it validates the complete configured
+project. With one config-free <code>.trb</code> path it validates that file-root program
+and its transitive explicit local imports, ignores unrelated sibling files,
+uses Go by default, and accepts <code>--mode ruby|go|typescript</code>. A standalone
+library file does not need to define <code>main()</code> merely to be checked. When a
+configuration is discoverable from the selected file, <code>trb check</code> validates
+the complete project and the configured mode wins; passing <code>--mode</code> is an
+error. Human-readable diagnostics are the default.
+<code>--diagnostic-format json</code> writes a versioned report to standard output and
+returns a nonzero status when errors exist. Locations use one-based lines and
+columns plus zero-based UTF-8 byte offsets. Each diagnostic has a stable
+<code>TRBxxxx</code> code; messages may improve without changing that code. Related
+locations and atomic source-edit suggestions are included when available.
+The initial code families are <code>TRB1xxx</code> for syntax, <code>TRB2xxx</code> for resolution
+and imports, <code>TRB3xxx</code> for types and flow, <code>TRB4xxx</code> for project integration,
+and <code>TRB5xxx</code> for backend generation.</p>
+<p>A runnable project defines exactly one top-level <code>def main()</code>. <code>trb run</code>
+compiles before every execution, so a separate build step is unnecessary.
+Library projects may omit <code>main</code>, but cannot be run directly.</p>
+<p>Passing a <code>.trb</code> file starts standalone execution only when no
+<code>trbconfig.jsonc</code> can be discovered from that file's directory. The short form
+<code>trb FILE.trb</code> is equivalent to <code>trb run FILE.trb</code>. Standalone execution uses
+Go when <code>--mode</code> is omitted, accepts <code>ruby</code>, <code>go</code>, or <code>typescript</code>, and accepts
+<code>--runtime node|bun</code> for TypeScript. The selected entry file must define
+<code>main()</code>. Its explicit local imports are resolved transitively from the entry
+directory. Unrelated siblings are ignored, and imports of <code>*_test.trb</code> modules
+are excluded from the production closure. TypeRB package and native
+dependencies still require <code>trbconfig.jsonc</code>.</p>
+<p>If a configuration is discovered or passed through <code>--config</code>, its mode and
+runtime always win. Supplying standalone <code>--mode</code> or <code>--runtime</code> options in
+that case is an error instead of an implicit project override.</p>
+<p>Project execution writes target source below <code>.trb/run</code>; standalone execution
+uses an operating-system temporary directory. Both remove generated source
+after the child process exits. TypeRB forwards interrupts and termination
+signals to the child process group, waits for it to stop, and then removes the
+workspace. A lease protects every active project workspace; the next run
+removes abandoned project workspaces left by a forced process or system
+shutdown without disturbing concurrent runs. <code>--keep-generated</code> moves the
+completed target tree to <code>.trb/generated</code> beside the project or standalone
+file and prints its path instead of deleting it.</p>
+<p>TypeScript projects execute with the configured <code>typescript.runtime</code>. Node is
+the compatibility default; Bun projects use <code>bun run</code>. Browser projects are
+compiled for their application or bundler and report that <code>trb run</code> has no
+process entrypoint.</p>
+<p><code>trb build</code> compiles every input before writing generated files. Directory
+builds copy non-<code>.trb</code> files by default, producing a runnable project tree. Use
+<code>--copy=false</code> when only generated source is wanted.</p>
+<p>In Go mode, <code>trb build --compile</code> generates Go source in a temporary directory,
+invokes <code>go build</code>, and keeps only the executable. The default output is
+<code>bin/&lt;project-name&gt;</code> below the project root. A relative <code>--outfile</code> is also
+resolved from the project root. With one config-free <code>.trb</code> path, <code>--compile</code>
+builds that file-root program and its explicit import closure; its default
+output is <code>&lt;entry-directory&gt;/bin/&lt;source-stem&gt;</code>, and a relative <code>--outfile</code> is
+resolved from the entry directory. Both forms require a top-level <code>main()</code> and
+cannot be combined with <code>--stdout</code>, <code>--copy</code>, or <code>--out-dir</code>.</p>
+<p><code>--debug</code> is available with <code>--compile</code> in Go mode. It disables Go compiler
+optimizations and records the original <code>.trb</code> paths and lines for source
+debuggers such as Delve. The VS Code extension prepares this executable
+automatically when starting a Go debug session.</p>
+<p>Ruby and TypeScript executable packaging is not implemented. <code>--compile</code>
+reports an unsupported-mode error for configured projects and file-root
+programs in those modes. The Go executable contains compiled code and linked
+dependencies, but TypeRB does not embed application files, run
+schema-management commands, or remove system-library requirements introduced
+by a dependency.</p>
+<p>Output names follow the project mode:</p>
+<ul>
+<li><code>main.trb</code> becomes <code>main.go</code> in Go mode;</li>
+<li><code>post.trb</code> becomes <code>post.rb</code> in Ruby mode;</li>
+<li><code>greeter.trb</code> becomes <code>greeter.ts</code> in TypeScript mode; and</li>
+<li><code>main.go.trb</code> becomes <code>main.go</code>, without duplicating an existing target
+suffix.</li>
+</ul>
+<h2 id="compiler-tooling">Compiler tooling</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Emit a read-only, versioned JSON snapshot of the configured project.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> compiler</span><span style="color:#A5D6FF"> inspect</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Select an explicit project configuration.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> compiler</span><span style="color:#A5D6FF"> inspect</span><span style="color:#79C0FF"> --config</span><span style="color:#A5D6FF"> trbconfig.typescript.jsonc</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Inspect a config-free file and its explicit import closure.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> compiler</span><span style="color:#A5D6FF"> inspect</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> ruby</span><span style="color:#A5D6FF"> report.trb</span></span>
+<span class="line"></span></code></pre>
+<p>The snapshot contains the exact analyzed sources, module and authored-import
+identities, flattened checked declarations and types, and diagnostics. It does
+not generate target source or run a target toolchain. Compiler-generated
+helpers and implicit runtime imports are excluded from the authored surface.</p>
+<p>The command always writes the JSON snapshot to standard output after project
+inputs have been loaded. A snapshot containing errors still includes source,
+module, and diagnostic data and returns a nonzero status; checked declarations
+are empty when semantic artifacts are unavailable. See the
+<a href="/docs/guides/compiler-tooling/">compiler tooling protocol guide</a> for the version 2
+schema, compatibility policy, and security considerations.</p>
+<h2 id="clean">Clean</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Remove abandoned run and test workspaces. Active workspaces are preserved.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> clean</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Also remove output retained by trb run --keep-generated.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> clean</span><span style="color:#79C0FF"> --generated</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Also remove the configured outDir.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> clean</span><span style="color:#79C0FF"> --build</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Also remove downloaded TypeRB packages and the native declaration index.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> clean</span><span style="color:#79C0FF"> --cache</span></span>
+<span class="line"></span></code></pre>
+<p>Clean options may be combined. The default command removes only compiler-owned
+temporary run and test workspaces whose leases are inactive. <code>--generated</code>
+removes <code>.trb/generated</code>; <code>--build</code> removes the configured project output after
+the same project-boundary safety check used by a full build; and <code>--cache</code>
+removes <code>.trb/packages</code> plus <code>.trb/native-types.json</code>. A later <code>trb install</code>
+restores those caches. Cleaning never removes <code>.trb/repl_history</code>.</p>
+<h2 id="test">Test</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Discover and run colocated *_test.trb files.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> test</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Run one suite or case by a substring of its full name.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> test</span><span style="color:#79C0FF"> --filter</span><span style="color:#A5D6FF"> "Calculator / adds numbers"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Restrict discovery to one colocated test file.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> test</span><span style="color:#79C0FF"> --file</span><span style="color:#A5D6FF"> src/calculator_test.trb</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Emit JSON Lines events for editors and automation.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> test</span><span style="color:#79C0FF"> --reporter</span><span style="color:#A5D6FF"> json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Build a Go test executable with TypeRB source-debug information.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> test</span><span style="color:#79C0FF"> --compile</span><span style="color:#79C0FF"> --debug</span><span style="color:#79C0FF"> --outfile</span><span style="color:#A5D6FF"> .trb/debug/tests</span></span>
+<span class="line"></span></code></pre>
+<p><code>trb test</code> compiles the complete project together with its test files and a
+temporary test entrypoint. An application <code>main()</code> is not started during a
+test build. The selected target backend executes each case, preserves <code>.trb</code>
+assertion locations, and returns a nonzero status when any case fails.
+<code>--compile</code> produces a Go test executable instead of running it; <code>--debug</code>
+retains source mappings for debuggers such as Delve.</p>
+<p>The temporary target tree lives below <code>.trb/test</code>, uses the same process lease
+and signal handling as <code>trb run</code>, and is recovered by the next test or
+<code>trb clean</code> after an unclean shutdown.</p>
+<p>Tests use the explicit portable API from <code>trb/std/test</code>; see the
+<a href="/docs/guides/testing/">testing guide</a>. TypeScript browser projects report that a
+process test host is unavailable. Select Bun or Node for <code>trb test</code> while
+browser-hosted test execution remains staged.</p>
+<p>To format and run an explicitly selected entry below a configured project:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> fmt</span><span style="color:#A5D6FF"> test.trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span><span style="color:#A5D6FF"> test.trb</span></span>
+<span class="line"></span></code></pre>
+<h2 id="repl">REPL</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Start a REPL from an interactive terminal. It uses the nearest project</span></span>
+<span class="line"><span style="color:#8B949E"># configuration, or a scratch Go session.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Start the same REPL explicitly.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> repl</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Select the mode for this session.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> repl</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> go</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> repl</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> ruby</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> repl</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> typescript</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Select a project configuration explicitly.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> repl</span><span style="color:#79C0FF"> --config</span><span style="color:#A5D6FF"> path/to/trbconfig.jsonc</span></span>
+<span class="line"></span></code></pre>
+<p>When a project config is available, the REPL loads its imports, local packages,
+and type providers. Without a config, it starts an isolated Go-mode scratch
+session. <code>--mode</code> takes precedence over a discovered project mode for that
+session.</p>
+<p>Public declarations with a name unique across the project and public types
+from portable standard packages are available without typing an import in the
+REPL. The session adds deterministic hidden imports while ordinary project
+source continues to require explicit imports. Completion therefore offers
+types such as <code>Date</code> and <code>Result</code> in a scratch session. If more than one module
+exports the same name, import the intended declaration explicitly before using
+it.</p>
+<p>Each submission passes through the ordinary parser, resolver, type checker,
+typed IR lowering, and evaluator. Platform packages are accepted or rejected
+according to the active mode.</p>
+<p>REPL commands are:</p>
+<ul>
+<li><code>:type EXPRESSION</code></li>
+<li><code>:load FILE</code></li>
+<li><code>:reload</code></li>
+<li><code>:help</code></li>
+<li><code>:quit</code></li>
+</ul>
+<p>Interactive terminals provide multiline input, colors, and a Tab completion
+menu with checked signatures and return types. A single candidate completes
+directly; multiple candidates are shown before Tab or Shift-Tab cycles through
+them. Enter reindents a multiline submission with a visual width of two spaces
+per level and indents the next line while a block or delimiter is open. The
+accepted input retains that visual width on screen, while the value used for
+evaluation and history storage is converted to canonical tab-based
+indentation. Terminals also provide
+cursor editing, Up/Down history, and Ctrl-R
+reverse search. Ctrl-B/F moves by
+character, Ctrl-A/E by line, Alt-B/F by word, and Ctrl-P/N moves vertically or
+through history. Ctrl-C cancels current input or evaluation without exiting;
+Ctrl-D exits.</p>
+<p>Ordinary results retain the <code>value : Type</code> form. A result directly associated
+with a mutable REPL binding includes a trailing <code>[mut]</code>; arbitrary expressions
+do not inherit the marker:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb:go</span><span style="color:#E6EDF3">> </span><span style="color:#A5D6FF">mut</span><span style="color:#A5D6FF"> count</span><span style="color:#A5D6FF"> :=</span><span style="color:#79C0FF"> 123</span></span>
+<span class="line"><span style="color:#FFA657">123</span><span style="color:#A5D6FF"> :</span><span style="color:#A5D6FF"> Integer</span><span style="color:#E6EDF3"> [mut]</span></span>
+<span class="line"><span style="color:#FFA657">trb:go</span><span style="color:#E6EDF3">> </span><span style="color:#A5D6FF">count</span></span>
+<span class="line"><span style="color:#FFA657">123</span><span style="color:#A5D6FF"> :</span><span style="color:#A5D6FF"> Integer</span><span style="color:#E6EDF3"> [mut]</span></span>
+<span class="line"><span style="color:#FFA657">trb:go</span><span style="color:#E6EDF3">> </span><span style="color:#A5D6FF">count</span><span style="color:#A5D6FF"> +</span><span style="color:#79C0FF"> 1</span></span>
+<span class="line"><span style="color:#FFA657">124</span><span style="color:#A5D6FF"> :</span><span style="color:#A5D6FF"> Integer</span></span>
+<span class="line"></span></code></pre>
+<p>Project history is stored in <code>.trb/repl_history</code>. Scratch history is stored in
+the user cache and separated by mode.</p>
+<p>With no arguments, <code>trb</code> starts the REPL only when both standard input and
+standard output are terminals. In a non-interactive environment it prints the
+command usage instead of waiting for input. <code>trb repl</code> remains the explicit
+form for scripts and sessions that pass options.</p>
+<h2 id="language-server">Language server</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Serve the configured project over LSP standard input/output.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lsp</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Select a project explicitly.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lsp</span><span style="color:#79C0FF"> --config</span><span style="color:#A5D6FF"> path/to/trbconfig.jsonc</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Serve one file without project configuration, using Go by default.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lsp</span><span style="color:#A5D6FF"> hello.trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lsp</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> ruby</span><span style="color:#A5D6FF"> hello.trb</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lsp</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> typescript</span><span style="color:#79C0FF"> --runtime</span><span style="color:#A5D6FF"> bun</span><span style="color:#A5D6FF"> hello.trb</span></span>
+<span class="line"></span></code></pre>
+<p>Standalone LSP sessions compile the selected entry and its explicit local
+import closure while ignoring unrelated sibling <code>.trb</code> files. Open-document
+overlays and workspace create, change, and delete events rebuild that closure,
+so adding or removing an import and editing an imported file update the same
+compiler snapshot. Standalone sessions use the same mode and runtime selection
+as standalone execution. If <code>trbconfig.jsonc</code> is discoverable, the language
+server serves that complete project instead and standalone mode or runtime
+overrides are rejected.</p>
+<p>The language server provides project-wide live diagnostics, completion, checked
+hover information, signature help, document formatting, and quick fixes backed
+by structured compiler suggestions. It applies ordered incremental edits using
+UTF-16 LSP positions at the protocol boundary, then gives the compiler a
+complete UTF-8 source snapshot. Dependency-level recompilation remains a
+performance follow-up. Definition, reference, document highlight, and rename
+queries follow checked project declarations, receiver members, parameters, and
+local bindings rather than textual name matches.
+Project-wide symbol search and the document outline follow the lossless syntax
+tree, so classes, records, enums, modules, interfaces, fields, and methods
+remain visible while a file has type errors. Structural folding ranges use the
+same syntax tree for declarations and expression blocks, while selection ranges
+expand from tokens through lines and enclosing blocks. Full-document semantic tokens
+classify TypeRB types, constants, functions, methods, literals, comments, and
+keywords using the same shared language service as the REPL and browser tools.
+Workspace file notifications update the compiler snapshot when <code>.trb</code> files
+are created, changed, or deleted outside an open editor buffer.
+Non-browser projects expose a run CodeLens for each valid top-level <code>main()</code>.
+The LSP command identifies the runnable declaration; an editor client owns the
+process lifecycle and presentation.</p>
+<p>The thin Visual Studio Code client in <code>editors/vscode</code> starts this command and
+packages the canonical TypeRB TextMate grammar. It defaults to <code>trb</code> on <code>PATH</code>;
+<code>typerb.server.path</code> overrides the executable and <code>typerb.server.config</code> adds
+an explicit project configuration when needed. It discovers ordinary
+<code>trbconfig.jsonc</code> files below the workspace and starts one server per project,
+so declarations from different applications are never combined. An open
+<code>.trb</code> file outside every discovered project receives an independent
+file-root language-server session. <code>typerb.standalone.mode</code> selects its mode
+and <code>typerb.standalone.typescript.runtime</code> selects Node or Bun. Its CodeLens
+starts <code>trb run</code> for the owning project or file through Visual Studio Code's
+Run and Debug lifecycle and changes from <code>▶ Run</code> to <code>↻ Restart</code> while that
+program is active. Imported files share live editor overlays with every open
+standalone entry that depends on them. Output appears in the Debug Console.
+Go-mode standalone entries also support source debugging; the extension builds
+a private executable for each debug session and removes it when the session
+ends.</p>
+<h2 id="database-schema">Database schema</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> plan</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> apply</span><span style="color:#E6EDF3"> [--allow-destructive]</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> export</span><span style="color:#E6EDF3"> [--output </span><span style="color:#A5D6FF">PATH]</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> lock</span><span style="color:#E6EDF3"> [--from-db]</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> check</span><span style="color:#E6EDF3"> [--from-db]</span></span>
+<span class="line"></span></code></pre>
+<p><code>plan</code>, <code>apply</code>, and <code>export</code> adapt the configured external sqldef executable.
+<code>apply</code> refreshes the deterministic schema lock only after a successful schema
+change. DROP operations remain disabled unless <code>--allow-destructive</code> is
+explicit. <code>lock</code> and <code>check</code> operate offline by default; <code>--from-db</code> selects
+live introspection. See the <a href="/docs/guides/database/">database schema guide</a>.</p>
+<h2 id="background-jobs">Background Jobs</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> jobs</span><span style="color:#A5D6FF"> start</span><span style="color:#E6EDF3"> [--once] [--queue NAME]</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> jobs</span><span style="color:#A5D6FF"> list</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> jobs</span><span style="color:#A5D6FF"> retry</span><span style="color:#A5D6FF"> JOB_ID</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> jobs</span><span style="color:#A5D6FF"> discard</span><span style="color:#A5D6FF"> JOB_ID</span></span>
+<span class="line"></span></code></pre>
+<p>These commands run the adapter selected by <code>jobs.configuration</code>. <code>start</code>
+claims and performs durable Jobs; <code>--once</code> stops after at most one claim and
+<code>--queue</code> limits claims to one queue. <code>list</code>, <code>retry</code>, and <code>discard</code> operate on
+persisted adapter state. See the <a href="/docs/guides/jobs/"><code>trb/jobs</code> guide</a>.</p>
+<h2 id="playground-and-tour">Playground and tour</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Open an isolated scratch playground in the default browser.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> play</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Choose the initial target and a fixed local port.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> play</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> typescript</span><span style="color:#79C0FF"> --port</span><span style="color:#79C0FF"> 3000</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Print the URL without opening a browser.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> play</span><span style="color:#79C0FF"> --no-open</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Open the guided language tour.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> tour</span></span>
+<span class="line"></span></code></pre>
+<p><code>trb play</code> and <code>trb tour</code> bind only to <code>127.0.0.1</code>. A zero or omitted port
+selects an available port. Without <code>--mode</code>, the nearest project mode becomes
+the initial target; when there is no project, the initial target is Go. The
+target can be changed inside the browser.</p>
+<p>The editor provides dependency-free TypeRB syntax highlighting and shortcuts
+for tab indentation and Cmd/Ctrl-Enter execution. Run compiles through the
+ordinary parser, resolver, type checker, and typed IR evaluator. Transpile
+shows the generated source for the selected backend, and Format uses the same
+comment-preserving formatter as <code>trb fmt</code>.</p>
+<p>Browser runs are isolated scratch evaluations. They do not load project files,
+invoke <code>main()</code>, or start a target toolchain. Top-level expressions are
+evaluated from a fresh state on each run. Host filesystem, process, and
+platform packages are rejected during browser execution; they may still be
+type checked and displayed with Transpile.</p>
+<p>The tour stores lesson edits and completion progress in the local browser.
+The repository test suite compiles and evaluates every lesson in Go, Ruby, and
+TypeScript modes before Pages is published.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/cli.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

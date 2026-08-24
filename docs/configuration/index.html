@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Project configuration — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/configuration/">
+		<title>Project configuration — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a class="active" aria-current="page" href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a class="active" aria-current="page" href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="project-configuration">Project configuration</h1>
+<p><code>trbconfig.jsonc</code> is the source of truth for the project target, source and
+output directories, TypeRB packages, and native target dependencies. It
+accepts line and block comments. Trailing commas are not allowed.</p>
+<h2 id="example">Example</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#8B949E">  // One target and package ecosystem for the whole project.</span></span>
+<span class="line"><span style="color:#7EE787">  "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"my-app"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "version"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"0.1.0"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "mode"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"go"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "sourceDir"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"."</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "outDir"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"build"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "copyFiles"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">true</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "packageManagement"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"managed"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "packages"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "acme/contracts"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"v1.2.3"</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "dependencies"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "example.com/acme/library"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"v1.2.3"</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "devDependencies"</span><span style="color:#E6EDF3">: {},</span></span>
+<span class="line"><span style="color:#7EE787">  "go"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "module"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"example.com/my-app"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "version"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"1.27"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "rootPackage"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"main"</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>Use <code>trb init</code> to create a valid starting config:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> init</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> go</span><span style="color:#79C0FF"> --module</span><span style="color:#A5D6FF"> example.com/my-app</span><span style="color:#A5D6FF"> .</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> init</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> ruby</span><span style="color:#A5D6FF"> .</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> init</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> typescript</span><span style="color:#A5D6FF"> .</span></span>
+<span class="line"></span></code></pre>
+<h2 id="modes">Modes</h2>
+<p>A project declares one mode: <code>go</code>, <code>ruby</code>, or <code>typescript</code>. The mode selects
+the backend, target toolchain, and package ecosystem. It does not select a
+grammar variant or loosen portable type checking. Target-specific capabilities
+require an explicit <code>trb/platform/&lt;mode&gt;/*</code> import.</p>
+<p>Go mode owns <code>go.mod</code>, Ruby mode owns <code>Gemfile</code> and <code>.ruby-version</code>, and
+TypeScript mode owns <code>package.json</code>. These files are deterministic views of
+the native <code>dependencies</code> and <code>devDependencies</code> in <code>trbconfig.jsonc</code>. Edit
+native dependencies through the config or <code>trb add --native</code> and
+<code>trb remove --native</code>, then run <code>trb sync</code>.</p>
+<p><code>go.version</code> must be Go 1.27 or later. Generated Go uses native generic
+methods introduced in Go 1.27, so projects targeting Go 1.26 are rejected.</p>
+<h2 id="typescript-toolchain">TypeScript toolchain</h2>
+<p>New managed TypeScript projects use ESM, npm, and the latest compatible
+TypeScript 6 patch:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "devDependencies"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "typescript"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"^6.0.0"</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "typescript"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "packageManager"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"npm"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "moduleType"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"module"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "runtime"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"node"</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>TypeScript 6 is the supported toolchain while the TypeScript 7 programmatic API
+and its surrounding package ecosystem stabilize. The range accepts compatible
+6.x patch releases without moving a project to 7.x. Browser applications are
+the primary TypeScript use case; APIs tied to a particular runtime remain
+explicit platform packages.</p>
+<p>After native dependencies are installed, <code>trb install</code> also indexes supported
+<code>.d.ts</code> exports into <code>.trb/native-types.json</code>. TypeRB source can import those
+configured packages directly; ordinary builds and completion use the cached
+index and generated TypeScript keeps the original package specifier. Native
+declaration indexing requires TypeScript 6.x and reports the installed version
+when another major version is detected.</p>
+<p><code>typescript.runtime</code> selects <code>browser</code>, <code>bun</code>, or <code>node</code>. Existing projects
+that omit it retain the previous Node execution behavior. <code>browser</code> projects
+compile source for a browser application or bundler and cannot use <code>trb run</code>
+as a process entrypoint. Bun server projects can select both runtime and
+package manager without additional manifest files:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "mode"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"typescript"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "typescript"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "runtime"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"bun"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "packageManager"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"bun"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "moduleType"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"module"</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>When <code>packageManager</code> is omitted, Bun runtime projects default to <code>bun</code>; other
+TypeScript projects default to <code>npm</code>. The two settings remain independent, so
+an explicitly configured npm installation can still be executed by Bun.</p>
+<h2 id="typerb-packages">TypeRB packages</h2>
+<p><code>packages</code> declares portable TypeRB source packages. A short key defaults to a
+GitHub repository, while the lock records its canonical manifest identity:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "packages"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "acme/contracts"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"v1.2.3"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "company/auth"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "source"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"gitlab.com/company/auth"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "version"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"v2.0.0"</span></span>
+<span class="line"><span style="color:#E6EDF3">    },</span></span>
+<span class="line"><span style="color:#7EE787">    "local/widgets"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "path"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"../widgets"</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p><code>acme/contracts</code> resolves from <code>github.com/acme/contracts</code> by default and stays
+the explicit source import. Full repository paths are also valid keys. Remote
+packages accept an exact semantic-version tag, <code>latest</code>, or a Git revision.
+<code>latest</code> is pinned until <code>trb update</code> is run. Local paths are development
+inputs and are intentionally not content locked.</p>
+<p><code>trb update PACKAGE...</code> accepts direct keys from this <code>packages</code> map. It
+re-resolves each selected package and its transitive graph while preserving the
+locked graphs of unselected direct packages. The complete graph is re-resolved
+when no package is named.</p>
+<p><code>trb.lock</code> records canonical package names, transitive dependencies, Git commit
+IDs, and SHA-256 content checksums. Commit it to version control. Resolved
+content lives below the ignored <code>.trb/packages</code> directory. Builds and the REPL
+never contact a package source; run <code>trb install</code> after changing <code>packages</code>.
+See the <a href="/docs/guides/packages/">package guide</a>.</p>
+<h2 id="lint-configuration">Lint configuration</h2>
+<p>The optional <code>lint</code> section selects the small built-in ruleset and overrides
+individual rule levels:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "lint"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "preset"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"recommended"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "rules"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "trb/prefer-conditional-transfer"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"warning"</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p><code>preset</code> is <code>recommended</code> by default. Set it to <code>none</code> to start with every
+built-in rule disabled, then enable selected rules explicitly. A rule level is
+<code>off</code>, <code>warning</code>, or <code>error</code>. Unknown rule IDs and invalid levels are
+configuration errors rather than silently ignored options.</p>
+<p>Built-in lint behavior ships with the <code>trb</code> binary and uses the TypeRB release
+version; there is no separate linter version. Machine-readable lint output has
+its own numeric diagnostic schema version so report consumers can negotiate
+shape independently from rule behavior. See the <a href="/docs/guides/linting/">linting guide</a>.</p>
+<h2 id="native-package-management">Native package management</h2>
+<p>The default <code>&quot;packageManagement&quot;: &quot;managed&quot;</code> lets TypeRB generate and use the
+target manifest from <code>dependencies</code> and <code>devDependencies</code>.</p>
+<p>When TypeRB is embedded in an application that already owns its manifest, set:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "packageManagement"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"external"</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p><code>trb build</code> then generates source without reading or modifying the host
+manifest. Native <code>sync</code>, add, remove, and install operations are disabled in
+this mode. TypeRB source packages remain available because their lock and
+source cache are independent of the target package manager.</p>
+<h2 id="database-schema-workflow">Database schema workflow</h2>
+<p>The optional <code>db</code> section configures mode-independent schema commands:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "db"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "adapter"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"sqlite"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "database"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"db/development.sqlite3"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "schema"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"db/schema.sql"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "lock"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"db/schema.lock.json"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "sqldef"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "command"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"sqlite3def"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "version"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"3.11.19"</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p><code>database</code> may instead be <code>{ &quot;environment&quot;: &quot;DATABASE_URL&quot; }</code>. Adapter
+defaults select <code>sqlite3def</code>, <code>psqldef</code>, or <code>mysqldef</code> and the sqldef version
+supported by the current TypeRB release. <code>sqldef.arguments</code> adds project-owned
+command options. See the <a href="/docs/guides/database/">database schema guide</a>.</p>
+<h2 id="job-adapter-composition">Job adapter composition</h2>
+<p>Projects using <code>trb/jobs</code> select an adapter through one typed composition
+module:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "jobs"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "configuration"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"config/jobs"</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>The module returns the portable <code>JobAdapter</code> contract. The official SQL
+adapter keeps database and worker choices outside application Job definitions:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">JobAdapter</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/jobs</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">SQLAdapter</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">SQLDialect</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/jobs/sql</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Duration</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/time</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79C0FF">JOBS_ADAPTER</span><span style="color:#E6EDF3">: </span><span style="color:#FFA657">JobAdapter</span><span style="color:#FF7B72"> :=</span><span style="color:#FFA657"> SQLAdapter</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(</span></span>
+<span class="line"><span style="color:#E6EDF3">	dialect: </span><span style="color:#FFA657">SQLDialect</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">PostgreSQL</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">	source_environment: </span><span style="color:#A5D6FF">"JOBS_DATABASE_URL"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">	poll_interval: </span><span style="color:#FFA657">Duration</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">seconds</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<p><code>configuration</code> is relative to <code>sourceDir</code>; a trailing <code>.trb</code> is optional.
+Normal Job modules import only <code>trb/jobs</code>. Importing <code>trb/jobs/sql</code> in the
+composition module also selects the target-native database dependency. The
+initial compiler integration accepts one explicitly typed <code>JOBS_ADAPTER</code>
+constant initialized directly with <code>SQLAdapter.new(...)</code>; duration and scalar
+options are compile-time values. The configuration module initializes this
+application-scoped adapter once, and all generated enqueue wrappers reuse the
+same instance. It is not a factory evaluated for each enqueue.
+This keeps native dependency and generated SQL selection deterministic while
+the external adapter protocol is still under development.</p>
+<p>Derived Job enqueue methods call the configured <code>JobAdapter</code> through its
+portable <code>enqueue</code> and <code>enqueue_at</code> methods. Portable generated TypeRB owns
+payload serialization and relative scheduling validation; the adapter owns ID
+generation, persistence, and native error mapping. Worker lifecycle remains a
+separate bundled integration in this alpha contract.</p>
+<h2 id="project-entrypoint">Project entrypoint</h2>
+<p>A runnable project defines exactly one top-level <code>def main()</code>. <code>main</code> is a
+language convention rather than a configurable entrypoint, so the config has no
+entrypoint field. A library project may omit <code>main</code>.</p>
+<h2 id="local-packages">Local packages</h2>
+<p>Map a portable source directory into the project import graph with
+<code>localPackages</code> when maintaining an older source-only workspace:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "localPackages"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "acme/contracts"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"../../packages/contracts/src"</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>An <code>index.trb</code> file is the package entry module. Projects in different modes can
+import the same package without copying its source. New reusable packages
+should instead contain <code>trbpackage.json</code> and use a <code>packages</code> path requirement,
+which exercises the same manifest and dependency graph as a remote package.</p>
+<h2 id="ruby-toolchain-and-loader">Ruby toolchain and loader</h2>
+<p>Ruby projects default to the current supported Ruby release and can select how
+generated imports are loaded:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "ruby"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "version"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"4.0.6"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "loader"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"zeitwerk"</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>For a managed Ruby project, <code>trb sync</code> writes the configured version to both
+<code>Gemfile</code> and <code>.ruby-version</code>. Bundler itself uses the version included with
+that Ruby release.</p>
+<p>The <code>require_relative</code> loader emits explicit relative requires. The <code>zeitwerk</code>
+loader keeps project imports as compile-time dependencies without emitting
+Ruby <code>require</code> calls.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/configuration.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

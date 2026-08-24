@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="TypeRB Roadmap — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/roadmap/">
+		<title>TypeRB Roadmap — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a class="active" aria-current="page" href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a class="active" aria-current="page" href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="typerb-roadmap">TypeRB Roadmap</h1>
+<p>This roadmap records the capabilities required to move TypeRB from the current
+alpha compiler to a language that can be used for maintained production
+applications. Ordering may change as real Go, Ruby, and TypeScript projects
+expose missing language features.</p>
+<p>For implemented behavior, see <a href="/docs/status/">status.md</a>. Language decisions belong
+in <a href="/docs/specification/">specification.md</a>; this document tracks outcomes rather
+than detailed syntax.</p>
+<h2 id="1-complete-the-portable-language-core">1. Complete the portable language core</h2>
+<ul>
+<li>Extend Result-returning higher-order functions across third-party package
+declarations, native callback boundaries, and concurrent composition. Keep
+prefix <code>try</code> and postfix <code>catch</code> as the sole propagation and recovery syntax
+until application usage establishes another distinct need.</li>
+<li>Extend union type-pattern narrowing to nullable, collection, enum, record,
+and class alternatives. Add position-typed Tuples and precise optional-value
+semantics.</li>
+<li>Add type-argument inference, generic interface methods, and generic class
+methods.</li>
+<li>Continue dogfooding nominal newtypes before adding more syntax. If concrete
+applications require richer value-object behavior, compare validated
+newtypes, record extensions, and ordinary Result-returning factories as
+alternatives rather than assuming one declaration should serve every shape.
+Evaluate generic newtype declarations separately.</li>
+<li>Define mutation effects for methods and parameters so immutable values remain
+safe across calls, not only assignments and known collection operations.</li>
+<li>Complete the portable class model with explicit superclass construction and
+<code>super</code> semantics, initialization order, override rules, and a backend-safe
+decision for field/method name collisions.</li>
+<li>Specify module visibility, initialization order, constant evaluation, and
+cross-file semantics completely.</li>
+</ul>
+<h2 id="2-make-testing-a-language-level-workflow">2. Make testing a language-level workflow</h2>
+<ul>
+<li>Evolve the initial portable <code>trb/std/test</code>, <code>trb test</code>, source-location
+failures, and VS Code Test Explorer from application evidence.</li>
+<li>Add lifecycle and expected-error helpers only after their semantics remain
+explicit and portable; keep data-driven tests in ordinary TypeRB meanwhile.</li>
+<li>Add a browser test host without adding async syntax to TypeRB.</li>
+<li>Extend assertion locations into complete cross-backend runtime stack traces.</li>
+<li>Add coverage reporting after generated-code locations can be mapped back to
+TypeRB source.</li>
+</ul>
+<h2 id="3-production-diagnostics-and-compiler-reliability">3. Production diagnostics and compiler reliability</h2>
+<ul>
+<li>Expand the initial stable diagnostic catalog and source-edit suggestions as
+application and editor usage exposes useful semantic-specific actions.</li>
+<li>Evolve the initial built-in <code>trb lint</code> registry from application evidence.
+Keep the recommended preset small, document every rule independently, and
+define a deterministic resource-bounded package protocol before executing
+third-party rules.</li>
+<li>Emit target-standard source maps from the shared generated-range-to-<code>.trb</code>
+mapping model, then use them for runtime stack traces and coverage.</li>
+<li>Extend the initial versioned compiler service and dependency-aware
+single-module analysis with finer phase-level invalidation, incremental
+lowering, multi-file change sets, and a persistent build cache.</li>
+<li>Maintain target-conformance suites that run equivalent TypeRB programs in all
+three modes.</li>
+<li>Define compatibility and deprecation rules before the first beta release.</li>
+</ul>
+<h2 id="4-editor-tooling">4. Editor tooling</h2>
+<ul>
+<li>Extend the reusable <code>trb lsp</code> diagnostics, formatting, completion, hover,
+signature help, checked navigation, rename, document symbols, and quick fixes
+with richer code actions and additional editor workflows.</li>
+<li>Add preview VS Code workflows for REPL evaluation, package and schema status,
+and coordinated development servers after their shared compiler and CLI
+contracts are stable.</li>
+<li>Extend Go source debugging through Delve with Ruby and TypeScript adapters
+after their target-standard source maps and runtime stack mapping are
+reliable.</li>
+</ul>
+<h2 id="5-standard-library-and-package-ecosystem">5. Standard library and package ecosystem</h2>
+<ul>
+<li>Complete the everyday receiver surface for Unicode strings, Arrays, and
+Hashes. Keep operations that need first-class blocks staged with the
+language-level block/lambda work.</li>
+<li>Expand the compiler-owned baseline with UUID, regular-expression, and full
+URL packages. Evolve the initial date/time package only from application
+evidence, especially for calendar periods, locale formatting, and clocks.
+Prefer <code>Bytes</code> at binary and digest boundaries, and keep legacy hashes
+explicitly limited to compatibility use.</li>
+<li>Use browser compatibility as the baseline for portable TypeScript APIs while
+also supporting Bun and Node server runtimes. Runtime-only APIs and server
+framework integrations remain explicit platform packages.</li>
+<li>Keep target-only functionality in explicit <code>trb/platform/&lt;mode&gt;/*</code> packages.</li>
+<li>Expand automatic TypeScript <code>.d.ts</code> indexing beyond its initial simple
+signatures and harden the declarative Result/suspending callback bridge.
+Evaluate equivalent package-owned type discovery for Go modules and gems
+only where the initial package-owned string-wire runtime adapter is
+insufficient; do not make application authors duplicate native signatures.</li>
+<li>Make public type identities namespace-stable across independent packages,
+then add semantic-version constraints with an explicit version-selection
+policy. Complete production distribution with publishing validation,
+provenance and vulnerability/audit integration. Add a shared cache only
+after its concurrency, permission, and garbage-collection rules are defined;
+the project-local content-addressed cache remains the portable baseline.</li>
+<li>Evolve the experimental bundled-package call-specialization data contract and
+the initial mode-independent Declaration/Adapter Protocol into a stable,
+sandboxed extension protocol
+before external packages can request compiler integration. Use the
+Declaration Protocol and read-only Project Declaration Input Protocol now
+exercised by both ORM and Jobs to shape reusable declaration capabilities.
+Evolve Project Generated Source Protocol v1, first exercised by portable Jobs
+worker dispatch and typed enqueue wrappers, only when another package
+identifies a shared capability.
+Characterize fragment-level incremental invalidation and namespace-stable
+imports before external use. Dogfood Native Runtime Adapter Protocol v1 with
+independent SDK packages across all three backends before adding structural
+wire values, native handles, lifecycle hooks, direct FFI, or configurable
+error mappers. Use ORM and Jobs runtime evidence to add only capabilities
+that the fixed function wire cannot express. Do not expose compiler internals
+as a public plugin API.</li>
+</ul>
+<h2 id="6-application-level-proof">6. Application-level proof</h2>
+<ul>
+<li>Harden the official portable <code>trb/web</code> package around its existing
+compile-time file-based routes, typed JSON requests and responses,
+middleware, and consistent HTTP behavior across Go, Ruby, and TypeScript
+runtimes.</li>
+<li>Extend the generated JSON codecs and client/server contracts from shared
+records with versioned wire fields, validation policy, schema export, and
+compatibility checking.</li>
+<li>Harden the experimental <code>trb/orm</code> package with schema caching, compatibility
+policy, production diagnostics, and larger end-to-end <code>trb/web</code> applications.</li>
+<li>Harden the experimental <code>trb/jobs</code> contract with structured payload codecs,
+worker failure-injection tests, recurring schedules, operational metrics,
+and explicit delivery profiles such as transactional outbox adapters.</li>
+<li>Continue representative backend, server-rendered, and browser application
+slices with authentication, validation, transactions, background work, and
+realistic failure paths.</li>
+<li>Harden the initial portable OIDC bearer profile, then add a separately
+reviewed server-session profile with authorization-code PKCE, cookie-key
+rotation, and pluggable session storage.</li>
+<li>Evolve the initial buffered TypeScript browser HTTP client with generated
+endpoint-contract adapters, external contract import, streaming, cancellation
+handles, and established server-state package interop without introducing a
+second request model.</li>
+<li>Separate one-shot <code>trb run</code> from framework development servers and add a
+coherent <code>trb dev</code> and runtime-adapter model for backend and frontend
+development servers.</li>
+<li>Harden the database schema workflow with compatibility policy, additional
+schema constructs, and supported-platform release validation while keeping
+destructive changes explicit.</li>
+</ul>
+<h2 id="7-distribution-and-long-term-operation">7. Distribution and long-term operation</h2>
+<ul>
+<li>Keep Homebrew and direct binary installation reproducible and signed.</li>
+<li>Keep the hosted <code>/play/</code> and <code>/tour/</code> editions current with the compiler and
+add shareable source links to their sandboxed browser runtime.</li>
+<li>Test supported OS/architecture and current target-toolchain combinations in
+CI.</li>
+<li>Publish a searchable language/standard-library reference, tutorials, and a
+migration guide for every breaking release.</li>
+<li>Add performance benchmarks, crash reporting guidance, security policy, and a
+predictable release cadence.</li>
+</ul>
+<h2 id="exploratory-native-typerb-runtime">Exploratory: native TypeRB runtime</h2>
+<p>A future <code>mode: trb</code> may execute checked TypeRB through typed IR or cached
+bytecode without emitting Go, Ruby, or TypeScript source. The existing REPL
+evaluator is an early implementation seed, not a production runtime.</p>
+<p>This is intentionally only a possibility, not a committed target or release
+item. Promoting it to a public mode would require a runtime object model,
+module loading, source-mapped failures, portable filesystem/process/network
+adapters, dependency and distribution rules, and a clear story for code that
+currently imports another mode's platform packages. Internal evaluator work
+for REPL, tests, and backend conformance may proceed without committing TypeRB
+to shipping this mode.</p>
+<p>Self-hosting is deliberately outside the current roadmap. It will be
+reconsidered after the Go compiler has broad real-world use and its public
+behavior is stable.</p>
+<h2 id="practical-readiness-gates">Practical-readiness gates</h2>
+<p>An initial beta should require all of the following:</p>
+<ul>
+<li>A representative API and frontend can be built, tested, edited through LSP,
+and deployed without editing generated code.</li>
+<li>Compiler errors and runtime failures point back to TypeRB source.</li>
+<li>Builds and dependency resolution are reproducible in CI.</li>
+<li>The formatter, compiler, test runner, and language server are stable enough
+for daily use on a multi-package project.</li>
+<li>Each supported mode has an end-to-end conformance suite and documented escape
+hatch for platform-specific functionality.</li>
+</ul>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/roadmap.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="TypeRB packages — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/guides/packages/">
+		<title>TypeRB packages — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a class="active" aria-current="page" href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a class="active" aria-current="page" href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="typerb-packages">TypeRB packages</h1>
+<p>TypeRB uses distributed Git repositories rather than a required central
+registry. A package contains TypeRB source and a strict <code>trbpackage.json</code>
+manifest. Application and package source share the same grammar, type checker,
+typed IR, and three backends.</p>
+<h2 id="package-categories">Package categories</h2>
+<p>TypeRB uses three package boundaries and one distribution term:</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Purpose</th>
+<th>Versioning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standard library</td>
+<td>Foundational portable APIs below <code>trb/std/*</code></td>
+<td>Released with the compiler</td>
+</tr>
+<tr>
+<td>Compiler-integrated package</td>
+<td>An official package that currently requires compiler providers, typed-IR operations, or backend integration, such as <code>trb/web</code>, <code>trb/orm</code>, or <code>trb/jobs</code></td>
+<td>Released with the compiler while integration is required</td>
+</tr>
+<tr>
+<td>TypeRB package</td>
+<td>An ordinary package resolved from Git or a local path</td>
+<td>Independently versioned and locked</td>
+</tr>
+<tr>
+<td>Bundled package</td>
+<td>An ordinary TypeRB package included in the TypeRB distribution for availability or offline use</td>
+<td>Independently versioned and locked</td>
+</tr>
+</tbody>
+</table>
+<p>Compiler integration is a capability boundary, not a mark of importance. An
+official package does not receive compiler privileges merely because TypeRB
+maintains or bundles it. Compiler-integrated packages may move to ordinary
+packages as the versioned extension protocol gains the capabilities they need.</p>
+<p>A bundled package still has to be declared as a project dependency. Bundling
+does not make its APIs implicit, couple its version to the compiler, or exempt
+it from <code>trb.lock</code>.</p>
+<p>The following labels describe independent properties rather than additional
+package boundaries:</p>
+<ul>
+<li><strong>official</strong> or <strong>community</strong> identifies who maintains the package;</li>
+<li><strong>portable</strong> or <strong>platform</strong> identifies whether it supports shared TypeRB
+semantics or an explicit target ecosystem; and</li>
+<li><strong>bundled</strong> or <strong>downloaded</strong> describes distribution of an ordinary TypeRB
+package, not its privileges.</li>
+</ul>
+<p>For example, a future <code>trb/csv</code> could be an official, portable, bundled TypeRB
+package without becoming part of the standard library or gaining compiler
+privileges. A React router integration could instead be a downloaded platform
+package maintained by TypeRB or the community.</p>
+<h2 id="install-a-package">Install a package</h2>
+<p>The short name <code>acme/contracts</code> defaults to
+<code>github.com/acme/contracts</code>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> add</span><span style="color:#A5D6FF"> acme/contracts</span><span style="color:#A5D6FF"> v1.2.3</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> install</span></span>
+<span class="line"></span></code></pre>
+<p>Source keeps the short explicit import:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Contract</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> acme/contracts</span></span>
+<span class="line"></span></code></pre>
+<p>Use a full repository name when no abbreviation is wanted, or select another
+Git host explicitly:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> add</span><span style="color:#A5D6FF"> github.com/acme/contracts</span><span style="color:#A5D6FF"> v1.2.3</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> add</span><span style="color:#79C0FF"> --source</span><span style="color:#A5D6FF"> gitlab.com/company/auth</span><span style="color:#A5D6FF"> company/auth</span><span style="color:#A5D6FF"> v2.0.0</span></span>
+<span class="line"></span></code></pre>
+<p>Git credentials and private-repository access remain the responsibility of the
+installed Git client. Source URLs containing embedded passwords, query strings,
+or fragments are rejected so credentials cannot leak into project config or
+the lock. The initial resolver accepts exact semantic-version tags
+such as <code>v1.2.3</code>, <code>latest</code>, and Git revisions. <code>latest</code> resolves only during
+install or update and is then pinned.</p>
+<h2 id="package-manifest">Package manifest</h2>
+<p>A repository publishes <code>trbpackage.json</code> at its root:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "formatVersion"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"github.com/acme/contracts"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "version"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"1.2.3"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "sourceDir"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"src"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "modes"</span><span style="color:#E6EDF3">: [</span><span style="color:#A5D6FF">"go"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"ruby"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"typescript"</span><span style="color:#E6EDF3">],</span></span>
+<span class="line"><span style="color:#7EE787">  "packages"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "acme/validation"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"v1.0.0"</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "nativeDependencies"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "go"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "github.com/google/uuid"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"v1.6.0"</span></span>
+<span class="line"><span style="color:#E6EDF3">    },</span></span>
+<span class="line"><span style="color:#7EE787">    "ruby"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "uuid7"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"0.1.0"</span></span>
+<span class="line"><span style="color:#E6EDF3">    },</span></span>
+<span class="line"><span style="color:#7EE787">    "typescript"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "@acme/ui"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"1.0.0"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "uuid"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"11.1.0"</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "declarationAdapters"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "typescript"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"declarations/typescript.json"</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p><code>formatVersion</code>, <code>name</code>, and a semantic <code>version</code> are required. <code>sourceDir</code>
+defaults to <code>src</code>, and omitted <code>modes</code> support all three backends. Dependency
+aliases are local to the declaring package. Native dependencies are selected
+only for the application's active mode and merge into its generated target
+manifest.</p>
+<h3 id="fixed-declaration-providers">Fixed declaration providers</h3>
+<p>A Ruby platform package may attach fixed type declarations for classes and
+modules supplied by one of its native gems. This is useful for APIs such as a
+gem-owned mixin: application code imports the TypeRB package, the declaration
+catalog makes the mixin methods type-check, and the package root loads the gem
+at runtime.</p>
+<p>The package manifest selects one Declaration Protocol catalog for Ruby mode:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "formatVersion"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"github.com/acme/pagy"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "version"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"0.1.0"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "sourceDir"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"src"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "modes"</span><span style="color:#E6EDF3">: [</span><span style="color:#A5D6FF">"ruby"</span><span style="color:#E6EDF3">],</span></span>
+<span class="line"><span style="color:#7EE787">  "nativeDependencies"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "ruby"</span><span style="color:#E6EDF3">: { </span><span style="color:#7EE787">"pagy"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"43.6.1"</span><span style="color:#E6EDF3"> }</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "declarationProviders"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "ruby"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"declarations/ruby.json"</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p><code>src/index.trb</code> is required and owns ordinary runtime loading:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/platform/ruby/native</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">require </span><span style="color:#A5D6FF">"pagy"</span></span>
+<span class="line"></span></code></pre>
+<p>The application explicitly imports that package root. The import is a semantic
+use even when it does not import a TypeRB symbol, because it activates the
+fixed declarations and keeps the package root in generated Ruby:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> github</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">com</span><span style="color:#FF7B72">/</span><span style="color:#E6EDF3">acme</span><span style="color:#FF7B72">/</span><span style="color:#E6EDF3">pagy</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/platform/ruby/native</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> ProductsController</span></span>
+<span class="line"><span style="color:#E6EDF3">	include </span><span style="color:#FFA657">Pagy</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Method</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The JSON file uses Declaration Protocol version 2, including its generic,
+literal-dependent, instance-member, and class-member type shapes. Its
+<code>provider</code> must exactly equal the canonical package name. For example, a
+catalog may declare <code>Pagy::Offset#page</code> and the <code>Pagy::Method#pagy</code> mixin
+method:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "protocolVersion"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "provider"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"github.com/acme/pagy"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "types"</span><span style="color:#E6EDF3">: [</span></span>
+<span class="line"><span style="color:#E6EDF3">    {</span></span>
+<span class="line"><span style="color:#7EE787">      "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Pagy::Offset"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "instanceMembers"</span><span style="color:#E6EDF3">: [</span></span>
+<span class="line"><span style="color:#E6EDF3">        {</span></span>
+<span class="line"><span style="color:#7EE787">          "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"page"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">          "kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"property"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">          "return"</span><span style="color:#E6EDF3">: { </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"int"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Integer"</span><span style="color:#E6EDF3"> }</span></span>
+<span class="line"><span style="color:#E6EDF3">        }</span></span>
+<span class="line"><span style="color:#E6EDF3">      ]</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  ],</span></span>
+<span class="line"><span style="color:#7EE787">  "modules"</span><span style="color:#E6EDF3">: [</span></span>
+<span class="line"><span style="color:#E6EDF3">    {</span></span>
+<span class="line"><span style="color:#7EE787">      "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Pagy::Method"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "instanceMembers"</span><span style="color:#E6EDF3">: [</span></span>
+<span class="line"><span style="color:#E6EDF3">        {</span></span>
+<span class="line"><span style="color:#7EE787">          "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"pagy"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">          "kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"method"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">          "typeParameters"</span><span style="color:#E6EDF3">: [</span><span style="color:#A5D6FF">"T"</span><span style="color:#E6EDF3">],</span></span>
+<span class="line"><span style="color:#7EE787">          "parameters"</span><span style="color:#E6EDF3">: [</span></span>
+<span class="line"><span style="color:#E6EDF3">            {</span></span>
+<span class="line"><span style="color:#7EE787">              "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"paginator"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">              "type"</span><span style="color:#E6EDF3">: { </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"string"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"String"</span><span style="color:#E6EDF3"> },</span></span>
+<span class="line"><span style="color:#7EE787">              "literalValues"</span><span style="color:#E6EDF3">: [</span><span style="color:#A5D6FF">"offset"</span><span style="color:#E6EDF3">]</span></span>
+<span class="line"><span style="color:#E6EDF3">            },</span></span>
+<span class="line"><span style="color:#E6EDF3">            {</span></span>
+<span class="line"><span style="color:#7EE787">              "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"collection"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">              "type"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">                "kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"array"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">                "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Array"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">                "arguments"</span><span style="color:#E6EDF3">: [{ </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"named"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"T"</span><span style="color:#E6EDF3"> }]</span></span>
+<span class="line"><span style="color:#E6EDF3">              }</span></span>
+<span class="line"><span style="color:#E6EDF3">            }</span></span>
+<span class="line"><span style="color:#E6EDF3">          ],</span></span>
+<span class="line"><span style="color:#7EE787">          "return"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">            "kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"named"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">            "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Tuple"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">            "arguments"</span><span style="color:#E6EDF3">: [</span></span>
+<span class="line"><span style="color:#E6EDF3">              { </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"named"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Pagy::Offset"</span><span style="color:#E6EDF3"> },</span></span>
+<span class="line"><span style="color:#E6EDF3">              {</span></span>
+<span class="line"><span style="color:#7EE787">                "kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"array"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">                "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Array"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">                "arguments"</span><span style="color:#E6EDF3">: [{ </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"named"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"T"</span><span style="color:#E6EDF3"> }]</span></span>
+<span class="line"><span style="color:#E6EDF3">              }</span></span>
+<span class="line"><span style="color:#E6EDF3">            ]</span></span>
+<span class="line"><span style="color:#E6EDF3">          }</span></span>
+<span class="line"><span style="color:#E6EDF3">        }</span></span>
+<span class="line"><span style="color:#E6EDF3">      ]</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  ]</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>This capability reads fixed data; importing a package never executes a
+provider program. The external subset cannot select compiler runtime
+operations or call specializers, claim project source modules, inject project
+rules or runtime types, declare compiler-controlled block contracts, or weaken
+nominal representation boundaries. The catalog must be a regular package file,
+not a symlink, and contain at least one declaration. Unknown JSON fields,
+trailing data, unsafe <code>Any</code> or invalid signature types, compiler-derived
+representation metadata, and conflicts with active built-in or project
+declarations are errors. These restrictions keep ordinary signatures useful
+without turning a dependency into compiler code.</p>
+<p>Fixed declaration providers initially support Ruby only. They describe
+gem-owned global classes, modules, and mixins whose runtime loading remains in
+ordinary TypeRB package source. A declaration adapter instead projects
+target-native module exports and may require the separate runtime mapping
+below. Project-aware discovery remains limited to bundled compiler-integrated
+providers.</p>
+<h3 id="declaration-adapters">Declaration adapters</h3>
+<p>An optional declaration adapter supplies semantic TypeRB declarations for a
+target-native dependency. The semantic catalog format is mode-independent; a
+mode key selects the native-ecosystem adapter that consumes it and validates
+any adapter-specific bridge kinds. TypeScript can overlay declarations inferred
+from installed <code>.d.ts</code> files while application source continues to import the
+npm package directly. Within the declaration-adapter path, Go and Ruby require
+the separate native runtime mapping described below. Ruby fixed declarations
+for gem-owned global types and mixins use the narrower capability above.</p>
+<p>An adapter file is declarative data and cannot execute compiler code. The
+common host strictly decodes the catalog, validates its protocol shape, and
+verifies its checksum. The selected ecosystem adapter checks that every
+declared module belongs to the package's native dependencies for that mode,
+rejects name conflicts across exports and supporting records, and validates
+adapter-specific bridge kinds. A declaration catalog never grants permission to
+call native code by itself.</p>
+<p>The adapter file uses Declaration/Adapter Protocol version 2:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "protocolVersion"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "modules"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "@acme/ui"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "exports"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">        "Button"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">          "kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"component"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">          "type"</span><span style="color:#E6EDF3">: { </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"named"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"ReactNode"</span><span style="color:#E6EDF3"> },</span></span>
+<span class="line"><span style="color:#7EE787">          "parameters"</span><span style="color:#E6EDF3">: [</span></span>
+<span class="line"><span style="color:#E6EDF3">            { </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"named"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"ButtonProps"</span><span style="color:#E6EDF3"> }</span></span>
+<span class="line"><span style="color:#E6EDF3">          ],</span></span>
+<span class="line"><span style="color:#7EE787">          "required"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span></span>
+<span class="line"><span style="color:#E6EDF3">        }</span></span>
+<span class="line"><span style="color:#E6EDF3">      },</span></span>
+<span class="line"><span style="color:#7EE787">      "records"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">        "ButtonProps"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">          "kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"record"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">          "type"</span><span style="color:#E6EDF3">: { </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"named"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"ButtonProps"</span><span style="color:#E6EDF3"> },</span></span>
+<span class="line"><span style="color:#7EE787">          "fields"</span><span style="color:#E6EDF3">: [</span></span>
+<span class="line"><span style="color:#E6EDF3">            {</span></span>
+<span class="line"><span style="color:#7EE787">              "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"label"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">              "type"</span><span style="color:#E6EDF3">: { </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"string"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"String"</span><span style="color:#E6EDF3"> }</span></span>
+<span class="line"><span style="color:#E6EDF3">            }</span></span>
+<span class="line"><span style="color:#E6EDF3">          ]</span></span>
+<span class="line"><span style="color:#E6EDF3">        }</span></span>
+<span class="line"><span style="color:#E6EDF3">      }</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>This protocol is an alpha Tier 1 extension for package authors. It supports
+<code>function</code>, <code>component</code>, <code>class</code>, <code>interface</code>, <code>record</code>, and transparent
+<code>type_alias</code> declarations. <code>typeParameters</code> names explicit generic parameters
+on functions, classes, interfaces, records, and aliases; <code>aliasTarget</code>
+describes an alias's semantic target. Semantic types may refer to those
+parameters and may use literal and union types for discriminated result
+contracts. Nested semantic type arguments use the <code>arguments</code> field. Every
+semantic type includes its canonical TypeRB <code>name</code>; collection and union kinds
+use their required argument counts, while a function's final argument is its
+return type. TypeRB calls still provide explicit type arguments. Adapter
+declarations cannot use <code>Any</code>; unrepresentable boundaries remain explicit
+diagnostics.</p>
+<p>Call parameters are valid on functions, components, and classes. Fields are
+valid on records, classes, and interfaces. Interface fields are readonly and
+describe properties of a native object without making it constructible. A
+function or component uses <code>members</code> for compound function or component
+exports such as <code>Table.Row</code>. A class instead
+uses <code>instanceMembers</code> and <code>classMembers</code>, so a method such as
+<code>router.navigate()</code> cannot accidentally become a class call such as
+<code>Router.navigate()</code>. An interface uses fields and <code>instanceMembers</code> and cannot
+be constructed, which is appropriate for opaque native objects returned by a
+function. Members cannot themselves contain nested members. A component
+accepts at most one non-variadic props parameter and does not declare explicit
+type parameters. Class, interface, record, and alias declarations use their
+exported name as their named self type.</p>
+<p>For example, a native class method stays distinct from an instance method:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"class"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "type"</span><span style="color:#E6EDF3">: { </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"named"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Router"</span><span style="color:#E6EDF3"> },</span></span>
+<span class="line"><span style="color:#7EE787">  "instanceMembers"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "navigate"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"function"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "type"</span><span style="color:#E6EDF3">: { </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"void"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Void"</span><span style="color:#E6EDF3"> },</span></span>
+<span class="line"><span style="color:#7EE787">      "parameters"</span><span style="color:#E6EDF3">: [</span></span>
+<span class="line"><span style="color:#E6EDF3">        { </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"string"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"String"</span><span style="color:#E6EDF3"> }</span></span>
+<span class="line"><span style="color:#E6EDF3">      ],</span></span>
+<span class="line"><span style="color:#7EE787">      "required"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>An adapter may expose a native Promise callback as a checked <code>Result</code>-returning
+TypeRB function. <code>resultBridge</code> declares that an <code>Err</code> becomes a rejected
+Promise while an <code>Ok</code> becomes its resolved value:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"queryFn"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "type"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"function"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Function"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "arguments"</span><span style="color:#E6EDF3">: [{ </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"named"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"TData"</span><span style="color:#E6EDF3"> }],</span></span>
+<span class="line"><span style="color:#7EE787">    "resultBridge"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"result_to_promise_rejection"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "error"</span><span style="color:#E6EDF3">: { </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"named"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"TError"</span><span style="color:#E6EDF3"> }</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>The TypeRB callback must return the compiler-owned <code>Result&lt;TData, TError&gt;</code> or
+a transparent alias. The generated native callback accepts either that Result
+or a Promise of it, resolves <code>Ok(value)</code>, and rejects with the exact
+<code>Err(error)</code> payload. A native <code>Void</code> success uses <code>Result&lt;Unit, E&gt;</code> and emits
+<code>Promise&lt;void&gt;</code>; a generic success instantiated as <code>Unit</code> remains
+<code>Promise&lt;Unit&gt;</code>. The bridge is allowed only at the declared native boundary;
+it does not make Promise rejection part of portable TypeRB.</p>
+<p>The opposite direction is a call-level bridge on a native function or
+instance member. The native Promise success type must match the <code>Result</code>
+success type. The initial bridge intentionally accepts only <code>String</code> errors:
+an <code>Error</code> rejection contributes its message, while any other rejection uses
+<code>String(...)</code>. If that conversion itself throws, the stable fallback is
+<code>&quot;Unknown native rejection&quot;</code>.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"function"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "type"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"named"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Result"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "arguments"</span><span style="color:#E6EDF3">: [</span></span>
+<span class="line"><span style="color:#E6EDF3">      { </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"string"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"String"</span><span style="color:#E6EDF3"> },</span></span>
+<span class="line"><span style="color:#E6EDF3">      { </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"string"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"String"</span><span style="color:#E6EDF3"> }</span></span>
+<span class="line"><span style="color:#E6EDF3">    ]</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "resultBridge"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"promise_rejection_to_result"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "error"</span><span style="color:#E6EDF3">: { </span><span style="color:#7EE787">"kind"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"string"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"String"</span><span style="color:#E6EDF3"> }</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>The call is a backend suspension root even though TypeRB adds no <code>async</code> or
+<code>await</code> syntax. A resolved native <code>Promise&lt;T&gt;</code> becomes <code>Result&lt;T, String&gt;::Ok</code>;
+<code>Promise&lt;void&gt;</code> is represented by <code>Result&lt;Unit, String&gt;::Ok(Unit.new())</code>.
+Generated TypeScript first checks the native expression against that exact
+Promise type, so conformance testing rejects a bridge attached to a synchronous
+return. Synchronous throws from the call use the same checked error path. Rich
+record or enum errors require a future package-owned rejection mapper and are
+rejected by this first bridge rather than filled with partial values. The
+bridge does not invent cancellation: a package must declare an explicit native
+cancellation parameter when its API provides one.</p>
+<p>Declaration/Adapter Protocol version 2 distinguishes class instance members
+from class members. To migrate a version 1 catalog, set <code>protocolVersion</code> to
+<code>2</code> and replace each class's <code>members</code> with <code>instanceMembers</code> or
+<code>classMembers</code> according to how callers access it.</p>
+<p>For the older TypeScript-only <code>nativeTypeProviders</code> format version 2, rename
+the manifest field to <code>declarationAdapters</code>, replace the file's
+<code>formatVersion</code> with <code>protocolVersion: 2</code>, rename nested semantic type <code>args</code>
+fields to <code>arguments</code>, and split class members by access kind. Existing
+<code>resultBridge</code> contracts remain valid. Then run <code>trb install</code> to regenerate
+<code>.trb/native-types.json</code>; its cache format is independent from the
+package-owned protocol.</p>
+<h3 id="native-runtime-adapters">Native runtime adapters</h3>
+<p>A package may pair a declaration adapter with a Native Runtime Adapter Protocol
+file for the same mode. The declaration file remains the portable semantic
+contract; the runtime file maps its canonical export identities to
+package-owned target shims. This is the initial supported path for calling
+native Go and Ruby dependencies from an independent TypeRB package, and it is
+also available in TypeScript mode when a fixed <code>.d.ts</code> projection is not an
+appropriate boundary.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "nativeDependencies"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "go"</span><span style="color:#E6EDF3">: { </span><span style="color:#7EE787">"github.com/acme/aws-s3-wire"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"v0.1.0"</span><span style="color:#E6EDF3"> },</span></span>
+<span class="line"><span style="color:#7EE787">    "ruby"</span><span style="color:#E6EDF3">: { </span><span style="color:#7EE787">"acme-aws-s3-wire"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"0.1.0"</span><span style="color:#E6EDF3"> },</span></span>
+<span class="line"><span style="color:#7EE787">    "typescript"</span><span style="color:#E6EDF3">: { </span><span style="color:#7EE787">"@acme/aws-s3-wire"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"0.1.0"</span><span style="color:#E6EDF3"> }</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "declarationAdapters"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "go"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"declarations/go.json"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "ruby"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"declarations/ruby.json"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "typescript"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"declarations/typescript.json"</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "runtimeAdapters"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "go"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"runtime/go.json"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "ruby"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"runtime/ruby.json"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "typescript"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"runtime/typescript.json"</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>Each <code>runtimeAdapters.&lt;mode&gt;</code> entry requires
+<code>declarationAdapters.&lt;mode&gt;</code>. Runtime Protocol version 1 maps a stable
+<code>canonical-module#export</code> identity to one top-level target function:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "protocolVersion"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "bindings"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "github.com/acme/aws-s3/native#head_object"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "dependency"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"github.com/acme/aws-s3-wire"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "module"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"github.com/acme/aws-s3-wire/s3"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "symbol"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"HeadObject"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "callConvention"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"function"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "maySuspend"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">true</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "propagatesExecutionScope"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">true</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>The initial wire contract is deliberately narrow. Every export in a
+runtime-backed declaration module must be a non-generic top-level function with
+exactly one required <code>String</code> parameter and a <code>String</code> return. A module cannot
+mix direct native declarations and runtime-backed exports, and a runtime export
+cannot also declare a <code>resultBridge</code>. Package TypeRB source should expose the
+domain API: it serializes a request to JSON, calls the private wire function,
+validates and decodes the response envelope, and converts its success or error
+variant to the package's ordinary records, enums, and <code>Result</code> values. The
+compiler treats the wire payload as an opaque string and does not invent an SDK
+error mapping.</p>
+<p>The target shim owns SDK construction, target exceptions or errors, and the
+stable JSON envelope. <code>dependency</code> must name a native dependency declared for
+the selected mode. A Go or TypeScript <code>module</code> must be that dependency or one
+of its submodules; a Ruby <code>module</code> is a safe relative <code>require</code> path. Go symbols
+are exported function identifiers, Ruby symbols are constant-qualified module
+methods, and TypeScript symbols are named function exports. Package import,
+resolution, adapter checking, and compilation validate this data but never
+execute the shim.</p>
+<p><code>maySuspend</code> makes the mapped TypeScript call and all portable callers that
+reach it suspend; TypeRB source still adds no <code>async</code> or <code>await</code> syntax.
+<code>propagatesExecutionScope</code> passes one compiler-owned argument before the
+declared string parameter: <code>context.Context</code> in Go, the TypeRB execution-scope
+object in Ruby, and <code>AbortSignal | undefined</code> in TypeScript. Set either flag
+only when the shim implements that contract. Direct FFI, native object handles,
+structural wire types, lifecycle hooks, and arbitrary error-mapper callbacks
+remain outside Protocol version 1.</p>
+<p>Validate an adapter package from its repository root before publishing it:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> adapter</span><span style="color:#A5D6FF"> check</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> adapter</span><span style="color:#A5D6FF"> check</span><span style="color:#79C0FF"> --format</span><span style="color:#A5D6FF"> json</span></span>
+<span class="line"></span></code></pre>
+<p>The command validates the package manifest and every configured adapter through
+the same selected ecosystem consumer used by <code>trb install</code> or compilation. It
+therefore checks the common catalog shape, native-dependency ownership, name
+conflicts within the catalog, ecosystem-specific bridge kinds, runtime export
+coverage, and the narrow runtime signature and target rules. An explicit
+package root may be passed as the only positional argument.</p>
+<p><code>adapter check</code> does not install the native package or prove that a projected
+contract remains assignable to that package's declarations. Keep the native
+dependency at an explicit version and run a native type-checking conformance
+project when changing it. The repository's
+<code>examples/adapters/tanstack-query</code> fixture demonstrates this split with a
+checked catalog plus a strict TypeScript project pinned to TanStack Query.
+The <code>examples/adapters/tanstack-router</code> fixture also verifies a
+non-constructible interface and its instance member against the native package.
+It intentionally omits route-tree-derived generics, exact parameters, and
+destinations: those values require a future project provider rather than a
+fixed declaration catalog.
+The <code>examples/adapters/auth0-react</code> fixture verifies readonly properties on a
+non-constructible interface, a React provider projection, and native Promise
+calls exposed as checked Results. Its token, login, and logout methods use the
+<code>promise_rejection_to_result</code> call bridge described above.
+The <code>examples/adapters/amplify-auth</code> fixture applies the same String bridge to
+Amplify Auth 6.20.0 and separately observes the native error name, message, and
+recovery suggestion that a future package-owned rich rejection mapper would
+need to preserve. Its application-owned TypeScript bootstrap imports
+<code>amplify_outputs.json</code> and calls <code>Amplify.configure</code>; project-specific generated
+configuration does not require adapter code or a compiler provider.</p>
+<p>An adapter package may connect one conformance project to each adapter mode:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "adapterTests"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "typescript"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "config"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"conformance/trbconfig.jsonc"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "command"</span><span style="color:#E6EDF3">: [</span><span style="color:#A5D6FF">"bun"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"run"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"check"</span><span style="color:#E6EDF3">]</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>The config and any relative command executable stay below the package root.
+TypeRB passes the command as an argument vector instead of interpreting a shell
+string; the invoked tool may retain its own script behavior. Its project must
+install the package under test from the current package root so the checked
+catalog and source cannot silently come from another copy.</p>
+<p>Install the conformance project's dependencies explicitly, then test it from
+the adapter root:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> install</span><span style="color:#79C0FF"> --frozen</span><span style="color:#79C0FF"> --config</span><span style="color:#A5D6FF"> conformance/trbconfig.jsonc</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> adapter</span><span style="color:#A5D6FF"> test</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> adapter</span><span style="color:#A5D6FF"> test</span><span style="color:#79C0FF"> --format</span><span style="color:#A5D6FF"> json</span></span>
+<span class="line"></span></code></pre>
+<p><code>adapter test</code> runs three ordered phases: <code>adapter_check</code>, <code>build</code>, and
+<code>native_check</code>. It does not install dependencies or contact the network on
+TypeRB's behalf. The native command runs only when the author invokes
+<code>adapter test</code>; ordinary package resolution, installation, build, and import
+never execute it. Failed native output is written to standard error so JSON
+reports remain parseable.</p>
+<p>The JSON report uses the adapter-tooling protocol version and records stable
+phase states without embedding native-tool logs:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "protocolVersion"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "compilerVersion"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"0.3.23"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "package"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"github.com/acme/ui-types"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "version"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"0.1.0"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "manifestPath"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"/workspace/ui-types/trbpackage.json"</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "tests"</span><span style="color:#E6EDF3">: [</span></span>
+<span class="line"><span style="color:#E6EDF3">    {</span></span>
+<span class="line"><span style="color:#7EE787">      "mode"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"typescript"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "configPath"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"/workspace/ui-types/conformance/trbconfig.jsonc"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "command"</span><span style="color:#E6EDF3">: [</span><span style="color:#A5D6FF">"bun"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"run"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"check"</span><span style="color:#E6EDF3">],</span></span>
+<span class="line"><span style="color:#7EE787">      "passed"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">true</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "phases"</span><span style="color:#E6EDF3">: [</span></span>
+<span class="line"><span style="color:#E6EDF3">        {</span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"adapter_check"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"status"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"passed"</span><span style="color:#E6EDF3">},</span></span>
+<span class="line"><span style="color:#E6EDF3">        {</span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"build"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"status"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"passed"</span><span style="color:#E6EDF3">},</span></span>
+<span class="line"><span style="color:#E6EDF3">        {</span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"native_check"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"status"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"passed"</span><span style="color:#E6EDF3">}</span></span>
+<span class="line"><span style="color:#E6EDF3">      ]</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  ],</span></span>
+<span class="line"><span style="color:#7EE787">  "diagnostics"</span><span style="color:#E6EDF3">: [],</span></span>
+<span class="line"><span style="color:#7EE787">  "summary"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "tests"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "passedTests"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "failedTests"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "errors"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "warnings"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p><code>adapter check --format json</code> output is deterministic and versioned
+independently from the declaration catalog. It contains package identity, one
+result per adapter in mode order, semantic declaration counts, diagnostics,
+and a summary. Invalid input still
+produces the report on standard output and returns a nonzero status, allowing
+CI and AI agents to use one contract for success and failure:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "protocolVersion"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "compilerVersion"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"0.3.23"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "package"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"github.com/acme/ui-types"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "version"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"0.1.0"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "manifestPath"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"/workspace/ui-types/trbpackage.json"</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "adapters"</span><span style="color:#E6EDF3">: [</span></span>
+<span class="line"><span style="color:#E6EDF3">    {</span></span>
+<span class="line"><span style="color:#7EE787">      "mode"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"typescript"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "path"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"/workspace/ui-types/declarations/typescript.json"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "valid"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">true</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "declarationProtocolVersion"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "modules"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "exports"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "supportingRecords"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "runtimePath"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"/workspace/ui-types/runtime/typescript.json"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "runtimeProtocolVersion"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "runtimeBindings"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  ],</span></span>
+<span class="line"><span style="color:#7EE787">  "diagnostics"</span><span style="color:#E6EDF3">: [],</span></span>
+<span class="line"><span style="color:#7EE787">  "summary"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "adapters"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "validAdapters"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "modules"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "exports"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "supportingRecords"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "runtimeBindings"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "errors"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "warnings"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>Adapter-only supporting records may describe props or parameter objects without becoming
+application-importable names. When a selected contract refers to real native
+package types, generated TypeScript adds the required type-only imports while
+keeping those transitive names invisible to TypeRB source and completion.</p>
+<p>Arbitrary compiler-triggered executable extensions are intentionally
+unavailable. Package imports that need to inspect the TypeRB project during
+compilation or change syntax, checking, or code generation must wait for a
+versioned and sandboxed extension protocol rather than importing compiler
+internals. Declaration adapters and the fixed native runtime mapping above are
+strictly decoded, non-executable subsets; neither permits package-supplied
+compiler logic.</p>
+<p>An explicitly invoked external generator is a different boundary. A tool may
+read an OpenAPI document or another external schema and emit ordinary <code>.trb</code>
+source or a declarative adapter catalog. TypeRB then parses, checks, formats,
+maps, and compiles those artifacts through the normal pipeline. Such a tool is
+not executed by importing a package, receives no compiler privileges, and
+remains under the application's dependency and command policy. Prefer this
+model when generation does not require TypeRB project declarations; reserve a
+future compiler provider for cases that genuinely need project-aware discovery.</p>
+<h3 id="experimental-bundled-declaration-providers">Experimental bundled declaration providers</h3>
+<p>TypeRB 0.x has experimental data boundaries for declaration discovery and
+output from bundled, compiler-integrated packages. <code>trb/orm</code> and <code>trb/jobs</code> are
+the first consumers. The ORM provider discovers project models and schema
+metadata, while the Jobs provider derives typed enqueue methods from Job
+classes. Their resulting catalogs cross a versioned, JSON-serializable
+Declaration Protocol before resolution and checking. The current Declaration
+Protocol is version 2; parameters may explicitly identify a representation
+boundary for nominal source newtypes. The compiler host
+validates and copies that data into its private semantic representation.</p>
+<p>The Jobs and ORM declaration providers also receive versioned, validated
+Project Declaration Input snapshots. Version 3 contains canonical module and
+import identity, transparent type aliases, nominal newtypes with concrete
+representations, enum and class declarations, method signatures, authored,
+resolved, and boundary representation types, declarative class-body call
+values, structural block summaries, and source spans. It does not contain
+parser nodes, method or block bodies, resolver or checker state, filesystem
+handles, or backend objects. These two consumers characterize a small reusable read-only
+project view; it is not yet a general external provider API.</p>
+<p>ORM declaration discovery composes that generic project snapshot with a
+separate versioned ORM Declaration Input. Its schema section contains only the
+adapter plus table, column, foreign-key, and unique-constraint facts required
+to derive the catalog. The compiler host still owns schema-lock loading or live
+introspection, and database locations and environment names are excluded from
+the provider input. Provider-specific data therefore remains typed and local
+to ORM instead of becoming arbitrary fields in the generic project protocol.</p>
+<p>The initial declaration catalog can describe:</p>
+<ul>
+<li>package-owned types, modules, methods, and properties;</li>
+<li>generic and literal-dependent call signatures such as typed ORM projections;</li>
+<li>parameters that explicitly accept a nominal source type through its concrete
+serialization or persistence representation;</li>
+<li>structured block contracts, including portable control and <code>Result</code>
+boundaries; and</li>
+<li>located project-declaration references and runtime value types needed by the
+generated declarations.</li>
+</ul>
+<p>A declaration may name an opaque <code>runtimeOperation</code>, but only bundled compiler
+backends can implement those operation names today. ORM runtime manifests and
+Job worker lifecycle use separate bundled runtime paths rather than becoming
+declaration fields. Jobs now exposes a small package-level <code>JobAdapter</code>
+interface in ordinary TypeRB source, but its SQL implementation still reaches
+bundled native primitives. These protocols therefore narrow the declaration
+boundary; they do not yet make ORM or Jobs an ordinary external package or
+define a rich external native-runtime ABI. Independent packages can use the
+fixed string-wire function ABI described earlier, but it does not expose these
+bundled operation names or lifecycle paths.</p>
+<p>The declaration type format deliberately rejects call-site-only record
+inspection and source-definition metadata. Those facts remain scoped to call
+specialization until namespace-stable type identities are designed. The
+read-only project input may carry source-definition identity because providers
+need to distinguish an imported canonical type from a same-shaped local type.
+Applying the same capability to Jobs and ORM established the reusable
+declaration facts without introducing an arbitrary provider-data bag. The
+remaining ORM integration and the normalized native operations below the Jobs
+adapter can continue to test whether the initial string-wire runtime protocol
+needs another general capability. Capability negotiation and sandboxing remain
+deferred until an external project-aware provider boundary is justified.</p>
+<h3 id="experimental-bundled-project-source-generation">Experimental bundled project source generation</h3>
+<p>The Project Generated Source Protocol is a second versioned, data-only
+boundary for bundled project providers. A version 1 response contains the
+provider identity and deterministic TypeRB fragments. Each fragment has a
+stable ID, the path of an existing project module, ordinary TypeRB source,
+required named imports, and an authored origin span. A response may also
+contain located issues. It cannot create a standalone virtual module or return
+backend source, parser nodes, typed IR, opaque resources, filesystem handles,
+or runtime import mappings.</p>
+<p>The compiler host validates provider ownership and target modules, removes
+stale fragments by stable identity, and appends the current fragments to their
+owning source units. They then pass through the ordinary parser, resolver,
+checker, typed IR, effect analysis, source mapping, and all three backends.
+Diagnostics and generated source-map locations are mapped to the authored
+origin. Fragment source and identity participate in compiler cache identity;
+project edits currently re-enter full project analysis conservatively when a
+project-generated fragment is active.</p>
+<p>Jobs is the first consumer. The Jobs provider generates one portable worker
+dispatcher plus one stable fragment for each Job's typed enqueue wrappers. The
+enqueue fragments encode scalar payloads, normalize relative scheduling, and
+call the ordinary TypeRB <code>JobAdapter</code> contract. The dispatcher validates
+payload versions, decodes arguments, invokes the typed Job, and returns
+<code>JobResult</code>. Go, Ruby, and Bun workers call that compiled function from thin
+target-specific panic or exception wrappers. SQL persistence, claims,
+heartbeats, retry transitions, signals, and worker process lifecycle remain
+adapter/backend responsibilities. This split exercises reusable generated
+source and per-fragment authored origins without turning Jobs metadata into
+generic protocol fields or prematurely defining a generic native-runtime ABI.</p>
+<p>The compiler currently keeps a small internal runtime-operation descriptor for
+the two call-graph effects that proved common across Jobs and ORM: an operation
+may suspend, and it may propagate the hidden execution scope used for
+cancellation. Typed parameters and return values remain in package
+declarations, while target lowering and native-error-to-<code>Result</code> conversion
+remain package-specific. Those findings also produced the independent Native
+Runtime Adapter Protocol's two explicit effect flags. The external protocol
+remains limited to the fixed <code>String -&gt; String</code> function wire and does not
+expose compiler-owned operation names or package-specific ORM and Jobs
+lowering.</p>
+<p>The project-source protocol in this section is still bundled and experimental,
+not a package-manifest capability or external plugin API. Like call
+specialization below, its required imports use ordinary named imports.
+Namespace-stable public type identities, capability negotiation, isolation, and
+compatibility policy remain necessary before independent packages can generate
+project-aware source safely. Independent packages may use only the declaration
+and fixed runtime adapter files described earlier.</p>
+<h3 id="experimental-bundled-call-specialization">Experimental bundled call specialization</h3>
+<p>TypeRB 0.x also has an experimental call-specialization boundary for bundled,
+compiler-integrated packages. It is not a package-manifest capability or a
+supported external plugin API yet. The first consumer is
+<code>trb/web</code>'s <code>Context#bind&lt;T&gt;()</code>.</p>
+<p>A call specializer receives a versioned, serializable request containing the
+selected provider, call-site identity, resolved type arguments, nominal
+newtype representation metadata, and the record shape needed by that provider.
+The current request protocol is version 2. It returns ordinary TypeRB helper
+source, named imports required by that source, and a narrow replacement of the
+original call.
+The compiler appends the helper to the call's owning module and runs it through
+the normal parser, resolver, checker, typed IR, and backend pipeline. Package
+code does not receive AST, checker, typed-IR, or backend objects, and it does not
+emit Go, Ruby, or TypeScript source.</p>
+<p>Generated diagnostics and source mappings point back to the original call, and
+generated names use the compiler-reserved <code>__trb</code> namespace. The current
+request shape deliberately supports only the facts needed by <code>Context#bind</code>;
+it is expected to change as additional package cases identify reusable
+capabilities. In particular, generated source currently relies on ordinary
+named type imports, so namespace-stable type imports must be designed before
+this boundary is opened to independent packages.</p>
+<h2 id="lock-and-cache">Lock and cache</h2>
+<p>Commit <code>trb.lock</code>. It records direct import mappings, the complete dependency
+graph, exact Git commits, and SHA-256 checksums. Remote content is stored by
+checksum below <code>.trb/packages</code>, which is ignored by Git. Builds, checks, runs,
+and the REPL read the lock and verify cached content without network access.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Reject a missing or stale lock in CI.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> install</span><span style="color:#79C0FF"> --frozen</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Never contact Git; fail if locked remote content is absent.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> install</span><span style="color:#79C0FF"> --offline</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Re-resolve entries such as latest.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> update</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Re-resolve one direct alias and the dependencies selected by its new manifest.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> update</span><span style="color:#A5D6FF"> acme/contracts</span></span>
+<span class="line"></span></code></pre>
+<p>Without package arguments, <code>trb update</code> re-resolves the complete graph. With
+one or more direct application aliases, it keeps every unselected direct graph
+pinned and re-resolves each selected package and its transitive dependencies.
+Selective update requires a current lock. If a selected graph and an
+unselected graph require incompatible revisions of the same canonical package,
+the command reports a conflict; the initial resolver does not choose a winner.</p>
+<h2 id="local-development">Local development</h2>
+<p>Use the same package manifest through an editable path:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> add</span><span style="color:#79C0FF"> --path</span><span style="color:#A5D6FF"> ../contracts</span><span style="color:#A5D6FF"> local/contracts</span></span>
+<span class="line"></span></code></pre>
+<p>Local paths are recorded relative to the project and source content is not
+locked, so code edits are visible immediately. The normalized manifest is
+checksummed; run <code>trb install</code> after changing its identity, dependencies,
+supported modes, native dependencies, fixed declaration provider, declaration
+adapter, or runtime adapter. Edits to a local fixed declaration catalog are
+strictly reloaded by the next build and participate in incremental compiler
+invalidation. Declaration adapter file changes require <code>trb install</code>; a build
+diagnoses a stale cached declaration adapter. Runtime adapter data is strictly
+reloaded and validated by each build. Run <code>trb adapter check</code> before publishing
+either adapter file.
+A local package's manifest name
+remains its canonical identity; <code>local/contracts</code> is only the importing
+project's alias.</p>
+<p><code>localPackages</code> remains available for older source-only workspaces, but new
+reusable packages should use <code>trbpackage.json</code> and a path requirement.</p>
+<h2 id="production-readiness-boundaries">Production-readiness boundaries</h2>
+<p>The distributed resolver is usable without a central registry, but the
+following capabilities remain intentionally staged:</p>
+<ul>
+<li>Requirements accept exact semantic-version tags, <code>latest</code>, or Git revisions.
+Semantic-version ranges and a policy for selecting one version from multiple
+requirements are not defined. Different requirements for one canonical
+package therefore remain a conflict.</li>
+<li>Publishing currently means committing a root <code>trbpackage.json</code> and tagging a
+matching semantic version in Git. There is no <code>trb publish</code>, registry,
+compatibility checker, signing policy, provenance verification, or
+vulnerability service.</li>
+<li>Remote content is cached below each project's <code>.trb/packages</code>. A shared
+user-level cache, concurrent-install policy, garbage collection, and cache
+permission model are not defined.</li>
+<li>Multiple local path packages may live in one repository, but TypeRB does not
+provide first-class workspace orchestration or select a package from a
+subdirectory of one remote Git source.</li>
+<li>Public user-defined type names must still be unique across the complete
+project graph. Namespace-stable type identity is required before independent
+packages may safely export the same authored type name.</li>
+</ul>
+<p>Remote package checksum traversal rejects symbolic links, and every cache read
+revalidates its checksum. Local path packages are editable developer inputs and
+are not content locked as untrusted artifacts. Git fetches use shallow history,
+but explicit transfer-size, file-count, and execution-time limits are not yet
+part of the resolver. Checksums establish content integrity and reproducibility;
+they do not establish author trust or absence of vulnerabilities.</p>
+<p><code>trb install</code> delegates native dependency installation to Go modules, Bundler,
+or npm/Bun. Native ecosystem code, build steps, and install scripts remain
+outside the TypeRB compiler-extension boundary. Package import itself does not
+execute package-supplied compiler code; external project-aware executable
+providers remain unavailable until a sandbox and resource limits are defined.</p>
+<h2 id="native-dependencies">Native dependencies</h2>
+<p><code>dependencies</code> and <code>devDependencies</code> in <code>trbconfig.jsonc</code> describe target
+language packages rather than TypeRB source packages. Manage them explicitly:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> add</span><span style="color:#79C0FF"> --native</span><span style="color:#A5D6FF"> PACKAGE</span><span style="color:#A5D6FF"> VERSION</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> add</span><span style="color:#79C0FF"> --native</span><span style="color:#79C0FF"> --dev</span><span style="color:#A5D6FF"> PACKAGE</span><span style="color:#A5D6FF"> VERSION</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> remove</span><span style="color:#79C0FF"> --native</span><span style="color:#A5D6FF"> PACKAGE</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> sync</span></span>
+<span class="line"></span></code></pre>
+<p>Projects with <code>&quot;packageManagement&quot;: &quot;external&quot;</code> may still resolve TypeRB
+packages, but the host project remains responsible for installing all merged
+native dependencies. In TypeScript mode, <code>trb install</code> still indexes declared
+native package types after the host package manager has installed them.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/guides/packages.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

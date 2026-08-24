@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Learning TypeRB — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/learning/">
+		<title>Learning TypeRB — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a class="active" aria-current="page" href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a class="active" aria-current="page" href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="learning-typerb">Learning TypeRB</h1>
+<p>TypeRB is in alpha, so the fastest way to learn it is to combine executable
+feedback with focused references. This page is a path through the existing
+material, not a second copy of the language specification.</p>
+<h2 id="1-try-the-language">1. Try the language</h2>
+<p>Start with <a href="https://type-rb.github.io/tour/">A Tour of TypeRB</a>. It runs the
+compiler in the browser and introduces the core syntax in short lessons.</p>
+<p>Use the <a href="https://type-rb.github.io/play/">Playground</a> when you want to change a
+lesson, switch targets, format source, or inspect generated Go, Ruby, and
+TypeScript.</p>
+<p>For a terminal session:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">$</span><span style="color:#A5D6FF"> trb</span></span>
+<span class="line"><span style="color:#FFA657">trb:go</span><span style="color:#E6EDF3">> </span><span style="color:#A5D6FF">puts</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">"Hello, TypeRB!"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FFA657">Hello,</span><span style="color:#A5D6FF"> TypeRB!</span></span>
+<span class="line"><span style="color:#FFA657">trb:go</span><span style="color:#E6EDF3">> </span><span style="color:#79C0FF">1</span><span style="color:#A5D6FF"> +</span><span style="color:#79C0FF"> 2</span></span>
+<span class="line"><span style="color:#FFA657">3</span><span style="color:#A5D6FF"> :</span><span style="color:#A5D6FF"> Integer</span></span>
+<span class="line"></span></code></pre>
+<p>The scratch REPL uses Go mode. Select another target with
+<code>trb repl --mode ruby</code> or <code>trb repl --mode typescript</code>.</p>
+<h2 id="2-build-one-local-program">2. Build one local program</h2>
+<p>Follow <a href="/docs/getting-started/#create-a-project">Create a project</a>, then keep this loop
+short:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> fmt</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> check</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span></span>
+<span class="line"></span></code></pre>
+<p><code>trb check</code> validates the complete configured project without generating
+target source or starting a target toolchain. That makes it the normal command
+to run while editing. <code>trb lint</code> repeats that correctness check and then adds
+the project's optional maintainability rules.</p>
+<p>Read the <a href="/docs/language/">language guide</a> alongside the first program. Focus on:</p>
+<ol>
+<li>functions, canonical type names, and immutable or <code>mut</code> bindings;</li>
+<li>records, classes, enums, Arrays, and Hashes;</li>
+<li><code>if</code>, exhaustive <code>case</code>, nullable narrowing, and iteration; and</li>
+<li><code>Result</code>, prefix <code>try</code>, and postfix <code>catch</code> at recoverable-error boundaries.</li>
+</ol>
+<p>Use the <a href="/docs/specification/">language specification</a> only when you need the exact
+rule or are evaluating an edge case.</p>
+<h2 id="3-choose-an-application-path">3. Choose an application path</h2>
+<p>Continue with one small vertical slice:</p>
+<ul>
+<li>JSON API: <a href="/docs/guides/web/">portable Web guide</a></li>
+<li>Database application: <a href="/docs/guides/orm/"><code>trb/orm</code> guide</a></li>
+<li>Background worker: <a href="/docs/guides/jobs/">Jobs guide</a></li>
+<li>Browser UI: <a href="/docs/guides/react/">React and JSX guide</a> and
+<a href="/docs/guides/browser-http/">browser HTTP guide</a></li>
+<li>Reusable dependency: <a href="/docs/guides/packages/">package guide</a></li>
+</ul>
+<p>Each guide describes the current public API and its intentional limitations.
+Combine them only after each individual slice builds and runs.</p>
+<h2 id="4-look-up-details">4. Look up details</h2>
+<p>Use the reference that owns the surface you are changing:</p>
+<ul>
+<li><a href="/docs/cli/">Command-line reference</a></li>
+<li><a href="/docs/configuration/">Project configuration</a></li>
+<li><a href="/docs/standard-library/">Standard library</a></li>
+<li><a href="/docs/status/">Current capability and limitations</a></li>
+<li><a href="/docs/roadmap/">Language roadmap</a></li>
+</ul>
+<p>The <a href="/docs/">documentation index</a> groups all application and contributor
+material.</p>
+<h2 id="5-learn-with-an-ai-agent">5. Learn with an AI agent</h2>
+<p>The repository includes a <code>use-typerb</code> agent skill. In an agent that discovers
+repository skills, ask:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span>Use $use-typerb to teach me TypeRB by building a small JSON API. Give me one</span></span>
+<span class="line"><span>exercise at a time and validate my code with the compiler before continuing.</span></span>
+<span class="line"><span></span></span></code></pre>
+<p>The skill routes the agent to the current guide and compiler diagnostics rather
+than asking it to infer TypeRB from a target language. See
+<a href="/docs/ai-assisted-development/">AI-assisted TypeRB development</a> for the same
+workflow when building an application rather than taking a tutorial.</p>
+<h2 id="6-understand-the-compiler">6. Understand the compiler</h2>
+<p>Contributors should first read
+<a href="https://github.com/type-rb/type-rb/blob/main/docs/development.md">Development and compiler architecture</a>. Trace one small
+feature through tokens, syntax AST, checking, typed IR, and a backend, then run
+its focused tests. The language specification defines behavior; generated
+target source is an implementation result rather than the source of semantics.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/learning.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

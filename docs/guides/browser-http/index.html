@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Browser HTTP Client — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/guides/browser-http/">
+		<title>Browser HTTP Client — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a class="active" aria-current="page" href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a class="active" aria-current="page" href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="browser-http-client">Browser HTTP Client</h1>
+<p><code>trb/platform/typescript/browser</code> is the official low-level HTTP client for
+TypeScript browser applications. It keeps target-specific Fetch behavior in an
+explicit platform package while exposing checked TypeRB request, response,
+body, and error types.</p>
+<p>Construct one <code>HttpClient</code> at the application boundary and pass or export the
+higher-level API objects that use it:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> {</span></span>
+<span class="line"><span style="color:#FFA657">	HttpClient</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#FFA657">	RequestError</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#FFA657">	Response</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">	json_body,</span></span>
+<span class="line"><span style="color:#E6EDF3">} </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/platform/typescript/browser</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Header</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Headers</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">HttpMethod</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/http</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">QueryParameter</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/url</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> Todo</span></span>
+<span class="line"><span style="color:#E6EDF3">	id: </span><span style="color:#79C0FF">Integer</span></span>
+<span class="line"><span style="color:#E6EDF3">	title: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> CreateTodoInput</span></span>
+<span class="line"><span style="color:#E6EDF3">	title: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> fetch_todo</span><span style="color:#E6EDF3">(client: </span><span style="color:#FFA657">HttpClient</span><span style="color:#E6EDF3">, id: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Response</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Todo</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">RequestError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#E6EDF3">	raw </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> try</span><span style="color:#E6EDF3"> client.</span><span style="color:#D2A8FF">request</span><span style="color:#E6EDF3">(</span></span>
+<span class="line"><span style="color:#A5D6FF">		"/todos"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">		query: [</span><span style="color:#FFA657">QueryParameter</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(name: </span><span style="color:#A5D6FF">"id"</span><span style="color:#E6EDF3">, value: id.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">())],</span></span>
+<span class="line"><span style="color:#E6EDF3">		headers: </span><span style="color:#FFA657">Headers</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">([</span><span style="color:#FFA657">Header</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(name: </span><span style="color:#A5D6FF">"accept"</span><span style="color:#E6EDF3">, value: </span><span style="color:#A5D6FF">"application/json"</span><span style="color:#E6EDF3">)]),</span></span>
+<span class="line"><span style="color:#E6EDF3">		timeout_milliseconds: </span><span style="color:#79C0FF">2000</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">	)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> raw.</span><span style="color:#D2A8FF">json</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Todo</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> create_todo</span><span style="color:#E6EDF3">(client: </span><span style="color:#FFA657">HttpClient</span><span style="color:#E6EDF3">, input: </span><span style="color:#FFA657">CreateTodoInput</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Response</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Todo</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">RequestError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#E6EDF3">	body </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> try</span><span style="color:#D2A8FF"> json_body</span><span style="color:#E6EDF3">(input)</span></span>
+<span class="line"><span style="color:#E6EDF3">	raw </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> try</span><span style="color:#E6EDF3"> client.</span><span style="color:#D2A8FF">request</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"/todos"</span><span style="color:#E6EDF3">, method: </span><span style="color:#FFA657">HttpMethod</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">post</span><span style="color:#E6EDF3">(), body: body)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> raw.</span><span style="color:#D2A8FF">json</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Todo</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>TypeRB source does not add <code>async</code>. The TypeScript backend identifies the
+suspending Fetch operation and generates the required <code>Promise</code> and <code>await</code>
+boundaries.</p>
+<h2 id="response-model">Response model</h2>
+<p><code>request()</code> returns <code>Result&lt;Response&lt;Body&gt;, RequestError&gt;</code>. Prefix <code>try</code>
+propagates an error from a Result-returning function and yields the response on
+success. The response buffers its body once and preserves the status, final
+URL, ordered headers, and bytes. Decode it explicitly when no endpoint contract
+is available:</p>
+<ul>
+<li><code>response.json&lt;T&gt;()</code> validates JSON against <code>T</code> and returns
+<code>Result&lt;Response&lt;T&gt;, RequestError&gt;</code>.</li>
+<li><code>response.text()</code> returns <code>Response&lt;String&gt;</code>.</li>
+<li><code>response.bytes()</code> returns <code>Response&lt;Bytes&gt;</code>.</li>
+<li><code>response.no_body()</code> validates an empty body and returns
+<code>Result&lt;Response&lt;NoBody&gt;, RequestError&gt;</code>.</li>
+</ul>
+<p><code>response.headers.first(name)</code> performs case-insensitive lookup,
+<code>response.headers.values(name)</code> preserves repeated values, and
+<code>response.headers.entries()</code> exposes the ordered header list. These types come
+from portable <code>trb/http</code>, so server and browser packages share the same HTTP
+value model.</p>
+<p>Declared HTTP statuses, including non-2xx statuses, remain ordinary responses.
+They are not converted into transport errors. Literal status fields and union
+narrowing can express a contract response such as
+<code>CreatedResponse | InvalidResponse</code>, then narrow the complete value with
+<code>case response.status</code>.</p>
+<h2 id="errors-and-bodies">Errors and bodies</h2>
+<p>Fallible operations return <code>Result</code> with one <code>RequestError</code> type. Its <code>kind</code> is <code>Network</code>,
+<code>Timeout</code>, <code>Abort</code>, or <code>Contract</code>. A JSON or empty-body contract failure keeps
+the original <code>Response&lt;Body&gt;</code> in <code>error.response</code>, so diagnostics and explicit
+fallback handling do not lose the status, headers, or body.</p>
+<p>Use <code>RequestBody::Text</code>, <code>RequestBody::Bytes</code>, or <code>RequestBody::Form</code> for those
+wire formats. <code>RequestBody::File</code> sends a browser <code>File</code> as the request body and
+uses its media type as the default <code>Content-Type</code>; explicitly supplied headers
+still take precedence. The platform <code>File</code> type exposes checked <code>name</code>, <code>size</code>,
+<code>type</code>, and <code>lastModified</code> fields and can cross a supported native component
+callback boundary. <code>json_body(value)</code> runs the checked JSON encoder and
+produces a JSON request body. Query parameters and headers are ordered arrays,
+so repeated names have an unambiguous representation.</p>
+<p>The initial client is buffered and intentionally omits streaming, retry policy,
+progress events, interceptors, and generated endpoint contracts. Contractless
+external APIs and future contract providers use the same transport and
+<code>Response</code> model.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/guides/browser-http.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

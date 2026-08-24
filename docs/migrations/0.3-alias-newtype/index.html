@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Alias and newtype migration — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/migrations/0.3-alias-newtype/">
+		<title>Alias and newtype migration — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a class="active" aria-current="page" href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a class="active" aria-current="page" href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="alias-and-newtype-migration">Alias and newtype migration</h1>
+<p>TypeRB now separates transparent aliases from nominal newtypes in source
+syntax:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">alias</span><span style="color:#FFA657"> LoadResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">T</span><span style="color:#FF7B72">></span><span style="color:#FF7B72"> =</span><span style="color:#FFA657"> Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">T</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">LoadError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">newtype</span><span style="color:#FFA657"> UserId</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> Integer</span></span>
+<span class="line"><span style="color:#FF7B72">newtype</span><span style="color:#FFA657"> ProductIds</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">ProductId</span><span style="color:#FF7B72">></span></span>
+<span class="line"></span></code></pre>
+<p>The former <code>type Name = Target</code> spelling reports a migration error. Do not
+replace every declaration mechanically. Classify each use by meaning:</p>
+<ul>
+<li>use <code>alias</code> for shorthand, Result specializations, unions, and collection
+names whose values should remain interchangeable with the target;</li>
+<li>use <code>newtype</code> for identifiers, codes, quantities, and other domain values
+that must not be mixed with their representation or another domain type.</li>
+</ul>
+<p>For a newtype, construct and unwrap explicitly:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">user_id </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> UserId</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(raw_id)</span></span>
+<span class="line"><span style="color:#E6EDF3">raw_id </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> user_id.</span><span style="color:#D2A8FF">value</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"></span></code></pre>
+<p>A newtype target may be any concrete, fully instantiated, non-nullable type.
+<code>newtype ProductIds = Array&lt;ProductId&gt;</code> is supported. Generic declarations such
+as <code>newtype Id&lt;T&gt; = T</code>, nullable representations such as
+<code>newtype MaybeId = Integer?</code>, and validated or fallible custom constructors are
+not part of this release. The generated <code>new()</code> only wraps a value of the
+declared representation; it does not validate domain invariants. Put fallible
+validation in an ordinary Result-returning function and call <code>new()</code> after it
+succeeds. Write optional values as <code>UserId?</code>.</p>
+<p>Ordinary TypeRB calls remain nominal. Built-in JSON codecs, <code>trb/web</code> binding,
+Jobs payloads, and ORM value parameters are typed representation boundaries and
+do not require repetitive unwrapping. Use <code>.value()</code> for other external APIs
+unless their package declaration explicitly defines the same boundary.</p>
+<p>Backends may erase the physical wrapper in generated output. Nominality is a
+TypeRB source and typed-IR guarantee, not an ABI promise for handwritten Go,
+Ruby, or TypeScript code.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/migrations/0.3-alias-newtype.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

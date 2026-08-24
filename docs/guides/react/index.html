@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="React and JSX — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<link rel="canonical" href="https://type-rb.github.io/docs/guides/react/">
+		<title>React and JSX — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a class="active" aria-current="page" href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a class="active" aria-current="page" href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="react-and-jsx">React and JSX</h1>
+<p>TypeRB can emit ordinary TSX for existing React tools. This browser integration
+is an initial alpha feature and may evolve before TypeRB reaches 1.0.</p>
+<p>Import the explicit React platform package and use a record for component
+props:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">ReactNode</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/platform/typescript/react</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> GreetingProps</span></span>
+<span class="line"><span style="color:#E6EDF3">	name: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> Greeting</span><span style="color:#E6EDF3">(props: </span><span style="color:#FFA657">GreetingProps</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">ReactNode</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#E6EDF3">p</span><span style="color:#FF7B72">></span><span style="color:#FFA657">Hello</span><span style="color:#E6EDF3">, {props.</span><span style="color:#D2A8FF">name</span><span style="color:#E6EDF3">}</span><span style="color:#FF7B72">&#x3C;/</span><span style="color:#E6EDF3">p</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Mount a component with no props at the browser entry point:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">ReactNode</span><span style="color:#E6EDF3">, mount } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/platform/typescript/react</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> App</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">ReactNode</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#E6EDF3">main</span><span style="color:#FF7B72">></span><span style="color:#FFA657">TypeRB</span><span style="color:#FF7B72">&#x3C;/</span><span style="color:#E6EDF3">main</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> main</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#D2A8FF">	mount</span><span style="color:#E6EDF3">(</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">App</span><span style="color:#FF7B72"> /></span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"root"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The compiler checks required, unknown, and mistyped props, including components
+imported from another TypeRB module. Files containing JSX are generated as
+<code>.tsx</code>; other TypeScript modules remain <code>.ts</code>.</p>
+<h2 id="component-state">Component state</h2>
+<p>Component-local state uses a typed wrapper around React <code>useState</code>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">MouseEvent</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">ReactNode</span><span style="color:#E6EDF3">, use_state } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/platform/typescript/react</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> Counter</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">ReactNode</span></span>
+<span class="line"><span style="color:#E6EDF3">	count </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> use_state</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">	increment </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> fn</span><span style="color:#E6EDF3">(_event: </span><span style="color:#FFA657">MouseEvent</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">		count.</span><span style="color:#D2A8FF">set</span><span style="color:#E6EDF3">(count.</span><span style="color:#D2A8FF">value</span><span style="color:#FF7B72"> +</span><span style="color:#79C0FF"> 1</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#E6EDF3">button onClick</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">{increment}</span><span style="color:#FF7B72">></span><span style="color:#FFA657">Count</span><span style="color:#E6EDF3">: {count.</span><span style="color:#D2A8FF">value</span><span style="color:#E6EDF3">}</span><span style="color:#FF7B72">&#x3C;/</span><span style="color:#E6EDF3">button</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>use_state(initial)</code> infers <code>ReactState&lt;T&gt;</code> from its initial value. <code>value</code> and
+<code>set(value)</code> retain that type through checking and completion, while generated
+TSX uses React's ordinary <code>useState</code>. The call follows the Rules of Hooks and
+therefore stays at the top level of a component or custom hook.</p>
+<h2 id="native-react-packages">Native React packages</h2>
+<p>TypeScript projects can use representable named exports from npm packages
+without application-owned TypeRB declarations:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> add</span><span style="color:#79C0FF"> --native</span><span style="color:#A5D6FF"> react-spinners</span><span style="color:#A5D6FF"> ^0.17.0</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> install</span></span>
+<span class="line"></span></code></pre>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">ReactNode</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/platform/typescript/react</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">ClipLoader</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> "react-spinners"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> Loading</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">ReactNode</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#FFA657">ClipLoader</span><span style="color:#E6EDF3"> color</span><span style="color:#FF7B72">=</span><span style="color:#A5D6FF">"#4f46e5"</span><span style="color:#E6EDF3"> loading size</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">{</span><span style="color:#79C0FF">24</span><span style="color:#E6EDF3">} </span><span style="color:#FF7B72">/></span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>trb install</code> reads the installed package's <code>.d.ts</code> declarations, including
+dependency subpaths imported by project source, and writes an ignored
+<code>.trb/native-types.json</code> index. Builds and editor completion read that index
+without starting TypeScript. Index generation currently requires the supported
+TypeScript 6.x toolchain. Runtime output imports the original npm package
+unchanged.</p>
+<p>Automatic <code>.d.ts</code> indexing supports ordinary functions and React components
+whose signatures can be represented safely by TypeRB types. Unsupported
+overloads, conditional types, <code>any</code>, and individual complex props produce a
+diagnostic instead of becoming <code>Any</code>. A TypeRB package may provide declarative
+generic functions, classes with explicit instance and class members, records,
+and discriminated result aliases for a complex native package. Application
+code still imports the original npm package and writes explicit TypeRB type
+arguments; it does not maintain a local signature file. See the
+<a href="/docs/guides/packages/">package guide</a>.</p>
+<p>Event attributes use purpose-specific React types instead of one untyped event:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">ChangeEvent</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">FormEvent</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">ReactNode</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/platform/typescript/react</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> TodoForm</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">ReactNode</span></span>
+<span class="line"><span style="color:#E6EDF3">	on_change </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> fn</span><span style="color:#E6EDF3">(event: </span><span style="color:#FFA657">ChangeEvent</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#79C0FF">		puts</span><span style="color:#E6EDF3">(event.</span><span style="color:#D2A8FF">currentTarget</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">value</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#E6EDF3">	on_submit </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> fn</span><span style="color:#E6EDF3">(event: </span><span style="color:#FFA657">FormEvent</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">		event.</span><span style="color:#D2A8FF">preventDefault</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#E6EDF3">form onSubmit</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">{on_submit}</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">		&#x3C;</span><span style="color:#E6EDF3">input onChange</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">{on_change} </span><span style="color:#FF7B72">/></span></span>
+<span class="line"><span style="color:#FF7B72">	&#x3C;/</span><span style="color:#E6EDF3">form</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The initial event set includes <code>MouseEvent</code>, <code>ChangeEvent</code>, <code>FormEvent</code>, and
+<code>KeyboardEvent</code>. React and DOM spellings such as <code>onClick</code>, <code>preventDefault</code>,
+and <code>currentTarget</code> are preserved without automatic name conversion.</p>
+<p>Generated TSX and managed React package dependencies are compatible with the
+normal React and Vite ecosystem. Use the separate
+<a href="/docs/guides/browser-http/">browser HTTP client</a> for typed requests; suspension remains
+a TypeScript backend concern and does not add <code>async</code> syntax to TypeRB.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.26-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/guides/react.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>
