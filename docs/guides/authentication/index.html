@@ -84,7 +84,9 @@
 OpenID Connect bearer tokens in Go, Ruby, and TypeScript server applications.
 The public contract is portable; backend-specific networking and cryptography
 remain behind the package boundary.</p>
-<p>Create a configuration from the provider issuer and API audience:</p>
+<p>Create <code>src/auth/config.trb</code> from the provider issuer and API audience. Keeping
+configuration in its own module lets nested route packages import it without a
+generated Go <code>main</code> package cycle:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { bearer_options } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/auth/oidc</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#79C0FF">OIDC</span><span style="color:#FF7B72"> :=</span><span style="color:#D2A8FF"> bearer_options</span><span style="color:#E6EDF3">(</span></span>
@@ -99,7 +101,7 @@ The default roles claim is <code>roles</code>, and the default clock skew is 60 
 <p>Protect a file-route subtree with <code>_middleware.trb</code>:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Next</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/web/auth/bearer</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#79C0FF">OIDC</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> auth_config</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#79C0FF">OIDC</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> auth/config</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> call</span><span style="color:#E6EDF3">(context: </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, next_handler: </span><span style="color:#FFA657">Next</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
 <span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> bearer.</span><span style="color:#D2A8FF">authenticate</span><span style="color:#E6EDF3">(context, next_handler, </span><span style="color:#79C0FF">OIDC</span><span style="color:#E6EDF3">)</span></span>

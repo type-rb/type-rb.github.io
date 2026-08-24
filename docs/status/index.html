@@ -255,9 +255,9 @@ long-lived protocol server are not exposed. See the
 time and runs typed request, path-parameter, JSON decode, and JSON response
 handlers through the same dispatcher in all three backends. Applications can
 start a generated Go, Ruby, or TypeScript HTTP server with <code>serve()</code>. The
-<code>trb init --template web</code> command creates a buildable portable API project with
-file-based routing and an explicit editable middleware stack. The
-optional <code>configure_server</code> value sets host, port, request-body limit, and
+<code>trb init --mode &lt;target&gt; --template web</code> command creates a buildable portable
+API project with file-based routing and an explicit editable middleware stack.
+The optional <code>configure_server</code> value sets host, port, request-body limit, and
 graceful-shutdown timeout through typed keyword arguments. Every adapter
 validates that configuration before binding, handles SIGINT and SIGTERM, stops
 accepting new work, and gives active requests the configured time to finish.

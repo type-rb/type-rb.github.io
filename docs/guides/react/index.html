@@ -82,9 +82,14 @@
 				<article class="markdown-body"><h1 id="react-and-jsx">React and JSX</h1>
 <p>TypeRB can emit ordinary TSX for existing React tools. This browser integration
 is an initial alpha feature and may evolve before TypeRB reaches 1.0.</p>
-<p>Import the explicit React platform package and use a record for component
-props:</p>
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">ReactNode</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/platform/typescript/react</span></span>
+<h2 id="run-a-first-component">Run a first component</h2>
+<p>Create a browser TypeScript project:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> init</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> typescript</span><span style="color:#79C0FF"> --runtime</span><span style="color:#A5D6FF"> browser</span><span style="color:#A5D6FF"> react-app</span></span>
+<span class="line"><span style="color:#79C0FF">cd</span><span style="color:#A5D6FF"> react-app</span></span>
+<span class="line"></span></code></pre>
+<p>Create <code>main.trb</code>. Import the explicit React platform package and use a record
+for component props:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">ReactNode</span><span style="color:#E6EDF3">, mount } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/platform/typescript/react</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> GreetingProps</span></span>
 <span class="line"><span style="color:#E6EDF3">	name: </span><span style="color:#79C0FF">String</span></span>
@@ -93,12 +98,9 @@ props:</p>
 <span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> Greeting</span><span style="color:#E6EDF3">(props: </span><span style="color:#FFA657">GreetingProps</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">ReactNode</span></span>
 <span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#E6EDF3">p</span><span style="color:#FF7B72">></span><span style="color:#FFA657">Hello</span><span style="color:#E6EDF3">, {props.</span><span style="color:#D2A8FF">name</span><span style="color:#E6EDF3">}</span><span style="color:#FF7B72">&#x3C;/</span><span style="color:#E6EDF3">p</span><span style="color:#FF7B72">></span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
-<span class="line"></span></code></pre>
-<p>Mount a component with no props at the browser entry point:</p>
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">ReactNode</span><span style="color:#E6EDF3">, mount } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/platform/typescript/react</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> App</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">ReactNode</span></span>
-<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#E6EDF3">main</span><span style="color:#FF7B72">></span><span style="color:#FFA657">TypeRB</span><span style="color:#FF7B72">&#x3C;/</span><span style="color:#E6EDF3">main</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#E6EDF3">main</span><span style="color:#FF7B72">>&#x3C;</span><span style="color:#FFA657">Greeting</span><span style="color:#E6EDF3"> name</span><span style="color:#FF7B72">=</span><span style="color:#A5D6FF">"TypeRB"</span><span style="color:#FF7B72"> />&#x3C;/</span><span style="color:#E6EDF3">main</span><span style="color:#FF7B72">></span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> main</span><span style="color:#E6EDF3">()</span></span>
@@ -106,6 +108,32 @@ props:</p>
 <span class="line"><span style="color:#FF7B72">	return</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
+<p>Create <code>index.html</code> for Vite:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">&#x3C;!</span><span style="color:#7EE787">doctype</span><span style="color:#79C0FF"> html</span><span style="color:#E6EDF3">></span></span>
+<span class="line"><span style="color:#E6EDF3">&#x3C;</span><span style="color:#7EE787">html</span><span style="color:#79C0FF"> lang</span><span style="color:#E6EDF3">=</span><span style="color:#A5D6FF">"en"</span><span style="color:#E6EDF3">></span></span>
+<span class="line"><span style="color:#E6EDF3">	&#x3C;</span><span style="color:#7EE787">head</span><span style="color:#E6EDF3">></span></span>
+<span class="line"><span style="color:#E6EDF3">		&#x3C;</span><span style="color:#7EE787">meta</span><span style="color:#79C0FF"> charset</span><span style="color:#E6EDF3">=</span><span style="color:#A5D6FF">"UTF-8"</span><span style="color:#E6EDF3"> /></span></span>
+<span class="line"><span style="color:#E6EDF3">		&#x3C;</span><span style="color:#7EE787">meta</span><span style="color:#79C0FF"> name</span><span style="color:#E6EDF3">=</span><span style="color:#A5D6FF">"viewport"</span><span style="color:#79C0FF"> content</span><span style="color:#E6EDF3">=</span><span style="color:#A5D6FF">"width=device-width, initial-scale=1.0"</span><span style="color:#E6EDF3"> /></span></span>
+<span class="line"><span style="color:#E6EDF3">		&#x3C;</span><span style="color:#7EE787">title</span><span style="color:#E6EDF3">>TypeRB React&#x3C;/</span><span style="color:#7EE787">title</span><span style="color:#E6EDF3">></span></span>
+<span class="line"><span style="color:#E6EDF3">	&#x3C;/</span><span style="color:#7EE787">head</span><span style="color:#E6EDF3">></span></span>
+<span class="line"><span style="color:#E6EDF3">	&#x3C;</span><span style="color:#7EE787">body</span><span style="color:#E6EDF3">></span></span>
+<span class="line"><span style="color:#E6EDF3">		&#x3C;</span><span style="color:#7EE787">div</span><span style="color:#79C0FF"> id</span><span style="color:#E6EDF3">=</span><span style="color:#A5D6FF">"root"</span><span style="color:#E6EDF3">>&#x3C;/</span><span style="color:#7EE787">div</span><span style="color:#E6EDF3">></span></span>
+<span class="line"><span style="color:#E6EDF3">		&#x3C;</span><span style="color:#7EE787">script</span><span style="color:#79C0FF"> type</span><span style="color:#E6EDF3">=</span><span style="color:#A5D6FF">"module"</span><span style="color:#79C0FF"> src</span><span style="color:#E6EDF3">=</span><span style="color:#A5D6FF">"/build/main.tsx"</span><span style="color:#E6EDF3">>&#x3C;/</span><span style="color:#7EE787">script</span><span style="color:#E6EDF3">></span></span>
+<span class="line"><span style="color:#E6EDF3">	&#x3C;/</span><span style="color:#7EE787">body</span><span style="color:#E6EDF3">></span></span>
+<span class="line"><span style="color:#E6EDF3">&#x3C;/</span><span style="color:#7EE787">html</span><span style="color:#E6EDF3">></span></span>
+<span class="line"></span></code></pre>
+<p>Add Vite, install the generated React dependencies, and build the TypeRB
+source:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> add</span><span style="color:#79C0FF"> --native</span><span style="color:#79C0FF"> --dev</span><span style="color:#A5D6FF"> vite</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> install</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> fmt</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> check</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> build</span></span>
+<span class="line"><span style="color:#FFA657">npm</span><span style="color:#A5D6FF"> exec</span><span style="color:#A5D6FF"> vite</span></span>
+<span class="line"></span></code></pre>
+<p>Open the URL printed by Vite, then press <code>Ctrl-C</code> to stop it. The default
+TypeScript browser project uses npm and therefore requires Node.js. Set
+<code>typescript.packageManager</code> to <code>&quot;bun&quot;</code> if the project uses Bun instead.</p>
 <p>The compiler checks required, unknown, and mistyped props, including components
 imported from another TypeRB module. Files containing JSX are generated as
 <code>.tsx</code>; other TypeScript modules remain <code>.ts</code>.</p>

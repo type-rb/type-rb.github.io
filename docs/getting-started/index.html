@@ -91,10 +91,12 @@ evaluate, format, and transpile isolated scratch source in the browser.</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">brew</span><span style="color:#A5D6FF"> install</span><span style="color:#A5D6FF"> type-rb/tap/trb</span></span>
 <span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> version</span></span>
 <span class="line"></span></code></pre>
-<p>To build the compiler from source, use Go 1.27:</p>
+<p>To compile the current stable release from source, use Go 1.27:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">go</span><span style="color:#A5D6FF"> install</span><span style="color:#A5D6FF"> github.com/type-rb/type-rb/cmd/trb@latest</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> version</span></span>
 <span class="line"></span></code></pre>
 <p>Container builds can copy the compiler from the matching release image:</p>
+<p>Replace <code>X.Y.Z</code> with the TypeRB release to install:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">ARG</span><span style="color:#E6EDF3"> TYPERB_VERSION=X.Y.Z</span></span>
 <span class="line"><span style="color:#FF7B72">FROM</span><span style="color:#E6EDF3"> ghcr.io/type-rb/trb:${TYPERB_VERSION} </span><span style="color:#FF7B72">AS</span><span style="color:#E6EDF3"> typerb</span></span>
 <span class="line"></span>
@@ -111,9 +113,14 @@ layouts for each target.</p>
 <span class="line"><span style="color:#FF7B72">	return</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
-<p>Run it in Go mode, or select another target explicitly:</p>
+<p>TypeRB needs only the toolchain for the target you choose. The Go examples in
+the rest of this guide require Go 1.27. Ruby is required only for the Ruby
+command below, and Bun only for the TypeScript command.</p>
+<p>Run the program in Go mode to follow the rest of this guide:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> hello.trb</span></span>
-<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> ruby</span><span style="color:#A5D6FF"> hello.trb</span></span>
+<span class="line"></span></code></pre>
+<p>If you prefer another target, run only the corresponding command:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> ruby</span><span style="color:#A5D6FF"> hello.trb</span></span>
 <span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> typescript</span><span style="color:#79C0FF"> --runtime</span><span style="color:#A5D6FF"> bun</span><span style="color:#A5D6FF"> hello.trb</span></span>
 <span class="line"></span></code></pre>
 <p>Start the typed REPL from any directory with <code>trb</code>. It uses Go mode when no

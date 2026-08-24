@@ -82,10 +82,16 @@
 				<article class="markdown-body"><h1 id="portable-web-applications">Portable Web Applications</h1>
 <p><code>trb/web</code> provides compile-time file-based routing and the same request,
 response, middleware, and server behavior in Go, Ruby, and TypeScript modes.
-Create a project with:</p>
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> init</span><span style="color:#79C0FF"> --template</span><span style="color:#A5D6FF"> web</span></span>
+Create a Go project with:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> init</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> go</span><span style="color:#79C0FF"> --module</span><span style="color:#A5D6FF"> example.com/api</span><span style="color:#79C0FF"> --template</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> api</span></span>
+<span class="line"><span style="color:#79C0FF">cd</span><span style="color:#A5D6FF"> api</span></span>
 <span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span></span>
 <span class="line"></span></code></pre>
+<p>The generated server listens on <code>http://localhost:3000</code>. Open that URL to see
+<code>{&quot;message&quot;:&quot;Hello, TypeRB!&quot;}</code>, then press Ctrl-C to stop the server. The same
+template supports Ruby and TypeScript when their corresponding mode and
+toolchain are selected instead; one project needs only its selected target
+toolchain.</p>
 <p>Route files live below <code>src/routes</code>. File names determine paths, and exported
 functions determine HTTP methods. For example,
 <code>src/routes/todos/[id].trb</code> can contain:</p>
@@ -128,7 +134,10 @@ methods change status, headers, <code>Vary</code>, and cookies by returning a ne
 <span class="line"></span></code></pre>
 <p>Path and query values can be bound to records without giving the target
 runtime permission to reflect over application types:</p>
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> TodoParams</span></span>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3">, text } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> TodoParams</span></span>
 <span class="line"><span style="color:#E6EDF3">	id: </span><span style="color:#79C0FF">Integer</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span>

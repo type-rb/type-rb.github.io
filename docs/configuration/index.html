@@ -264,6 +264,7 @@ adapter keeps database and worker choices outside application Job definitions:</
 <span class="line"></span>
 <span class="line"><span style="color:#79C0FF">JOBS_ADAPTER</span><span style="color:#E6EDF3">: </span><span style="color:#FFA657">JobAdapter</span><span style="color:#FF7B72"> :=</span><span style="color:#FFA657"> SQLAdapter</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(</span></span>
 <span class="line"><span style="color:#E6EDF3">	dialect: </span><span style="color:#FFA657">SQLDialect</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">PostgreSQL</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">	source: </span><span style="color:#A5D6FF">"postgres://localhost/jobs"</span><span style="color:#E6EDF3">,</span></span>
 <span class="line"><span style="color:#E6EDF3">	source_environment: </span><span style="color:#A5D6FF">"JOBS_DATABASE_URL"</span><span style="color:#E6EDF3">,</span></span>
 <span class="line"><span style="color:#E6EDF3">	poll_interval: </span><span style="color:#FFA657">Duration</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">seconds</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">),</span></span>
 <span class="line"><span style="color:#E6EDF3">)</span></span>
