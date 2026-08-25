@@ -263,6 +263,41 @@ status and payload. Those remain explicit application behavior. Routes and
 handlers without a contract continue to compile; contracts are useful when an
 application wants generated descriptions or clients without making that
 tooling mandatory for every route.</p>
+<p>Generate an OpenAPI 3.1 JSON document from the contracts in the configured
+project with:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Write deterministic JSON to standard output.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> openapi</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Write below the project root and override document metadata.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> openapi</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --output</span><span style="color:#A5D6FF"> api/openapi.json</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --title</span><span style="color:#A5D6FF"> "Todo API"</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --api-version</span><span style="color:#A5D6FF"> 2026-08</span></span>
+<span class="line"></span></code></pre>
+<p>The project <code>name</code> and <code>version</code> are the default OpenAPI title and API version.
+Generation compiles and checks the project but does not start or invoke the
+selected Go, Ruby, or TypeScript toolchain. The same endpoint contracts
+therefore produce the same document in every mode.</p>
+<p>An endpoint input remains the <code>Context#bind&lt;T&gt;()</code> envelope rather than a wire
+object. Its <code>params</code> fields become required OpenAPI path parameters, <code>query</code>
+fields become query parameters, and <code>body</code> becomes a required
+<code>application/json</code> request body. Path fields must match the dynamic file-route
+segments exactly. A non-nullable query scalar is required; a nullable scalar
+is optional; and an Array is a repeated optional query parameter because a
+missing value binds to an empty Array. JSON <code>@json</code> names apply to body and
+response records, not URL parameters.</p>
+<p>The initial schema generator supports Boolean, portable Integer, Float,
+String, Array, <code>Hash&lt;String, V&gt;</code>, records, String- or Integer-backed raw enums,
+transparent aliases, nominal newtypes, nullable values, and the portable time
+types. It rejects unsupported JSON shapes, generic schemas, recursive records,
+and catch-all routes with source-located diagnostics when this command is
+invoked. Those OpenAPI-only restrictions do not make <code>trb check</code> fail.
+<code>Unit</code> declares a response without content and is required for 1xx, 204, 205,
+and 304 statuses.</p>
+<p>The generator deliberately does not inspect handler bodies, infer undocumented
+responses, run validation, or invent summaries, tags, authentication, or
+application error schemas. Only routes with an explicit endpoint contract are
+published.</p>
 <p>Middleware can attach request-scoped values without a string-keyed cast at
 the handler boundary. Create one <code>ContextKey&lt;T&gt;</code> and share that key between
 the producer and consumer:</p>

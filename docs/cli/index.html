@@ -336,6 +336,34 @@ by a dependency.</p>
 <li><code>main.go.trb</code> becomes <code>main.go</code>, without duplicating an existing target
 suffix.</li>
 </ul>
+<h2 id="web-api-descriptions">Web API descriptions</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Generate OpenAPI 3.1 JSON from typed trb/web endpoint contracts.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> openapi</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Select another project configuration.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> openapi</span><span style="color:#79C0FF"> --config</span><span style="color:#A5D6FF"> trbconfig.ruby.jsonc</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Write below the project root instead of standard output.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> openapi</span><span style="color:#79C0FF"> --output</span><span style="color:#A5D6FF"> api/openapi.json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Override the trbconfig.jsonc name and version used as document metadata.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> openapi</span><span style="color:#79C0FF"> --title</span><span style="color:#A5D6FF"> "Public API"</span><span style="color:#79C0FF"> --api-version</span><span style="color:#A5D6FF"> 2026-08</span></span>
+<span class="line"></span></code></pre>
+<p><code>trb web openapi</code> checks the complete configured file-routing project and emits
+only routes with an explicit <code>Endpoint</code> contract. It does not accept a
+standalone file. The default output is deterministic indented JSON on standard
+output; <code>--output</code> must be relative and cannot escape the project root. A file
+write is atomic and the written path is printed on success.</p>
+<p>The command maps the optional <code>input&lt;T&gt;()</code> bind envelope to path parameters,
+query parameters, and an <code>application/json</code> request body, then maps each
+<code>response&lt;T&gt;(status: code)</code> declaration to one response. Supported shared
+records, raw-value enums, aliases, newtypes, nullable values, collections, and
+portable time values become reusable OpenAPI schemas. <code>Unit</code> represents no
+response content. Generation-only contract limitations, including recursive
+or generic schemas and catch-all routes, are reported as source-located
+<code>TRB4001</code> diagnostics without changing <code>trb check</code> behavior. See the
+<a href="/docs/guides/web/">portable Web guide</a> for the endpoint syntax and complete initial
+schema boundary.</p>
 <h2 id="compiler-tooling">Compiler tooling</h2>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Emit a read-only, versioned JSON snapshot of the configured project.</span></span>
 <span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> compiler</span><span style="color:#A5D6FF"> inspect</span></span>
@@ -354,7 +382,7 @@ helpers and implicit runtime imports are excluded from the authored surface.</p>
 inputs have been loaded. A snapshot containing errors still includes source,
 module, and diagnostic data and returns a nonzero status; checked declarations
 are empty when semantic artifacts are unavailable. See the
-<a href="/docs/guides/compiler-tooling/">compiler tooling protocol guide</a> for the version 2
+<a href="/docs/guides/compiler-tooling/">compiler tooling protocol guide</a> for the version 3
 schema, compatibility policy, and security considerations.</p>
 <h2 id="clean">Clean</h2>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Remove abandoned run and test workspaces. Active workspaces are preserved.</span></span>
