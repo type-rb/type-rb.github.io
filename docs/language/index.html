@@ -113,6 +113,7 @@ return after the construct:</p>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
 <p>A bare <code>*</code> separates positional-only parameters from named-only parameters:</p>
+<!-- raw HTML omitted -->
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> request</span><span style="color:#E6EDF3">(</span></span>
 <span class="line"><span style="color:#E6EDF3">	url: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">,</span></span>
 <span class="line"><span style="color:#FF7B72">	*</span><span style="color:#E6EDF3">,</span></span>
@@ -275,6 +276,7 @@ solely for being unused.</p>
 <span class="line"></span></code></pre>
 <p>Use <code>newtype</code> when a domain value must remain distinct even if it has the same
 representation as another value:</p>
+<!-- raw HTML omitted -->
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">newtype</span><span style="color:#FFA657"> UserId</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> Integer</span></span>
 <span class="line"><span style="color:#FF7B72">newtype</span><span style="color:#FFA657"> ProductId</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> Integer</span></span>
 <span class="line"><span style="color:#FF7B72">newtype</span><span style="color:#FFA657"> ProductIds</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">ProductId</span><span style="color:#FF7B72">></span></span>
@@ -418,6 +420,7 @@ enumeration model rather than introducing a different runtime type.</p>
 raw-value enum must declare a distinct raw value of the same type.</p>
 <p>A payload enum is TypeRB's closed sum-type model. Its alternatives may carry
 different typed data, and it may mix payload-bearing and payloadless variants:</p>
+<!-- raw HTML omitted -->
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> Token</span></span>
 <span class="line"><span style="color:#FFA657">	Text</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#79C0FF">	Integer</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">)</span></span>
@@ -445,6 +448,7 @@ members. TypeRB does not add a separate <code>sum</code> declaration.</p>
 <p>User-defined generics support payload enums, transparent aliases, records,
 classes, top-level functions, and instance methods with explicit type
 arguments:</p>
+<!-- raw HTML omitted -->
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> identity</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">T</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">(value: </span><span style="color:#FFA657">T</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">T</span></span>
 <span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> value</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
@@ -514,6 +518,7 @@ choice; complete branch bodies remain clearer as <code>if</code>/<code>else</cod
 <h2 id="literal-types-and-discriminated-unions">Literal types and discriminated unions</h2>
 <p>Integer and String literals can constrain data fields. An exhaustive <code>case</code>
 on a readonly literal field narrows the complete union value:</p>
+<!-- raw HTML omitted -->
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> Created</span></span>
 <span class="line"><span style="color:#E6EDF3">	status: </span><span style="color:#79C0FF">201</span></span>
 <span class="line"><span style="color:#E6EDF3">	body: </span><span style="color:#79C0FF">String</span></span>
@@ -715,13 +720,14 @@ first match. They return a nullable element or nullable <code>Integer</code>; an
 unmatched Array returns <code>nil</code>.</p>
 <h2 id="result-control-flow">Result control flow</h2>
 <p><code>trb/std/result</code> provides <code>Result&lt;T, E&gt;</code> with <code>Ok</code> and <code>Err</code> variants:</p>
+<!-- raw HTML omitted -->
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> unwrap</span><span style="color:#E6EDF3">(result: </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">Integer</span></span>
 <span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> result</span></span>
 <span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Ok</span><span style="color:#E6EDF3">(value)</span></span>
 <span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> value</span></span>
-<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Err</span><span style="color:#E6EDF3">(error)</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Err</span><span style="color:#E6EDF3">(_error)</span></span>
 <span class="line"><span style="color:#FF7B72">		return</span><span style="color:#79C0FF"> 0</span></span>
 <span class="line"><span style="color:#FF7B72">	end</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
