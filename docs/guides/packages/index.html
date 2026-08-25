@@ -47,7 +47,7 @@
 					
 					<section>
 						<h2>Reference</h2>
-						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
 					</section>
 					
 				</nav>
@@ -72,7 +72,7 @@
 						
 						<section>
 							<h2>Reference</h2>
-							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
 						</section>
 						
 					</nav>
@@ -305,9 +305,9 @@ ordinary TypeRB package source. A declaration adapter instead projects
 target-native module exports and may require the separate runtime mapping
 below. Project-aware discovery remains limited to bundled compiler-integrated
 providers.</p>
-<p>Declaration Protocol version 3 adds a project-aware class-body declaration
-rule for bundled providers. Fixed providers cannot use project rules, so a
-fixed version 2 catalog migrates by changing only <code>protocolVersion</code> to <code>3</code>.</p>
+<p>Fixed declaration catalogs use Declaration Protocol version 3. Its
+project-aware class-body declaration rules are reserved for bundled providers
+and are rejected in fixed catalogs.</p>
 <h3 id="declaration-adapters">Declaration adapters</h3>
 <p>An optional declaration adapter supplies semantic TypeRB declarations for a
 target-native dependency. The semantic catalog format is mode-independent; a
@@ -451,17 +451,6 @@ record or enum errors require a future package-owned rejection mapper and are
 rejected by this first bridge rather than filled with partial values. The
 bridge does not invent cancellation: a package must declare an explicit native
 cancellation parameter when its API provides one.</p>
-<p>Declaration/Adapter Protocol version 2 distinguishes class instance members
-from class members. To migrate a version 1 catalog, set <code>protocolVersion</code> to
-<code>2</code> and replace each class's <code>members</code> with <code>instanceMembers</code> or
-<code>classMembers</code> according to how callers access it.</p>
-<p>For the older TypeScript-only <code>nativeTypeProviders</code> format version 2, rename
-the manifest field to <code>declarationAdapters</code>, replace the file's
-<code>formatVersion</code> with <code>protocolVersion: 2</code>, rename nested semantic type <code>args</code>
-fields to <code>arguments</code>, and split class members by access kind. Existing
-<code>resultBridge</code> contracts remain valid. Then run <code>trb install</code> to regenerate
-<code>.trb/native-types.json</code>; its cache format is independent from the
-package-owned protocol.</p>
 <h3 id="native-runtime-adapters">Native runtime adapters</h3>
 <p>A package may pair a declaration adapter with a Native Runtime Adapter Protocol
 file for the same mode. The declaration file remains the portable semantic
@@ -740,7 +729,7 @@ generated declarations.</li>
 <p>A declaration may name an opaque <code>runtimeOperation</code>, but only bundled compiler
 backends can implement those operation names today. ORM runtime manifests and
 Job worker lifecycle use separate bundled runtime paths rather than becoming
-declaration fields. Jobs now exposes a small package-level <code>JobAdapter</code>
+declaration fields. Jobs exposes a small package-level <code>JobAdapter</code>
 interface in ordinary TypeRB source, but its SQL implementation still reaches
 bundled native primitives. These protocols therefore narrow the declaration
 boundary; they do not yet make ORM or Jobs an ordinary external package or
@@ -865,8 +854,9 @@ either adapter file.
 A local package's manifest name
 remains its canonical identity; <code>local/contracts</code> is only the importing
 project's alias.</p>
-<p><code>localPackages</code> remains available for older source-only workspaces, but new
-reusable packages should use <code>trbpackage.json</code> and a path requirement.</p>
+<p><code>localPackages</code> maps source-only directories that do not contain a package
+manifest. Reusable packages should use <code>trbpackage.json</code> and a path
+requirement.</p>
 <h2 id="production-readiness-boundaries">Production-readiness boundaries</h2>
 <p>The distributed resolver is usable without a central registry, but the
 following capabilities remain intentionally staged:</p>

@@ -47,7 +47,7 @@
 					
 					<section>
 						<h2>Reference</h2>
-						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a class="active" aria-current="page" href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a class="active" aria-current="page" href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
 					</section>
 					
 				</nav>
@@ -72,7 +72,7 @@
 						
 						<section>
 							<h2>Reference</h2>
-							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a class="active" aria-current="page" href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a class="active" aria-current="page" href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
 						</section>
 						
 					</nav>
@@ -417,9 +417,9 @@ Database terminals, lazy association access, transactions, and streaming
 return <code>DbResult&lt;T&gt;</code>. Applications propagate compatible errors with <code>try</code>,
 recover with <code>catch</code>, or inspect the Result with exhaustive <code>case</code>. The REPL
 uses the same schema-backed read and write API. A deterministic portable schema
-lock now removes the live database requirement from compiler checks and builds.
-ORM declaration output now dogfoods the experimental bundled Declaration
-Protocol. Schema-derived properties, literal-dependent terminals, and
+lock removes the live database requirement from compiler checks and builds.
+ORM declaration output uses the experimental bundled Declaration Protocol.
+Schema-derived properties, literal-dependent terminals, and
 structured transaction and streaming contracts cross a validated,
 mode-independent data boundary before the compiler resolves them. Project model
 discovery and backend runtime operations remain bundled while the protocol is
@@ -453,11 +453,11 @@ than a string adapter name in <code>packageOptions</code>; Job definitions remai
 independent from storage. The module exposes one explicitly typed
 <code>JOBS_ADAPTER</code> constant, initialized once and reused by every enqueue wrapper,
 so adapter lifetime is application-scoped rather than per-enqueue.
-Jobs-derived <code>perform_later</code>, <code>perform_in</code>, and <code>perform_at</code> declarations now
-cross the same validated, mode-independent Declaration Protocol as ORM. Their
-typed arguments, scheduling parameters, enqueue Results, and runtime operation
-names required no Jobs-specific protocol fields. Worker dispatch now crosses
-the versioned Project Generated Source Protocol as an ordinary TypeRB fragment:
+Jobs-derived <code>perform_later</code>, <code>perform_in</code>, and <code>perform_at</code> declarations cross
+the same validated, mode-independent Declaration Protocol as ORM. Their typed
+arguments, scheduling parameters, enqueue Results, and runtime operation names
+use the generic protocol fields. Worker dispatch crosses the versioned Project
+Generated Source Protocol as an ordinary TypeRB fragment:
 one portable dispatcher validates payload versions, decodes scalar arguments,
 calls the typed Job, and returns <code>JobResult</code> before all three backends lower it.
 The same protocol emits a stable fragment per Job for payload serialization,
@@ -487,12 +487,12 @@ method, and block bodies, default expressions, resolver/checker state,
 filesystem access, and backend objects do
 not cross the declaration-provider input boundary. The ORM runtime manifest
 remains a separate bundled integration boundary.
-Their direct class-body DSL calls now cross one generic Declaration Protocol
+Their direct class-body DSL calls cross one generic Declaration Protocol
 version 3 rule. The rule matches an exact provider package function and exact
 project class, preserves ordinary signature checking, and marks the typed-IR
 call as declaration-only so Go, Ruby, and TypeScript omit it from runtime
-output. ORM and Jobs backend generators no longer identify those directives by
-package-specific function-name checks.
+output. The generic rule keeps package-specific function-name checks out of
+the ORM and Jobs backend generators.
 Workers support queues, priorities, retry and failed state, heartbeats, stale
 claim recovery, graceful stop, listing, manual retry, and discard. PostgreSQL
 and MySQL use short locking claims for multiple workers. SQLite is deliberately

@@ -47,7 +47,7 @@
 					
 					<section>
 						<h2>Reference</h2>
-						<a class="active" aria-current="page" href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						<a class="active" aria-current="page" href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
 					</section>
 					
 				</nav>
@@ -72,7 +72,7 @@
 						
 						<section>
 							<h2>Reference</h2>
-							<a class="active" aria-current="page" href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+							<a class="active" aria-current="page" href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
 						</section>
 						
 					</nav>
@@ -274,9 +274,6 @@ literal spelling in the current grammar.</li>
 uses <code>alias Name&lt;T&gt; = Target&lt;T&gt;</code>. Assignment and member checking expand the
 alias while diagnostics, completion, imports, and generated signatures may
 retain its authored name.</li>
-<li>The former <code>type Name = Target</code> spelling is not accepted as current syntax.
-It produces a migration diagnostic because an existing declaration must be
-classified as either a transparent <code>alias</code> or a nominal <code>newtype</code>.</li>
 <li><code>newtype Name = Representation</code> declares a nominal type. Its representation
 may be any concrete, fully instantiated type, including
 <code>Array&lt;ProductId&gt;</code>, but the representation must not itself be nullable.
@@ -632,9 +629,8 @@ representation boundaries. Strict decoding rejects unknown fields, trailing
 data, empty catalogs, symlinked catalogs, unsafe <code>Any</code> or invalid signature
 types, and compiler-derived representation metadata. A declaration name that
 conflicts with another active provider or a project declaration is an error.
-Version 3 adds class-body declaration rules only to the bundled
-project-aware subset; a fixed version 2 catalog migrates by changing its
-protocol version and no other fields.
+Class-body declaration rules are available only to the bundled
+project-aware subset and are rejected in fixed catalogs.
 Other modes and project-aware external providers are not supported by this
 capability.</li>
 <li>A package may pair <code>declarationAdapters.&lt;mode&gt;</code> with
