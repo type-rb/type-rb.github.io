@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Build a report API with Web, ORM, and Jobs — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		<link rel="canonical" href="https://type-rb.github.io/docs/tutorials/web-orm-jobs/">
+		<title>Build a report API with Web, ORM, and Jobs — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a class="active" aria-current="page" href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a class="active" aria-current="page" href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/migrations/0.3-result-control/">Result migration</a><a href="/docs/migrations/0.3-alias-newtype/">Alias and newtype migration</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="build-a-report-api-with-web-orm-and-jobs">Build a report API with Web, ORM, and Jobs</h1>
+<p>This tutorial builds one portable backend slice: an HTTP endpoint stores a
+report with <code>trb/orm</code>, enqueues durable work with <code>trb/jobs</code>, and a worker
+updates the same report. The TypeRB source is shared by the Go, Ruby, and
+TypeScript backends.</p>
+<p>The complete, executable project lives in
+<a href="https://github.com/type-rb/type-rb/tree/main/examples/tutorials/web-orm-jobs"><code>examples/tutorials/web-orm-jobs</code></a>.
+Repository tests run the request and worker flow in all three modes.</p>
+<p>The application has this flow:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span>POST /reports</span></span>
+<span class="line"><span>  -> Context#bind</span></span>
+<span class="line"><span>  -> create_report</span></span>
+<span class="line"><span>  -> application database transaction commits a pending report</span></span>
+<span class="line"><span>  -> GenerateReportJob is enqueued</span></span>
+<span class="line"><span>  -> 202 Accepted</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>trb jobs start --once</span></span>
+<span class="line"><span>  -> GenerateReportJob#perform</span></span>
+<span class="line"><span>  -> report status becomes ready</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>GET /reports/:id</span></span>
+<span class="line"><span>  -> returns the current report</span></span>
+<span class="line"><span></span></span></code></pre>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Install <code>trb</code>, the toolchain for the selected backend, and the <code>sqlite3</code>
+command-line program. The checked-in project defaults to Go mode.</p>
+<p>Copy the example or work in its directory:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#79C0FF">cd</span><span style="color:#A5D6FF"> examples/tutorials/web-orm-jobs</span></span>
+<span class="line"><span style="color:#FFA657">mkdir</span><span style="color:#79C0FF"> -p</span><span style="color:#A5D6FF"> tmp</span></span>
+<span class="line"></span></code></pre>
+<h2 id="configure-the-project-and-database">Configure the project and database</h2>
+<p>The project selects SQLite for ORM access, reads the application database from
+<code>DATABASE_URL</code>, and points the Jobs compiler integration at <code>config/jobs</code>.</p>
+<p><code>trbconfig.jsonc</code>:</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"report-api"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "mode"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"go"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "sourceDir"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"src"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "packageOptions"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "trb/orm"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "adapter"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"sqlite"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">      "database"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">        "environment"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"DATABASE_URL"</span></span>
+<span class="line"><span style="color:#E6EDF3">      }</span></span>
+<span class="line"><span style="color:#E6EDF3">    }</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "db"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "adapter"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"sqlite"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "database"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">      "environment"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"DATABASE_URL"</span></span>
+<span class="line"><span style="color:#E6EDF3">    },</span></span>
+<span class="line"><span style="color:#7EE787">    "schema"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"db/schema.sql"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "lock"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"db/schema.lock.json"</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "jobs"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "configuration"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"config/jobs"</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "go"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "module"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"example.com/report-api"</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p><code>db/schema.sql</code>:</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">CREATE</span><span style="color:#FF7B72"> TABLE</span><span style="color:#D2A8FF"> reports</span><span style="color:#E6EDF3"> (</span></span>
+<span class="line"><span style="color:#E6EDF3">  id </span><span style="color:#FF7B72">INTEGER</span><span style="color:#FF7B72"> PRIMARY KEY</span><span style="color:#E6EDF3"> AUTOINCREMENT,</span></span>
+<span class="line"><span style="color:#E6EDF3">  title </span><span style="color:#FF7B72">TEXT</span><span style="color:#FF7B72"> NOT NULL</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#FF7B72">  status</span><span style="color:#FF7B72"> TEXT</span><span style="color:#FF7B72"> NOT NULL</span></span>
+<span class="line"><span style="color:#E6EDF3">);</span></span>
+<span class="line"></span></code></pre>
+<p>The example also commits the generated <code>db/schema.lock.json</code>. Check that the
+lock still describes the SQL schema, then initialize a local database:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> db</span><span style="color:#A5D6FF"> check</span></span>
+<span class="line"><span style="color:#FFA657">sqlite3</span><span style="color:#A5D6FF"> tmp/application.sqlite3</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#A5D6FF"> db/schema.sql</span></span>
+<span class="line"><span style="color:#FF7B72">export</span><span style="color:#E6EDF3"> DATABASE_URL</span><span style="color:#FF7B72">=</span><span style="color:#A5D6FF">"</span><span style="color:#E6EDF3">$PWD</span><span style="color:#A5D6FF">/tmp/application.sqlite3"</span></span>
+<span class="line"><span style="color:#FF7B72">export</span><span style="color:#E6EDF3"> JOBS_DATABASE_URL</span><span style="color:#FF7B72">=</span><span style="color:#A5D6FF">"</span><span style="color:#E6EDF3">$PWD</span><span style="color:#A5D6FF">/tmp/jobs.sqlite3"</span></span>
+<span class="line"></span></code></pre>
+<p>The two environment variables deliberately name different databases. The
+application owns <code>reports</code>; the SQL Jobs adapter owns its queue tables.</p>
+<h2 id="configure-the-queue">Configure the queue</h2>
+<p>The composition module selects the SQLite Jobs adapter. Other application
+modules import only <code>trb/jobs</code>, so storage selection remains at this boundary.</p>
+<p><code>src/config/jobs.trb</code>:</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">JobAdapter</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/jobs</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">SQLAdapter</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">SQLDialect</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/jobs/sql</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79C0FF">JOBS_ADAPTER</span><span style="color:#E6EDF3">: </span><span style="color:#FFA657">JobAdapter</span><span style="color:#FF7B72"> :=</span><span style="color:#FFA657"> SQLAdapter</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(</span></span>
+<span class="line"><span style="color:#E6EDF3">	dialect: </span><span style="color:#FFA657">SQLDialect</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">SQLite</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">	source_environment: </span><span style="color:#A5D6FF">"JOBS_DATABASE_URL"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<h2 id="define-the-model-and-job">Define the model and Job</h2>
+<p>The schema lock supplies the generated fields on the otherwise empty model.</p>
+<p><code>src/models/report.trb</code>:</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Model</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/orm</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> Report</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#FFA657"> Model</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The Job loads the report, produces an immutable changed value with <code>with</code>, and
+persists it. It maps ORM failures to <code>JobError</code>, which tells the worker to
+apply its retry policy.</p>
+<p><code>src/jobs/generate_report_job.trb</code>:</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Report</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> models/report</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Job</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">JobError</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">JobResult</span><span style="color:#E6EDF3">, maximum_attempts, queue } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/jobs</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Unit</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/unit</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> GenerateReportJob</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#FFA657"> Job</span></span>
+<span class="line"><span style="color:#D2A8FF">	queue</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"reports"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#D2A8FF">	maximum_attempts</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">	def</span><span style="color:#D2A8FF"> perform</span><span style="color:#E6EDF3">(report_id: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">JobResult</span></span>
+<span class="line"><span style="color:#E6EDF3">		report </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Report</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">find</span><span style="color:#E6EDF3">(report_id) </span><span style="color:#FF7B72">catch</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">error</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">			return</span><span style="color:#FFA657"> JobResult</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Err</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">JobError</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(message: </span><span style="color:#A5D6FF">"report lookup failed: "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> error.</span><span style="color:#D2A8FF">message</span><span style="color:#E6EDF3">))</span></span>
+<span class="line"><span style="color:#FF7B72">		end</span></span>
+<span class="line"><span style="color:#E6EDF3">		_saved </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> report.</span><span style="color:#D2A8FF">with</span><span style="color:#E6EDF3">(status: </span><span style="color:#A5D6FF">"ready"</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">save</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">catch</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">error</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">			return</span><span style="color:#FFA657"> JobResult</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Err</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">JobError</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(message: </span><span style="color:#A5D6FF">"report update failed: "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> error.</span><span style="color:#D2A8FF">message</span><span style="color:#E6EDF3">))</span></span>
+<span class="line"><span style="color:#FF7B72">		end</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#FFA657"> JobResult</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Ok</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">Unit</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Jobs use at-least-once delivery. Real work should therefore be idempotent; this
+example is safe to repeat because setting <code>status</code> to <code>ready</code> has the same
+result each time.</p>
+<h2 id="put-the-transaction-in-an-application-service">Put the transaction in an application service</h2>
+<p>The service owns the use case and its error vocabulary. The route does not
+need to know how the report is stored or how the Job is persisted.</p>
+<p><code>src/services/create_report.trb</code>:</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">GenerateReportJob</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> jobs/generate_report_job</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Report</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> models/report</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">EnqueueError</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/jobs</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Database</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">DbError</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/orm</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> CreateReportError</span></span>
+<span class="line"><span style="color:#FFA657">	Database</span><span style="color:#E6EDF3">(error: </span><span style="color:#FFA657">DbError</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FFA657">	Queue</span><span style="color:#E6EDF3">(error: </span><span style="color:#FFA657">EnqueueError</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> AcceptedReport</span></span>
+<span class="line"><span style="color:#E6EDF3">	id: </span><span style="color:#79C0FF">Integer</span></span>
+<span class="line"><span style="color:#E6EDF3">	job_id: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#E6EDF3">	status: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> create_report</span><span style="color:#E6EDF3">(title: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">AcceptedReport</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">CreateReportError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#E6EDF3">	report </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Database</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">transaction</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">transaction</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">		reports </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Report</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">using</span><span style="color:#E6EDF3">(transaction)</span></span>
+<span class="line"><span style="color:#E6EDF3">		created </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> try</span><span style="color:#E6EDF3"> reports.</span><span style="color:#D2A8FF">create</span><span style="color:#E6EDF3">(title: title, status: </span><span style="color:#A5D6FF">"pending"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">		created</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span><span style="color:#FF7B72"> catch</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">error</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#FFA657"> Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">AcceptedReport</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">CreateReportError</span><span style="color:#FF7B72">>::</span><span style="color:#FFA657">Err</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">CreateReportError</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Database</span><span style="color:#E6EDF3">(error))</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">	reference </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> GenerateReportJob</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">perform_later</span><span style="color:#E6EDF3">(report.</span><span style="color:#D2A8FF">id</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">catch</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">error</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#FFA657"> Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">AcceptedReport</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">CreateReportError</span><span style="color:#FF7B72">>::</span><span style="color:#FFA657">Err</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">CreateReportError</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Queue</span><span style="color:#E6EDF3">(error))</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">AcceptedReport</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">CreateReportError</span><span style="color:#FF7B72">>::</span><span style="color:#FFA657">Ok</span><span style="color:#E6EDF3">(</span></span>
+<span class="line"><span style="color:#FFA657">		AcceptedReport</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(id: report.</span><span style="color:#D2A8FF">id</span><span style="color:#E6EDF3">, job_id: reference.</span><span style="color:#D2A8FF">id</span><span style="color:#E6EDF3">, status: report.</span><span style="color:#D2A8FF">status</span><span style="color:#E6EDF3">),</span></span>
+<span class="line"><span style="color:#E6EDF3">	)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>try</code> propagates <code>DbError</code> inside the transaction callback. The postfix
+<code>catch</code> translates the transaction and enqueue failures into application
+errors at the two boundaries where their meaning changes.</p>
+<p>The enqueue intentionally happens after the application transaction commits.
+The initial Jobs contract does not provide a transaction spanning the
+application database and queue storage. If enqueueing fails, this example
+returns <code>503</code> while leaving a pending report behind. A production application
+that must close that gap needs an explicit retry/reconciliation process or a
+transactional outbox; moving <code>perform_later</code> inside this transaction would not
+make the two stores atomic.</p>
+<h2 id="map-errors-once-at-the-http-boundary">Map errors once at the HTTP boundary</h2>
+<p>The shared mapper converts input, database, and queue errors into HTTP
+responses. Both routes reuse it instead of repeating transport policy.</p>
+<p><code>src/http/errors.trb</code>:</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">CreateReportError</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> services/create_report</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">DbError</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/orm</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">EndpointInputError</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3">, json } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> ErrorResponse</span></span>
+<span class="line"><span style="color:#E6EDF3">	code: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#E6EDF3">	message: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> endpoint_input_error_response</span><span style="color:#E6EDF3">(error: </span><span style="color:#FFA657">EndpointInputError</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
+<span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> error</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> EndpointInputError</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Params</span><span style="color:#E6EDF3">(_error)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> json</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">ErrorResponse</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(code: </span><span style="color:#A5D6FF">"invalid_path"</span><span style="color:#E6EDF3">, message: </span><span style="color:#A5D6FF">"path parameters are invalid"</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">400</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> EndpointInputError</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Query</span><span style="color:#E6EDF3">(_error)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> json</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">ErrorResponse</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(code: </span><span style="color:#A5D6FF">"invalid_query"</span><span style="color:#E6EDF3">, message: </span><span style="color:#A5D6FF">"query parameters are invalid"</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">400</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> EndpointInputError</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Body</span><span style="color:#E6EDF3">(_error)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> json</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">ErrorResponse</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(code: </span><span style="color:#A5D6FF">"invalid_body"</span><span style="color:#E6EDF3">, message: </span><span style="color:#A5D6FF">"request body is invalid"</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">400</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> create_report_error_response</span><span style="color:#E6EDF3">(error: </span><span style="color:#FFA657">CreateReportError</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
+<span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> error</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> CreateReportError</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Database</span><span style="color:#E6EDF3">(database_error)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> database_error_response</span><span style="color:#E6EDF3">(database_error)</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> CreateReportError</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Queue</span><span style="color:#E6EDF3">(queue_error)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> json</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">ErrorResponse</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(code: </span><span style="color:#A5D6FF">"queue_unavailable"</span><span style="color:#E6EDF3">, message: queue_error.</span><span style="color:#D2A8FF">message</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">503</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> database_error_response</span><span style="color:#E6EDF3">(error: </span><span style="color:#FFA657">DbError</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> json</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">ErrorResponse</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(code: </span><span style="color:#A5D6FF">"database_error"</span><span style="color:#E6EDF3">, message: error.</span><span style="color:#D2A8FF">message</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">500</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<h2 id="add-file-based-routes">Add file-based routes</h2>
+<p><code>Context#bind&lt;T&gt;()</code> decodes the request sections named by the endpoint contract
+and returns <code>Result&lt;T, EndpointInputError&gt;</code>. The POST route binds a body; the
+dynamic GET route binds the <code>:id</code> path parameter.</p>
+<p><code>src/routes/reports.trb</code>:</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { create_report_error_response, endpoint_input_error_response } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> http/errors</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { create_report } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> services/create_report</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3">, json } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> CreateReportBody</span></span>
+<span class="line"><span style="color:#E6EDF3">	title: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> CreateReportEndpointInput</span></span>
+<span class="line"><span style="color:#E6EDF3">	body: </span><span style="color:#FFA657">CreateReportBody</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> post</span><span style="color:#E6EDF3">(context: </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
+<span class="line"><span style="color:#E6EDF3">	input </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> context.</span><span style="color:#D2A8FF">bind</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">CreateReportEndpointInput</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">catch</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">error</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> endpoint_input_error_response</span><span style="color:#E6EDF3">(error)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#E6EDF3">	accepted </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> create_report</span><span style="color:#E6EDF3">(input.</span><span style="color:#D2A8FF">body</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">title</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">catch</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">error</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> create_report_error_response</span><span style="color:#E6EDF3">(error)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> json</span><span style="color:#E6EDF3">(accepted, </span><span style="color:#79C0FF">202</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>src/routes/reports/[id].trb</code>:</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { database_error_response, endpoint_input_error_response } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> http/errors</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Report</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> models/report</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3">, json } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> ReportParams</span></span>
+<span class="line"><span style="color:#E6EDF3">	id: </span><span style="color:#79C0FF">Integer</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> ShowReportEndpointInput</span></span>
+<span class="line"><span style="color:#E6EDF3">	params: </span><span style="color:#FFA657">ReportParams</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> ReportResponse</span></span>
+<span class="line"><span style="color:#E6EDF3">	id: </span><span style="color:#79C0FF">Integer</span></span>
+<span class="line"><span style="color:#E6EDF3">	status: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#E6EDF3">	title: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> get</span><span style="color:#E6EDF3">(context: </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
+<span class="line"><span style="color:#E6EDF3">	input </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> context.</span><span style="color:#D2A8FF">bind</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">ShowReportEndpointInput</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">catch</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">error</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> endpoint_input_error_response</span><span style="color:#E6EDF3">(error)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#E6EDF3">	report </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Report</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">find</span><span style="color:#E6EDF3">(input.</span><span style="color:#D2A8FF">params</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">id</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">catch</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">error</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> database_error_response</span><span style="color:#E6EDF3">(error)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> json</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">ReportResponse</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(id: report.</span><span style="color:#D2A8FF">id</span><span style="color:#E6EDF3">, status: report.</span><span style="color:#D2A8FF">status</span><span style="color:#E6EDF3">, title: report.</span><span style="color:#D2A8FF">title</span><span style="color:#E6EDF3">))</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The static <code>/reports</code> route and dynamic <code>/reports/:id</code> route coexist; static
+segments take precedence when the router builds the file-routing table.</p>
+<h2 id="run-the-server-and-worker">Run the server and worker</h2>
+<p>The runnable root only starts the generated Web server.</p>
+<p><code>src/main.trb</code>:</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { configure_server, serve } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> main</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#D2A8FF">	serve</span><span style="color:#E6EDF3">(</span><span style="color:#D2A8FF">configure_server</span><span style="color:#E6EDF3">(host: </span><span style="color:#A5D6FF">"127.0.0.1"</span><span style="color:#E6EDF3">, port: </span><span style="color:#79C0FF">3000</span><span style="color:#E6EDF3">))</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Check the complete project, then start it:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> check</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> lint</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> run</span></span>
+<span class="line"></span></code></pre>
+<p>From another terminal with the same environment variables, create a report:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">curl</span><span style="color:#79C0FF"> -i</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  -H</span><span style="color:#A5D6FF"> 'content-type: application/json'</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  -d</span><span style="color:#A5D6FF"> '{"title":"August report"}'</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#A5D6FF">  http://127.0.0.1:3000/reports</span></span>
+<span class="line"></span></code></pre>
+<p>The response is <code>202 Accepted</code> and contains an application record ID, a queue
+Job ID, and <code>&quot;status&quot;:&quot;pending&quot;</code>. Before the worker runs, this returns the
+pending report:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">curl</span><span style="color:#A5D6FF"> http://127.0.0.1:3000/reports/1</span></span>
+<span class="line"></span></code></pre>
+<p>Process one report Job, then repeat the GET request:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> jobs</span><span style="color:#A5D6FF"> start</span><span style="color:#79C0FF"> --once</span><span style="color:#79C0FF"> --queue</span><span style="color:#A5D6FF"> reports</span></span>
+<span class="line"><span style="color:#FFA657">curl</span><span style="color:#A5D6FF"> http://127.0.0.1:3000/reports/1</span></span>
+<span class="line"></span></code></pre>
+<p>The status is now <code>ready</code>.</p>
+<h2 id="test-the-slice-without-a-network-server">Test the slice without a network server</h2>
+<p><code>trb/web/testing</code> dispatches a request through the generated router in-process.</p>
+<p><code>src/report_api_test.trb</code>:</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Body</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Header</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Headers</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">HttpMethod</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/http</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Request</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { dispatch } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web/testing</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { describe, expect, test } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/test</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D2A8FF">describe</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Report API"</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">do</span></span>
+<span class="line"><span style="color:#D2A8FF">	test</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"accepts a report for background processing"</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">do</span></span>
+<span class="line"><span style="color:#E6EDF3">		request </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Request</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(</span></span>
+<span class="line"><span style="color:#E6EDF3">			method: </span><span style="color:#FFA657">HttpMethod</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">post</span><span style="color:#E6EDF3">(),</span></span>
+<span class="line"><span style="color:#E6EDF3">			path: </span><span style="color:#A5D6FF">"/reports"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">			query_string: </span><span style="color:#A5D6FF">""</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">			headers: </span><span style="color:#FFA657">Headers</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">([</span><span style="color:#FFA657">Header</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(name: </span><span style="color:#A5D6FF">"content-type"</span><span style="color:#E6EDF3">, value: </span><span style="color:#A5D6FF">"application/json"</span><span style="color:#E6EDF3">)]),</span></span>
+<span class="line"><span style="color:#E6EDF3">			body: </span><span style="color:#FFA657">Body</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"{</span><span style="color:#FF7B72">\"</span><span style="color:#A5D6FF">title</span><span style="color:#FF7B72">\"</span><span style="color:#A5D6FF">:</span><span style="color:#FF7B72">\"</span><span style="color:#A5D6FF">August report</span><span style="color:#FF7B72">\"</span><span style="color:#A5D6FF">}"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_bytes</span><span style="color:#E6EDF3">()),</span></span>
+<span class="line"><span style="color:#E6EDF3">		)</span></span>
+<span class="line"><span style="color:#E6EDF3">		response </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> dispatch</span><span style="color:#E6EDF3">(request)</span></span>
+<span class="line"><span style="color:#D2A8FF">		expect</span><span style="color:#E6EDF3">(response.</span><span style="color:#D2A8FF">status</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">to_equal</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">202</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">		show_request </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Request</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(</span></span>
+<span class="line"><span style="color:#E6EDF3">			method: </span><span style="color:#FFA657">HttpMethod</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">get</span><span style="color:#E6EDF3">(),</span></span>
+<span class="line"><span style="color:#E6EDF3">			path: </span><span style="color:#A5D6FF">"/reports/1"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">			query_string: </span><span style="color:#A5D6FF">""</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#E6EDF3">			headers: </span><span style="color:#FFA657">Headers</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">([]),</span></span>
+<span class="line"><span style="color:#E6EDF3">			body: </span><span style="color:#FFA657">Body</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">empty</span><span style="color:#E6EDF3">(),</span></span>
+<span class="line"><span style="color:#E6EDF3">		)</span></span>
+<span class="line"><span style="color:#E6EDF3">		show_response </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> dispatch</span><span style="color:#E6EDF3">(show_request)</span></span>
+<span class="line"><span style="color:#D2A8FF">		expect</span><span style="color:#E6EDF3">(show_response.</span><span style="color:#D2A8FF">status</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">to_equal</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">200</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Run it against fresh local databases:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> test</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> jobs</span><span style="color:#A5D6FF"> start</span><span style="color:#79C0FF"> --once</span><span style="color:#79C0FF"> --queue</span><span style="color:#A5D6FF"> reports</span></span>
+<span class="line"></span></code></pre>
+<p>The repository's integration test goes further: for each of Go, Ruby, and
+TypeScript/Bun, it creates fresh databases, runs this request test, checks the
+pending row and queued Job, runs one worker, and checks the ready row and empty
+queue.</p>
+<h2 id="switch-backends">Switch backends</h2>
+<p>All files under <code>src/</code> and <code>db/</code> stay unchanged. Select one target in
+<code>trbconfig.jsonc</code>, replace the target-specific section, then synchronize its
+native manifest. For Ruby, use a <code>ruby</code> section and the <code>require_relative</code>
+loader. For TypeScript server execution, select Bun:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
+<span class="line"><span style="color:#7EE787">  "mode"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"typescript"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "devDependencies"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "typescript"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"^6.0.0"</span></span>
+<span class="line"><span style="color:#E6EDF3">  },</span></span>
+<span class="line"><span style="color:#7EE787">  "typescript"</span><span style="color:#E6EDF3">: {</span></span>
+<span class="line"><span style="color:#7EE787">    "runtime"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"bun"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "packageManager"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"bun"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "moduleType"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"module"</span></span>
+<span class="line"><span style="color:#E6EDF3">  }</span></span>
+<span class="line"><span style="color:#E6EDF3">}</span></span>
+<span class="line"></span></code></pre>
+<p>Run <code>trb sync</code> and <code>trb install</code>, then repeat the same database, test, server,
+and worker commands. See
+<a href="/docs/configuration/">Project configuration</a> for the complete Go, Ruby, and
+TypeScript target settings.</p>
+<p>Continue with the focused <a href="/docs/guides/web/">Web</a>,
+<a href="/docs/guides/orm/">ORM</a>, <a href="/docs/guides/jobs/">Jobs</a>, and
+<a href="/docs/guides/testing/">testing</a> guides when extending this slice.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.31-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/tutorials/web-orm-jobs.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>
