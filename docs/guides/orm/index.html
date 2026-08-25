@@ -259,6 +259,12 @@ for <code>Result&lt;T, DbError&gt;</code>.</p>
 <span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> query.</span><span style="color:#D2A8FF">all</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
+<p>The three-argument form supports typed comparison operators. String columns
+also accept <code>LIKE</code>; <code>%</code> matches any sequence and <code>_</code> matches one character.
+The pattern is passed as a bound value, while matching and case sensitivity
+follow the database and its collation.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">matching </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Post</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">where</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"title"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"LIKE"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"%TypeRB%"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
 <p>Use prefix <code>try</code> when a function performs more work after a successful
 database operation. Use <code>catch</code> when the caller resolves the database error
 locally:</p>
