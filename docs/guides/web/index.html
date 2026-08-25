@@ -169,8 +169,8 @@ query keys are ignored. Boolean, numeric, raw-value enum, and date/time fields
 use their portable parsers. Malformed encoding, missing or duplicate scalar
 values, and invalid conversions return <code>ParameterError</code>; applications retain
 control over the corresponding error response.</p>
-<p>An endpoint can combine those explicit bindings into one optional input
-contract. The contract is an ordinary record whose supported fields are
+<p>An endpoint can combine those explicit bindings into one optional endpoint
+input record. The record's supported fields are
 <code>params</code>, <code>query</code>, and <code>body</code>; each field may be omitted when the endpoint does
 not use that input source. <code>params</code> and <code>query</code> name binding records, while
 <code>body</code> names the typed JSON value:</p>
@@ -206,12 +206,63 @@ Each variant preserves the original <code>ParameterError</code> or <code>Request
 application still chooses its validation response and logging policy through
 an ordinary mapper function; <code>trb/web</code> does not install a global error mapper
 or choose an application response body. The
-compiler validates a contract's <code>params</code> record against the file-based route
-in the same way as a direct <code>params&lt;T&gt;()</code> call. Contracts are optional;
-handlers may continue to use the individual request methods. <code>bind&lt;T&gt;()</code> is
-most useful when one handler consumes more than one input source, or when the
-application wants a named endpoint contract. A handler that reads only path,
-query, or body input does not need a wrapper record merely for uniformity.</p>
+compiler validates an endpoint input record's <code>params</code> field against the
+file-based route in the same way as a direct <code>params&lt;T&gt;()</code> call. Combined
+input records are optional; handlers may continue to use the individual
+request methods. <code>bind&lt;T&gt;()</code> is most useful when one handler consumes more than
+one input source, or when the application wants a named endpoint input. A
+handler that reads only path, query, or body input does not need a wrapper
+record merely for uniformity.</p>
+<p>File routes may also publish an optional typed endpoint contract for tooling.
+The route file remains the source of the HTTP method and path. A contract class
+in that same module connects the route handler to its input and status-specific
+response types:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Endpoint</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3">, handles, input, json, response } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> CreateTodoBody</span></span>
+<span class="line"><span style="color:#E6EDF3">	title: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> CreateTodoInput</span></span>
+<span class="line"><span style="color:#E6EDF3">	body: </span><span style="color:#FFA657">CreateTodoBody</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> CreateTodoResponse</span></span>
+<span class="line"><span style="color:#E6EDF3">	id: </span><span style="color:#79C0FF">Integer</span></span>
+<span class="line"><span style="color:#E6EDF3">	title: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> ErrorResponse</span></span>
+<span class="line"><span style="color:#E6EDF3">	message: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> post</span><span style="color:#E6EDF3">(context: </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
+<span class="line"><span style="color:#E6EDF3">	request </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> context.</span><span style="color:#D2A8FF">bind</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">CreateTodoInput</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">catch</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">_error</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> json</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">ErrorResponse</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(message: </span><span style="color:#A5D6FF">"invalid request"</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">400</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> json</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">CreateTodoResponse</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(id: </span><span style="color:#79C0FF">42</span><span style="color:#E6EDF3">, title: request.</span><span style="color:#D2A8FF">body</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">title</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">202</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> CreateTodoEndpoint</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#FFA657"> Endpoint</span></span>
+<span class="line"><span style="color:#D2A8FF">	handles</span><span style="color:#E6EDF3">(post)</span></span>
+<span class="line"><span style="color:#E6EDF3">	input</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">CreateTodoInput</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">	response</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">CreateTodoResponse</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">(status: </span><span style="color:#79C0FF">202</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">	response</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">ErrorResponse</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">(status: </span><span style="color:#79C0FF">400</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>handles</code> accepts the actual top-level function rather than its name as a
+string, so the ordinary <code>(Context) -&gt; Response</code> signature is checked. A
+contract directly inherits <code>Endpoint</code>, declares exactly one local file-route
+handler, may declare one <code>input&lt;T&gt;()</code>, and declares one or more unique literal
+HTTP statuses from 100 through 599. These calls are compile-time declarations:
+Go, Ruby, and TypeScript output does not execute them. The resulting versioned
+endpoint catalog retains portable type identities for downstream tooling.</p>
+<p>The contract does not call <code>bind&lt;T&gt;()</code>, validate request data, infer schemas
+from the handler body, or prove that every runtime response has the documented
+status and payload. Those remain explicit application behavior. Routes and
+handlers without a contract continue to compile; contracts are useful when an
+application wants generated descriptions or clients without making that
+tooling mandatory for every route.</p>
 <p>Middleware can attach request-scoped values without a string-keyed cast at
 the handler boundary. Create one <code>ContextKey&lt;T&gt;</code> and share that key between
 the producer and consumer:</p>

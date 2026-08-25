@@ -291,13 +291,21 @@ own validation response policy.
 <code>Context#bind&lt;T&gt;()</code> optionally combines path, query, and JSON body binding into
 one ordinary endpoint input record. The reserved record fields <code>params</code>,
 <code>query</code>, and <code>body</code> reuse the individual checked codecs, and failures retain
-their original typed error inside <code>EndpointInputError</code>. Contracts remain
-optional, route parameter compatibility is still verified at build time, and
-applications keep control of the corresponding HTTP error response. The
-implementation is the first consumer of the experimental bundled-package call
-specialization boundary: <code>trb/web</code> returns target-independent TypeRB helper
-source, and the compiler re-parses, resolves, checks, and lowers that source
-instead of carrying a Web-specific bind intrinsic through each backend.
+their original typed error inside <code>EndpointInputError</code>. Combined binding
+remains optional, route parameter compatibility is still verified at build
+time, and applications keep control of the corresponding HTTP error response.
+The implementation is the first consumer of the experimental bundled-package
+call specialization boundary: <code>trb/web</code> returns target-independent TypeRB
+helper source, and the compiler re-parses, resolves, checks, and lowers that
+source instead of carrying a Web-specific bind intrinsic through each backend.
+Route modules may separately declare optional <code>Endpoint</code> subclasses that bind
+an actual handler function, an optional input type, and response types keyed by
+literal HTTP status. The handler reference is checked as <code>(Context) -&gt; Response</code>, the class must map to a file-route handler in the same module, and
+the declaration calls are omitted from all three runtime outputs. <code>trb/web</code>
+owns the resulting version 1 endpoint catalog; the generic compiler IR only
+transports it as package extension data. The catalog does not infer handler
+bodies or perform validation. OpenAPI export, generated clients, and contract
+validation policy remain subsequent package work.
 Typed <code>ContextKey&lt;T&gt;</code> values let middleware pass authentication principals,
 request identifiers, and other request-scoped state to handlers without casts
 or string-key collisions. <code>Context#with</code> returns a new context and

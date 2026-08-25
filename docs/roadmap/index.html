@@ -197,11 +197,11 @@ as a public plugin API.</li>
 <ul>
 <li>Harden the official portable <code>trb/web</code> package around its existing
 compile-time file-based routes, typed JSON requests and responses,
-middleware, and consistent HTTP behavior across Go, Ruby, and TypeScript
-runtimes.</li>
-<li>Extend the generated JSON codecs and client/server contracts from shared
-records with versioned wire fields, validation policy, schema export, and
-compatibility checking.</li>
+middleware, initial versioned endpoint catalog, and consistent HTTP behavior
+across Go, Ruby, and TypeScript runtimes.</li>
+<li>Extend the endpoint catalog and generated JSON codecs from shared records
+with validation policy, OpenAPI/schema export, generated clients, versioned
+wire fields, and compatibility checking.</li>
 <li>Harden the experimental <code>trb/orm</code> package with schema caching, compatibility
 policy, production diagnostics, and larger end-to-end <code>trb/web</code> applications.</li>
 <li>Harden the experimental <code>trb/jobs</code> contract with structured payload codecs,
