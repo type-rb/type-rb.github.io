@@ -618,7 +618,7 @@ conflicts, and adapter-specific bridge kinds before import. Direct import
 from an installed native declaration system is currently available only for
 TypeScript. A declaration adapter cannot execute compiler code, access
 compiler AST or typed IR, or emit target source.</li>
-<li>A Ruby TypeRB package may select a fixed Declaration Protocol version 2
+<li>A Ruby TypeRB package may select a fixed Declaration Protocol version 3
 catalog with <code>declarationProviders.ruby</code>. The package must declare at least
 one Ruby native dependency and provide a root <code>index.trb</code>; importing that
 root activates the catalog and retains the root module's ordinary runtime
@@ -632,6 +632,9 @@ representation boundaries. Strict decoding rejects unknown fields, trailing
 data, empty catalogs, symlinked catalogs, unsafe <code>Any</code> or invalid signature
 types, and compiler-derived representation metadata. A declaration name that
 conflicts with another active provider or a project declaration is an error.
+Version 3 adds class-body declaration rules only to the bundled
+project-aware subset; a fixed version 2 catalog migrates by changing its
+protocol version and no other fields.
 Other modes and project-aware external providers are not supported by this
 capability.</li>
 <li>A package may pair <code>declarationAdapters.&lt;mode&gt;</code> with

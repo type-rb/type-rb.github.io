@@ -228,13 +228,13 @@ fixed declarations and keeps the package root in generated Ruby:</p>
 <span class="line"><span style="color:#E6EDF3">	include </span><span style="color:#FFA657">Pagy</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Method</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
-<p>The JSON file uses Declaration Protocol version 2, including its generic,
+<p>The JSON file uses Declaration Protocol version 3, including its generic,
 literal-dependent, instance-member, and class-member type shapes. Its
 <code>provider</code> must exactly equal the canonical package name. For example, a
 catalog may declare <code>Pagy::Offset#page</code> and the <code>Pagy::Method#pagy</code> mixin
 method:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
-<span class="line"><span style="color:#7EE787">  "protocolVersion"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">  "protocolVersion"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">,</span></span>
 <span class="line"><span style="color:#7EE787">  "provider"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"github.com/acme/pagy"</span><span style="color:#E6EDF3">,</span></span>
 <span class="line"><span style="color:#7EE787">  "types"</span><span style="color:#E6EDF3">: [</span></span>
 <span class="line"><span style="color:#E6EDF3">    {</span></span>
@@ -305,6 +305,9 @@ ordinary TypeRB package source. A declaration adapter instead projects
 target-native module exports and may require the separate runtime mapping
 below. Project-aware discovery remains limited to bundled compiler-integrated
 providers.</p>
+<p>Declaration Protocol version 3 adds a project-aware class-body declaration
+rule for bundled providers. Fixed providers cannot use project rules, so a
+fixed version 2 catalog migrates by changing only <code>protocolVersion</code> to <code>3</code>.</p>
 <h3 id="declaration-adapters">Declaration adapters</h3>
 <p>An optional declaration adapter supplies semantic TypeRB declarations for a
 target-native dependency. The semantic catalog format is mode-independent; a
@@ -686,9 +689,12 @@ the first consumers. The ORM provider discovers project models and schema
 metadata, while the Jobs provider derives typed enqueue methods from Job
 classes. Their resulting catalogs cross a versioned, JSON-serializable
 Declaration Protocol before resolution and checking. The current Declaration
-Protocol is version 2; parameters may explicitly identify a representation
-boundary for nominal source newtypes. The compiler host
-validates and copies that data into its private semantic representation.</p>
+Protocol is version 3. It can identify a direct package-function call in one
+exact project class as declarative metadata: the checker still validates the
+ordinary call signature, while every backend omits the call from runtime
+output. Parameters may also explicitly identify a representation boundary for
+nominal source newtypes. The compiler host validates and copies that data into
+its private semantic representation.</p>
 <p>The Jobs and ORM declaration providers also receive versioned, validated
 Project Declaration Input snapshots. Version 5 adds record declarations and
 their declarative field attributes, top-level function signatures, and
@@ -717,6 +723,8 @@ to ORM instead of becoming arbitrary fields in the generic project protocol.</p>
 <li>generic and literal-dependent call signatures such as typed ORM projections;</li>
 <li>parameters that explicitly accept a nominal source type through its concrete
 serialization or persistence representation;</li>
+<li>exact direct class-body calls that are checked as ordinary package calls but
+retained only as declaration metadata;</li>
 <li>structured block contracts, including portable control and <code>Result</code>
 boundaries; and</li>
 <li>located project-declaration references and runtime value types needed by the
