@@ -97,7 +97,7 @@ packages.</p>
 nonzero status when the report contains errors, while still returning the
 available sources, modules, and diagnostics. Command-line usage errors remain
 ordinary CLI errors on standard error.</p>
-<h2 id="version-2-snapshot">Version 2 snapshot</h2>
+<h2 id="version-3-snapshot">Version 3 snapshot</h2>
 <p>Every report contains these top-level fields:</p>
 <table>
 <thead>
@@ -109,7 +109,7 @@ ordinary CLI errors on standard error.</p>
 <tbody>
 <tr>
 <td><code>protocolVersion</code></td>
-<td>Integer version of this JSON contract. Version 2 adds authored <code>newtype</code> declarations.</td>
+<td>Integer version of this JSON contract. Version 3 adds named-only parameter metadata.</td>
 </tr>
 <tr>
 <td><code>compilerVersion</code></td>
@@ -151,7 +151,9 @@ class method from an instance method. Semantic types use a recursive
 <code>kind</code>/<code>name</code>/<code>arguments</code> representation and retain nullability and readonly
 facts. A <code>newtype</code> declaration has declaration kind <code>newtype</code> and exposes its
 concrete representation through <code>type</code>; a transparent alias remains
-<code>type_alias</code>. Declaration IDs are compiler-owned opaque identifiers within the
+<code>type_alias</code>. A parameter sets <code>namedOnly</code> when its label participates in
+source call binding; consumers must not interpret such a parameter as
+positional. Declaration IDs are compiler-owned opaque identifiers within the
 protocol: consumers should store and compare them, not parse their spelling.</p>
 <p>Compiler-generated TypeRB helpers and implicit runtime imports are omitted.
 They are implementation details rather than authored declarations. When a
@@ -163,7 +165,7 @@ record <code>compilerVersion</code> when snapshots are persisted. An incompatibl
 shape receives a new protocol version. TypeRB is currently alpha, so tooling
 that requires reproducible output should pin the TypeRB compiler version even
 when the protocol version is unchanged.</p>
-<p>Version 2 remains a one-shot, read-only CLI boundary. It does not
+<p>Version 3 remains a one-shot, read-only CLI boundary. It does not
 expose mutable syntax trees, typed IR objects, backend hooks, target source,
 an embedded Go SDK, or a long-lived JSON-RPC server. It is also separate from
 the package extension protocol: importing a package never runs a compiler
