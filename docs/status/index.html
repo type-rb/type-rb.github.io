@@ -80,7 +80,7 @@
 			</aside>
 			<main class="docs-main">
 				<article class="markdown-body"><h1 id="typerb-status">TypeRB Status</h1>
-<p>Last updated: 2026-08-25</p>
+<p>Last updated: 2026-08-26</p>
 <p>TypeRB is an alpha compiler implemented in Go. The language, standard library,
 generated output, and command-line interface may change before beta.</p>
 <h2 id="current-capability">Current capability</h2>
@@ -187,6 +187,15 @@ expression. Their structured typed IR runs the same block scope in generated
 Go, Ruby, TypeScript, and the REPL. TypeScript lowers a transformation that
 reaches a suspending platform operation to a sequential async loop without
 adding <code>async</code> or <code>await</code> to TypeRB source.</p>
+<p>Arrays also provide import-free <code>concurrent_map</code> for bounded I/O fan-out. Its
+fixed portable default is 8, an explicit positive <code>limit</code> can replace or
+locally reduce that capacity, nested maps share one structured task group, and
+results retain input order. Lowering uses bounded workers in Go, Ruby,
+TypeScript, and the REPL; cancellation stops admission, reaches supported
+active operations through the hidden execution scope, and all admitted work is
+collected before return. The checker rejects outer assignment and unsafe
+lexical captures. Result aggregation, heterogeneous task APIs, streaming, and
+CPU-parallel guarantees are not included.</p>
 <p>Integer and String literal types support status- and kind-indexed data.
 Exhaustive <code>case</code> over a readonly literal field narrows the complete record or
 class union in every backend and in the REPL. Ordinary scalar <code>case</code> remains

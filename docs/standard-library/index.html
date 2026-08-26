@@ -414,6 +414,13 @@ also carry a stable message.</p>
 <p>Array <code>map</code>, <code>select</code>, and <code>reduce</code> are structured language expressions rather
 than target callbacks. See the
 <a href="/docs/language/#arrays-hashes-and-iteration">language guide</a> for examples.</p>
+<p><code>Array#concurrent_map</code> is the import-free bounded I/O-concurrency form. It
+returns block results in input order, uses a portable default limit of 8, and
+accepts an explicit positive named <code>limit</code>. Nested calls share the current
+structured task group's capacity. The operation does not imply CPU parallelism
+or special-case <code>Result</code>; a Result-returning block produces an Array of Result
+values. See the <a href="/docs/language/#arrays-hashes-and-iteration">language guide</a> and
+<a href="https://github.com/type-rb/type-rb/blob/main/docs/decisions/0004-bounded-structured-concurrent-map.md">decision record</a>.</p>
 <h2 id="logical-paths">Logical paths</h2>
 <p><code>trb/std/path</code> manipulates portable <code>/</code>-separated logical paths without
 accessing the host filesystem:</p>

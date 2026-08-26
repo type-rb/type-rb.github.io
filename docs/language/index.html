@@ -713,6 +713,28 @@ first iteration.</p>
 ordinary statements and must end with the expression that produces its value.
 The block locals are evaluated separately for each element. First-class <code>fn</code>
 values are available independently.</p>
+<p>Use <code>concurrent_map</code> for bounded I/O fan-out without importing a package or
+writing task-management code:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">pages </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> urls.</span><span style="color:#D2A8FF">concurrent_map</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">url</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#D2A8FF">	fetch_page</span><span style="color:#E6EDF3">(url)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">thumbnails </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> images.</span><span style="color:#D2A8FF">concurrent_map</span><span style="color:#E6EDF3">(limit: </span><span style="color:#79C0FF">4</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">image</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#D2A8FF">	create_thumbnail</span><span style="color:#E6EDF3">(image)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The result keeps input order even when element work finishes in another order.
+At most 8 element blocks are active when <code>limit</code> is omitted. An explicit
+positive <code>limit</code> changes that bound. Nested calls share the outer task group's
+capacity instead of multiplying it. The call waits for all of its child work,
+and cancellation is propagated cooperatively through supported I/O APIs.</p>
+<p><code>concurrent_map</code> returns the block values unchanged. A block returning
+<code>Result&lt;Page, FetchError&gt;</code> therefore produces
+<code>Array&lt;Result&lt;Page, FetchError&gt;&gt;</code>; it does not aggregate errors. The block
+cannot assign an outer binding or capture mutable containers and class
+instances. Keep per-element mutation in values created inside the block, and
+pass shared service access through package operations that support the hidden
+execution scope. CPU parallelism is not promised.</p>
 <p><code>any?</code>, <code>all?</code>, and <code>none?</code> short-circuit and require a non-nullable Boolean
 result. On an empty Array, they return <code>false</code>, <code>true</code>, and <code>true</code>,
 respectively. <code>find</code> and <code>find_index</code> use the same predicate and stop at the

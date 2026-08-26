@@ -90,9 +90,11 @@ than detailed syntax.</p>
 <h2 id="1-complete-the-portable-language-core">1. Complete the portable language core</h2>
 <ul>
 <li>Extend Result-returning higher-order functions across third-party package
-declarations, native callback boundaries, and concurrent composition. Keep
+declarations and native callback boundaries. Evaluate a Result-aggregating
+concurrent collection convenience only if application use demonstrates that
+explicit <code>Array&lt;Result&lt;T, E&gt;&gt;</code> handling is materially inconvenient. Keep
 prefix <code>try</code> and postfix <code>catch</code> as the sole propagation and recovery syntax
-until application usage establishes another distinct need.</li>
+until that evidence establishes another distinct need.</li>
 <li>Extend union type-pattern narrowing to nullable, collection, enum, record,
 and class alternatives. Add position-typed Tuples and precise optional-value
 semantics.</li>
