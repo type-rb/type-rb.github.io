@@ -199,10 +199,10 @@ as a public plugin API.</li>
 compile-time file-based routes, typed JSON requests and responses,
 middleware, initial versioned endpoint catalog, and consistent HTTP behavior
 across Go, Ruby, and TypeScript runtimes.</li>
-<li>Evolve the initial endpoint catalog and OpenAPI 3.1 schema export from shared
-records with validation policy, generated clients, versioned wire fields,
-authentication and endpoint metadata, generic schema naming, catch-all
-representation, and compatibility checking.</li>
+<li>Evolve the initial endpoint catalog, OpenAPI 3.1 schema export, and generated
+TypeScript browser client from shared records with validation policy,
+versioned wire fields, authentication and endpoint metadata, generic schema
+naming, catch-all representation, and compatibility checking.</li>
 <li>Harden the experimental <code>trb/orm</code> package with schema caching, compatibility
 policy, production diagnostics, and larger end-to-end <code>trb/web</code> applications.</li>
 <li>Harden the experimental <code>trb/jobs</code> contract with structured payload codecs,
@@ -214,10 +214,10 @@ realistic failure paths.</li>
 <li>Harden the initial portable OIDC bearer profile, then add a separately
 reviewed server-session profile with authorization-code PKCE, cookie-key
 rotation, and pluggable session storage.</li>
-<li>Evolve the initial buffered TypeScript browser HTTP client with generated
-endpoint-contract adapters, external contract import, streaming, cancellation
-handles, and established server-state package interop without introducing a
-second request model.</li>
+<li>Evolve the initial buffered TypeScript browser HTTP client and generated
+endpoint-contract facade with streaming, cancellation handles, external
+contract formats, and established server-state package interop without
+introducing a second request model.</li>
 <li>Separate one-shot <code>trb run</code> from framework development servers and add a
 coherent <code>trb dev</code> and runtime-adapter model for backend and frontend
 development servers.</li>

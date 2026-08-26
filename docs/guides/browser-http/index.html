@@ -162,9 +162,26 @@ callback boundary. <code>json_body(value)</code> runs the checked JSON encoder a
 produces a JSON request body. Query parameters and headers are ordered arrays,
 so repeated names have an unambiguous representation.</p>
 <p>The initial client is buffered and intentionally omits streaming, retry policy,
-progress events, interceptors, and generated endpoint contracts. Contractless
-external APIs and future contract providers use the same transport and
-<code>Response</code> model.</p>
+progress events, and interceptors. Contractless external APIs and generated
+endpoint clients use the same transport and <code>Response</code> model.</p>
+<h2 id="generated-clients-for-trbweb">Generated clients for trb/web</h2>
+<p>When the server publishes explicit <code>trb/web</code> endpoint contracts, generate a
+higher-level client instead of repeating path, query, body, and status handling:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> client</span><span style="color:#79C0FF"> --output</span><span style="color:#A5D6FF"> generated/api_client.trb</span><span style="color:#79C0FF"> --name</span><span style="color:#A5D6FF"> ApiClient</span></span>
+<span class="line"></span></code></pre>
+<p>The generated TypeRB class accepts an ordinary <code>HttpClient</code>, so base URL and
+application composition remain explicit:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">ApiClient</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> generated/api_client</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">HttpClient</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/platform/typescript/browser</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">api </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> ApiClient</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">HttpClient</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"https://api.example.com"</span><span style="color:#E6EDF3">))</span></span>
+<span class="line"></span></code></pre>
+<p>Each method returns an endpoint-specific status enum inside <code>Result</code>, rather
+than treating every non-2xx response as a transport error. Contract types stay
+in an authored shared module imported by both route and browser projects. The
+generator copies no data model, runs no target toolchain, and adds no retry,
+authentication, caching, or global error policy. Those concerns compose around
+the generated class or the underlying <code>HttpClient</code>.</p>
 </article>
 				<footer class="docs-footer">
 					<span>TypeRB 0.3.39-dev</span>

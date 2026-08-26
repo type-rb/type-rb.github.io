@@ -313,9 +313,15 @@ covers portable scalars and time values, Arrays, <code>Hash&lt;String, V&gt;</co
 raw-value enums, transparent aliases, nominal newtypes, nullable values, and
 <code>@json</code> wire names. Unsupported JSON shapes, generic schemas, recursive
 records, and catch-all routes are generation-time diagnostics rather than new
-language or <code>trb check</code> restrictions. Generated clients, runtime validation,
-contract compatibility policy, authentication descriptions, and richer
-endpoint metadata remain subsequent package work.
+language or <code>trb check</code> restrictions. <code>trb web client</code> consumes that same
+catalog and schema boundary to emit a deterministic TypeRB facade over the
+existing TypeScript browser <code>HttpClient</code>. It imports client-visible endpoint
+types from authored shared modules, maps declared statuses to typed result-enum
+variants, and keeps transport, decoding, and unexpected-status failures in the
+existing <code>RequestError</code> model. It is target-toolchain-independent at generation
+time and browser-specific at compilation time. Runtime validation, contract
+compatibility policy, authentication descriptions, richer endpoint metadata,
+and portable outbound HTTP remain subsequent package work.
 Typed <code>ContextKey&lt;T&gt;</code> values let middleware pass authentication principals,
 request identifiers, and other request-scoped state to handlers without casts
 or string-key collisions. <code>Context#with</code> returns a new context and

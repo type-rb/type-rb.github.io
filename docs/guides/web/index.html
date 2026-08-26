@@ -298,6 +298,31 @@ and 304 statuses.</p>
 responses, run validation, or invent summaries, tags, authentication, or
 application error schemas. Only routes with an explicit endpoint contract are
 published.</p>
+<p>Generate a checked browser client from the same endpoint catalog with:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#8B949E"># Write formatted TypeRB source to standard output.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> client</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8B949E"># Write below the project root and choose the exported class name.</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> client</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --output</span><span style="color:#A5D6FF"> generated/todo_api_client.trb</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --name</span><span style="color:#A5D6FF"> TodoApiClient</span></span>
+<span class="line"></span></code></pre>
+<p>The generated source targets <code>trb/platform/typescript/browser</code> and wraps its
+existing <code>HttpClient</code>; it does not introduce another transport abstraction.
+It serializes declared path, query, and JSON body input, decodes every declared
+status into an endpoint-specific enum variant, and returns
+<code>Result&lt;EndpointResult, RequestError&gt;</code>. Undeclared statuses are explicit
+<code>RequestErrorKind::Contract</code> failures that retain the original response.
+Callers can still supply headers and an optional timeout to every generated
+method.</p>
+<p>Client-visible user-defined input and response types must be imported into the
+route from a shared module. The generated source imports those declarations
+rather than copying records, enums, aliases, or newtypes. A route-local contract type
+continues to work for endpoint checking and OpenAPI generation but is rejected
+by <code>trb web client</code>, because a separate browser project cannot import that type
+without also importing the route handler. The command produces identical
+source when the server project is configured for Go, Ruby, or TypeScript; the
+resulting client itself is intentionally browser-target-specific.</p>
 <p>Middleware can attach request-scoped values without a string-keyed cast at
 the handler boundary. Create one <code>ContextKey&lt;T&gt;</code> and share that key between
 the producer and consumer:</p>
