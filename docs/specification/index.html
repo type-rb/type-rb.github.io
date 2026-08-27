@@ -736,7 +736,7 @@ escape hatch while compiler-owned library providers are still incomplete.</li>
 </ul>
 <h3 id="310-operators">3.10 Operators</h3>
 <ul>
-<li><code>!</code> and <code>not</code> accept non-nullable <code>Boolean</code>; unary <code>+</code> and <code>-</code> accept a
+<li><code>!</code> accepts non-nullable <code>Boolean</code>; unary <code>+</code> and <code>-</code> accept a
 non-nullable <code>Integer</code> or <code>Float</code> and preserve that type.</li>
 <li><code>+</code> accepts numeric values or two <code>String</code> values. <code>-</code>, <code>*</code>, <code>/</code>, and <code>**</code>
 accept numeric values. When one numeric operand is <code>Float</code>, an <code>Integer</code>
@@ -748,7 +748,7 @@ Portable <code>==</code> and <code>!=</code> compare numeric values, matching no
 or a nullable value with <code>nil</code>. Equality for payload-bearing enums is
 reserved until one structural rule can be implemented identically by every
 backend.</li>
-<li><code>&amp;&amp;</code>, <code>||</code>, <code>and</code>, and <code>or</code> accept two non-nullable <code>Boolean</code> values and
+<li><code>&amp;&amp;</code> and <code>||</code> accept two non-nullable <code>Boolean</code> values and
 return <code>Boolean</code>. Compound assignments apply the corresponding binary rule
 before checking that the result remains assignable to the mutable target.</li>
 <li>Integer <code>/</code> truncates toward zero, <code>%</code> is its corresponding remainder, and a
