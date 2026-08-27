@@ -267,6 +267,12 @@ binary64; overflow is a compile error, while underflow rounds to signed zero.
 Runtime arithmetic may produce positive or negative infinity and NaN. These
 values are ordinary <code>Float</code> values, not <code>Integer</code> values, and have no source
 literal spelling in the current grammar.</li>
+<li>A double-quoted String may embed <code>#{expression}</code>. Every interpolation
+expression must have the non-nullable <code>String</code> type after transparent alias
+expansion. Nullable Strings, <code>Any</code>, numeric and Boolean values, collections,
+enums, newtypes, and other user-defined values are rejected rather than
+inheriting a target runtime's implicit String conversion. Convert a value
+explicitly, for example with <code>value.to_s()</code>, before interpolation.</li>
 </ul>
 <h4 id="aliases-and-nominal-newtypes">Aliases and nominal newtypes</h4>
 <ul>

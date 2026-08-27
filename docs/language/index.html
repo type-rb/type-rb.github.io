@@ -222,7 +222,7 @@ guard also narrows the statements that follow it:</p>
 <span class="line"></span></code></pre>
 <p>The same narrowing is available in the matching branch of <code>name != nil</code>, in
 the remaining <code>elsif</code> or <code>else</code> path of <code>name == nil</code>, in <code>while</code>, and on the
-right side of a compatible short-circuit <code>and</code> or <code>or</code>. Reassigning the binding
+right side of a compatible short-circuit <code>&amp;&amp;</code> or <code>||</code>. Reassigning the binding
 invalidates the narrowed type.</p>
 <p>A direct nullable record field or <code>readonly</code> class field follows the same
 rule when its receiver is a lexical binding:</p>
@@ -236,6 +236,15 @@ rule when its receiver is a lexical binding:</p>
 <p>Reassigning <code>profile</code> invalidates the field narrowing. Mutable class fields,
 indexes, calls, and chained member paths must be read into a local binding
 before narrowing.</p>
+<p>Double-quoted Strings support interpolation with <code>#{expression}</code>. The embedded
+expression must already be a non-nullable <code>String</code>; TypeRB does not inherit a
+backend's implicit conversion rules. Convert other values explicitly:</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">radius </span><span style="color:#FF7B72">:=</span><span style="color:#79C0FF"> 2.5</span></span>
+<span class="line"><span style="color:#E6EDF3">description </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "circle r=#{radius.</span><span style="color:#D2A8FF">to_s</span><span style="color:#A5D6FF">()}"</span></span>
+<span class="line"></span></code></pre>
+<p>A nullable String must be narrowed or converted to a non-nullable String before
+it can be interpolated.</p>
 <p>Identifiers beginning with an uppercase letter are immutable constants. They
 are allowed at top level or directly inside a module or class:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#79C0FF">API_NAME</span><span style="color:#FF7B72"> :=</span><span style="color:#A5D6FF"> "TypeRB"</span></span>
