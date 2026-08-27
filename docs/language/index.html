@@ -390,14 +390,19 @@ invariant and conformance remains explicit.</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> Message</span></span>
 <span class="line"><span style="color:#E6EDF3">	id: </span><span style="color:#79C0FF">Integer</span></span>
 <span class="line"><span style="color:#E6EDF3">	text: </span><span style="color:#79C0FF">String</span></span>
-<span class="line"><span style="color:#E6EDF3">	delivered: </span><span style="color:#79C0FF">Boolean</span></span>
+<span class="line"><span style="color:#E6EDF3">	delivered: </span><span style="color:#79C0FF">Boolean</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> false</span></span>
+<span class="line"><span style="color:#E6EDF3">	tags: </span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#FF7B72"> =</span><span style="color:#E6EDF3"> []</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#E6EDF3">message </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Message</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(id: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, text: </span><span style="color:#A5D6FF">"Hello"</span><span style="color:#E6EDF3">, delivered: </span><span style="color:#79C0FF">false</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">message </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Message</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(id: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, text: </span><span style="color:#A5D6FF">"Hello"</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"></span></code></pre>
-<p>Construction is keyword-only and checks the complete field set. Records cannot
-inherit. Go emits a value struct, Ruby emits <code>Data</code>, and TypeScript emits an
-interface.</p>
+<p>Construction is keyword-only. A required field must precede fields with
+defaults. Defaults are checked against their field type, evaluated for each
+construction in declaration order, and may refer to earlier fields. Explicit
+arguments are evaluated in source order; explicit <code>nil</code> is different from an
+omitted field. Constructor defaults do not automatically apply to JSON, ORM,
+or web decoding. Records cannot inherit. Go emits a value struct, Ruby emits
+<code>Data</code>, and TypeScript emits an interface.</p>
 <h2 id="enums-raw-values-and-sum-types">Enums, raw values, and sum types</h2>
 <p>TypeRB uses <code>enum</code> for two related but distinct models. An ordinary enum is a
 closed set of named values:</p>
@@ -447,6 +452,9 @@ different typed data, and it may mix payload-bearing and payloadless variants:</
 <span class="line"><span style="color:#FF7B72">	end</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
+<p>Enum members may carry postfix attributes after their payload or raw value.
+Attributes are inert language metadata until a compiler-integrated package
+defines their meaning.</p>
 <p>A <code>case</code> without <code>else</code> must handle every member. Payload patterns introduce
 immutable bindings with types from the variant declaration. A payload enum
 cannot also declare raw values. <code>Result&lt;T, E&gt;</code> is the standard generic payload

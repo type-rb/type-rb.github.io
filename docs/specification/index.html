@@ -962,11 +962,27 @@ type of each named field. <code>Array&lt;Integer | String&gt;[0]</code> therefor
 <code>Integer | String</code>; exact constant-index inference belongs to Tuple.</p>
 <p>The complete public collection receiver API belongs to the
 <a href="/docs/standard-library/">standard-library reference</a>.</p>
-<h3 id="313-enums-raw-values-and-sum-types">3.13 Enums, raw values, and sum types</h3>
+<h3 id="313-records">3.13 Records</h3>
+<ul>
+<li>A record is a closed nominal product with immutable named fields.</li>
+<li>Construction is keyword-only. Every required field is supplied exactly once;
+unknown and duplicate field labels are errors.</li>
+<li>A field may use <code>name: Type = expression</code>. Required fields must precede
+fields with defaults. A default is checked against its declared type and may
+reference only earlier fields.</li>
+<li>Explicit argument expressions are evaluated left to right in authored order.
+Omitted defaults are then evaluated once per construction, in declaration
+order and in the defining module. Explicit <code>nil</code> is not omission.</li>
+<li>Constructor defaults are not a wire-decoding policy. JSON, ORM, web, and
+other decoders apply only their explicitly declared missing-field behavior.</li>
+<li>The canonical annotated spelling is
+<code>name: Type = expression @attribute(...)</code>.</li>
+</ul>
+<h3 id="314-enums-raw-values-and-sum-types">3.14 Enums, raw values, and sum types</h3>
 <p>An <code>enum</code> declaration defines a closed nominal set of uppercase variants. It
 is allowed at top level or directly inside a module. TypeRB uses the shared
 variant and exhaustive-case model for two related but distinct purposes.</p>
-<h4 id="3131-enumerated-values-and-raw-values">3.13.1 Enumerated values and raw values</h4>
+<h4 id="3141-enumerated-values-and-raw-values">3.14.1 Enumerated values and raw values</h4>
 <ul>
 <li>An ordinary member is a payloadless value such as <code>Ready</code>.</li>
 <li>A raw-value enum assigns every payloadless member an explicit String or
@@ -997,7 +1013,7 @@ inside enum declarations.</li>
 <p>Typed JSON codecs encode a raw-value enum as its raw String or Integer and
 decode only declared raw values. Unknown input produces <code>JsonError</code>; the
 target-language object representation never determines the wire value.</p>
-<h4 id="3132-payload-enums-as-sum-types">3.13.2 Payload enums as sum types</h4>
+<h4 id="3142-payload-enums-as-sum-types">3.14.2 Payload enums as sum types</h4>
 <ul>
 <li>A payload enum has at least one payload-bearing variant such as
 <code>Value(value: String)</code>. It may also contain payloadless variants. Payload
@@ -1027,7 +1043,7 @@ variants provide TypeRB's closed sum-type model.</li>
 <span class="line"><span style="color:#FF7B72">	end</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
-<h4 id="3133-shared-enum-behavior">3.13.3 Shared enum behavior</h4>
+<h4 id="3143-shared-enum-behavior">3.14.3 Shared enum behavior</h4>
 <ul>
 <li>Members are explicitly qualified with <code>EnumName::Member</code>. They infer the
 enum's nominal type and cannot be mixed with members of another enum even
@@ -1043,8 +1059,12 @@ are reserved. Duplicate branches and duplicate bindings are errors.</li>
 <li>Without <code>else</code>, a case must list every member. With <code>else</code>, omitted members
 are handled by that branch. The selector is evaluated exactly once in every
 backend and the REPL.</li>
+<li>An enum member may carry postfix attributes after its name, payload, or raw
+value. The core language preserves and type-checks attribute arguments but
+assigns no behavior to an attribute name; a compiler-integrated package owns
+that contract.</li>
 </ul>
-<h3 id="314-value-producing-control-flow">3.14 Value-producing control flow</h3>
+<h3 id="315-value-producing-control-flow">3.15 Value-producing control flow</h3>
 <ul>
 <li><code>if</code> and <code>case</code> retain their statement forms and may also appear wherever an
 expression is accepted.</li>
@@ -1096,7 +1116,7 @@ This rule does not make loops into expressions, add values to <code>break</code>
 <span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> fallback</span><span style="color:#E6EDF3">(error)</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
-<h3 id="315-class-member-model-and-deferred-design">3.15 Class member model and deferred design</h3>
+<h3 id="316-class-member-model-and-deferred-design">3.16 Class member model and deferred design</h3>
 <ul>
 <li>Instance fields and instance methods are accessed through an instance. A
 method declared with <code>def self.name()</code> is a class member and is accessed
