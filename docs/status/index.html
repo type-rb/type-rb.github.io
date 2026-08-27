@@ -80,7 +80,7 @@
 			</aside>
 			<main class="docs-main">
 				<article class="markdown-body"><h1 id="typerb-status">TypeRB Status</h1>
-<p>Last updated: 2026-08-26</p>
+<p>Last updated: 2026-08-28</p>
 <p>TypeRB is an alpha compiler implemented in Go. The language, standard library,
 generated output, and command-line interface may change before beta.</p>
 <h2 id="current-capability">Current capability</h2>
@@ -167,9 +167,10 @@ purpose-specific mouse, change, form, and keyboard event types. Its typed
 and <code>set(value)</code> members while generated TSX uses React <code>useState</code>.</p>
 <p>The implemented language includes functions, typed first-class function values
 with lexical capture and checked Result control flow, positional-only and
-bare-<code>*</code> named-only parameters with callee-owned defaults, and classes, modules and
-generic interfaces, records with per-construction field defaults, ordinary and
-raw-value enums, payload enums as sum types, enum instance methods, transparent
+bare-<code>*</code> named-only parameters with callee-owned defaults, and classes, modules
+and generic interfaces, records with per-construction field defaults, ordinary
+and raw-value enums, payload enums as sum types with positional and named-only
+fields in constructors and patterns, enum instance methods, transparent
 <code>alias</code> declarations, nominal
 <code>newtype</code> declarations over concrete non-nullable representations, explicit
 generics for enums, aliases, records,

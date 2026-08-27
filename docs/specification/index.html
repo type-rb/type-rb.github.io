@@ -157,6 +157,10 @@ label/type/presence set must match. Positional source names, named-only
 declaration order, and default expressions do not participate.</li>
 <li>Portable parameter rest forms and call splats are not supported. <code>fn</code>
 values and first-class function types remain required-positional only.</li>
+<li>Payload enum variant declarations use the same
+<code>positional-only | * | named-only</code> regions. Every payload field is required,
+and variant construction follows the same positional and label binding and
+source evaluation-order rules as an ordinary call.</li>
 <li>Record construction labels are field labels and remain separate from method
 parameters.</li>
 <li>Outside <code>()</code>, <code>[]</code>, and <code>{}</code>, <code>;</code> is equivalent to a newline between
@@ -1017,18 +1021,22 @@ target-language object representation never determines the wire value.</p>
 <ul>
 <li>A payload enum has at least one payload-bearing variant such as
 <code>Value(value: String)</code>. It may also contain payloadless variants. Payload
-variants use one or more required, positional, typed fields; default,
-keyword, rest, and untyped fields are rejected.</li>
+variants use one or more required typed fields in the
+<code>positional-only | * | named-only</code> regions. Defaults, rest fields, native
+keyword syntax, and untyped fields are rejected.</li>
 <li>A payload enum cannot also be a raw-value enum. The payload is variant data,
 not the external representation of an enumerated constant.</li>
-<li>A payload value is constructed with <code>EnumName::Member(value, ...)</code>.
-Payloadless members are values and are not callable.</li>
+<li>A payload value is constructed with <code>EnumName::Member(value, ...)</code>, using
+labels for fields declared after <code>*</code>. Named-only arguments may be reordered
+after all positional arguments. Unknown or duplicate labels, missing fields,
+and using the wrong region are compile-time errors. Payloadless members are
+values and are not callable.</li>
 <li>A separate <code>sum</code> declaration is not introduced. Payload-bearing enum
 variants provide TypeRB's closed sum-type model.</li>
 </ul>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> Token</span></span>
 <span class="line"><span style="color:#FFA657">	Text</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">)</span></span>
-<span class="line"><span style="color:#79C0FF">	Integer</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FFA657">	Renamed</span><span style="color:#E6EDF3">(id: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">, </span><span style="color:#FF7B72">*</span><span style="color:#E6EDF3">, before: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, after: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#79C0FF">	EOF</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span>
@@ -1036,12 +1044,14 @@ variants provide TypeRB's closed sum-type model.</li>
 <span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> token</span></span>
 <span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Text</span><span style="color:#E6EDF3">(value)</span></span>
 <span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> value</span></span>
-<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">(value)</span></span>
-<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> value.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Renamed</span><span style="color:#E6EDF3">(id, after: current, before: previous)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> id.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">+</span><span style="color:#A5D6FF"> ": "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> previous </span><span style="color:#FF7B72">+</span><span style="color:#A5D6FF"> " -> "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> current</span></span>
 <span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">EOF</span></span>
 <span class="line"><span style="color:#FF7B72">		return</span><span style="color:#A5D6FF"> "eof"</span></span>
 <span class="line"><span style="color:#FF7B72">	end</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">renamed </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Renamed</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">7</span><span style="color:#E6EDF3">, after: </span><span style="color:#A5D6FF">"new"</span><span style="color:#E6EDF3">, before: </span><span style="color:#A5D6FF">"old"</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"></span></code></pre>
 <h4 id="3143-shared-enum-behavior">3.14.3 Shared enum behavior</h4>
 <ul>
@@ -1053,9 +1063,13 @@ nominal type, and the same method surface applies to ordinary, raw-value,
 and payload enums. Enum class methods are not yet user-definable.</li>
 <li>Portable <code>case</code> dispatches on variants. A payload pattern such as
 <code>when Token::Text(value)</code> introduces immutable bindings whose types come from
-the variant declaration. Current patterns bind every payload field
-positionally; partial patterns, guards, nested patterns, and wildcard syntax
-are reserved. Duplicate branches and duplicate bindings are errors.</li>
+the variant declaration. Positional payload fields are bound in order;
+named-only payload fields use their labels and may be reordered after all
+positional bindings, such as
+<code>when Token::Renamed(id, after: current, before: previous)</code>. Current patterns
+bind every payload field; partial patterns, guards, nested patterns, and
+wildcard syntax are reserved. Unknown or duplicate field labels, duplicate
+branches, and duplicate bindings are errors.</li>
 <li>Without <code>else</code>, a case must list every member. With <code>else</code>, omitted members
 are handled by that branch. The selector is evaluated exactly once in every
 backend and the REPL.</li>

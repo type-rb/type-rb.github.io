@@ -136,8 +136,9 @@ return after the construct:</p>
 cannot follow a named argument. Positional defaults remain available for
 naturally ordered APIs. Explicit argument expressions run left to right;
 omitted defaults run at the selected callee's entry in declaration order.
-Record construction labels are field labels and follow their existing record
-rules.</p>
+Payload enum variants use the same <code>positional-only | * | named-only</code> boundary,
+but every payload field is required. Record construction labels are field
+labels and follow their existing record rules.</p>
 <p>Writing <code>: Void</code> on a <code>def</code> or <code>fn</code> declaration is an error; omit the return
 annotation instead. <code>Void</code> appears in function types when a stored callable
 has no result, for example <code>(String) -&gt; Void</code>.</p>
@@ -437,7 +438,7 @@ different typed data, and it may mix payload-bearing and payloadless variants:</
 <!-- raw HTML omitted -->
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> Token</span></span>
 <span class="line"><span style="color:#FFA657">	Text</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">)</span></span>
-<span class="line"><span style="color:#79C0FF">	Integer</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FFA657">	Renamed</span><span style="color:#E6EDF3">(id: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">, </span><span style="color:#FF7B72">*</span><span style="color:#E6EDF3">, before: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, after: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#79C0FF">	EOF</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span>
@@ -445,20 +446,25 @@ different typed data, and it may mix payload-bearing and payloadless variants:</
 <span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> token</span></span>
 <span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Text</span><span style="color:#E6EDF3">(value)</span></span>
 <span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> value</span></span>
-<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">(value)</span></span>
-<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> value.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Renamed</span><span style="color:#E6EDF3">(id, after: current, before: previous)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#E6EDF3"> id.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">+</span><span style="color:#A5D6FF"> ": "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> previous </span><span style="color:#FF7B72">+</span><span style="color:#A5D6FF"> " -> "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> current</span></span>
 <span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">EOF</span></span>
 <span class="line"><span style="color:#FF7B72">		return</span><span style="color:#A5D6FF"> "eof"</span></span>
 <span class="line"><span style="color:#FF7B72">	end</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">renamed </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Token</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Renamed</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">7</span><span style="color:#E6EDF3">, after: </span><span style="color:#A5D6FF">"new"</span><span style="color:#E6EDF3">, before: </span><span style="color:#A5D6FF">"old"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#D2A8FF">describe</span><span style="color:#E6EDF3">(renamed)</span></span>
 <span class="line"></span></code></pre>
 <p>Enum members may carry postfix attributes after their payload or raw value.
 Attributes are inert language metadata until a compiler-integrated package
 defines their meaning.</p>
 <p>A <code>case</code> without <code>else</code> must handle every member. Payload patterns introduce
-immutable bindings with types from the variant declaration. A payload enum
-cannot also declare raw values. <code>Result&lt;T, E&gt;</code> is the standard generic payload
-enum, with <code>Ok(value: T)</code> and <code>Err(error: E)</code> variants.</p>
+immutable bindings with types from the variant declaration. Positional fields
+are matched in order; named-only fields are matched by label and may be
+reordered after the positional bindings. Every field must currently be bound.
+A payload enum cannot also declare raw values. <code>Result&lt;T, E&gt;</code> is the standard
+generic payload enum, with <code>Ok(value: T)</code> and <code>Err(error: E)</code> variants.</p>
 <p>Ordinary, raw-value, and payload enums all remain nominal, use qualified member
 names, support exhaustive <code>case</code>, and may define instance methods after their
 members. TypeRB does not add a separate <code>sum</code> declaration.</p>
