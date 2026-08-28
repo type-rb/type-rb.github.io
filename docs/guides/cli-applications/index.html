@@ -80,12 +80,14 @@
 			</aside>
 			<main class="docs-main">
 				<article class="markdown-body"><h1 id="build-a-command-line-application">Build a command-line application</h1>
-<p><code>trb/platform/go/cli</code> generates a typed command-line parser for a Go project. The result
-can be compiled as one native executable; Ruby and TypeScript CLI backends are
-not provided.</p>
+<p><code>trb/cli</code> generates a typed command-line parser and compiles the application as
+one native executable. Its records, payload enums, and metadata are TypeRB
+APIs; users do not program against Go APIs. The current native executable
+backend requires <code>mode: &quot;go&quot;</code> and the Go toolchain. Ruby and TypeScript launcher
+generation is not provided.</p>
 <h2 id="define-the-schema">Define the schema</h2>
 <p>Use records for argument groups and a payload enum for subcommands:</p>
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { run } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/platform/go/cli</span></span>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { run } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/cli</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> ServeArgs</span></span>
 <span class="line"><span style="color:#E6EDF3">	directory: </span><span style="color:#79C0FF">String</span></span>
@@ -121,8 +123,8 @@ a record default in the initial contract. Defaults and nullable types make
 ordinary scalar positional or option fields omittable.</p>
 <p>The record passed to <code>run&lt;...&gt;</code> must itself be non-nullable and non-generic in
 the initial contract. Transparent non-generic aliases are accepted, but forms
-such as <code>run&lt;AppArgs?&gt;</code> and <code>run&lt;AppArgs&lt;Integer&gt;&gt;</code> are reported before Go
-generation.</p>
+such as <code>run&lt;AppArgs?&gt;</code> and <code>run&lt;AppArgs&lt;Integer&gt;&gt;</code> are reported before native
+executable generation.</p>
 <p>A transparent alias of the root record uses the same schema:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">alias</span><span style="color:#FFA657"> Arguments</span><span style="color:#FF7B72"> =</span><span style="color:#FFA657"> AppArgs</span></span>
 <span class="line"></span>
@@ -154,13 +156,15 @@ generation.</p>
 are flags and also accept an explicit long value such as <code>--verbose=false</code>.
 Generated usage errors go to standard error and exit with status 2.</p>
 <h2 id="compile-one-executable">Compile one executable</h2>
-<p>Configure the project for Go, then compile the entrypoint:</p>
+<p>The current native executable backend uses the Go toolchain. Configure the
+project with <code>mode: &quot;go&quot;</code>, then compile the entrypoint:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> check</span></span>
 <span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> build</span><span style="color:#79C0FF"> --compile</span></span>
 <span class="line"><span style="color:#FFA657">./bin/fileserver</span><span style="color:#79C0FF"> --help</span></span>
 <span class="line"></span></code></pre>
-<p>The generated parser uses only the Go standard library. It does not require a
-Ruby or JavaScript runtime, runtime reflection, or a separate schema file.</p>
+<p>The generated parser uses only the Go standard library internally. The
+resulting program does not require a Go, Ruby, or JavaScript runtime, runtime
+reflection, or a separate schema file.</p>
 <h2 id="initial-contract">Initial contract</h2>
 <p>The first implementation supports scalar <code>String</code>, <code>Integer</code>, <code>Float</code>, and
 <code>Boolean</code> fields, one root subcommand field, payloadless commands, and commands
@@ -169,8 +173,10 @@ with one record payload. Root options must appear before the subcommand.</p>
 constraints, mutually exclusive groups, shell completion, nested subcommands,
 optional or default root commands, and combined short flags are not yet
 supported. These are reserved as extensions to the same record and
-payload-enum schema. Dynamic plugins and Ruby or TypeScript CLI generation are
-outside the package's single-binary model.</p>
+payload-enum schema. Dynamic plugins and Ruby or TypeScript launcher generation
+are outside the package's single-binary model.</p>
+<p><code>trb/platform/go/cli</code> was published in TypeRB 0.3.44 and remains accepted as a
+compatibility import. Use <code>trb/cli</code> in new source.</p>
 </article>
 				<footer class="docs-footer">
 					<span>TypeRB 0.3.45-dev</span>

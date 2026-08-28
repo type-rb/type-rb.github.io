@@ -198,11 +198,11 @@ as a public plugin API.</li>
 </ul>
 <h2 id="6-application-level-proof">6. Application-level proof</h2>
 <ul>
-<li>Evolve the initial Go-only <code>trb/platform/go/cli</code> static schema from
-application evidence. Consider repeated values, environment fallback,
+<li>Evolve the initial <code>trb/cli</code> single-binary schema from application evidence.
+Consider repeated values, environment fallback,
 validation constraints, aliases, completion, and nested subcommands only as
 extensions to the shared record and payload-enum model; keep dynamic plugins
-and Ruby/TypeScript CLI generation outside its single-binary direction.</li>
+and Ruby/TypeScript launcher generation outside its single-binary direction.</li>
 <li>Harden the official portable <code>trb/web</code> package around its existing
 compile-time file-based routes, typed JSON requests and responses,
 middleware, initial versioned endpoint catalog, and consistent HTTP behavior

@@ -475,7 +475,7 @@ different typed data, and it may mix payload-bearing and payloadless variants:</
 <span class="line"></span></code></pre>
 <p>Enum members may carry postfix attributes after their payload or raw value.
 Attributes are inert language metadata until a compiler-integrated package
-defines their meaning. <code>trb/platform/go/cli</code>, for example, uses them for
+defines their meaning. <code>trb/cli</code>, for example, uses them for
 subcommand names and descriptions.</p>
 <p>A <code>case</code> without <code>else</code> must handle every member. Payload patterns introduce
 immutable bindings with types from the variant declaration. Positional fields

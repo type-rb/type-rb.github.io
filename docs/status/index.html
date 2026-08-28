@@ -116,13 +116,15 @@ configuration. It defaults to Go, can explicitly select Ruby or TypeScript,
 and isolates generated target source in an operating-system temporary
 directory. A discoverable <code>trbconfig.jsonc</code> always restores project-wide
 compilation and owns mode and runtime selection.</p>
-<p>Go projects can import the initial <code>trb/platform/go/cli</code> platform package to
-generate a typed command-line parser from records and payload enums.
+<p>Projects can import <code>trb/cli</code> to generate a typed command-line parser from
+records and payload enums as one native executable.
 Unannotated fields are positional, <code>@cli(:option)</code> declares options, and
 <code>@cli(:subcommand)</code> selects a closed command enum. Generated help, version,
 scalar conversion, usage errors, record defaults, and payload construction use
-only the Go standard library and compile into the same single executable. Ruby
-and TypeScript CLI generation are intentionally outside this package.</p>
+only the Go standard library internally and compile into the same single
+executable. The current build path requires <code>mode: &quot;go&quot;</code> and the Go toolchain;
+this is a toolchain constraint rather than a Go API exposed to the application.
+Ruby and TypeScript launcher generation is intentionally outside this package.</p>
 <p>The initial distributed package system resolves TypeRB source directly from
 Git repositories or explicit local paths. Short imports default to GitHub but
 lock to canonical manifest identities. A deterministic <code>trb.lock</code> pins the
