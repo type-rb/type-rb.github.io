@@ -132,6 +132,17 @@ return after the construct:</p>
 <span class="line"></span>
 <span class="line"><span style="color:#D2A8FF">connect</span><span style="color:#E6EDF3">(port: </span><span style="color:#79C0FF">8443</span><span style="color:#E6EDF3">, host: </span><span style="color:#A5D6FF">"example.com"</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"></span></code></pre>
+<p>Function and method parameters are immutable bindings by default. Add <code>mut</code>
+before a parameter name only when its implementation reassigns that binding or
+uses it for a destructive operation:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> advance</span><span style="color:#E6EDF3">(</span><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> value: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">, </span><span style="color:#FF7B72">*</span><span style="color:#E6EDF3">, amount: </span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> 1</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">Integer</span></span>
+<span class="line"><span style="color:#E6EDF3">	value </span><span style="color:#FF7B72">+=</span><span style="color:#E6EDF3"> amount</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> value</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>mut</code> here is not <code>inout</code>: assigning another value to <code>value</code> does not assign
+that value to the caller's binding. It is not part of the function's call
+signature, so callers, interfaces, and overrides do not repeat it.</p>
 <p>Parameters before <code>*</code> cannot be supplied by name, and positional arguments
 cannot follow a named argument. Positional defaults remain available for
 naturally ordered APIs. Explicit argument expressions run left to right;
@@ -154,8 +165,10 @@ has no result, for example <code>(String) -&gt; Void</code>.</p>
 <span class="line"></span></code></pre>
 <p>Each <code>fn</code> parameter has a type. A function value with no result omits its
 return annotation, just like <code>def</code>. Its <code>return</code> exits the function value, not
-the enclosing method. A function value that may return a recoverable error uses
-the same ordinary Result return in its declaration and type:</p>
+the enclosing method. A parameter is immutable unless written with <code>mut</code>, for
+example <code>fn(mut value: Integer): Integer</code>. A function value that may return a
+recoverable error uses the same ordinary Result return in its declaration and
+type:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">loader: () </span><span style="color:#FF7B72">-></span><span style="color:#FFA657"> Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">LoadError</span><span style="color:#FF7B72">></span><span style="color:#FF7B72"> :=</span><span style="color:#FF7B72"> fn</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">LoadError</span><span style="color:#FF7B72">></span></span>
 <span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> read_name</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
@@ -212,6 +225,10 @@ the binding will be reassigned or used by a destructive collection operation:</p
 <span class="line"></span></code></pre>
 <p>An immutable reference cannot become mutable by assigning it to a new <code>mut</code>
 binding.</p>
+<p>The same default applies to <code>def</code> and <code>fn</code> parameters. Parameter <code>mut</code> changes
+only the binding inside that implementation and does not add caller-side
+writeback. Iterator and call-block bindings keep their current behavior while
+explicit mutable block patterns and element ownership remain under design.</p>
 <p>Compare a nullable binding with <code>nil</code> to narrow its non-<code>nil</code> path. A returning
 guard also narrows the statements that follow it:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> display_name</span><span style="color:#E6EDF3">(name: </span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">?</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">String</span></span>
