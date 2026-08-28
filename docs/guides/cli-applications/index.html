@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Build a command-line application — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		<link rel="canonical" href="https://type-rb.github.io/docs/guides/cli-applications/">
+		<title>Build a command-line application — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a class="active" aria-current="page" href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a class="active" aria-current="page" href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="build-a-command-line-application">Build a command-line application</h1>
+<p><code>trb/platform/go/cli</code> generates a typed command-line parser for a Go project. The result
+can be compiled as one native executable; Ruby and TypeScript CLI backends are
+not provided.</p>
+<h2 id="define-the-schema">Define the schema</h2>
+<p>Use records for argument groups and a payload enum for subcommands:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { run } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/platform/go/cli</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> ServeArgs</span></span>
+<span class="line"><span style="color:#E6EDF3">	directory: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#E6EDF3">	port: </span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> 8080</span><span style="color:#E6EDF3"> @cli(</span><span style="color:#79C0FF">:option</span><span style="color:#E6EDF3">, short: </span><span style="color:#A5D6FF">"p"</span><span style="color:#E6EDF3">, about: </span><span style="color:#A5D6FF">"Port to listen on"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">	verbose: </span><span style="color:#79C0FF">Boolean</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> false</span><span style="color:#E6EDF3"> @cli(</span><span style="color:#79C0FF">:option</span><span style="color:#E6EDF3">, short: </span><span style="color:#A5D6FF">"v"</span><span style="color:#E6EDF3">, about: </span><span style="color:#A5D6FF">"Enable verbose output"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> Command</span></span>
+<span class="line"><span style="color:#FFA657">	Serve</span><span style="color:#E6EDF3">(args: </span><span style="color:#FFA657">ServeArgs</span><span style="color:#E6EDF3">) @cli(about: </span><span style="color:#A5D6FF">"Start the server"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FFA657">	Version</span><span style="color:#E6EDF3"> @cli(about: </span><span style="color:#A5D6FF">"Print version details"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> AppArgs</span></span>
+<span class="line"><span style="color:#E6EDF3">	command: </span><span style="color:#FFA657">Command</span><span style="color:#E6EDF3"> @cli(</span><span style="color:#79C0FF">:subcommand</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>An unannotated field such as <code>directory</code> is positional. An option uses its
+kebab-cased field name by default, so <code>verbose</code> becomes <code>--verbose</code> and
+<code>output_path</code> becomes <code>--output-path</code>. <code>name</code> or <code>long</code> overrides the long
+name; <code>short</code> must contain one character. Defaults belong to the record and are
+also used by ordinary non-CLI construction. Subcommand names cannot begin with
+<code>-</code>, long option names cannot contain <code>=</code>, and <code>-</code> is reserved from use as a
+short option. U+0000 is also reserved in subcommand and option names because
+it cannot appear in an operating-system argument; other Unicode names are
+supported. <code>trb check</code> reports reserved names instead of generating help for
+an option or command that the parser cannot select.</p>
+<p>Use <code>about</code> and <code>value_name</code> to describe a positional field in generated help.
+Options accept those keys plus <code>name</code> (or <code>long</code>) and <code>short</code>. The root
+subcommand selector itself has no naming metadata; put <code>name</code> and <code>about</code> on
+its enum members.</p>
+<p>The root <code>@cli(:subcommand)</code> field is required and non-nullable and cannot have
+a record default in the initial contract. Defaults and nullable types make
+ordinary scalar positional or option fields omittable.</p>
+<p>The record passed to <code>run&lt;...&gt;</code> must itself be non-nullable and non-generic in
+the initial contract. Transparent non-generic aliases are accepted, but forms
+such as <code>run&lt;AppArgs?&gt;</code> and <code>run&lt;AppArgs&lt;Integer&gt;&gt;</code> are reported before Go
+generation.</p>
+<p>A transparent alias of the root record uses the same schema:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">alias</span><span style="color:#FFA657"> Arguments</span><span style="color:#FF7B72"> =</span><span style="color:#FFA657"> AppArgs</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">args </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> run</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Arguments</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">(name: </span><span style="color:#A5D6FF">"fileserver"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span></code></pre>
+<h2 id="parse-and-dispatch">Parse and dispatch</h2>
+<p>Call <code>run</code> once from the application and match the returned payload enum:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> main</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#E6EDF3">	args </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> run</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">AppArgs</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">(name: </span><span style="color:#A5D6FF">"fileserver"</span><span style="color:#E6EDF3">, version: </span><span style="color:#A5D6FF">"1.0.0"</span><span style="color:#E6EDF3">, about: </span><span style="color:#A5D6FF">"Serve a local directory"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> args.</span><span style="color:#D2A8FF">command</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Command</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Serve</span><span style="color:#E6EDF3">(serve)</span></span>
+<span class="line"><span style="color:#79C0FF">		puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"serving "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> serve.</span><span style="color:#D2A8FF">directory</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#79C0FF">		puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"port "</span><span style="color:#FF7B72"> +</span><span style="color:#E6EDF3"> serve.</span><span style="color:#D2A8FF">port</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">())</span></span>
+<span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Command</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Version</span></span>
+<span class="line"><span style="color:#79C0FF">		puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"extended version details"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Typical calls are:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">fileserver</span><span style="color:#A5D6FF"> serve</span><span style="color:#A5D6FF"> public</span></span>
+<span class="line"><span style="color:#FFA657">fileserver</span><span style="color:#A5D6FF"> serve</span><span style="color:#A5D6FF"> public</span><span style="color:#79C0FF"> --port</span><span style="color:#79C0FF"> 9000</span><span style="color:#79C0FF"> --verbose</span></span>
+<span class="line"><span style="color:#FFA657">fileserver</span><span style="color:#A5D6FF"> serve</span><span style="color:#A5D6FF"> public</span><span style="color:#79C0FF"> -p</span><span style="color:#79C0FF"> 9000</span><span style="color:#79C0FF"> -v</span></span>
+<span class="line"><span style="color:#FFA657">fileserver</span><span style="color:#A5D6FF"> serve</span><span style="color:#79C0FF"> --help</span></span>
+<span class="line"><span style="color:#FFA657">fileserver</span><span style="color:#79C0FF"> --version</span></span>
+<span class="line"></span></code></pre>
+<p>Long values may use <code>--port=9000</code>. <code>--</code> ends option parsing. Boolean options
+are flags and also accept an explicit long value such as <code>--verbose=false</code>.
+Generated usage errors go to standard error and exit with status 2.</p>
+<h2 id="compile-one-executable">Compile one executable</h2>
+<p>Configure the project for Go, then compile the entrypoint:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> check</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> build</span><span style="color:#79C0FF"> --compile</span></span>
+<span class="line"><span style="color:#FFA657">./bin/fileserver</span><span style="color:#79C0FF"> --help</span></span>
+<span class="line"></span></code></pre>
+<p>The generated parser uses only the Go standard library. It does not require a
+Ruby or JavaScript runtime, runtime reflection, or a separate schema file.</p>
+<h2 id="initial-contract">Initial contract</h2>
+<p>The first implementation supports scalar <code>String</code>, <code>Integer</code>, <code>Float</code>, and
+<code>Boolean</code> fields, one root subcommand field, payloadless commands, and commands
+with one record payload. Root options must appear before the subcommand.</p>
+<p>Repeated values and Arrays, environment fallback, option aliases, validation
+constraints, mutually exclusive groups, shell completion, nested subcommands,
+optional or default root commands, and combined short flags are not yet
+supported. These are reserved as extensions to the same record and
+payload-enum schema. Dynamic plugins and Ruby or TypeScript CLI generation are
+outside the package's single-binary model.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.3.44-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/guides/cli-applications.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

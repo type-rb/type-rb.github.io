@@ -37,7 +37,7 @@
 					
 					<section>
 						<h2>Build applications</h2>
-						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
 					</section>
 					
 					<section>
@@ -62,7 +62,7 @@
 						
 						<section>
 							<h2>Build applications</h2>
-							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
 						</section>
 						
 						<section>
@@ -475,7 +475,8 @@ different typed data, and it may mix payload-bearing and payloadless variants:</
 <span class="line"></span></code></pre>
 <p>Enum members may carry postfix attributes after their payload or raw value.
 Attributes are inert language metadata until a compiler-integrated package
-defines their meaning.</p>
+defines their meaning. <code>trb/platform/go/cli</code>, for example, uses them for
+subcommand names and descriptions.</p>
 <p>A <code>case</code> without <code>else</code> must handle every member. Payload patterns introduce
 immutable bindings with types from the variant declaration. Positional fields
 are matched in order; named-only fields are matched by label and may be

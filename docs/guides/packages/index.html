@@ -37,7 +37,7 @@
 					
 					<section>
 						<h2>Build applications</h2>
-						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a class="active" aria-current="page" href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a class="active" aria-current="page" href="/docs/guides/packages/">Packages</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
 					</section>
 					
 					<section>
@@ -62,7 +62,7 @@
 						
 						<section>
 							<h2>Build applications</h2>
-							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a class="active" aria-current="page" href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a class="active" aria-current="page" href="/docs/guides/packages/">Packages</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
 						</section>
 						
 						<section>
@@ -673,10 +673,11 @@ model when generation does not require TypeRB project declarations; reserve a
 future compiler provider for cases that genuinely need project-aware discovery.</p>
 <h3 id="experimental-bundled-declaration-providers">Experimental bundled declaration providers</h3>
 <p>TypeRB 0.x has experimental data boundaries for declaration discovery and
-output from bundled, compiler-integrated packages. <code>trb/orm</code>, <code>trb/jobs</code>, and
-<code>trb/web</code> are the first consumers. The ORM provider discovers project models
-and schema metadata, the Jobs provider derives typed enqueue methods from Job
-classes, and the Web provider identifies exact endpoint contract classes.
+output from bundled, compiler-integrated packages. <code>trb/orm</code>, <code>trb/jobs</code>,
+<code>trb/web</code>, and <code>trb/platform/go/cli</code> are the first consumers. The ORM provider
+discovers project models and schema metadata, the Jobs provider derives typed
+enqueue methods from Job classes, the Web provider identifies exact endpoint
+contract classes, and the CLI provider derives a closed argument schema.
 Their resulting catalogs cross a versioned, JSON-serializable
 Declaration Protocol before resolution and checking. The current Declaration
 Protocol is version 3. It can identify a direct package-function call in one
@@ -685,8 +686,8 @@ ordinary call signature, while every backend omits the call from runtime
 output. Parameters may also explicitly identify a representation boundary for
 nominal source newtypes. The compiler host validates and copies that data into
 its private semantic representation.</p>
-<p>The Jobs, ORM, and Web declaration providers also receive versioned, validated
-Project Declaration Input snapshots. Version 6 adds record-default presence
+<p>These bundled providers also receive versioned, validated Project Declaration
+Input snapshots. Version 6 adds record-default presence
 and enum-member attributes. Nested records and enums use qualified names, such
 as <code>CLI::Options</code>, so same-leaf declarations remain distinct; other
 declaration categories and imports remain top-level-only in this protocol
@@ -702,7 +703,7 @@ this snapshot is an authored project declaration; it does not expose the
 call-site-only record-inspection metadata used by call specialization. The
 snapshot does not contain parser nodes, function, method, or block bodies,
 default expressions, resolver or checker state, filesystem handles, or backend
-objects. These three consumers characterize a small reusable read-only project
+objects. These consumers characterize a small reusable read-only project
 view; it is not yet a general external provider API.</p>
 <p>The Web provider uses the generic declaration catalog only to mark <code>handles</code>,
 <code>input</code>, and <code>response</code> calls in exact <code>Endpoint</code> classes as declaration-only.

@@ -37,7 +37,7 @@
 					
 					<section>
 						<h2>Build applications</h2>
-						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
 					</section>
 					
 					<section>
@@ -62,7 +62,7 @@
 						
 						<section>
 							<h2>Build applications</h2>
-							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
 						</section>
 						
 						<section>
@@ -198,6 +198,11 @@ as a public plugin API.</li>
 </ul>
 <h2 id="6-application-level-proof">6. Application-level proof</h2>
 <ul>
+<li>Evolve the initial Go-only <code>trb/platform/go/cli</code> static schema from
+application evidence. Consider repeated values, environment fallback,
+validation constraints, aliases, completion, and nested subcommands only as
+extensions to the shared record and payload-enum model; keep dynamic plugins
+and Ruby/TypeScript CLI generation outside its single-binary direction.</li>
 <li>Harden the official portable <code>trb/web</code> package around its existing
 compile-time file-based routes, typed JSON requests and responses,
 middleware, initial versioned endpoint catalog, and consistent HTTP behavior
