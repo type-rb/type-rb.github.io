@@ -134,7 +134,10 @@ delegates its return behavior to Ruby and is outside this portable check.
 Known TypeRB expressions do not gain implicit return behavior from that
 import.</li>
 <li>No explicit <code>void</code> type notation (Go-like). Methods with no return value omit
-the return type and may fall through or use a bare <code>return</code>.</li>
+the return type and may fall through or use a bare <code>return</code>. Fallthrough is
+the recommended terminal style; <code>trb/omit-terminal-void-return</code> reports and
+safely removes a redundant final bare <code>return</code> without changing language
+validity or formatter output.</li>
 <li>Parameters have the two regions <code>positional-only | * | named-only</code>. A bare
 <code>*</code> begins the named-only region. Named argument syntax binds only that
 region; it cannot name an ordinary positional parameter.</li>
@@ -1238,7 +1241,6 @@ the same checked operation through an equivalent representation.</li>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">	def</span><span style="color:#D2A8FF"> initialize</span><span style="color:#E6EDF3">(value: </span><span style="color:#FFA657">T</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#E6EDF3">		@value </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> value</span></span>
-<span class="line"><span style="color:#FF7B72">		return</span></span>
 <span class="line"><span style="color:#FF7B72">	end</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">	def</span><span style="color:#D2A8FF"> pair</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">U</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">(other: </span><span style="color:#FFA657">U</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Pair</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">T</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">U</span><span style="color:#FF7B72">></span></span>

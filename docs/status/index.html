@@ -106,10 +106,10 @@ modifier. Both forms normalize into the existing control-flow IR and therefore
 share strict Boolean conditions, narrowing, lazy branches, and backend or REPL
 semantics.</p>
 <p><code>trb lint</code> runs project checking before a small configurable built-in ruleset.
-The initial recommended rule, <code>trb/prefer-conditional-transfer</code>, reports and
-safely fixes simple one-transfer guard blocks. Built-in rules share the TypeRB
-version, while JSON reports carry independent <code>schemaVersion</code> and
-<code>toolVersion</code> fields. Third-party rule execution remains deferred until a
+The recommended rules safely rewrite simple one-transfer guard blocks and
+remove redundant terminal bare returns from Void callables. Built-in rules
+share the TypeRB version, while JSON reports carry independent <code>schemaVersion</code>
+and <code>toolVersion</code> fields. Third-party rule execution remains deferred until a
 deterministic, resource-bounded extension protocol is designed.</p>
 <p>The CLI can also run one self-contained <code>.trb</code> file without creating project
 configuration. It defaults to Go, can explicitly select Ruby or TypeScript,
