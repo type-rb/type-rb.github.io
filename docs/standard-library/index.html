@@ -569,10 +569,13 @@ application payload, including <code>Result&lt;Unit, E&gt;</code> operations.</p
 conversion. <code>from_raw()</code> infers this error type and its runtime dependency; an
 explicit import is needed only when source code names <code>EnumValueError</code> itself.</p>
 <h2 id="tests">Tests</h2>
-<p><code>trb/std/test</code> exports <code>describe</code>, <code>test</code>, and <code>expect</code>. Suites and cases take
-literal names and parameterless blocks so the compiler, CLI, language server,
-and editor use one deterministic discovery model. <code>expect()</code> returns a typed
-<code>Expectation&lt;T&gt;</code> with equality, inequality, Boolean, and nil assertions.</p>
+<p><code>trb/std/test</code> exports <code>describe</code>, <code>test</code>, <code>expect</code>, <code>expect_ok</code>, and
+<code>expect_err</code>. Suites and cases take literal names and parameterless blocks so
+the compiler, CLI, language server, and editor use one deterministic discovery
+model. <code>expect()</code> returns a typed <code>Expectation&lt;T&gt;</code> with equality, inequality,
+Boolean, and nil assertions. <code>expect_ok(Result&lt;T, E&gt;)</code> returns <code>T</code>, while
+<code>expect_err(Result&lt;T, E&gt;)</code> returns <code>E</code>; either helper fails the current case if
+the Result has the opposite variant.</p>
 <p>The package is portable compiler-owned source plus a small target runtime.
 Assertion failures retain their original <code>.trb</code> path, line, and column. The
 runtime protocol is consumed by <code>trb test</code> and editor integrations; application

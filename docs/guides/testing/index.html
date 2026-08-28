@@ -136,6 +136,8 @@ other tools.</p>
 <li><code>expect(actual).to_be_true()</code></li>
 <li><code>expect(actual).to_be_false()</code></li>
 <li><code>expect(actual).to_be_nil()</code></li>
+<li><code>expect_ok(actual_result)</code></li>
+<li><code>expect_err(actual_result)</code></li>
 </ul>
 <p>Equality assertions compare portable values structurally across backends,
 including Arrays, Hashes, records, and value-carrying enums.</p>
@@ -152,10 +154,21 @@ function and data-driven tests use an Array with <code>each</code>:</p>
 <span class="line"></span></code></pre>
 <p>Recoverable operations return ordinary Result values. Use <code>try</code> only when a
 helper function itself returns a compatible Result, and use <code>catch</code> when a
-test can recover with a value. When a particular <code>Err</code> variant or payload is
-the subject of the assertion, keep the Result intact and inspect it with an
-exhaustive <code>case</code>. This makes the unexpected <code>Ok</code> path explicit without adding
-test-only control-flow semantics.</p>
+test can recover with a value. Result values already support structural
+equality, so an exact result can be asserted directly. Use <code>expect_ok()</code> or
+<code>expect_err()</code> when the payload is the subject of later assertions:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#D2A8FF">expect</span><span style="color:#E6EDF3">(</span><span style="color:#D2A8FF">load_user</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"missing"</span><span style="color:#E6EDF3">)).</span><span style="color:#D2A8FF">to_equal</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">UserResult</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Err</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">UserError</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">NotFound</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"missing"</span><span style="color:#E6EDF3">)))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E6EDF3">user </span><span style="color:#FF7B72">:=</span><span style="color:#D2A8FF"> expect_ok</span><span style="color:#E6EDF3">(</span><span style="color:#D2A8FF">load_user</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"ada"</span><span style="color:#E6EDF3">))</span></span>
+<span class="line"><span style="color:#D2A8FF">expect</span><span style="color:#E6EDF3">(user.</span><span style="color:#D2A8FF">name</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">to_equal</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Ada"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D2A8FF">expect</span><span style="color:#E6EDF3">(</span><span style="color:#D2A8FF">expect_err</span><span style="color:#E6EDF3">(</span><span style="color:#D2A8FF">load_user</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"invalid"</span><span style="color:#E6EDF3">))).</span><span style="color:#D2A8FF">to_equal</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">UserError</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Invalid</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"invalid"</span><span style="color:#E6EDF3">))</span></span>
+<span class="line"></span></code></pre>
+<p><code>expect_ok()</code> returns the <code>Ok</code> value and fails the current test if it receives
+<code>Err</code>. <code>expect_err()</code> returns the <code>Err</code> value and fails if it receives <code>Ok</code>.
+Both failures point to the helper call. An exhaustive <code>case</code> remains available
+when the test needs branch-specific control flow; these helpers do not add an
+implicit Result boundary.</p>
 <p>There is no implicit setup inheritance, dedicated table-test syntax, fixture
 registry, or mock-generation magic. Tests use ordinary constructors,
 interfaces, and explicit fake implementations. Higher-level testing packages

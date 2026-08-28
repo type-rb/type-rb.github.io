@@ -1332,8 +1332,9 @@ not emit or execute these files; configured-project <code>trb check</code>, <cod
 and <code>trb test</code> validate them with the complete project. A config-free
 file-root closure excludes imported test modules, while a test file selected
 as the language-server entry is still analyzed.</li>
-<li>The portable <code>trb/std/test</code> package exports <code>describe</code>, <code>test</code>, and <code>expect</code>.
-Test DSL functions are available only through explicit named imports.</li>
+<li>The portable <code>trb/std/test</code> package exports <code>describe</code>, <code>test</code>, <code>expect</code>,
+<code>expect_ok</code>, and <code>expect_err</code>. Test DSL functions are available only through
+explicit named imports.</li>
 <li>A test file has one or more top-level <code>describe(&quot;literal&quot;) do ... end</code>
 declarations. A suite contains only nested <code>describe</code> and <code>test</code>
 declarations. A <code>test</code> must be nested inside a suite.</li>
@@ -1341,9 +1342,11 @@ declarations. A <code>test</code> must be nested inside a suite.</li>
 nesting path is the stable full test name used by name patterns and tools.
 Duplicate full names in one file are an error.</li>
 <li>Suite and test blocks take no parameters. Test bodies otherwise use ordinary
-statements, helpers, Results, and imports. Expected errors are inspected with
-exhaustive <code>case</code>; the test package does not add an implicit Result boundary,
-change language scoping, or introduce implicit setup state.</li>
+statements, helpers, Results, and imports. Tests may compare a complete
+Result with <code>expect</code>, extract its payload with <code>expect_ok</code> or <code>expect_err</code>, or
+inspect branches with exhaustive <code>case</code>. The test package does not add an
+implicit Result boundary, change language scoping, or introduce implicit
+setup state.</li>
 <li><code>return</code>, <code>break</code>, and <code>next</code> cannot transfer control across a <code>describe()</code> or
 <code>test()</code> block boundary. A nested function still owns its own <code>return</code>, and
 a <code>while</code> or iteration inside a test body still owns its local <code>break</code> and
@@ -1351,6 +1354,10 @@ a <code>while</code> or iteration inside a test body still owns its local <code>
 <li><code>expect&lt;T&gt;(actual)</code> preserves <code>T</code> in <code>Expectation&lt;T&gt;</code>. An assertion failure
 aborts the current case, records the assertion's <code>.trb</code> location, and does
 not abort subsequent cases.</li>
+<li><code>expect_ok&lt;T, E&gt;(actual: Result&lt;T, E&gt;)</code> returns the <code>Ok</code> payload and fails the
+current case if <code>actual</code> is <code>Err</code>. <code>expect_err&lt;T, E&gt;(actual: Result&lt;T, E&gt;)</code>
+returns the <code>Err</code> payload and fails if <code>actual</code> is <code>Ok</code>. Standard Result type
+aliases are accepted. A failure records the helper call's <code>.trb</code> location.</li>
 <li><code>trb test</code> accepts zero or more <code>_test.trb</code> file and directory paths below
 the configured <code>sourceDir</code>. Directories select test files recursively,
 multiple paths form a union, and no paths select every project test. Shell
