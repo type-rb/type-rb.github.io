@@ -400,9 +400,13 @@ side: <code>value != nil and use(value)</code> and <code>value == nil or use(val
 <li>A guard without <code>else</code> narrows the following statements when every matching
 branch returns. For example, after <code>if value == nil; return fallback; end</code>,
 <code>value</code> has its non-nullable type.</li>
-<li>Reassignment invalidates the narrowing immediately. The assignment itself is
-checked against the binding's declared nullable type, and subsequent uses
-must narrow again.</li>
+<li>Plain reassignment is checked against the binding's declared nullable type,
+then gives subsequent statements in that control-flow path the assigned
+value's precise flow type. Assigning a non-null value of the declared base
+type therefore preserves non-nullability without another <code>nil</code> check;
+assigning <code>nil</code> gives the path type <code>Nil</code>. A conditional, loop, or callback
+does not export that assignment fact to a parent path that may not execute it.
+Compound assignment does not establish a new nullable flow fact.</li>
 <li>A direct nullable data field may also narrow when its receiver is a stable
 lexical binding and the field cannot change: record fields are always
 stable, and class fields must be declared <code>readonly</code>. Reassigning the
@@ -413,6 +417,8 @@ assumed to produce the same value when evaluated again. Typed IR records
 each nullable unwrap explicitly so Go, Ruby, TypeScript, and the REPL use the
 same checked flow facts.</li>
 </ul>
+<p>See <a href="https://github.com/type-rb/type-rb/blob/main/docs/decisions/0010-assignment-based-nullable-narrowing.md">ADR 0010</a> for the
+declared-type and flow-type split.</p>
 <h4 id="literal-types-and-discriminated-unions">Literal types and discriminated unions</h4>
 <ul>
 <li>An explicit Integer or String literal may appear in a type position, for

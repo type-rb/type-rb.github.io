@@ -240,8 +240,19 @@ guard also narrows the statements that follow it:</p>
 <span class="line"></span></code></pre>
 <p>The same narrowing is available in the matching branch of <code>name != nil</code>, in
 the remaining <code>elsif</code> or <code>else</code> path of <code>name == nil</code>, in <code>while</code>, and on the
-right side of a compatible short-circuit <code>&amp;&amp;</code> or <code>||</code>. Reassigning the binding
-invalidates the narrowed type.</p>
+right side of a compatible short-circuit <code>&amp;&amp;</code> or <code>||</code>. A plain assignment is
+still checked against the binding's declared nullable type, but subsequent
+statements in that path use the assigned value's more precise type:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> normalized</span><span style="color:#E6EDF3">(</span><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> name: </span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">?</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">	if</span><span style="color:#E6EDF3"> name </span><span style="color:#FF7B72">==</span><span style="color:#79C0FF"> nil</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#A5D6FF"> "anonymous"</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#E6EDF3">	name </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> name.</span><span style="color:#D2A8FF">strip</span><span style="color:#E6EDF3">().</span><span style="color:#D2A8FF">downcase</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> name</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>An assignment that occurs only inside a conditional, loop, or callback does
+not narrow the binding after that construct, because the path may not execute.</p>
 <p>A direct nullable record field or <code>readonly</code> class field follows the same
 rule when its receiver is a lexical binding:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> display_profile</span><span style="color:#E6EDF3">(profile: </span><span style="color:#FFA657">Profile</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">String</span></span>
