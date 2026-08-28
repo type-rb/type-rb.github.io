@@ -1338,7 +1338,7 @@ Test DSL functions are available only through explicit named imports.</li>
 declarations. A suite contains only nested <code>describe</code> and <code>test</code>
 declarations. A <code>test</code> must be nested inside a suite.</li>
 <li>Suite and test names are nonempty String literals. Their slash-separated
-nesting path is the stable full test name used by filters and tools.
+nesting path is the stable full test name used by name patterns and tools.
 Duplicate full names in one file are an error.</li>
 <li>Suite and test blocks take no parameters. Test bodies otherwise use ordinary
 statements, helpers, Results, and imports. Expected errors are inspected with
@@ -1351,9 +1351,16 @@ a <code>while</code> or iteration inside a test body still owns its local <code>
 <li><code>expect&lt;T&gt;(actual)</code> preserves <code>T</code> in <code>Expectation&lt;T&gt;</code>. An assertion failure
 aborts the current case, records the assertion's <code>.trb</code> location, and does
 not abort subsequent cases.</li>
-<li><code>trb test</code> creates a temporary entrypoint, invokes each test module in
-deterministic module order, and returns a nonzero status when a case fails.
-It suppresses application <code>main()</code> entrypoints for this compilation only.</li>
+<li><code>trb test</code> accepts zero or more <code>_test.trb</code> file and directory paths below
+the configured <code>sourceDir</code>. Directories select test files recursively,
+multiple paths form a union, and no paths select every project test. Shell
+expansion may supply multiple paths; the CLI does not interpret glob syntax.
+A focused run compiles all production files and only the selected test files.
+<code>-t</code> and <code>--test-name-pattern</code> apply a Go regular expression to full test
+names after path selection. The command creates a temporary entrypoint,
+invokes each selected test module in deterministic module order, and returns
+a nonzero status when a case fails. It suppresses application <code>main()</code>
+entrypoints for this compilation only.</li>
 </ul>
 </article>
 				<footer class="docs-footer">
