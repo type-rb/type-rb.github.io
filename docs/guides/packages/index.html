@@ -214,7 +214,7 @@ at runtime.</p>
 <span class="line"><span style="color:#E6EDF3">}</span></span>
 <span class="line"></span></code></pre>
 <p><code>src/index.trb</code> is required and owns ordinary runtime loading:</p>
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/platform/ruby/native</span></span>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">activate trb</span><span style="color:#FF7B72">/</span><span style="color:#E6EDF3">platform</span><span style="color:#FF7B72">/</span><span style="color:#E6EDF3">ruby</span><span style="color:#FF7B72">/</span><span style="color:#E6EDF3">native</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#E6EDF3">require </span><span style="color:#A5D6FF">"pagy"</span></span>
 <span class="line"></span></code></pre>
@@ -222,7 +222,7 @@ at runtime.</p>
 use even when it does not import a TypeRB symbol, because it activates the
 fixed declarations and keeps the package root in generated Ruby:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> github</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">com</span><span style="color:#FF7B72">/</span><span style="color:#E6EDF3">acme</span><span style="color:#FF7B72">/</span><span style="color:#E6EDF3">pagy</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/platform/ruby/native</span></span>
+<span class="line"><span style="color:#E6EDF3">activate trb</span><span style="color:#FF7B72">/</span><span style="color:#E6EDF3">platform</span><span style="color:#FF7B72">/</span><span style="color:#E6EDF3">ruby</span><span style="color:#FF7B72">/</span><span style="color:#E6EDF3">native</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> ProductsController</span></span>
 <span class="line"><span style="color:#E6EDF3">	include </span><span style="color:#FFA657">Pagy</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Method</span></span>

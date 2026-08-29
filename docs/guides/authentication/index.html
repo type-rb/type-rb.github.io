@@ -104,19 +104,19 @@ The default roles claim is <code>roles</code>, and the default clock skew is 60 
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#79C0FF">OIDC</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> auth/config</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> call</span><span style="color:#E6EDF3">(context: </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, next_handler: </span><span style="color:#FFA657">Next</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
-<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> bearer.</span><span style="color:#D2A8FF">authenticate</span><span style="color:#E6EDF3">(context, next_handler, </span><span style="color:#79C0FF">OIDC</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> Bearer</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">authenticate</span><span style="color:#E6EDF3">(context, next_handler, </span><span style="color:#79C0FF">OIDC</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
 <p>The middleware returns a JSON 401 response with <code>WWW-Authenticate: Bearer</code>
 when credentials are missing or invalid. A verified <code>OidcPrincipal</code> is stored
 in the immutable request context. Handlers retrieve it without sharing a
 string key or performing a cast:</p>
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/result</span></span>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3">, text } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/web/auth/bearer</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> get</span><span style="color:#E6EDF3">(context: </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
-<span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> bearer.</span><span style="color:#D2A8FF">principal</span><span style="color:#E6EDF3">(context)</span></span>
+<span class="line"><span style="color:#FF7B72">	case</span><span style="color:#FFA657"> Bearer</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">principal</span><span style="color:#E6EDF3">(context)</span></span>
 <span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Ok</span><span style="color:#E6EDF3">(principal)</span></span>
 <span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> text</span><span style="color:#E6EDF3">(principal.</span><span style="color:#D2A8FF">subject</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Err</span><span style="color:#E6EDF3">(_error)</span></span>
@@ -124,7 +124,7 @@ string key or performing a cast:</p>
 <span class="line"><span style="color:#FF7B72">	end</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
-<p>Use <code>bearer.verify(request, options)</code> when an application needs verification
+<p>Use <code>Bearer.verify(request, options)</code> when an application needs verification
 without the standard middleware response. It returns
 <code>Result&lt;OidcPrincipal, OidcAuthError&gt;</code> and distinguishes missing credentials,
 invalid credentials, provider failures, and invalid configuration.</p>

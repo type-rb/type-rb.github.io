@@ -97,7 +97,7 @@ functions determine HTTP methods. For example,
 <code>src/routes/todos/[id].trb</code> can contain:</p>
 <!-- raw HTML omitted -->
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3">, json } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/result</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> UpdateTodo</span></span>
 <span class="line"><span style="color:#E6EDF3">	title: </span><span style="color:#79C0FF">String</span></span>
@@ -136,7 +136,7 @@ methods change status, headers, <code>Vary</code>, and cookies by returning a ne
 <p>Path and query values can be bound to records without giving the target
 runtime permission to reflect over application types:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3">, text } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/result</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> TodoParams</span></span>
 <span class="line"><span style="color:#E6EDF3">	id: </span><span style="color:#79C0FF">Integer</span></span>
@@ -327,7 +327,7 @@ resulting client itself is intentionally browser-target-specific.</p>
 the handler boundary. Create one <code>ContextKey&lt;T&gt;</code> and share that key between
 the producer and consumer:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">ContextKey</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Next</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3">, text } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/result</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> CurrentUser</span></span>
 <span class="line"><span style="color:#E6EDF3">	id: </span><span style="color:#79C0FF">Integer</span></span>
@@ -368,7 +368,7 @@ the project dispatcher.</p>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/web/middleware/compression</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> call</span><span style="color:#E6EDF3">(context: </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, next_handler: </span><span style="color:#FFA657">Next</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
-<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> compression.</span><span style="color:#D2A8FF">call</span><span style="color:#E6EDF3">(context, next_handler)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> Compression</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">call</span><span style="color:#E6EDF3">(context, next_handler)</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
 <p>The default compresses eligible responses of at least 1 KiB with gzip when the
@@ -385,7 +385,7 @@ representation metadata invalidated by compression.</p>
 <span class="line"><span style="color:#79C0FF">OPTIONS</span><span style="color:#FF7B72"> :=</span><span style="color:#FFA657"> TimeoutOptions</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(milliseconds: </span><span style="color:#79C0FF">5000</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> call</span><span style="color:#E6EDF3">(context: </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, next_handler: </span><span style="color:#FFA657">Next</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
-<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> timeout.</span><span style="color:#D2A8FF">call</span><span style="color:#E6EDF3">(context, next_handler, </span><span style="color:#79C0FF">OPTIONS</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> Timeout</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">call</span><span style="color:#E6EDF3">(context, next_handler, </span><span style="color:#79C0FF">OPTIONS</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
 <p>The default deadline is 30 seconds. An expired request returns a portable JSON

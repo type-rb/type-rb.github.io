@@ -184,7 +184,7 @@ the same.</p>
 <h2 id="imports-and-modes">Imports and modes</h2>
 <p>Imports are explicit and resolved before type checking:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> app/models/user</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">UserRepo</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> app/repos/user_repo</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> app/repos/user_repo</span></span>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Contract</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> acme/contracts</span></span>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/strings</span></span>
 <span class="line"></span></code></pre>
@@ -792,7 +792,7 @@ unmatched Array returns <code>nil</code>.</p>
 <h2 id="result-control-flow">Result control flow</h2>
 <p><code>trb/std/result</code> provides <code>Result&lt;T, E&gt;</code> with <code>Ok</code> and <code>Err</code> variants:</p>
 <!-- raw HTML omitted -->
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/result</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> unwrap</span><span style="color:#E6EDF3">(result: </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">Integer</span></span>
 <span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> result</span></span>

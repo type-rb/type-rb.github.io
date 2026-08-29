@@ -85,7 +85,7 @@
 		"title": "Enums and Result",
 		"eyebrow": "09 · Model errors",
 		"description": "Result\u003cT, E\u003e is a standard generic payload enum. Safe standard-library operations return structured errors, while exhaustive case matching keeps both paths visible.",
-		"source": "import { NumberParseError } from trb/std/errors\nimport { Result } from trb/std/result\n\ndef display(result: Result\u003cInteger, NumberParseError\u003e): String\n\tcase result\n\twhen Result::Ok(value)\n\t\treturn \"number: \" + value.to_s()\n\twhen Result::Err(error)\n\t\treturn \"error: \" + error.message\n\tend\nend\n\nputs(display(\"42\".try_to_i()))\nputs(display(\"nope\".try_to_i()))\n",
+		"source": "import { NumberParseError } from trb/std/errors\nimport trb/std/result\n\ndef display(result: Result\u003cInteger, NumberParseError\u003e): String\n\tcase result\n\twhen Result::Ok(value)\n\t\treturn \"number: \" + value.to_s()\n\twhen Result::Err(error)\n\t\treturn \"error: \" + error.message\n\tend\nend\n\nputs(display(\"42\".try_to_i()))\nputs(display(\"nope\".try_to_i()))\n",
 		"expected": "number: 42\nerror: invalid Integer\n",
 		"hint": "Define your own payload enum and remove one when branch to see exhaustive checking."
 	},
@@ -95,7 +95,7 @@
 		"title": "JSON and typed codecs",
 		"eyebrow": "10 · Model data",
 		"description": "Portable JSON and JSONC packages return Result values. Typed codecs decode checked records without passing untyped maps through the application.",
-		"source": "import { JsonError, decode } from trb/std/json\nimport { Result } from trb/std/result\n\nrecord User\n\tname: String\n\tactive: Boolean\nend\n\ndecoded: Result\u003cUser, JsonError\u003e := decode\u003cUser\u003e(\"{\\\"name\\\":\\\"Ada\\\",\\\"active\\\":true}\")\ncase decoded\nwhen Result::Ok(user)\n\tputs(user.name)\n\tputs(user.active)\nwhen Result::Err(error)\n\tputs(error.message)\nend\n",
+		"source": "import trb/std/json\nimport trb/std/result\n\nrecord User\n\tname: String\n\tactive: Boolean\nend\n\ndecoded: Result\u003cUser, JSON::Error\u003e := JSON.decode\u003cUser\u003e(\"{\\\"name\\\":\\\"Ada\\\",\\\"active\\\":true}\")\ncase decoded\nwhen Result::Ok(user)\n\tputs(user.name)\n\tputs(user.active)\nwhen Result::Err(error)\n\tputs(error.message)\nend\n",
 		"expected": "Ada\ntrue\n",
 		"hint": "Remove a JSON field to inspect its path-aware error, or import encode and serialize a User."
 	},
@@ -105,9 +105,9 @@
 		"title": "Portable standard library",
 		"eyebrow": "11 · Portability",
 		"description": "Portable packages expose the same contracts in every mode. Bytes, Unicode, StringBuilder, and path cover common compiler and application work.",
-		"source": "import trb/std/path\nimport trb/std/string_builder\nimport trb/std/unicode\n\nmut builder := string_builder.from_string(\"Type\")\nbuilder.append(\"RB\")\nbuilder.append_codepoint(128512)\ntext := builder.to_s()\nbytes := text.to_bytes()\n\nputs(text)\nputs(bytes.size())\nputs(unicode.letter(12354))\nputs(path.clean(\"/docs/../tour\"))\n",
+		"source": "import trb/std/path\nimport trb/std/string_builder\nimport trb/std/unicode\n\nmut builder := StringBuilder.from_string(\"Type\")\nbuilder.append(\"RB\")\nbuilder.append_codepoint(128512)\ntext := builder.to_s()\nbytes := text.to_bytes()\n\nputs(text)\nputs(bytes.size())\nputs(Unicode.letter(12354))\nputs(Path.clean(\"/docs/../tour\"))\n",
 		"expected": "TypeRB😀\n10\ntrue\n/tour\n",
-		"hint": "Try unicode.from_codepoint(), path.join(), or convert the Bytes value back with to_s()."
+		"hint": "Try Unicode.from_codepoint(), Path.join(), or convert the Bytes value back with to_s()."
 	},
 	{
 		"id": "targets",
@@ -115,7 +115,7 @@
 		"title": "One language, three targets",
 		"eyebrow": "12 · Portability",
 		"description": "TypeRB keeps one grammar and portable meaning. Target mode selects code generation and packages; target-specific capabilities require explicit imports.",
-		"source": "import trb/std/io\n\nrecord Greeting\n\tlanguage: String\n\ttargets: String\nend\n\ndef message(greeting: Greeting): String\n\treturn greeting.language + \" targets \" + greeting.targets\nend\n\ngreeting := Greeting.new(language: \"TypeRB\", targets: \"Go, Ruby, and TypeScript\")\nio.puts(message(greeting))\n",
+		"source": "import trb/std/io\n\nrecord Greeting\n\tlanguage: String\n\ttargets: String\nend\n\ndef message(greeting: Greeting): String\n\treturn greeting.language + \" targets \" + greeting.targets\nend\n\ngreeting := Greeting.new(language: \"TypeRB\", targets: \"Go, Ruby, and TypeScript\")\nIO.puts(message(greeting))\n",
 		"expected": "TypeRB targets Go, Ruby, and TypeScript\n",
 		"hint": "Switch Target and open Target code. The TypeRB source and result stay the same while generated code changes."
 	}

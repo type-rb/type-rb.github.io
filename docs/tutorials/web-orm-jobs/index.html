@@ -186,9 +186,9 @@ persists it. It maps ORM failures to <code>JobError</code>, which tells the work
 apply its retry policy.</p>
 <p><code>src/jobs/generate_report_job.trb</code>:</p>
 <!-- raw HTML omitted -->
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Report</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> models/report</span></span>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> models/report</span></span>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Job</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">JobError</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">JobResult</span><span style="color:#E6EDF3">, maximum_attempts, queue } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/jobs</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Unit</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/unit</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/unit</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> GenerateReportJob</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#FFA657"> Job</span></span>
 <span class="line"><span style="color:#D2A8FF">	queue</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"reports"</span><span style="color:#E6EDF3">)</span></span>
@@ -213,11 +213,11 @@ result each time.</p>
 need to know how the report is stored or how the Job is persisted.</p>
 <p><code>src/services/create_report.trb</code>:</p>
 <!-- raw HTML omitted -->
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">GenerateReportJob</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> jobs/generate_report_job</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Report</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> models/report</span></span>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> jobs/generate_report_job</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> models/report</span></span>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">EnqueueError</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/jobs</span></span>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Database</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">DbError</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/orm</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/result</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> CreateReportError</span></span>
 <span class="line"><span style="color:#FFA657">	Database</span><span style="color:#E6EDF3">(error: </span><span style="color:#FFA657">DbError</span><span style="color:#E6EDF3">)</span></span>
@@ -326,7 +326,7 @@ dynamic GET route binds the <code>:id</code> path parameter.</p>
 <p><code>src/routes/reports/[id].trb</code>:</p>
 <!-- raw HTML omitted -->
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { database_error_response, endpoint_input_error_response } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> http/errors</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Report</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> models/report</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> models/report</span></span>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3">, json } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> ReportParams</span></span>

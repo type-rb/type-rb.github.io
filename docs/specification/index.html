@@ -1036,7 +1036,7 @@ inside enum declarations.</li>
 <span class="line"><span style="color:#E6EDF3">parsed </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> OrderStatus</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">from_raw</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"PENDING"</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"></span></code></pre>
 <p>Typed JSON codecs encode a raw-value enum as its raw String or Integer and
-decode only declared raw values. Unknown input produces <code>JsonError</code>; the
+decode only declared raw values. Unknown input produces <code>JSON::Error</code>; the
 target-language object representation never determines the wire value.</p>
 <h4 id="3142-payload-enums-as-sum-types">3.14.2 Payload enums as sum types</h4>
 <ul>
@@ -1253,14 +1253,14 @@ the same checked operation through an equivalent representation.</li>
 <h3 id="41-standard-result">4.1 Standard Result</h3>
 <ul>
 <li><code>trb/std/result</code> exports the portable <code>Result&lt;T, E&gt;</code> payload enum with
-<code>Ok(value: T)</code> and <code>Err(error: E)</code> variants. It is imported explicitly with
-<code>import { Result } from trb/std/result</code>.</li>
+<code>Ok(value: T)</code> and <code>Err(error: E)</code> variants. Its declaration root is imported
+explicitly with <code>import trb/std/result</code>.</li>
 <li>Construction and handling use the ordinary generic enum rules. The baseline
 keeps both control-flow paths visible with explicit constructors and
 exhaustive pattern matching:</li>
 </ul>
 <!-- raw HTML omitted -->
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/result</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> unwrap</span><span style="color:#E6EDF3">(result: </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">Integer</span></span>
 <span class="line"><span style="color:#FF7B72">	case</span><span style="color:#E6EDF3"> result</span></span>
