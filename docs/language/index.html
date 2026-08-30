@@ -685,6 +685,27 @@ a new shallow Array:</p>
 <span class="line"><span style="color:#E6EDF3">position </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">index</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#E6EDF3">occurrences </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values.</span><span style="color:#D2A8FF">count</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"></span></code></pre>
+<p>Arrays are shared reference values. Copying an Array into another binding or
+passing it to a function does not copy its outer storage, so element updates
+and destructive size changes remain visible through every alias—even when
+growth reallocates storage in a target runtime:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> append_then_rebind</span><span style="color:#E6EDF3">(</span><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> items: </span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">	items.</span><span style="color:#D2A8FF">push</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">) </span><span style="color:#8B949E"># visible to the caller</span></span>
+<span class="line"><span style="color:#E6EDF3">	items </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> []    </span><span style="color:#8B949E"># rebinds only this parameter</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> values </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> [</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">]</span></span>
+<span class="line"><span style="color:#FF7B72">mut</span><span style="color:#E6EDF3"> same_values </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> values</span></span>
+<span class="line"><span style="color:#E6EDF3">same_values.</span><span style="color:#D2A8FF">push</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#D2A8FF">append_then_rebind</span><span style="color:#E6EDF3">(values)</span></span>
+<span class="line"><span style="color:#8B949E"># values and same_values both contain [1, 2, 3]</span></span>
+<span class="line"></span></code></pre>
+<p><code>mut</code> authorizes mutation through a binding; it does not introduce caller-side
+writeback for binding reassignment. Operations documented as returning a new
+Array, such as <code>dup</code>, <code>slice</code>, <code>reverse</code>, sorting, transformations, <code>uniq</code>, and
+<code>concat</code>, create a distinct outer Array and remain shallow with respect to
+their elements.</p>
 <p>Membership and occurrence counting use portable <code>==</code> and are therefore
 available for numeric, Boolean, String, and payloadless enum elements. They do
 not implicitly enable target-native structural equality for nested values.

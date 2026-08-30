@@ -365,6 +365,12 @@ arguments. Array and Hash operations use receiver methods; there are no public
 non-destructive shallow <code>reverse</code>, stable non-destructive sorting, value
 membership, first-position lookup with <code>index(value)</code>, and occurrence counting.
 <code>Array&lt;String&gt;</code> also provides <code>join</code>.</p>
+<p>An Array is a shared reference value. Destructive operations and element
+assignment update the same Array observed by aliases and by callers that pass
+it to a <code>mut</code> parameter, including across capacity growth. Reassigning the
+parameter itself remains local. <code>dup</code> and every operation documented as
+returning a new Array create a distinct outer Array and copy elements
+shallowly.</p>
 <p><code>Range&lt;Integer&gt;#to_a()</code> returns a new Array containing the same sequence that
 Range iteration would visit. Inclusive and exclusive ends are honored; an
 inclusive equal-bound Range contains one value, while exclusive equal-bound

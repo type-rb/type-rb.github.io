@@ -506,6 +506,18 @@ is equal under portable <code>==</code>, or <code>nil</code> when no value match
 and return a code-point position as <code>Integer?</code>. They return <code>nil</code> when the
 substring is absent. An empty substring is found at position zero for
 <code>index</code> and at the String size for <code>rindex</code>.</li>
+<li>An Array value has reference identity. Assigning it to another binding or
+passing it as an argument preserves that identity instead of copying the
+outer Array. Element assignment and destructive operations such as <code>push</code>,
+<code>unshift</code>, <code>pop</code>, and <code>shift</code> are therefore visible through every alias,
+including a caller whose Array is held by a <code>mut</code> parameter. This rule also
+applies when growth requires a backend to reallocate its native storage.</li>
+<li>Rebinding and Array mutation are distinct. <code>values = other</code> changes only the
+selected binding, so rebinding a <code>mut</code> parameter never replaces the caller's
+binding. An operation documented as returning a new Array, including <code>dup</code>,
+slicing, transformation, sorting, <code>uniq</code>, and <code>concat</code>, creates a distinct
+outer Array; its elements remain shallowly shared where their own types have
+reference identity.</li>
 </ul>
 <h3 id="33-access-rules-private">3.3 Access Rules (Private)</h3>
 <ul>
