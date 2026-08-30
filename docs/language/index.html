@@ -184,23 +184,31 @@ the same.</p>
 <h2 id="imports-and-modes">Imports and modes</h2>
 <p>Imports are explicit and resolved before type checking:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> app/models/user</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> app/repos/user_repo</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Contract</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> acme/contracts</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">UserRepo</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> app/repos/user_repo</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Contract</span><span style="color:#FF7B72"> as</span><span style="color:#FFA657"> ExternalContract</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> acme/contracts</span></span>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/strings</span></span>
 <span class="line"></span></code></pre>
+<p>A bare import binds one unique public declaration root whose authored name
+matches the final path segment, such as <code>User</code>, <code>Strings</code>, or <code>JSON</code>. It does
+not create a lowercase package namespace or import every export. Use a named
+import for exact peer declarations and top-level functions; <code>as</code> changes only
+the local binding.</p>
 <p>Portable libraries use <code>trb/std/*</code>. Target-specific APIs use
 <code>trb/platform/&lt;mode&gt;/*</code> and are rejected when imported from another mode:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/platform/go/http</span></span>
 <span class="line"></span></code></pre>
+<p>Compiler capabilities without a source binding use <code>activate</code>, for example
+<code>activate trb/platform/ruby/native</code>. An authored declaration import may also
+enable capabilities declared by its target, but the imported binding must
+still be used.</p>
 <p>Project package identities come from paths below <code>sourceDir</code>; source files do
 not declare target packages. External TypeRB packages also use explicit
 imports. A project may configure a short import such as <code>acme/contracts</code>; its
 lock maps that name to the canonical package identity without changing source
 syntax by target mode.</p>
-<p>Ordinary imports must be used. Package imports require a member reference, and
-each symbol named inside <code>{ ... }</code> must be referenced. Compiler integration
-imports count as semantic uses when they activate their documented syntax or
-type provider.</p>
+<p>Every imported declaration must be used. Each declaration named inside
+<code>{ ... }</code> is checked independently. Use <code>activate</code> instead of an unused import
+when only a compiler capability is needed.</p>
 <h2 id="types-and-bindings">Types and bindings</h2>
 <p>Type annotations use <code>name: Type</code>. <code>:=</code> declares a local binding and infers its
 type when no annotation is present:</p>
