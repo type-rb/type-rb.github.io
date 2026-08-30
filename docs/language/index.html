@@ -151,7 +151,10 @@ but every payload field is required. Record construction labels are field
 labels and follow their existing record rules.</p>
 <p>Writing <code>: Void</code> on a <code>def</code> or <code>fn</code> declaration is an error; omit the return
 annotation instead. <code>Void</code> appears in function types when a stored callable
-has no result, for example <code>(String) -&gt; Void</code>.</p>
+has no result, for example <code>(String) -&gt; Void</code>. It is not a value type: a call
+with no result may stand alone, but its expression cannot be stored, passed,
+returned as a value, or used by another expression. Use <code>Unit</code> when an
+ordinary storable value with no payload is required.</p>
 <p>Typed function values use <code>fn</code> and capture their lexical environment:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> apply</span><span style="color:#E6EDF3">(value: </span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">, callable: (</span><span style="color:#79C0FF">Integer</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">-></span><span style="color:#79C0FF"> String</span><span style="color:#E6EDF3">): </span><span style="color:#79C0FF">String</span></span>
 <span class="line"><span style="color:#FF7B72">	return</span><span style="color:#D2A8FF"> callable</span><span style="color:#E6EDF3">(value)</span></span>
@@ -218,6 +221,10 @@ type when no annotation is present:</p>
 <span class="line"><span style="color:#E6EDF3">names: </span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#FF7B72"> :=</span><span style="color:#E6EDF3"> [</span><span style="color:#A5D6FF">"Ada"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"Grace"</span><span style="color:#E6EDF3">]</span></span>
 <span class="line"><span style="color:#E6EDF3">scores: </span><span style="color:#79C0FF">Hash</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72">></span><span style="color:#FF7B72"> :=</span><span style="color:#E6EDF3"> {ada: </span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">}</span></span>
 <span class="line"></span></code></pre>
+<p><code>nil</code> alone does not provide enough information to infer a binding type, so
+<code>value := nil</code> is an error. Give the binding an explicit nullable type, as in
+<code>value: String? := nil</code>. <code>Nil</code> and <code>Void</code> are compiler types and cannot be
+written as ordinary source annotations.</p>
 <p>Type names are case-sensitive and have one canonical spelling. Use
 <code>Integer</code>, <code>Boolean</code>, <code>String</code>, <code>Float</code>, <code>Array</code>, and <code>Hash</code>; aliases from
 target languages such as <code>Int</code>, <code>int</code>, <code>bool</code>, <code>number</code>, and <code>Map</code> are errors.
@@ -245,6 +252,9 @@ guard also narrows the statements that follow it:</p>
 <span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> name </span><span style="color:#FF7B72">+</span><span style="color:#A5D6FF"> "!"</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
+<p><code>nil == nil</code> is <code>true</code> and <code>nil != nil</code> is <code>false</code>. Equality is also the
+canonical absence test for nullable values; there is no separate <code>nil?()</code>
+method.</p>
 <p>The same narrowing is available in the matching branch of <code>name != nil</code>, in
 the remaining <code>elsif</code> or <code>else</code> path of <code>name == nil</code>, in <code>while</code>, and on the
 right side of a compatible short-circuit <code>&amp;&amp;</code> or <code>||</code>. A plain assignment is

@@ -205,6 +205,11 @@ type on every reachable path.</li>
 <li>Function types are written <code>(ParameterType, ...) -&gt; ReturnType</code>. <code>Void</code> is
 permitted in a function type, for example <code>(String) -&gt; Void</code>, but remains
 omitted from the corresponding <code>fn</code> declaration.</li>
+<li><code>Void</code> is the compiler's no-result type, not a source value type. It is valid
+only as the return type of a function type. A Void expression may be used as
+a standalone statement but cannot be initialized, assigned, passed,
+returned as a value, stored in a collection, or consumed by another
+expression. <code>Unit</code> is the ordinary storable no-payload value.</li>
 <li>A function value that may return a recoverable error declares an ordinary
 <code>Result</code> return, such as <code>fn(): Result&lt;User, LoadError&gt; ... end</code>. Its type is
 written <code>() -&gt; Result&lt;User, LoadError&gt;</code>. Prefix <code>try</code>, postfix <code>catch</code>, and
@@ -261,6 +266,11 @@ formatting does not change provider-visible text whitespace.</li>
 <li>Local variable initialization uses <code>:=</code>.</li>
 <li>Type inference is enabled for <code>:=</code>.</li>
 <li>Explicit type with initialization is allowed: <code>x: T := expr</code>.</li>
+<li><code>nil</code> by itself cannot infer a binding type. <code>x := nil</code> is a compile error;
+use an explicit nullable annotation such as <code>x: String? := nil</code>.</li>
+<li><code>Nil</code> and <code>Void</code> are internal compiler types rather than ordinary source
+annotations. <code>Void</code> may appear in source only in function-return position,
+such as <code>() -&gt; Void</code>.</li>
 <li>Type names are case-sensitive. Portable built-in type names use exactly one
 source spelling: <code>Any</code>, <code>Boolean</code>, <code>Integer</code>, <code>Float</code>, <code>String</code>, <code>Bytes</code>,
 <code>StringBuilder</code>, <code>Array</code>, <code>Hash</code>, <code>Range</code>, and <code>Iterable</code>. Target-language
@@ -816,9 +826,11 @@ an <code>Integer</code> result. <code>%</code> accepts two <code>Integer</code> 
 <li><code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, and <code>&gt;=</code> compare numeric values with the same widening rule.
 Portable <code>==</code> and <code>!=</code> compare numeric values, matching non-nullable
 <code>Boolean</code> or <code>String</code> values, two values of the same payloadless enum type,
-or a nullable value with <code>nil</code>. Equality for payload-bearing enums is
-reserved until one structural rule can be implemented identically by every
-backend.</li>
+two <code>nil</code> values, or a nullable value with <code>nil</code>. <code>nil == nil</code> is <code>true</code> and
+<code>nil != nil</code> is <code>false</code>. Comparing with <code>nil</code> is the canonical absence test;
+TypeRB does not define a separate <code>nil?()</code> method. Equality for
+payload-bearing enums is reserved until one structural rule can be
+implemented identically by every backend.</li>
 <li><code>&amp;&amp;</code> and <code>||</code> accept two non-nullable <code>Boolean</code> values and
 return <code>Boolean</code>. Compound assignments apply the corresponding binary rule
 before checking that the result remains assignable to the mutable target.</li>
