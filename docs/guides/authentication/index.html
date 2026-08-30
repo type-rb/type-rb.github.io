@@ -112,15 +112,15 @@ when credentials are missing or invalid. A verified <code>OidcPrincipal</code> i
 in the immutable request context. Handlers retrieve it without sharing a
 string key or performing a cast:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/result</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3">, text } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/web/auth/bearer</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> get</span><span style="color:#E6EDF3">(context: </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
 <span class="line"><span style="color:#FF7B72">	case</span><span style="color:#FFA657"> Bearer</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">principal</span><span style="color:#E6EDF3">(context)</span></span>
 <span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Ok</span><span style="color:#E6EDF3">(principal)</span></span>
-<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> text</span><span style="color:#E6EDF3">(principal.</span><span style="color:#D2A8FF">subject</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#FFA657"> Response</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">text</span><span style="color:#E6EDF3">(principal.</span><span style="color:#D2A8FF">subject</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#FF7B72">	when</span><span style="color:#FFA657"> Result</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Err</span><span style="color:#E6EDF3">(_error)</span></span>
-<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> text</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"unauthorized"</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">401</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#FFA657"> Response</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">text</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"unauthorized"</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">401</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#FF7B72">	end</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>

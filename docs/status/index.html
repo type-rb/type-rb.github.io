@@ -292,11 +292,12 @@ long-lived protocol server are not exposed. See the
 <p>The early official <code>trb/web</code> package discovers file-based routes at compile
 time and runs typed request, path-parameter, JSON decode, and JSON response
 handlers through the same dispatcher in all three backends. Applications can
-start a generated Go, Ruby, or TypeScript HTTP server with <code>serve()</code>. The
+start a generated Go, Ruby, or TypeScript HTTP server with <code>Web.serve()</code>. The
 <code>trb init --mode &lt;target&gt; --template web</code> command creates a buildable portable
 API project with file-based routing and an explicit editable middleware stack.
-The optional <code>configure_server</code> value sets host, port, request-body limit, and
-graceful-shutdown timeout through typed named arguments. Every adapter
+The optional <code>Web::ServerConfig</code> value passed to <code>Web.serve</code> sets host, port,
+request-body limit, and graceful-shutdown timeout through typed named
+arguments. Every adapter
 validates that configuration before binding, handles SIGINT and SIGTERM, stops
 accepting new work, and gives active requests the configured time to finish.
 Unhandled handler failures become a portable JSON 500 response. Before
