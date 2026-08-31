@@ -93,6 +93,7 @@ generation is not provided.</p>
 <span class="line"><span style="color:#E6EDF3">	directory: </span><span style="color:#79C0FF">String</span></span>
 <span class="line"><span style="color:#E6EDF3">	port: </span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> 8080</span><span style="color:#E6EDF3"> @cli(</span><span style="color:#79C0FF">:option</span><span style="color:#E6EDF3">, short: </span><span style="color:#A5D6FF">"p"</span><span style="color:#E6EDF3">, about: </span><span style="color:#A5D6FF">"Port to listen on"</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#E6EDF3">	verbose: </span><span style="color:#79C0FF">Boolean</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> false</span><span style="color:#E6EDF3"> @cli(</span><span style="color:#79C0FF">:option</span><span style="color:#E6EDF3">, short: </span><span style="color:#A5D6FF">"v"</span><span style="color:#E6EDF3">, about: </span><span style="color:#A5D6FF">"Enable verbose output"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">	header: </span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#FF7B72"> =</span><span style="color:#E6EDF3"> [] @cli(</span><span style="color:#79C0FF">:option</span><span style="color:#E6EDF3">, value_name: </span><span style="color:#A5D6FF">"HEADER"</span><span style="color:#E6EDF3">, about: </span><span style="color:#A5D6FF">"Add a header"</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> Command</span></span>
@@ -154,6 +155,14 @@ executable generation.</p>
 <p>Long values may use <code>--port=9000</code>. <code>--</code> ends option parsing. Boolean options
 are flags and also accept an explicit long value such as <code>--verbose=false</code>.
 Generated usage errors go to standard error and exit with status 2.</p>
+<p>An option field may use <code>Array&lt;String&gt;</code>, <code>Array&lt;Integer&gt;</code>, <code>Array&lt;Float&gt;</code>, or
+<code>Array&lt;Boolean&gt;</code>. Every occurrence appends one converted scalar in command-line
+order, for example <code>--header one --header=two</code>. Arrays are not positional
+arguments. A required Array option must occur at least once; a record default
+such as <code>[]</code> makes it optional. If a non-empty default is declared, the first
+explicit occurrence replaces the default and later occurrences append to that
+parsed value. Repeating a non-Array scalar option retains its existing
+last-occurrence-wins behavior.</p>
 <h2 id="compile-one-executable">Compile one executable</h2>
 <p>The current native executable backend uses the Go toolchain. Configure the
 project with <code>mode: &quot;go&quot;</code>, then compile the entrypoint:</p>
@@ -165,15 +174,16 @@ project with <code>mode: &quot;go&quot;</code>, then compile the entrypoint:</p>
 resulting program does not require a Go, Ruby, or JavaScript runtime, runtime
 reflection, or a separate schema file.</p>
 <h2 id="initial-contract">Initial contract</h2>
-<p>The first implementation supports scalar <code>String</code>, <code>Integer</code>, <code>Float</code>, and
-<code>Boolean</code> fields, one root subcommand field, payloadless commands, and commands
-with one record payload. Root options must appear before the subcommand.</p>
-<p>Repeated values and Arrays, environment fallback, option aliases, validation
-constraints, mutually exclusive groups, shell completion, nested subcommands,
-optional or default root commands, and combined short flags are not yet
-supported. These are reserved as extensions to the same record and
-payload-enum schema. Dynamic plugins and Ruby or TypeScript launcher generation
-are outside the package's single-binary model.</p>
+<p>The current implementation supports scalar <code>String</code>, <code>Integer</code>, <code>Float</code>, and
+<code>Boolean</code> fields, repeated scalar option Arrays, one required root subcommand
+field, payloadless commands, and commands with one record payload. Root options
+must appear before the selected subcommand.</p>
+<p>Environment fallback, option aliases, validation constraints, mutually
+exclusive groups, shell completion, nested subcommands, optional or default
+root commands, variadic positionals, and combined short flags are not yet
+supported. These are reserved as extensions to the same record and payload-enum
+schema. Dynamic plugins and Ruby or TypeScript launcher generation are outside
+the package's single-binary model.</p>
 <p><code>trb/platform/go/cli</code> was published in TypeRB 0.3.44 and remains accepted as a
 compatibility import. Use <code>trb/cli</code> in new source.</p>
 </article>
