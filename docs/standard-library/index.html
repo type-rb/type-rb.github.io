@@ -188,9 +188,11 @@ pattern raises.</p>
 <span class="line"><span style="color:#E6EDF3">first </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> payload.</span><span style="color:#D2A8FF">at</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#E6EDF3">text </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> payload.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"></span></code></pre>
-<p>String conversion uses UTF-8. Decoding invalid input replaces it with U+FFFD;
-call <code>valid_utf8?()</code> first when invalid bytes must be rejected. Byte indexing is
-strict and concatenation is non-mutating.</p>
+<p>String conversion uses UTF-8. Decoding invalid input emits one U+FFFD for each
+maximal subpart of an ill-formed sequence: adjacent stray continuation bytes
+are replaced separately, while a truncated multibyte prefix is replaced once.
+Call <code>valid_utf8?()</code> first when invalid bytes must be rejected. Byte indexing
+is strict and concatenation is non-mutating.</p>
 <h2 id="binary-encoding">Binary encoding</h2>
 <p><code>trb/std/encoding/hex</code> converts between <code>Bytes</code> and hexadecimal text:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/encoding/hex</span></span>
@@ -417,18 +419,6 @@ structured task group's capacity. The operation does not imply CPU parallelism
 or special-case <code>Result</code>; a Result-returning block produces an Array of Result
 values. See the <a href="/docs/language/#arrays-hashes-and-iteration">language guide</a> and
 <a href="https://github.com/type-rb/type-rb/blob/main/docs/decisions/0004-bounded-structured-concurrent-map.md">decision record</a>.</p>
-<h2 id="logical-paths">Logical paths</h2>
-<p><code>trb/std/path</code> manipulates portable <code>/</code>-separated logical paths without
-accessing the host filesystem:</p>
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/path</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#E6EDF3">config_path </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Path</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">join</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"config"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"../trbconfig.jsonc"</span><span style="color:#E6EDF3">)</span></span>
-<span class="line"><span style="color:#E6EDF3">directory </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Path</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">directory</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"src/compiler/main.trb"</span><span style="color:#E6EDF3">)</span></span>
-<span class="line"><span style="color:#E6EDF3">parts </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Path</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">components</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"/srv/type-rb"</span><span style="color:#E6EDF3">)</span></span>
-<span class="line"></span></code></pre>
-<p>The package provides <code>clean</code>, two-part <code>join</code>, <code>absolute</code>, <code>components</code>,
-<code>base</code>, <code>directory</code>, and <code>separator</code>. Its behavior does not depend on the
-target OS or current directory.</p>
 <h2 id="url-encoding">URL encoding</h2>
 <p><code>trb/std/url</code> encodes individual URL components and ordered query parameters:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/url</span></span>
@@ -461,23 +451,108 @@ uses <code>+</code> for spaces and percent-encodes reserved bytes. Invalid escap
 decoded bytes that are not valid UTF-8 return <code>URL::DecodeError</code>.</p>
 <p>Complete URL parsing remains a future addition to the package.</p>
 <h2 id="filesystem">Filesystem</h2>
-<p><code>trb/std/filesystem</code> is the explicit host-filesystem bridge. Every operation
-returns a <code>Result</code>:</p>
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/filesystem</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<p><code>trb/std/file</code> and <code>trb/std/dir</code> are separate host-filesystem bridges. <code>File</code>
+is an actual opaque resource type rather than a module containing a second file
+type. Every operation returns a <code>Result</code>:</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/file</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">FileSystemError</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/errors</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> load_config</span><span style="color:#E6EDF3">(path: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">FileSystem</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">Error</span><span style="color:#FF7B72">></span></span>
-<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> FileSystem</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">read_text</span><span style="color:#E6EDF3">(path)</span></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> load_config</span><span style="color:#E6EDF3">(path: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">FileSystemError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> File</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">open</span><span style="color:#E6EDF3">(path) </span><span style="color:#FF7B72">do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">file</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">		try</span><span style="color:#E6EDF3"> file.</span><span style="color:#D2A8FF">read_text</span><span style="color:#E6EDF3">(max_bytes: </span><span style="color:#79C0FF">1048576</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
-<p>The package provides existence checks, UTF-8 and raw-byte reads and writes,
-recursive directory creation, and sorted immediate-child listing. Failures
-carry <code>operation</code>, <code>path</code>, and <code>message</code> instead of exposing target exceptions.</p>
-<p>Writes and directory creation return <code>Result&lt;Unit, FileSystem::Error&gt;</code>. <code>Unit</code> is a
-storable value representing successful completion; it is distinct from the
-internal <code>Void</code> return category.</p>
-<p>Filesystem paths are host paths. Use <code>trb/std/path</code> separately for portable
-lexical path operations.</p>
+<p>Failures carry <code>operation</code>, <code>path</code>, <code>message</code>, and a
+<code>FileSystemErrorKind</code> instead of exposing target exceptions. Import the peer
+error declarations from <code>trb/std/errors</code> only when source names them directly.</p>
+<p><code>File.open</code> requires a block and accepts an optional typed <code>FileMode</code>. Omitting
+the mode selects <code>Read</code>, which opens an existing file for reading. <code>Write</code>
+opens a file for writing, creating it or truncating it to zero bytes.
+<code>CreateNew</code> opens a newly created file for writing. The <code>File</code> value is opaque
+and scoped: it may only be used as a direct receiver for its file methods
+inside that block. It cannot be constructed, assigned, passed to another
+function, placed in a collection, returned, or captured by a nested callback.
+The compiler closes the file before the <code>Result</code> leaves the structured block.
+Prefix <code>try</code> may end the block with an error, but cleanup still finishes before
+that error propagates to the enclosing <code>Result</code> boundary. The exact standard
+<code>File</code> identity also cannot appear in an authored parameter, return, field,
+collection, function type, or transparent alias. Compiler-generated and
+external declaration contracts cannot supply it as a value; only the trusted
+<code>File.open</code> block introduces it. An unrelated declaration with the same name
+is unaffected.</p>
+<p>Ruby-native fallback syntax is opaque to resource analysis, so it is rejected
+while the scoped file is in scope. Compute native values before <code>File.open</code>, or
+move native work after the block has returned a non-resource value.</p>
+<p><code>file.read(max_bytes:)</code> returns <code>Bytes</code>, and
+<code>file.read_text(max_bytes:)</code> returns <code>String</code>. A successful result contains at
+most the given number of bytes. A negative bound returns <code>InvalidLimit</code>; input
+exceeding the bound returns <code>TooLarge</code> after the operation observes one byte
+beyond it. Text decoding uses the same maximal-subpart U+FFFD replacement rule
+as <code>Bytes#to_s</code>. <code>file.write</code> accepts <code>Bytes</code>, while <code>file.write_text</code> accepts
+<code>String</code>.</p>
+<p><code>CreateNew</code> returns <code>AlreadyExists</code> if the path already exists. The existence
+check and creation are one exclusive host operation, so parallel writers
+cannot both create the same path. This is no-clobber creation, not atomic
+replacement of an existing file. It does not promise <code>fsync</code>, directory
+synchronization, or persistence after power loss.</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/file</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">FileMode</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/file</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">FileSystemError</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/errors</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Unit</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/unit</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> create_output</span><span style="color:#E6EDF3">(path: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, bytes: </span><span style="color:#79C0FF">Bytes</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Unit</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">FileSystemError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> File</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">open</span><span style="color:#E6EDF3">(path, mode: </span><span style="color:#FFA657">FileMode</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">CreateNew</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">file</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">		try</span><span style="color:#E6EDF3"> file.</span><span style="color:#D2A8FF">write</span><span style="color:#E6EDF3">(bytes)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>Dir.children(path)</code> returns sorted immediate <code>DirEntry</code> values. Each entry has
+a <code>name</code>, a host-native <code>path</code>, and a typed <code>DirEntryKind</code>: <code>File</code>, <code>Directory</code>,
+or <code>Other</code>. Symbolic links and other entries that must not be traversed as
+directories are <code>Other</code>. The operation does not recurse. <code>Dir</code> is a
+nonconstructible type root in this slice; it owns directory operations but does
+not yet represent an open directory resource.</p>
+<p>Directory entry names must have a lossless valid UTF-8 representation. If any
+name does not, <code>Dir.children</code> returns <code>FileSystemErrorKind::Other</code> for operation
+<code>children</code>, with the supplied directory as the error path and
+<code>directory entry name is not valid UTF-8</code> as the message. It never substitutes
+U+FFFD and returns a path that names a different entry. Valid names are sorted
+by their UTF-8 bytes.</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/dir</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">DirEntryKind</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/dir</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">FileSystemError</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/errors</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Result</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> regular_file_paths</span><span style="color:#E6EDF3">(directory: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">FileSystemError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#E6EDF3">	entries </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> try</span><span style="color:#FFA657"> Dir</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">children</span><span style="color:#E6EDF3">(directory)</span></span>
+<span class="line"><span style="color:#FF7B72">	mut</span><span style="color:#E6EDF3"> paths: </span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#FF7B72"> :=</span><span style="color:#E6EDF3"> []</span></span>
+<span class="line"><span style="color:#E6EDF3">	entries.</span><span style="color:#D2A8FF">each</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">entry</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">		if</span><span style="color:#E6EDF3"> entry.</span><span style="color:#D2A8FF">kind</span><span style="color:#FF7B72"> ==</span><span style="color:#FFA657"> DirEntryKind</span><span style="color:#E6EDF3">::</span><span style="color:#79C0FF">File</span></span>
+<span class="line"><span style="color:#8B949E">			# entry.path can be passed directly to File.open on this host.</span></span>
+<span class="line"><span style="color:#E6EDF3">			paths.</span><span style="color:#D2A8FF">push</span><span style="color:#E6EDF3">(entry.</span><span style="color:#D2A8FF">path</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">		end</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">FileSystemError</span><span style="color:#FF7B72">>::</span><span style="color:#FFA657">Ok</span><span style="color:#E6EDF3">(paths)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Writes return <code>Result&lt;Unit, FileSystemError&gt;</code>. <code>Unit</code> is a storable value
+representing successful completion; it is distinct from the internal <code>Void</code>
+return category.</p>
+<p>Filesystem paths are host-native strings and are passed to the target runtime
+without slash-only normalization. <code>DirEntry.path</code> preserves the directory text
+given to <code>Dir.children</code> and appends the entry name without a cleaning join. It
+therefore preserves host resolution for parents containing symbolic links and
+<code>..</code>. The appended separator is host-native, existing Windows <code>/</code> or <code>\</code>
+suffixes are accepted, <code>C:</code> remains drive-relative as <code>C:child</code>, and UNC share
+roots receive a separator. General parsing, cleaning, volume handling, and
+cross-host path conversion are deferred until TypeRB has a genuine nominal
+<code>Path</code> value type.</p>
 <h2 id="process">Process</h2>
 <p><code>trb/std/process</code> provides argument, environment, working-directory, and
 shell-free process operations:</p>
@@ -589,9 +664,9 @@ See the <a href="/docs/guides/testing/">testing guide</a>.</p>
 <li><code>trb/std/secure_compare</code></li>
 <li><code>trb/std/string_builder</code></li>
 <li><code>trb/std/unicode</code></li>
-<li><code>trb/std/path</code></li>
 <li><code>trb/std/url</code></li>
-<li><code>trb/std/filesystem</code></li>
+<li><code>trb/std/file</code></li>
+<li><code>trb/std/dir</code></li>
 <li><code>trb/std/process</code></li>
 <li><code>trb/std/json</code></li>
 <li><code>trb/std/jsonc</code></li>

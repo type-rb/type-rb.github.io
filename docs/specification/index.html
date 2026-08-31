@@ -607,24 +607,45 @@ matches are errors. A bare import may use <code>as</code> after root selection.<
 <li>Bare imports are neither lowercase package namespaces nor wildcard imports.
 Adding an unrelated export does not add a source binding. Named imports never
 search inside a declaration; members remain qualified by their owner.</li>
+<li>A class, record, module, enum, or newtype declaration owner is not an
+ordinary runtime value. It may be used in type syntax, to select members or a
+constructor, or as an explicit declaration reference in compiler-provider
+metadata. A bare owner in any other value expression is an error. Import
+aliases preserve this distinction because they preserve declaration identity.</li>
 <li>The declaration root is not required to be a module. A standard-library
-package whose central concept is a value exposes the actual type as its root,
-so the same declaration owns class and instance members. It does not reserve
-that type name for a static-only utility namespace. <code>trb/std/string_builder</code>,
-for example, exposes the actual <code>StringBuilder</code> type.</li>
+package whose central concept is a value or resource exposes the actual type
+as its root, so the same declaration is used for type annotations, class
+members, and instance members when the value's lifecycle permits authored
+annotations. It does not reserve that type name for a static-only utility
+namespace. In particular, <code>trb/std/file</code> exposes the opaque resource class
+<code>File</code>; source cannot construct it with <code>File.new()</code>.</li>
+<li>The exact standard <code>File</code> value type is compiler-introduced only as the
+inferred parameter of the trusted <code>File.open</code> block. The <code>File</code> declaration
+remains valid as the class owner of <code>open</code>, but authored value-type positions
+cannot contain that identity, including through nullable, collection,
+function, or transparent-alias shapes. Functions, fields, compiler-generated
+declarations, and external declaration providers cannot return or otherwise
+introduce an exact <code>File</code> value. These restrictions are declaration-identity
+based and do not affect an unrelated type also named <code>File</code>.</li>
 <li>Public operations have one canonical owner. An operation on an existing
 value is an instance method on that value. An operation naturally associated
 with an actual nominal type but not an existing instance is a class member on
-that type. An algorithm with no natural value or nominal-type owner is a
-module member. A type-associated operation does not justify inventing a
-utility class when no actual nominal type exists. A second public spelling is
-permitted only when it expresses a documented semantic, lifecycle, or
-performance distinction. Compiler-owned intrinsic modules may remain as
-implementation details, but they do not create an additional public source
-spelling. An explicitly listed portable prelude binding is the narrow
-language-level exception: for example, <code>puts</code> may also be reached as
-<code>IO.puts</code>. This exception does not authorize packages to add static mirrors
-for receiver methods.</li>
+that type; this includes factories such as <code>File.open</code> and associated
+operations such as <code>Dir.children</code>. An algorithm with no natural value or
+nominal-type owner is a module member. A type-associated operation does not
+justify inventing a utility class when no actual nominal type exists. A
+second public spelling is permitted only when it expresses a documented
+semantic, lifecycle, or performance distinction. Compiler-owned intrinsic
+modules may remain as implementation details, but they do not create an
+additional public source spelling. An explicitly listed portable prelude
+binding is the narrow language-level exception: for example, <code>puts</code> may also
+be reached as <code>IO.puts</code>. This exception does not authorize packages to add
+static mirrors for receiver methods.</li>
+<li>Supporting declarations for an opaque standard type are initially peer
+top-level declarations, imported by exact name. Class-owned nested
+declarations and declaration merging are not implied by declaration-root
+imports. <code>FileMode</code>, for example, is a peer of <code>File</code> rather than a member of
+a separate <code>File</code> module or a nested <code>File::Mode</code> declaration.</li>
 <li><code>activate PATH</code> enables a compiler or provider capability declared by the
 resolved target without creating a source binding. It accepts neither a
 named list nor an alias and rejects ordinary modules with no capability.

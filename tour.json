@@ -104,10 +104,10 @@
 		"chapter": "Portability",
 		"title": "Portable standard library",
 		"eyebrow": "11 · Portability",
-		"description": "Portable packages expose the same contracts in every mode. Bytes, Unicode, StringBuilder, and path cover common compiler and application work.",
-		"source": "import trb/std/path\nimport trb/std/string_builder\nimport trb/std/unicode\n\nmut builder := StringBuilder.from_string(\"Type\")\nbuilder.append(\"RB\")\nbuilder.append_codepoint(128512)\ntext := builder.to_s()\nbytes := text.to_bytes()\n\nputs(text)\nputs(bytes.size())\nputs(Unicode.letter(12354))\nputs(Path.clean(\"/docs/../tour\"))\n",
-		"expected": "TypeRB😀\n10\ntrue\n/tour\n",
-		"hint": "Try Unicode.from_codepoint(), Path.join(), or convert the Bytes value back with to_s()."
+		"description": "Portable packages expose the same contracts in every mode. Bytes, Unicode, and StringBuilder cover common compiler and application work.",
+		"source": "import trb/std/string_builder\nimport trb/std/unicode\n\nmut builder := StringBuilder.from_string(\"Type\")\nbuilder.append(\"RB\")\nbuilder.append_codepoint(128512)\ntext := builder.to_s()\nbytes := text.to_bytes()\n\nputs(text)\nputs(bytes.size())\nputs(Unicode.letter(12354))\nputs(bytes.to_s())\n",
+		"expected": "TypeRB😀\n10\ntrue\nTypeRB😀\n",
+		"hint": "Try Unicode.from_codepoint(), append another code point, or change the text before converting it to Bytes."
 	},
 	{
 		"id": "targets",

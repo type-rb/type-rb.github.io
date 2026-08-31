@@ -201,6 +201,20 @@ the actual type as its root rather than consuming the type name with a
 static-only utility namespace. For example, <code>trb/std/string_builder</code> binds the
 <code>StringBuilder</code> type that owns its factories and whose values own their instance
 operations.</p>
+<p>A declaration owner is not itself a runtime value. It may appear in a type
+position, own a member or constructor call, or be passed in a declaration-only
+metadata position explicitly supplied by a compiler provider. In an ordinary
+value position, select a member or construct a value instead. For example,
+<code>FileMode::Read</code> is a mode value, while bare <code>FileMode</code> is only its enum owner.
+Import aliases follow the same rule because aliasing does not change the
+declaration identity.</p>
+<p>Resource packages follow the same rule. <code>import trb/std/file</code> binds the opaque
+<code>File</code> type used by <code>File.open</code> and by its block parameter; it does not bind a
+module containing a second file-handle type. Source cannot construct the
+standard resource with <code>File.new()</code>. Its exact value type is inferred only for
+the trusted <code>File.open</code> block parameter and cannot appear recursively in
+authored parameters, returns, fields, collections, function types, or
+transparent aliases.</p>
 <h2 id="choosing-an-operation-owner">Choosing an operation owner</h2>
 <p>TypeRB keeps one public spelling for an operation whenever the spellings would
 have the same semantics:</p>
@@ -208,7 +222,9 @@ have the same semantics:</p>
 <li>Use an instance method for an operation on an existing value, such as
 <code>123.to_s()</code>, <code>2.5.to_i()</code>, <code>text.upcase()</code>, or <code>bytes.valid_utf8?()</code>.</li>
 <li>Use a class member for an operation naturally associated with an actual
-nominal type but not an existing instance, such as <code>StringBuilder.new()</code>.</li>
+nominal type but not an existing instance. This includes constructors and
+factories such as <code>StringBuilder.new()</code> and <code>File.open(path)</code>, and associated
+operations such as <code>Dir.children(path)</code>.</li>
 <li>Use a module member for a domain algorithm with no natural value receiver,
 such as <code>Math.sqrt(9.0)</code> or <code>JSON.decode&lt;Value&gt;(text)</code>.</li>
 <li>Import an intentionally direct language or DSL operation by exact name, as
@@ -223,6 +239,15 @@ creating a utility class when no actual nominal type exists.</p>
 not static mirrors for value methods. For example, prelude <code>puts</code> and
 owner-qualified <code>IO.puts</code> intentionally reach the same output operation;
 packages do not gain similar aliases by default.</p>
+<p>Supporting declarations remain exact named imports. The initial file API uses
+the peer <code>FileMode</code> declaration rather than inventing a <code>File</code> module or
+requiring class-owned nesting:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/file</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">FileMode</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/file</span></span>
+<span class="line"></span></code></pre>
+<p>The <code>Path</code> name is reserved for a future host-path value with defined value
+semantics. A static-only <code>Path</code> class is not used as a placeholder for path
+functions.</p>
 <p>Portable libraries use <code>trb/std/*</code>. Target-specific APIs use
 <code>trb/platform/&lt;mode&gt;/*</code> and are rejected when imported from another mode:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/platform/go/http</span></span>
