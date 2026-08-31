@@ -98,11 +98,10 @@ same operation:</p>
 <span class="line"><span style="color:#79C0FF">IO</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">puts</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Hello, TypeRB!"</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"></span></code></pre>
 <h2 id="scalars-and-strings">Scalars and strings</h2>
-<p>Portable built-in types expose receiver methods backed by the same contracts
-as <code>trb/std/numbers</code>, <code>trb/std/booleans</code>, and <code>trb/std/strings</code>:</p>
+<p>Portable built-in types expose import-free receiver methods. They do not also
+provide public static mirrors, so each operation has one ordinary spelling:</p>
 <!-- raw HTML omitted -->
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/math</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/strings</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#E6EDF3">text </span><span style="color:#FF7B72">:=</span><span style="color:#79C0FF"> 123</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"><span style="color:#E6EDF3">ratio_text </span><span style="color:#FF7B72">:=</span><span style="color:#79C0FF"> 0.25</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
@@ -130,7 +129,7 @@ as <code>trb/std/numbers</code>, <code>trb/std/booleans</code>, and <code>trb/st
 <span class="line"><span style="color:#E6EDF3">characters </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">chars</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"><span style="color:#E6EDF3">reversed </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">reverse</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"><span style="color:#E6EDF3">replaced </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "a😀a"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">replace_all</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"a"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"$&#x26;"</span><span style="color:#E6EDF3">)</span></span>
-<span class="line"><span style="color:#E6EDF3">upper </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Strings</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">uppercase</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"Hello"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">upper </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "Hello"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">upcase</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"></span></code></pre>
 <p>Integer parsing accepts a complete ASCII decimal integer with an optional sign.
 <code>to_i()</code> raises on invalid or non-portable input; <code>try_to_i()</code> returns
@@ -142,16 +141,14 @@ point, and exponent. At least one digit is required. <code>to_f()</code> raises 
 invalid spelling or a value that overflows the portable binary64 range;
 <code>try_to_f()</code> returns <code>Result&lt;Float, NumberParseError&gt;</code>. Non-finite spellings
 such as <code>NaN</code> and <code>Infinity</code> are not accepted. Values smaller than the binary64
-range round to signed zero consistently across backends. Declaration-root
-forms are <code>Numbers.parse_float</code> and <code>Numbers.try_parse_float</code>.</p>
+range round to signed zero consistently across backends.</p>
 <p><code>Integer#to_f()</code> is an exact widening conversion. <code>Float#to_i()</code> truncates
 toward zero and raises for non-finite or out-of-range values. <code>Float#to_s()</code>
 uses a portable fixed decimal spelling without exponent notation, including
-<code>.0</code> for integral Float values. Their declaration-root forms are
-<code>Numbers.to_float</code>, <code>Numbers.truncate</code>, and <code>Numbers.float_to_string</code>.</p>
+<code>.0</code> for integral Float values.</p>
 <p>Integers provide <code>abs()</code>, <code>zero?()</code>, <code>positive?()</code>, <code>negative?()</code>, <code>even?()</code>,
 <code>odd?()</code>, <code>min()</code>, <code>max()</code>, and <code>clamp()</code>. An invalid clamp range raises.
-Floats provide <code>abs()</code>, <code>floor()</code>, <code>ceil()</code>, <code>round()</code>, <code>truncate()</code>,
+Floats provide <code>abs()</code>, <code>floor()</code>, <code>ceil()</code>, <code>round()</code>,
 <code>finite?()</code>, <code>infinite?()</code>, and <code>nan?()</code>; the integer conversions reject
 non-finite and out-of-range results. <code>round()</code> resolves halfway values away
 from zero. <code>abs()</code> converts negative zero to positive zero and leaves NaN as
@@ -160,13 +157,7 @@ NaN.</p>
 Float. Integer arguments use the ordinary safe widening to Float. Negative
 square roots and logarithms are NaN, and logarithms of zero are negative
 infinity. Exponentiation remains the <code>**</code> operator.</p>
-<p><code>Boolean#to_s()</code> returns lowercase <code>&quot;true&quot;</code> or <code>&quot;false&quot;</code>. Declaration-root
-forms use <code>Numbers.absolute</code>, <code>Numbers.zero</code>, <code>Numbers.positive</code>,
-<code>Numbers.negative</code>, <code>Numbers.even</code>, <code>Numbers.odd</code>,
-<code>Numbers.float_absolute</code>, <code>Numbers.finite</code>, <code>Numbers.infinite</code>, and
-<code>Numbers.nan</code>, plus <code>Numbers.min</code>, <code>Numbers.max</code>, <code>Numbers.clamp</code>,
-<code>Numbers.floor</code>, <code>Numbers.ceil</code>, <code>Numbers.round</code>, <code>Numbers.truncate</code>, and
-<code>Booleans.to_string</code>.</p>
+<p><code>Boolean#to_s()</code> returns lowercase <code>&quot;true&quot;</code> or <code>&quot;false&quot;</code>.</p>
 <p><code>String#size</code>, <code>[]</code>, <code>try_fetch</code>, <code>slice</code>, <code>try_slice</code>, <code>index</code>, and <code>rindex</code>
 operate on Unicode code points rather than encoded bytes. Indexes are
 zero-based from the start; a negative index counts from the end, with <code>-1</code>
@@ -188,20 +179,17 @@ sequence. String trimming uses the pinned Unicode 17.0 <code>White_Space</code> 
 preserves internal whitespace, and does not remove U+FEFF. <code>replace_all()</code>
 replaces every non-overlapping literal occurrence. The replacement is also
 literal, so strings such as <code>$&amp;</code> and <code>$1</code> have no special meaning; an empty
-pattern raises. The declaration-root forms are <code>Strings.characters</code>,
-<code>Strings.reverse</code>, and <code>Strings.replace_all</code>.</p>
+pattern raises.</p>
 <h2 id="bytes">Bytes</h2>
 <p><code>Bytes</code> is an immutable binary sequence distinct from <code>String</code> and
 <code>Array&lt;Integer&gt;</code>:</p>
-<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/bytes</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#E6EDF3">payload </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_bytes</span><span style="color:#E6EDF3">()</span></span>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">payload </span><span style="color:#FF7B72">:=</span><span style="color:#A5D6FF"> "A😀"</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_bytes</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"><span style="color:#E6EDF3">byte_length </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> payload.</span><span style="color:#D2A8FF">size</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"><span style="color:#E6EDF3">first </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> payload.</span><span style="color:#D2A8FF">at</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">)</span></span>
-<span class="line"><span style="color:#E6EDF3">text </span><span style="color:#FF7B72">:=</span><span style="color:#79C0FF"> Bytes</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">to_string</span><span style="color:#E6EDF3">(payload)</span></span>
+<span class="line"><span style="color:#E6EDF3">text </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> payload.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"></span></code></pre>
 <p>String conversion uses UTF-8. Decoding invalid input replaces it with U+FFFD;
-call <code>valid_utf8()</code> first when invalid bytes must be rejected. Byte indexing is
+call <code>valid_utf8?()</code> first when invalid bytes must be rejected. Byte indexing is
 strict and concatenation is non-mutating.</p>
 <h2 id="binary-encoding">Binary encoding</h2>
 <p><code>trb/std/encoding/hex</code> converts between <code>Bytes</code> and hexadecimal text:</p>
@@ -298,8 +286,9 @@ to the non-cryptographic generator.</p>
 <span class="line"><span style="color:#E6EDF3">blank </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> builder.</span><span style="color:#D2A8FF">empty?</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"><span style="color:#E6EDF3">message </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> builder.</span><span style="color:#D2A8FF">to_s</span><span style="color:#E6EDF3">()</span></span>
 <span class="line"></span></code></pre>
-<p>Destructive operations require a <code>mut</code> binding. <code>to_s()</code> returns an immutable
-snapshot, and size counts Unicode code points.</p>
+<p>Only <code>new()</code> and <code>from_string()</code> are class members. Operations on an existing
+builder are receiver methods. Destructive operations require a <code>mut</code> binding;
+<code>to_s()</code> returns an immutable snapshot, and size counts Unicode code points.</p>
 <p><code>trb/std/unicode</code> provides scalar and identifier classification from one pinned
 data set shared by all targets:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/unicode</span></span>
@@ -374,7 +363,7 @@ shallowly.</p>
 <p><code>Range&lt;Integer&gt;#to_a()</code> returns a new Array containing the same sequence that
 Range iteration would visit. Inclusive and exclusive ends are honored; an
 inclusive equal-bound Range contains one value, while exclusive equal-bound
-and reversed Ranges are empty. The package form is <code>ranges.to_array(range)</code>.</p>
+and reversed Ranges are empty.</p>
 <p><code>sort()</code> and <code>sort_descending()</code> order an Array of <code>Integer</code>, <code>Float</code>, or
 <code>String</code>. <code>sort_by</code> and <code>sort_by_descending</code> evaluate one non-fallible key
 expression per element and accept the same key types. All four operations are
@@ -592,11 +581,7 @@ See the <a href="/docs/guides/testing/">testing guide</a>.</p>
 <p>The current portable standard library includes:</p>
 <ul>
 <li><code>trb/std/io</code></li>
-<li><code>trb/std/strings</code></li>
-<li><code>trb/std/numbers</code></li>
 <li><code>trb/std/math</code></li>
-<li><code>trb/std/booleans</code></li>
-<li><code>trb/std/bytes</code></li>
 <li><code>trb/std/encoding/hex</code></li>
 <li><code>trb/std/encoding/base64</code></li>
 <li><code>trb/std/digest</code></li>
@@ -604,7 +589,6 @@ See the <a href="/docs/guides/testing/">testing guide</a>.</p>
 <li><code>trb/std/secure_compare</code></li>
 <li><code>trb/std/string_builder</code></li>
 <li><code>trb/std/unicode</code></li>
-<li><code>trb/std/ranges</code></li>
 <li><code>trb/std/path</code></li>
 <li><code>trb/std/url</code></li>
 <li><code>trb/std/filesystem</code></li>

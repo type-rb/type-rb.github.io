@@ -189,13 +189,40 @@ the same.</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> app/models/user</span></span>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">UserRepo</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> app/repos/user_repo</span></span>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Contract</span><span style="color:#FF7B72"> as</span><span style="color:#FFA657"> ExternalContract</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> acme/contracts</span></span>
-<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/strings</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/math</span></span>
 <span class="line"></span></code></pre>
 <p>A bare import binds one unique public declaration root whose authored name
-matches the final path segment, such as <code>User</code>, <code>Strings</code>, or <code>JSON</code>. It does
+matches the final path segment, such as <code>User</code>, <code>Math</code>, or <code>JSON</code>. It does
 not create a lowercase package namespace or import every export. Use a named
 import for exact peer declarations and top-level functions; <code>as</code> changes only
 the local binding.</p>
+<p>The root can be a type as well as a module. A package centered on a value uses
+the actual type as its root rather than consuming the type name with a
+static-only utility namespace. For example, <code>trb/std/string_builder</code> binds the
+<code>StringBuilder</code> type that owns its factories and whose values own their instance
+operations.</p>
+<h2 id="choosing-an-operation-owner">Choosing an operation owner</h2>
+<p>TypeRB keeps one public spelling for an operation whenever the spellings would
+have the same semantics:</p>
+<ul>
+<li>Use an instance method for an operation on an existing value, such as
+<code>123.to_s()</code>, <code>2.5.to_i()</code>, <code>text.upcase()</code>, or <code>bytes.valid_utf8?()</code>.</li>
+<li>Use a class member for an operation naturally associated with an actual
+nominal type but not an existing instance, such as <code>StringBuilder.new()</code>.</li>
+<li>Use a module member for a domain algorithm with no natural value receiver,
+such as <code>Math.sqrt(9.0)</code> or <code>JSON.decode&lt;Value&gt;(text)</code>.</li>
+<li>Import an intentionally direct language or DSL operation by exact name, as
+with <code>test</code>.</li>
+</ul>
+<p>Built-in receiver operations do not require utility imports, and TypeRB does
+not also expose equivalent static utility forms. Two operations may coexist
+only when their documented semantics, lifecycle, or performance differ rather
+than merely their call style. A type-associated operation does not justify
+creating a utility class when no actual nominal type exists.</p>
+<p>Explicitly listed portable-prelude bindings are a narrow language convenience,
+not static mirrors for value methods. For example, prelude <code>puts</code> and
+owner-qualified <code>IO.puts</code> intentionally reach the same output operation;
+packages do not gain similar aliases by default.</p>
 <p>Portable libraries use <code>trb/std/*</code>. Target-specific APIs use
 <code>trb/platform/&lt;mode&gt;/*</code> and are rejected when imported from another mode:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/platform/go/http</span></span>
