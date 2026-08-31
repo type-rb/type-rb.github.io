@@ -163,6 +163,23 @@ such as <code>[]</code> makes it optional. If a non-empty default is declared, t
 explicit occurrence replaces the default and later occurrences append to that
 parsed value. Repeating a non-Array scalar option retains its existing
 last-occurrence-wins behavior.</p>
+<p>Import <code>fail</code> when argument parsing succeeded but the selected command cannot
+complete:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { fail } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/cli</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> execute</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#8B949E">	# ...perform the selected command...</span></span>
+<span class="line"><span style="color:#D2A8FF">	fail</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"configuration is invalid"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>fail</code> is terminal: it unwinds structured cleanup such as an active
+<code>File.open(...) do |file| ... end</code> block, then writes the supplied message and
+a newline to standard error and exits with status 1. The generated boundary
+also covers package-scope binding and constant initializers, including failures
+reached through a helper before <code>main</code>, plus field and parameter defaults when
+construction or a call evaluates them. Keep application work in <code>main</code>; this
+does not add executable raw top-level statements. Parser and usage failures
+continue to use status 2.</p>
 <h2 id="compile-one-executable">Compile one executable</h2>
 <p>The current native executable backend uses the Go toolchain. Configure the
 project with <code>mode: &quot;go&quot;</code>, then compile the entrypoint:</p>
