@@ -1,0 +1,1596 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="TypeRB 1.0 capability map — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		<script defer src="/assets/capabilities.js"></script>
+		<link rel="canonical" href="https://type-rb.github.io/docs/capabilities/">
+		<title>TypeRB 1.0 capability map — TypeRB</title>
+	</head>
+	<body class="docs-page capabilities-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a class="active" aria-current="page" href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a class="active" aria-current="page" href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="typerb-10-capability-map">TypeRB 1.0 capability map</h1>
+<p>This catalog is a working proposal for the capabilities TypeRB should have by
+1.0. The target is intentionally revisable: items may be split, combined,
+added, removed, or reworded as real projects clarify what the language needs.
+It is not a release promise or a replacement for the <a href="/docs/roadmap/">roadmap</a>.</p>
+<p>The map compares that proposed target with publicly documented behavior. Each
+capability has equal weight regardless of implementation effort. Only
+<strong>Available</strong> items count as complete; <strong>Partial</strong> remains visible as a separate
+segment and is not converted into a subjective fraction.</p>
+<ul>
+<li><strong>Available</strong>: the stated 1.0 capability is documented and usable now.</li>
+<li><strong>Partial</strong>: a meaningful implementation exists, but the stated 1.0 scope is
+incomplete.</li>
+<li><strong>Planned</strong>: the capability belongs in the proposed 1.0 set but has no
+sufficient public implementation yet.</li>
+<li><strong>Exploring</strong>: the need is visible, but the 1.0 shape still requires design or
+inventory.</li>
+</ul>
+<p>Use <a href="/docs/status/">Current status</a> for a narrative of implemented behavior and the
+<a href="/docs/specification/">language specification</a> for confirmed semantics. Update this
+catalog when merged public behavior changes a capability state or when the
+proposed 1.0 set is reviewed; do not use it to show current task scheduling.</p>
+<section class="capability-catalog" data-capability-catalog>
+	<div class="capability-snapshot" aria-label="Catalog snapshot">
+		<span>Proposed target · 1.0</span>
+		<span>Reviewed · 2026-09-01</span>
+	</div>
+
+	<section class="capability-summary-grid" aria-label="Capability summary">
+		<article class="capability-summary-card capability-summary-total">
+			<span>Candidate set</span>
+			<strong>75</strong>
+			<small>7 areas</small>
+		</article>
+		<article class="capability-summary-card capability-summary-available">
+			<span>Available</span>
+			<strong>18</strong>
+			<small>Complete now</small>
+		</article>
+		<article class="capability-summary-card capability-summary-partial">
+			<span>Partial</span>
+			<strong>41</strong>
+			<small>Useful coverage exists</small>
+		</article>
+		<article class="capability-summary-card capability-summary-remaining">
+			<span>Remaining</span>
+			<strong>16</strong>
+			<small>Planned or exploring</small>
+		</article>
+	</section>
+
+	<section class="capability-scope-grid" aria-label="Coverage lenses">
+		
+		<button class="capability-scope-card" type="button" data-capability-scope="language" aria-pressed="false">
+			<span class="capability-eyebrow">LANGUAGE &#43; LIBRARY</span>
+			<span class="capability-scope-title">
+				<strong>Language platform</strong>
+				<b>11 / 34</b>
+			</span>
+			<span class="capability-scope-description">Write portable, typed programs with a practical standard foundation.</span>
+			<span class="capability-progress-track" aria-hidden="true">
+				<span class="capability-progress-available" style="width: 32.353%"></span>
+				<span class="capability-progress-partial" style="width: 47.059%"></span>
+			</span>
+			<span class="capability-progress-caption">11 available · 16 partial</span>
+		</button>
+		
+		<button class="capability-scope-card" type="button" data-capability-scope="applications" aria-pressed="false">
+			<span class="capability-eyebrow">BUILD APPLICATIONS</span>
+			<span class="capability-scope-title">
+				<strong>Application stack</strong>
+				<b>13 / 62</b>
+			</span>
+			<span class="capability-scope-description">Build backend, browser, data, and background-work applications.</span>
+			<span class="capability-progress-track" aria-hidden="true">
+				<span class="capability-progress-available" style="width: 20.968%"></span>
+				<span class="capability-progress-partial" style="width: 58.065%"></span>
+			</span>
+			<span class="capability-progress-caption">13 available · 36 partial</span>
+		</button>
+		
+		<button class="capability-scope-card" type="button" data-capability-scope="workflow" aria-pressed="false">
+			<span class="capability-eyebrow">DEVELOP &#43; OPERATE</span>
+			<span class="capability-scope-title">
+				<strong>Daily workflow</strong>
+				<b>11 / 56</b>
+			</span>
+			<span class="capability-scope-description">Edit, test, ship, diagnose, and maintain real TypeRB projects.</span>
+			<span class="capability-progress-track" aria-hidden="true">
+				<span class="capability-progress-available" style="width: 19.643%"></span>
+				<span class="capability-progress-partial" style="width: 62.500%"></span>
+			</span>
+			<span class="capability-progress-caption">11 available · 35 partial</span>
+		</button>
+		
+	</section>
+
+	<section class="capability-coverage-surface">
+		<div class="capability-filter-bar">
+			<label class="capability-search">
+				<span aria-hidden="true">⌕</span>
+				<span class="capability-sr-only">Search capabilities</span>
+				<input data-capability-search type="search" placeholder="Search capabilities…" autocomplete="off">
+			</label>
+			<div class="capability-filter-row" aria-label="Filter by status">
+				<span class="capability-filter-caption">STATUS</span>
+				<button class="capability-filter-button" type="button" data-capability-status="all" aria-pressed="true">All</button>
+				<button class="capability-filter-button" type="button" data-capability-status="available" aria-pressed="false">Available</button><button class="capability-filter-button" type="button" data-capability-status="partial" aria-pressed="false">Partial</button><button class="capability-filter-button" type="button" data-capability-status="planned" aria-pressed="false">Planned</button><button class="capability-filter-button" type="button" data-capability-status="exploring" aria-pressed="false">Exploring</button>
+			</div>
+			<div class="capability-expand-actions">
+				<button class="capability-quiet-button" type="button" data-capability-expand>Expand all</button>
+				<button class="capability-quiet-button" type="button" data-capability-collapse>Collapse all</button>
+			</div>
+			<span class="capability-visible-count" data-capability-visible aria-live="polite">75 shown</span>
+		</div>
+
+		<div class="capability-area-list" data-capability-area-list>
+			
+			<details class="capability-area" data-capability-area open>
+				<summary class="capability-area-summary">
+					<span class="capability-area-icon" data-capability-area-icon>4</span>
+					<span class="capability-area-heading">
+						<strong>Language and type system</strong>
+						<small>Portable semantics shared by Go, Ruby, TypeScript, and the evaluator.</small>
+					</span>
+					<span class="capability-area-meta" data-capability-area-meta>4 / 11 available</span>
+					<span class="capability-chevron" aria-hidden="true">⌄</span>
+				</summary>
+				<div class="capability-list">
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="language applications" data-search="language and type system portable semantics shared by go, ruby, typescript, and the evaluator. functions, closures, and structured collection blocks use typed function values, lexical capture, and multi-statement map, select, reduce, predicate, and sort-key blocks.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Functions, closures, and structured collection blocks</span>
+							<a class="capability-evidence" href="/docs/specification/">Specification</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Use typed function values, lexical capture, and multi-statement map, select, reduce, predicate, and sort-key blocks.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="language applications" data-search="language and type system portable semantics shared by go, ruby, typescript, and the evaluator. records, enums, payload enums, and pattern matching model product and sum types with checked construction, exhaustive cases, raw values, and payload binding.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Records, enums, payload enums, and pattern matching</span>
+							<a class="capability-evidence" href="/docs/language/">Language guide</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Model product and sum types with checked construction, exhaustive cases, raw values, and payload binding.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language applications" data-search="language and type system portable semantics shared by go, ruby, typescript, and the evaluator. classes, modules, and interfaces the object model is usable, while superclass construction, override rules, initialization order, and some generic member semantics remain incomplete.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Classes, modules, and interfaces</span>
+							<a class="capability-evidence" href="/docs/specification/">Specification</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>The object model is usable, while superclass construction, override rules, initialization order, and some generic member semantics remain incomplete.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language applications" data-search="language and type system portable semantics shared by go, ruby, typescript, and the evaluator. generics and type inference generic aliases, records, enums, classes, functions, and instance methods exist; broader call-site inference and generic member forms remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Generics and type inference</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Generic aliases, records, enums, classes, functions, and instance methods exist; broader call-site inference and generic member forms remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language applications" data-search="language and type system portable semantics shared by go, ruby, typescript, and the evaluator. union, nullable, and discriminant narrowing normalized unions, nullable narrowing, literal types, and readonly discriminants exist, but structured and collection alternatives need broader flow analysis.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Union, nullable, and discriminant narrowing</span>
+							<a class="capability-evidence" href="/docs/specification/">Specification</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Normalized unions, nullable narrowing, literal types, and readonly discriminants exist, but structured and collection alternatives need broader flow analysis.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="language applications" data-search="language and type system portable semantics shared by go, ruby, typescript, and the evaluator. result propagation and recovery represent recoverable failures with result and use prefix try and postfix catch across functions, callbacks, and application packages.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Result propagation and recovery</span>
+							<a class="capability-evidence" href="/docs/specification/">Specification</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Represent recoverable failures with Result and use prefix try and postfix catch across functions, callbacks, and application packages.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="language applications" data-search="language and type system portable semantics shared by go, ruby, typescript, and the evaluator. aliases and nominal newtypes choose transparent aliases for shorthand and nominal newtypes for distinct represented values, including typed serialization boundaries.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Aliases and nominal newtypes</span>
+							<a class="capability-evidence" href="/docs/language/">Language guide</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Choose transparent aliases for shorthand and nominal newtypes for distinct represented values, including typed serialization boundaries.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language applications" data-search="language and type system portable semantics shared by go, ruby, typescript, and the evaluator. checked numeric and value-type semantics integer and float behavior is portable and checked, while exact large integers, decimal values, rounding, and richer validated value objects remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Checked numeric and value-type semantics</span>
+							<a class="capability-evidence" href="/docs/status/">Current status</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Integer and Float behavior is portable and checked, while exact large integers, decimal values, rounding, and richer validated value objects remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language applications workflow" data-search="language and type system portable semantics shared by go, ruby, typescript, and the evaluator. mutation, suspension, and structured concurrency effects immutable parameters, explicit local mutation, hidden suspension propagation, cancellation, and bounded concurrent_map exist; general mutation and composition effects remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Mutation, suspension, and structured concurrency effects</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Immutable parameters, explicit local mutation, hidden suspension propagation, cancellation, and bounded concurrent_map exist; general mutation and composition effects remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-planned" data-capability-item data-status="planned" data-scopes="language applications" data-search="language and type system portable semantics shared by go, ruby, typescript, and the evaluator. tuples, destructuring, and typed projection add position-typed local products, destructured returns, and precise projection without replacing named records at public boundaries.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">○</span>
+							<span class="capability-item-title">Tuples, destructuring, and typed projection</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Planned</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Add position-typed local products, destructured returns, and precise projection without replacing named records at public boundaries.</p>
+							<div class="capability-detail-meta">
+								<span>The capability belongs in the proposed 1.0 set but is not sufficiently implemented yet.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-exploring" data-capability-item data-status="exploring" data-scopes="language workflow" data-search="language and type system portable semantics shared by go, ruby, typescript, and the evaluator. module visibility, initialization, and minimal runtime type information complete public and file-local visibility, cross-file initialization, constant rules, and only the runtime type information justified by real workflows.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">?</span>
+							<span class="capability-item-title">Module visibility, initialization, and minimal runtime type information</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Exploring</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Complete public and file-local visibility, cross-file initialization, constant rules, and only the runtime type information justified by real workflows.</p>
+							<div class="capability-detail-meta">
+								<span>The need is visible, but the 1.0 shape still requires design or inventory.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+				</div>
+			</details>
+			
+			<details class="capability-area" data-capability-area open>
+				<summary class="capability-area-summary">
+					<span class="capability-area-icon" data-capability-area-icon>3</span>
+					<span class="capability-area-heading">
+						<strong>Compiler and projects</strong>
+						<small>The shared compiler pipeline, project model, diagnostics, and development iteration.</small>
+					</span>
+					<span class="capability-area-meta" data-capability-area-meta>3 / 9 available</span>
+					<span class="capability-chevron" aria-hidden="true">⌄</span>
+				</summary>
+				<div class="capability-list">
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="language workflow" data-search="compiler and projects the shared compiler pipeline, project model, diagnostics, and development iteration. shared parser, checker, formatter, and typed ir use one compiler-owned grammar and semantic pipeline for formatting, checking, generation, the language server, and the evaluator.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Shared parser, checker, formatter, and typed IR</span>
+							<a class="capability-evidence" href="/docs/status/">Current status</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Use one compiler-owned grammar and semantic pipeline for formatting, checking, generation, the language server, and the evaluator.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="language applications workflow" data-search="compiler and projects the shared compiler pipeline, project model, diagnostics, and development iteration. go, ruby, and typescript generation generate all three target modes from the same checked typerb program while keeping target-only apis behind explicit platform imports.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Go, Ruby, and TypeScript generation</span>
+							<a class="capability-evidence" href="/docs/status/">Current status</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Generate all three target modes from the same checked TypeRB program while keeping target-only APIs behind explicit platform imports.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="applications workflow" data-search="compiler and projects the shared compiler pipeline, project model, diagnostics, and development iteration. configured projects and file-root workflows discover trbconfig.jsonc projects or check, build, run, format, lint, and serve an explicit standalone source closure.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Configured projects and file-root workflows</span>
+							<a class="capability-evidence" href="/docs/cli/">CLI reference</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Discover trbconfig.jsonc projects or check, build, run, format, lint, and serve an explicit standalone source closure.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language workflow" data-search="compiler and projects the shared compiler pipeline, project model, diagnostics, and development iteration. deterministic diagnostics, linting, and safe fixes structured diagnostics, suggestions, and a small built-in lint registry exist; the stable catalog and bounded third-party rule boundary need broader evidence.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Deterministic diagnostics, linting, and safe fixes</span>
+							<a class="capability-evidence" href="/docs/guides/linting/">Linting guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Structured diagnostics, suggestions, and a small built-in lint registry exist; the stable catalog and bounded third-party rule boundary need broader evidence.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="workflow" data-search="compiler and projects the shared compiler pipeline, project model, diagnostics, and development iteration. incremental analysis and persistent build caching dependency-aware analysis and reusable compiler services exist, while phase-level invalidation, multi-file change sets, and persistent output caches remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Incremental analysis and persistent build caching</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Dependency-aware analysis and reusable compiler services exist, while phase-level invalidation, multi-file change sets, and persistent output caches remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="compiler and projects the shared compiler pipeline, project model, diagnostics, and development iteration. typerb source maps, stack traces, and debugging generated ranges and go debug artifacts map back to typerb; ruby and typescript source maps, runtime failures, coverage, and complete stack traces remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">TypeRB source maps, stack traces, and debugging</span>
+							<a class="capability-evidence" href="/docs/editor-support/">Editor support</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Generated ranges and Go debug artifacts map back to TypeRB; Ruby and TypeScript source maps, runtime failures, coverage, and complete stack traces remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-planned" data-capability-item data-status="planned" data-scopes="applications workflow" data-search="compiler and projects the shared compiler pipeline, project model, diagnostics, and development iteration. workspace graph and coordinated development server coordinate multiple applications and packages with affected builds, watch mode, process readiness, browser bundling, restart, and hmr where ordinary tools are insufficient.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">○</span>
+							<span class="capability-item-title">Workspace graph and coordinated development server</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Planned</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Coordinate multiple applications and packages with affected builds, watch mode, process readiness, browser bundling, restart, and HMR where ordinary tools are insufficient.</p>
+							<div class="capability-detail-meta">
+								<span>The capability belongs in the proposed 1.0 set but is not sufficiently implemented yet.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language workflow" data-search="compiler and projects the shared compiler pipeline, project model, diagnostics, and development iteration. read-only compiler tooling protocol a versioned project snapshot exposes sources, modules, checked declarations, semantic types, and diagnostics; persistent queries and a stable sdk remain deferred.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Read-only compiler tooling protocol</span>
+							<a class="capability-evidence" href="/docs/guides/compiler-tooling/">Tooling protocol</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>A versioned project snapshot exposes sources, modules, checked declarations, semantic types, and diagnostics; persistent queries and a stable SDK remain deferred.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language applications workflow" data-search="compiler and projects the shared compiler pipeline, project model, diagnostics, and development iteration. cross-backend conformance, reliability, and performance a large shared test suite exercises the modes, but 1.0 still needs explicit end-to-end conformance, performance baselines, and supported-toolchain reliability gates.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Cross-backend conformance, reliability, and performance</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>A large shared test suite exercises the modes, but 1.0 still needs explicit end-to-end conformance, performance baselines, and supported-toolchain reliability gates.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+				</div>
+			</details>
+			
+			<details class="capability-area" data-capability-area open>
+				<summary class="capability-area-summary">
+					<span class="capability-area-icon" data-capability-area-icon>2</span>
+					<span class="capability-area-heading">
+						<strong>Standard library and foundations</strong>
+						<small>Portable everyday APIs with the same types, failures, and resource behavior in every mode.</small>
+					</span>
+					<span class="capability-area-meta" data-capability-area-meta>2 / 11 available</span>
+					<span class="capability-chevron" aria-hidden="true">⌄</span>
+				</summary>
+				<div class="capability-list">
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language applications" data-search="standard library and foundations portable everyday apis with the same types, failures, and resource behavior in every mode. scalars, unicode text, arrays, hashes, range, and iteration the daily core is substantial, while unicode normalization, additional collection aggregation, and a few common structures and text operations remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Scalars, Unicode text, Arrays, Hashes, Range, and iteration</span>
+							<a class="capability-evidence" href="/docs/standard-library/">Standard library</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>The daily core is substantial, while Unicode normalization, additional collection aggregation, and a few common structures and text operations remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="language applications" data-search="standard library and foundations portable everyday apis with the same types, failures, and resource behavior in every mode. bytes, binary encoding, hashing, and secure randomness use bytes, hex and base64, modern and compatibility digests, hmac, constant-time comparison, and secure random generation portably.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Bytes, binary encoding, hashing, and secure randomness</span>
+							<a class="capability-evidence" href="/docs/standard-library/">Standard library</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Use Bytes, hex and Base64, modern and compatibility digests, HMAC, constant-time comparison, and secure random generation portably.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="language applications" data-search="standard library and foundations portable everyday apis with the same types, failures, and resource behavior in every mode. json, jsonc, and typed codecs parse general json values and encode or decode typed records, enums, newtypes, collections, and standard values with structured errors.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">JSON, JSONC, and typed codecs</span>
+							<a class="capability-evidence" href="/docs/standard-library/">Standard library</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Parse general JSON values and encode or decode typed records, enums, newtypes, collections, and standard values with structured errors.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language applications" data-search="standard library and foundations portable everyday apis with the same types, failures, and resource behavior in every mode. date, time, duration, and time zones civil and exact time values, durations, named zones, parsing, formatting, and codecs exist; calendar periods, injectable clocks, and locale formatting remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Date, time, duration, and time zones</span>
+							<a class="capability-evidence" href="/docs/standard-library/">Standard library</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Civil and exact time values, durations, named zones, parsing, formatting, and codecs exist; calendar periods, injectable clocks, and locale formatting remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="standard library and foundations portable everyday apis with the same types, failures, and resource behavior in every mode. filesystem, logical paths, and process access scoped whole-file operations, bounded reads, entries, environment access, and shell-free processes exist; metadata, temporary files, atomic replacement, and streaming remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Filesystem, logical paths, and process access</span>
+							<a class="capability-evidence" href="/docs/standard-library/">Standard library</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Scoped whole-file operations, bounded reads, entries, environment access, and shell-free processes exist; metadata, temporary files, atomic replacement, and streaming remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-planned" data-capability-item data-status="planned" data-scopes="language applications" data-search="standard library and foundations portable everyday apis with the same types, failures, and resource behavior in every mode. full url, regular expression, and uuid values add strict cross-backend url parsing and resolution, a portable regular-expression subset, and canonical uuid parsing and generation.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">○</span>
+							<span class="capability-item-title">Full URL, regular expression, and UUID values</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Planned</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Add strict cross-backend URL parsing and resolution, a portable regular-expression subset, and canonical UUID parsing and generation.</p>
+							<div class="capability-detail-meta">
+								<span>The capability belongs in the proposed 1.0 set but is not sufficiently implemented yet.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-exploring" data-capability-item data-status="exploring" data-scopes="language applications" data-search="standard library and foundations portable everyday apis with the same types, failures, and resource behavior in every mode. streams, buffers, and scoped resource ownership define bounded-memory byte sources and sinks, partial reads, cancellation, and reliable close semantics from concrete file and network workflows.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">?</span>
+							<span class="capability-item-title">Streams, buffers, and scoped resource ownership</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Exploring</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Define bounded-memory byte sources and sinks, partial reads, cancellation, and reliable close semantics from concrete file and network workflows.</p>
+							<div class="capability-detail-meta">
+								<span>The need is visible, but the 1.0 shape still requires design or inventory.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-planned" data-capability-item data-status="planned" data-scopes="applications" data-search="standard library and foundations portable everyday apis with the same types, failures, and resource behavior in every mode. csv, compression, archives, mime, and multipart data process common structured and binary formats with explicit limits, encoding policy, safe archive paths, and streaming where input can be large.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">○</span>
+							<span class="capability-item-title">CSV, compression, archives, MIME, and multipart data</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Planned</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Process common structured and binary formats with explicit limits, encoding policy, safe archive paths, and streaming where input can be large.</p>
+							<div class="capability-detail-meta">
+								<span>The capability belongs in the proposed 1.0 set but is not sufficiently implemented yet.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-planned" data-capability-item data-status="planned" data-scopes="language applications" data-search="standard library and foundations portable everyday apis with the same types, failures, and resource behavior in every mode. additional collections and exact numeric values add evidence-backed set and queue structures, aggregation operations, biginteger, and decimal without changing current integer or float semantics.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">○</span>
+							<span class="capability-item-title">Additional collections and exact numeric values</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Planned</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Add evidence-backed Set and queue structures, aggregation operations, BigInteger, and Decimal without changing current Integer or Float semantics.</p>
+							<div class="capability-detail-meta">
+								<span>The capability belongs in the proposed 1.0 set but is not sufficiently implemented yet.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="standard library and foundations portable everyday apis with the same types, failures, and resource behavior in every mode. structured logging, metrics, and tracing foundations web request jsonl logging exists; 1.0 needs application-wide levels, fields, redaction, context propagation, metrics, spans, and replaceable sinks.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Structured logging, metrics, and tracing foundations</span>
+							<a class="capability-evidence" href="/docs/guides/web/">Web guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Web request JSONL logging exists; 1.0 needs application-wide levels, fields, redaction, context propagation, metrics, spans, and replaceable sinks.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-planned" data-capability-item data-status="planned" data-scopes="applications workflow" data-search="standard library and foundations portable everyday apis with the same types, failures, and resource behavior in every mode. typed configuration, internationalization, and locale services provide typed startup configuration and evidence-backed message, pluralization, number, currency, date, and locale facilities without exposing secrets.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">○</span>
+							<span class="capability-item-title">Typed configuration, internationalization, and locale services</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Planned</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Provide typed startup configuration and evidence-backed message, pluralization, number, currency, date, and locale facilities without exposing secrets.</p>
+							<div class="capability-detail-meta">
+								<span>The capability belongs in the proposed 1.0 set but is not sufficiently implemented yet.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+				</div>
+			</details>
+			
+			<details class="capability-area" data-capability-area open>
+				<summary class="capability-area-summary">
+					<span class="capability-area-icon" data-capability-area-icon>3</span>
+					<span class="capability-area-heading">
+						<strong>Packages and native interoperability</strong>
+						<small>Reproducible TypeRB packages and explicit, typed boundaries to existing ecosystems.</small>
+					</span>
+					<span class="capability-area-meta" data-capability-area-meta>3 / 10 available</span>
+					<span class="capability-chevron" aria-hidden="true">⌄</span>
+				</summary>
+				<div class="capability-list">
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="applications workflow" data-search="packages and native interoperability reproducible typerb packages and explicit, typed boundaries to existing ecosystems. distributed package resolution and canonical identity resolve typerb source from git or local paths with canonical manifests, scoped dependency aliases, and one checked package graph.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Distributed package resolution and canonical identity</span>
+							<a class="capability-evidence" href="/docs/guides/packages/">Package guide</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Resolve TypeRB source from Git or local paths with canonical manifests, scoped dependency aliases, and one checked package graph.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="applications workflow" data-search="packages and native interoperability reproducible typerb packages and explicit, typed boundaries to existing ecosystems. lockfile, checksums, offline, and frozen installation pin commits and content hashes, verify cached source, and install deterministically without network access or lockfile drift.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Lockfile, checksums, offline, and frozen installation</span>
+							<a class="capability-evidence" href="/docs/guides/packages/">Package guide</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Pin commits and content hashes, verify cached source, and install deterministically without network access or lockfile drift.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="packages and native interoperability reproducible typerb packages and explicit, typed boundaries to existing ecosystems. selective updates and semantic version selection selected direct dependency graphs can update while others remain pinned; semantic version constraints, solver policy, and compatibility guidance remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Selective updates and semantic version selection</span>
+							<a class="capability-evidence" href="/docs/guides/packages/">Package guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Selected direct dependency graphs can update while others remain pinned; semantic version constraints, solver policy, and compatibility guidance remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="applications workflow" data-search="packages and native interoperability reproducible typerb packages and explicit, typed boundaries to existing ecosystems. per-mode native dependency integration merge package-owned go modules, gems, npm packages, and bun packages into generated target manifests without changing portable imports.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Per-mode native dependency integration</span>
+							<a class="capability-evidence" href="/docs/guides/packages/">Package guide</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Merge package-owned Go modules, gems, npm packages, and Bun packages into generated target manifests without changing portable imports.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language applications workflow" data-search="packages and native interoperability reproducible typerb packages and explicit, typed boundaries to existing ecosystems. typescript declaration indexing and adapters index installed declarations and apply package-owned generic, class, interface, component, alias, and result bridge corrections; broader native shapes remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">TypeScript declaration indexing and adapters</span>
+							<a class="capability-evidence" href="/docs/guides/packages/">Package guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Index installed declarations and apply package-owned generic, class, interface, component, alias, and Result bridge corrections; broader native shapes remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-planned" data-capability-item data-status="planned" data-scopes="language applications" data-search="packages and native interoperability reproducible typerb packages and explicit, typed boundaries to existing ecosystems. ruby and go native declaration import import ordinary public types from rbs-compatible metadata and go type information while diagnosing unsupported shapes instead of producing any.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">○</span>
+							<span class="capability-item-title">Ruby and Go native declaration import</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Planned</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Import ordinary public types from RBS-compatible metadata and Go type information while diagnosing unsupported shapes instead of producing Any.</p>
+							<div class="capability-detail-meta">
+								<span>The capability belongs in the proposed 1.0 set but is not sufficiently implemented yet.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="packages and native interoperability reproducible typerb packages and explicit, typed boundaries to existing ecosystems. package-owned runtime adapters a narrow string-to-string leaf abi with result and suspension propagation works in all modes; typed wire values, handles, streams, and lifecycle hooks remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Package-owned runtime adapters</span>
+							<a class="capability-evidence" href="/docs/guides/packages/">Package guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>A narrow String-to-String leaf ABI with Result and suspension propagation works in all modes; typed wire values, handles, streams, and lifecycle hooks remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language applications workflow" data-search="packages and native interoperability reproducible typerb packages and explicit, typed boundaries to existing ecosystems. declarative project input and generated-source protocols versioned declaration, project input, generated source, and call-specialization boundaries support bundled packages; external stability and incremental behavior remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Declarative project input and generated-source protocols</span>
+							<a class="capability-evidence" href="/docs/guides/packages/">Package guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Versioned declaration, project input, generated source, and call-specialization boundaries support bundled packages; external stability and incremental behavior remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="packages and native interoperability reproducible typerb packages and explicit, typed boundaries to existing ecosystems. package author tooling and sandboxed providers authors can validate and run explicit conformance projects; scaffold, inspection, capability permissions, and resource-bounded provider execution remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Package author tooling and sandboxed providers</span>
+							<a class="capability-evidence" href="/docs/guides/packages/">Package guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Authors can validate and run explicit conformance projects; scaffold, inspection, capability permissions, and resource-bounded provider execution remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-planned" data-capability-item data-status="planned" data-scopes="applications workflow" data-search="packages and native interoperability reproducible typerb packages and explicit, typed boundaries to existing ecosystems. publishing, provenance, audit, and namespace-stable apis complete package publication, signatures, advisories, vulnerability checks, stable cross-package type identity, and production cache policy.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">○</span>
+							<span class="capability-item-title">Publishing, provenance, audit, and namespace-stable APIs</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Planned</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Complete package publication, signatures, advisories, vulnerability checks, stable cross-package type identity, and production cache policy.</p>
+							<div class="capability-detail-meta">
+								<span>The capability belongs in the proposed 1.0 set but is not sufficiently implemented yet.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+				</div>
+			</details>
+			
+			<details class="capability-area" data-capability-area open>
+				<summary class="capability-area-summary">
+					<span class="capability-area-icon" data-capability-area-icon>1</span>
+					<span class="capability-area-heading">
+						<strong>Application platform</strong>
+						<small>Official and ecosystem capabilities for full-stack services, tools, data, and browser applications.</small>
+					</span>
+					<span class="capability-area-meta" data-capability-area-meta>1 / 15 available</span>
+					<span class="capability-chevron" aria-hidden="true">⌄</span>
+				</summary>
+				<div class="capability-list">
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. typed command-line applications generate help, conversion, defaults, subcommands, and a go single binary from records and payload enums; validation, aliases, completion, and more deployment profiles remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Typed command-line applications</span>
+							<a class="capability-evidence" href="/docs/guides/cli-applications/">CLI application guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Generate help, conversion, defaults, subcommands, and a Go single binary from records and payload enums; validation, aliases, completion, and more deployment profiles remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. portable web routing, middleware, and server lifecycle file routes, middleware, cookies, cors, security headers, compression, timeouts, cancellation, graceful shutdown, and in-process testing work across the modes; production hardening remains.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Portable Web routing, middleware, and server lifecycle</span>
+							<a class="capability-evidence" href="/docs/guides/web/">Web guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>File routes, middleware, cookies, CORS, security headers, compression, timeouts, cancellation, graceful shutdown, and in-process testing work across the modes; production hardening remains.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="language applications" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. typed http path, query, body, and json responses bind route parameters, query values, and json bodies to checked records and return typed json through one portable dispatcher contract.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Typed HTTP path, query, body, and JSON responses</span>
+							<a class="capability-evidence" href="/docs/guides/web/">Web guide</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Bind route parameters, query values, and JSON bodies to checked records and return typed JSON through one portable dispatcher contract.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. endpoint catalog, openapi, and generated browser clients versioned endpoint metadata, openapi 3.1 output, and a generated typescript-browser client exist; validation policy, compatibility checks, and richer wire metadata remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Endpoint catalog, OpenAPI, and generated browser clients</span>
+							<a class="capability-evidence" href="/docs/cli/">CLI reference</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Versioned endpoint metadata, OpenAPI 3.1 output, and a generated TypeScript-browser client exist; validation policy, compatibility checks, and richer wire metadata remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. authentication, authorization, and server sessions portable oidc bearer validation and typed principals exist; authorization policy, browser login, rotating cookies, csrf, session storage, and token lifecycle remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Authentication, authorization, and server sessions</span>
+							<a class="capability-evidence" href="/docs/guides/authentication/">Authentication guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Portable OIDC bearer validation and typed principals exist; authorization policy, browser login, rotating cookies, CSRF, session storage, and token lifecycle remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. portable outbound http shared http values and a typed browser client exist; go, ruby, and server-typescript transport, retry, streaming, close, interception, and test doubles remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Portable outbound HTTP</span>
+							<a class="capability-evidence" href="/docs/guides/browser-http/">Browser HTTP</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Shared HTTP values and a typed browser client exist; Go, Ruby, and server-TypeScript transport, retry, streaming, close, interception, and test doubles remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. orm models, queries, writes, relations, and transactions typed models, associations, preload, locks, batches, writes, transactions, enums, time, and three database systems work across three modes; advanced queries and production policy remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">ORM models, queries, writes, relations, and transactions</span>
+							<a class="capability-evidence" href="/docs/guides/orm/">ORM guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Typed models, associations, preload, locks, batches, writes, transactions, enums, time, and three database systems work across three modes; advanced queries and production policy remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. database schema workflow plan, apply, export, lock, and check schemas with explicit destructive changes; online compatibility, multi-database workflows, fixtures, and release validation remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Database schema workflow</span>
+							<a class="capability-evidence" href="/docs/guides/database/">Database guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Plan, apply, export, lock, and check schemas with explicit destructive changes; online compatibility, multi-database workflows, fixtures, and release validation remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. background jobs, schedules, retries, and recovery typed jobs, sql queues, scheduling, retry, heartbeat, stale recovery, operations commands, and graceful stop work across supported modes and databases; adapters and production profiles remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Background Jobs, schedules, retries, and recovery</span>
+							<a class="capability-evidence" href="/docs/guides/jobs/">Jobs guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Typed jobs, SQL queues, scheduling, retry, heartbeat, stale recovery, operations commands, and graceful stop work across supported modes and databases; adapters and production profiles remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-planned" data-capability-item data-status="planned" data-scopes="applications workflow" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. cache, object storage, uploads, mail, and notifications add typed cache coordination, bounded streaming storage and uploads, and testable mail and notification contracts with provider adapters.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">○</span>
+							<span class="capability-item-title">Cache, object storage, uploads, mail, and notifications</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Planned</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Add typed cache coordination, bounded streaming storage and uploads, and testable mail and notification contracts with provider adapters.</p>
+							<div class="capability-detail-meta">
+								<span>The capability belongs in the proposed 1.0 set but is not sufficiently implemented yet.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language applications workflow" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. react, jsx, components, events, and state checked jsx, tsx generation, typed props, events, and use_state connect to react; lifecycle, broader hooks, accessibility diagnostics, and component-package coverage remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">React, JSX, components, events, and state</span>
+							<a class="capability-evidence" href="/docs/guides/react/">React guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Checked JSX, TSX generation, typed props, events, and use_state connect to React; lifecycle, broader hooks, accessibility diagnostics, and component-package coverage remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. browser routing, server state, forms, and platform apis native declaration and result bridges prove initial router and query integration; typed route generation, form lifecycle, dom breadth, and browser resource semantics remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Browser routing, server state, forms, and platform APIs</span>
+							<a class="capability-evidence" href="/docs/guides/react/">React guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Native declaration and Result bridges prove initial router and query integration; typed route generation, form lifecycle, DOM breadth, and browser resource semantics remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-planned" data-capability-item data-status="planned" data-scopes="applications workflow" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. browser assets, bundling, development, and hmr coordinate ordinary bundlers with typerb generation, css and static assets, code splitting, source maps, stale-chunk recovery, size budgets, and local hmr.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">○</span>
+							<span class="capability-item-title">Browser assets, bundling, development, and HMR</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Planned</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Coordinate ordinary bundlers with TypeRB generation, CSS and static assets, code splitting, source maps, stale-chunk recovery, size budgets, and local HMR.</p>
+							<div class="capability-detail-meta">
+								<span>The capability belongs in the proposed 1.0 set but is not sufficiently implemented yet.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language applications workflow" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. shared wire contracts, validation, and compatibility records, enums, newtypes, typed binders, endpoint metadata, and generated clients share a foundation; field validation, schema diff, versioning, and generic contract identity remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Shared wire contracts, validation, and compatibility</span>
+							<a class="capability-evidence" href="/docs/guides/web/">Web guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Records, enums, newtypes, typed binders, endpoint metadata, and generated clients share a foundation; field validation, schema diff, versioning, and generic contract identity remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="application platform official and ecosystem capabilities for full-stack services, tools, data, and browser applications. external sdk and service integration package-owned shims can normalize narrow sdk calls across modes; credentials, typed service models, pagination, streaming, cancellation, and reusable provider conformance remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">External SDK and service integration</span>
+							<a class="capability-evidence" href="/docs/guides/packages/">Package guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Package-owned shims can normalize narrow SDK calls across modes; credentials, typed service models, pagination, streaming, cancellation, and reusable provider conformance remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+				</div>
+			</details>
+			
+			<details class="capability-area" data-capability-area open>
+				<summary class="capability-area-summary">
+					<span class="capability-area-icon" data-capability-area-icon>4</span>
+					<span class="capability-area-heading">
+						<strong>Testing, editors, and learning</strong>
+						<small>The feedback loops required to understand, test, edit, and debug TypeRB every day.</small>
+					</span>
+					<span class="capability-area-meta" data-capability-area-meta>4 / 11 available</span>
+					<span class="capability-chevron" aria-hidden="true">⌄</span>
+				</summary>
+				<div class="capability-list">
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language applications workflow" data-search="testing, editors, and learning the feedback loops required to understand, test, edit, and debug typerb every day. portable test declarations and runner colocated tests, source-located failures, filtering, json events, backend execution, and editor integration exist; the language-level workflow still needs broader application evidence.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Portable test declarations and runner</span>
+							<a class="capability-evidence" href="/docs/guides/testing/">Testing guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Colocated tests, source-located failures, filtering, JSON events, backend execution, and editor integration exist; the language-level workflow still needs broader application evidence.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="testing, editors, and learning the feedback loops required to understand, test, edit, and debug typerb every day. test lifecycle, assertions, doubles, and determinism core assertions and in-process web testing exist; setup and teardown, richer diffs, verified doubles, fake time and randomness, and external-call isolation remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Test lifecycle, assertions, doubles, and determinism</span>
+							<a class="capability-evidence" href="/docs/guides/testing/">Testing guide</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Core assertions and in-process Web testing exist; setup and teardown, richer diffs, verified doubles, fake time and randomness, and external-call isolation remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="testing, editors, and learning the feedback loops required to understand, test, edit, and debug typerb every day. application, component, browser, and end-to-end tests web, orm, jobs, and native conformance fixtures cover important slices; browser hosts, component accessibility, playwright integration, and standard full-stack fixtures remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Application, component, browser, and end-to-end tests</span>
+							<a class="capability-evidence" href="/docs/tutorials/web-orm-jobs/">Tutorial</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Web, ORM, Jobs, and native conformance fixtures cover important slices; browser hosts, component accessibility, Playwright integration, and standard full-stack fixtures remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-planned" data-capability-item data-status="planned" data-scopes="workflow" data-search="testing, editors, and learning the feedback loops required to understand, test, edit, and debug typerb every day. typerb coverage and scalable ci test operation map backend coverage to typerb source and add thresholds, affected selection, sharding, retries, flake visibility, and common ci report formats.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">○</span>
+							<span class="capability-item-title">TypeRB coverage and scalable CI test operation</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Planned</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Map backend coverage to TypeRB source and add thresholds, affected selection, sharding, retries, flake visibility, and common CI report formats.</p>
+							<div class="capability-detail-meta">
+								<span>The capability belongs in the proposed 1.0 set but is not sufficiently implemented yet.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="language workflow" data-search="testing, editors, and learning the feedback loops required to understand, test, edit, and debug typerb every day. language-server everyday editing use compiler-backed diagnostics, formatting, completion, hover, signature help, navigation, rename, symbols, selection, folding, highlights, and quick fixes.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Language-server everyday editing</span>
+							<a class="capability-evidence" href="/docs/editor-support/">Editor support</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Use compiler-backed diagnostics, formatting, completion, hover, signature help, navigation, rename, symbols, selection, folding, highlights, and quick fixes.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="testing, editors, and learning the feedback loops required to understand, test, edit, and debug typerb every day. ecosystem-aware language intelligence project imports and generated orm declarations participate in completion and navigation; packages, schemas, routes, jobs, contracts, components, and large workspaces need deeper indexing.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Ecosystem-aware language intelligence</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Project imports and generated ORM declarations participate in completion and navigation; packages, schemas, routes, jobs, contracts, components, and large workspaces need deeper indexing.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="workflow" data-search="testing, editors, and learning the feedback loops required to understand, test, edit, and debug typerb every day. visual studio code integration a thin extension supplies syntax, snippets, language-server features, standalone files, test explorer integration, and go debug artifact support without duplicating compiler semantics.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Visual Studio Code integration</span>
+							<a class="capability-evidence" href="/docs/editor-support/">Editor support</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>A thin extension supplies syntax, snippets, language-server features, standalone files, Test Explorer integration, and Go debug artifact support without duplicating compiler semantics.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="workflow" data-search="testing, editors, and learning the feedback loops required to understand, test, edit, and debug typerb every day. neovim, jetbrains, and github integrations use the shared language server and textmate grammar through a neovim plugin, lsp4ij setup, and a github syntax-highlighting extension.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Neovim, JetBrains, and GitHub integrations</span>
+							<a class="capability-evidence" href="/docs/editor-support/">Editor support</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Use the shared language server and TextMate grammar through a Neovim plugin, LSP4IJ setup, and a GitHub syntax-highlighting extension.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="testing, editors, and learning the feedback loops required to understand, test, edit, and debug typerb every day. cross-target source debugging go debug builds and delve integration exist; ruby and typescript adapters, target-standard maps, browser and worker process selection, and exception mapping remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Cross-target source debugging</span>
+							<a class="capability-evidence" href="/docs/editor-support/">Editor support</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Go debug builds and Delve integration exist; Ruby and TypeScript adapters, target-standard maps, browser and worker process selection, and exception mapping remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="language workflow" data-search="testing, editors, and learning the feedback loops required to understand, test, edit, and debug typerb every day. repl, playground, and guided tour explore persistent typed state, completion, formatting, inspection, interrupts, and the same evaluator through local and hosted interactive surfaces.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">REPL, playground, and guided tour</span>
+							<a class="capability-evidence" href="/docs/status/">Current status</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Explore persistent typed state, completion, formatting, inspection, interrupts, and the same evaluator through local and hosted interactive surfaces.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="language applications workflow" data-search="testing, editors, and learning the feedback loops required to understand, test, edit, and debug typerb every day. searchable reference, guides, and maintained tutorials the hosted documentation covers language, tooling, packages, and application slices; 1.0 needs complete searchable references, upgrade paths, and additional production-shaped tutorials.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Searchable reference, guides, and maintained tutorials</span>
+							<a class="capability-evidence" href="/docs/">Documentation</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>The hosted documentation covers language, tooling, packages, and application slices; 1.0 needs complete searchable references, upgrade paths, and additional production-shaped tutorials.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+				</div>
+			</details>
+			
+			<details class="capability-area" data-capability-area open>
+				<summary class="capability-area-summary">
+					<span class="capability-area-icon" data-capability-area-icon>1</span>
+					<span class="capability-area-heading">
+						<strong>Distribution, compatibility, and operation</strong>
+						<small>Reproducible installation, release, security, deployment, and long-term maintenance boundaries.</small>
+					</span>
+					<span class="capability-area-meta" data-capability-area-meta>1 / 8 available</span>
+					<span class="capability-chevron" aria-hidden="true">⌄</span>
+				</summary>
+				<div class="capability-list">
+					
+					<details class="capability-item capability-status-available" data-capability-item data-status="available" data-scopes="applications workflow" data-search="distribution, compatibility, and operation reproducible installation, release, security, deployment, and long-term maintenance boundaries. direct binary, homebrew, and container distribution install typerb directly or with homebrew and build or run projects through the published container workflow.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">✓</span>
+							<span class="capability-item-title">Direct binary, Homebrew, and container distribution</span>
+							<a class="capability-evidence" href="/docs/getting-started/">Getting started</a>
+							<span class="capability-status-label">Available</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Install TypeRB directly or with Homebrew and build or run projects through the published container workflow.</p>
+							<div class="capability-detail-meta">
+								<span>The stated 1.0 capability is documented and usable now.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="distribution, compatibility, and operation reproducible installation, release, security, deployment, and long-term maintenance boundaries. reproducible ci builds and deployable artifacts frozen package installs and deterministic generated trees provide a base; production bundles, source maps, cache policy, and end-to-end artifact verification remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Reproducible CI builds and deployable artifacts</span>
+							<a class="capability-evidence" href="/docs/containers/">Containers</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Frozen package installs and deterministic generated trees provide a base; production bundles, source maps, cache policy, and end-to-end artifact verification remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="workflow" data-search="distribution, compatibility, and operation reproducible installation, release, security, deployment, and long-term maintenance boundaries. supported operating-system, architecture, and toolchain matrix current toolchains and multiple installation paths are tested, while 1.0 needs an explicit supported matrix and complete target-runtime conformance.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Supported operating-system, architecture, and toolchain matrix</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Current toolchains and multiple installation paths are tested, while 1.0 needs an explicit supported matrix and complete target-runtime conformance.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="workflow" data-search="distribution, compatibility, and operation reproducible installation, release, security, deployment, and long-term maintenance boundaries. signed releases, provenance, and sboms release automation packages and attests important artifacts; the complete compiler, package, container, and dependency provenance story still needs a public support boundary.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Signed releases, provenance, and SBOMs</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Release automation packages and attests important artifacts; the complete compiler, package, container, and dependency provenance story still needs a public support boundary.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-planned" data-capability-item data-status="planned" data-scopes="language applications workflow" data-search="distribution, compatibility, and operation reproducible installation, release, security, deployment, and long-term maintenance boundaries. compatibility, deprecation, and migration policy define version and upgrade rules independently for language semantics, the standard library, official packages, extension protocols, generated wires, and database contracts.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">○</span>
+							<span class="capability-item-title">Compatibility, deprecation, and migration policy</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Planned</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Define version and upgrade rules independently for language semantics, the standard library, official packages, extension protocols, generated wires, and database contracts.</p>
+							<div class="capability-detail-meta">
+								<span>The capability belongs in the proposed 1.0 set but is not sufficiently implemented yet.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Language platform</span><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-partial" data-capability-item data-status="partial" data-scopes="applications workflow" data-search="distribution, compatibility, and operation reproducible installation, release, security, deployment, and long-term maintenance boundaries. security audit and supply-chain response checksums, secure primitives, typed web defaults, and bounded extension principles exist; advisories, dependency audit, secret policy, and coordinated response remain.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">◐</span>
+							<span class="capability-item-title">Security audit and supply-chain response</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Partial</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Checksums, secure primitives, typed Web defaults, and bounded extension principles exist; advisories, dependency audit, secret policy, and coordinated response remain.</p>
+							<div class="capability-detail-meta">
+								<span>A meaningful implementation exists, but the stated 1.0 scope is incomplete.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-planned" data-capability-item data-status="planned" data-scopes="applications workflow" data-search="distribution, compatibility, and operation reproducible installation, release, security, deployment, and long-term maintenance boundaries. deployment, observability, and failure recovery document and verify health, readiness, telemetry, redaction, schema and queue operations, rollback, and recovery for representative deployed applications.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">○</span>
+							<span class="capability-item-title">Deployment, observability, and failure recovery</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Planned</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Document and verify health, readiness, telemetry, redaction, schema and queue operations, rollback, and recovery for representative deployed applications.</p>
+							<div class="capability-detail-meta">
+								<span>The capability belongs in the proposed 1.0 set but is not sufficiently implemented yet.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Application stack</span><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+					<details class="capability-item capability-status-planned" data-capability-item data-status="planned" data-scopes="workflow" data-search="distribution, compatibility, and operation reproducible installation, release, security, deployment, and long-term maintenance boundaries. predictable release cadence and support policy publish supported versions, security-update expectations, deprecation windows, release cadence, and lifecycle commitments before 1.0 stability is claimed.">
+						<summary>
+							<span class="capability-status-icon" aria-hidden="true">○</span>
+							<span class="capability-item-title">Predictable release cadence and support policy</span>
+							<a class="capability-evidence" href="/docs/roadmap/">Roadmap</a>
+							<span class="capability-status-label">Planned</span>
+							<span class="capability-chevron" aria-hidden="true">⌄</span>
+						</summary>
+						<div class="capability-detail">
+							<p>Publish supported versions, security-update expectations, deprecation windows, release cadence, and lifecycle commitments before 1.0 stability is claimed.</p>
+							<div class="capability-detail-meta">
+								<span>The capability belongs in the proposed 1.0 set but is not sufficiently implemented yet.</span>
+								<span class="capability-scope-list"><span class="capability-scope-badge">Daily workflow</span></span>
+							</div>
+						</div>
+					</details>
+					
+				</div>
+			</details>
+			
+			<div class="capability-empty" data-capability-empty hidden>
+				<strong>No matching capabilities</strong>
+				<span>Change the search or filters.</span>
+			</div>
+		</div>
+	</section>
+</section>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.4.4-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/capabilities.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>
