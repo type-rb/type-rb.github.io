@@ -905,6 +905,13 @@ enforce ordinary import usage.</li>
 <ul>
 <li>Ambient <code>File.open</code>, <code>Dir.children</code>, and <code>Dir.create_all</code> require the exact
 standard <code>Path</code> value. Neither String nor <code>RelativePath</code> converts implicitly.</li>
+<li><code>File.open</code> exposes only an acquired regular-file handle. It checks handle
+metadata before the body and, for <code>Write</code>, before truncation. Non-regular
+handles fail with <code>open</code> / <code>Other</code>; failed acquisition does not run the body,
+and any acquired handle is closed. FIFO acquisition must not wait for a peer
+before validation. Host implementations unable to provide this contract
+reject acquisition before opening, rather than using a pathname precheck.
+This is not a general filesystem time bound or path-containment guarantee.</li>
 <li><code>DirEntry&lt;P&gt;</code> retains its path domain; ambient listing returns
 <code>DirEntry&lt;Path&gt;</code>. Listing requires named <code>max_entries</code>, checks that bound
 during enumeration, and returns <code>InvalidLimit</code> or <code>TooLarge</code> for invalid
