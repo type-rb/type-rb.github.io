@@ -403,16 +403,49 @@ with the same representation, and the newtype itself are not interchangeable.
 Construct one with <code>UserId.new(value)</code> and unwrap it with <code>id.value()</code>.
 The generated <code>new()</code> is an infallible nominal wrap after its argument passes
 ordinary type checking; it does not validate domain invariants. Keep fallible
-validation in an ordinary Result-returning function and call <code>new()</code> only
-after that validation succeeds.
+validation in a factory and call <code>new()</code> only after that validation succeeds.
 Underlying members are not forwarded. Two values of the same newtype support
 <code>==</code> only when their representation has portable equality.</p>
+<p>Append <code>do ... end</code> when the nominal value needs methods. Use <code>private new</code>
+when callers must go through a factory:</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">newtype</span><span style="color:#FFA657"> Label</span><span style="color:#FF7B72"> =</span><span style="color:#79C0FF"> String</span><span style="color:#FF7B72"> do</span></span>
+<span class="line"><span style="color:#E6EDF3">	private new</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">	def</span><span style="color:#79C0FF"> self</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">parse</span><span style="color:#E6EDF3">(source: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Label</span><span style="color:#FF7B72">?</span></span>
+<span class="line"><span style="color:#FF7B72">		if</span><span style="color:#E6EDF3"> source.</span><span style="color:#D2A8FF">empty?</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">			return</span><span style="color:#79C0FF"> nil</span></span>
+<span class="line"><span style="color:#FF7B72">		end</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#79C0FF"> self</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(source)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">	def</span><span style="color:#D2A8FF"> text</span><span style="color:#E6EDF3">(): </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">		return</span><span style="color:#D2A8FF"> value</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>Label.parse</code> is an ordinary class method, not an automatically called hook.
+Other factories may coexist. Only methods and lexical blocks inside this
+newtype body can call its raw <code>new</code>; nearby functions and other types cannot.
+Public <code>value()</code> is still available. A body without <code>private new</code> keeps public
+construction. Generated <code>new</code> and <code>value</code>, <code>initialize</code>, and instance fields
+cannot be defined in the body. Private authored methods use <code>_name</code> as usual.</p>
+<p>Closed newtypes must have recursively immutable representations. For example,
+String and records of immutable values work, but <code>Array&lt;Label&gt;</code> does not:
+mutating an aliased Array after validation would break the invariant. Open
+newtypes may still wrap mutable collections.</p>
 <p>Typed serialization and persistence boundaries may explicitly use a
 newtype's representation. The built-in JSON codecs, <code>trb/web</code> binding, Jobs
 payloads, and ORM value parameters use this rule. Other functions and package
-APIs remain nominal unless their declaration marks the same boundary. Backend
-output may erase the physical wrapper while the TypeRB checker and typed IR
-retain the nominal distinction.</p>
+APIs remain nominal unless their declaration marks the same boundary.
+For a closed newtype, only outgoing projection is automatic. Generic incoming
+boundaries cannot bypass the private constructor: decode a DTO with ordinary
+representation fields, then explicitly call the domain factory. This includes
+nested closed values and incoming native callback parameters. The compiler
+does not choose or invoke a factory for you.</p>
+<p>Backend output may erase the physical wrapper while the TypeRB checker and
+typed IR retain the nominal type and authored member identity. This does not
+make handwritten target-native code unable to forge a value.</p>
 <h2 id="conditions-and-operators">Conditions and operators</h2>
 <p>Conditions must have the non-nullable <code>Boolean</code> type. TypeRB does not inherit
 truthiness rules from a target:</p>
