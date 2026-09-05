@@ -873,7 +873,39 @@ Holding a Dir does not activate a restricted execution profile or sandbox.</p>
 yet acquire scoped descriptors or enumerate native directory entries through
 the extension protocol. The integration does not grant that authority to
 external providers. Scoped File/Dir borrowing and opened directory anchors are
-supported; atomic publication, locks, and a sandbox are not yet implemented.</p>
+supported; atomic publication and a sandbox are not yet implemented.</p>
+<h3 id="cooperative-directory-locks">Cooperative directory locks</h3>
+<p><code>root.try_lock(path: RelativePath) do ... end</code> returns
+<code>Result&lt;T, FileSystemError&gt;</code> with a parameterless block whose final value is T.
+It opens or creates a dedicated regular lock file and attempts a nonblocking
+exclusive OS lock. Only successful acquisition enters the body. Existing bytes
+and permissions are not changed; leaf symlinks, including dangling symlinks,
+and nonregular files are rejected. Parent resolution remains anchored.</p>
+<p>Competing acquisition returns <code>Busy</code>, including reentry from the same process.
+Normal scope exit, typed error propagation, and runtime unwinding release the
+lock; process termination releases it through the OS. Cleanup has the same
+error priority as <code>File.open</code>. There is no public lock object, manual unlock,
+stale-file deletion, age-based lease, or automatic retry. The lock file remains
+in place, even after the scope exits. Failed acquisition may also leave a newly
+created empty lock file. Do not remove or replace that file while writers use it.</p>
+<p>All cooperating writers must use the same stable file and locking protocol.
+This does not prevent edits by other applications, coordinate Git clones, or
+provide a distributed lock. A lock does not make writes atomic or roll back a
+body's completed filesystem operations. The body must satisfy the same checked
+synchronous TypeRB rules as a held File/Dir resource.</p>
+<p>The Go native/Go-mode REPL adapter accepts local APFS on macOS and ext-family
+or tmpfs on Linux. Unknown, network, and other filesystem profiles return
+<code>Unsupported</code>; there is no weaker locking fallback. Profile identification is
+not a defense against a malicious kernel or filesystem. Lock contention never
+waits, but pathname access and other filesystem operations have no time bound.
+Errors use operation <code>try_lock</code>, a Relative target, and sanitized native text;
+cleanup failures use operation <code>close</code>.</p>
+<p>Generated Go trees include compiler-owned OS-specific support source and a
+fixed <code>golang.org/x/sys</code> requirement. The CLI includes them in <code>run</code>, executable
+builds, and ordinary target-tree builds; no C compiler is required. Source-only
+<code>build --stdout</code> rejects projects requiring these additional files. A conflicting
+explicit dependency version or source occupying the support package is an
+error, not an implicit overwrite. Compiler providers cannot replace this bridge.</p>
 <h2 id="process">Process</h2>
 <p><code>trb/std/process</code> provides argument, environment, working-directory, and
 shell-free process operations:</p>
