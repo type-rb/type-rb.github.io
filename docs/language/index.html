@@ -225,7 +225,7 @@ have the same semantics:</p>
 <li>Use a class member for an operation naturally associated with an actual
 nominal type but not an existing instance. This includes constructors and
 factories such as <code>StringBuilder.new()</code> and <code>File.open(path)</code>, and associated
-operations such as <code>Dir.children(path)</code>.</li>
+operations such as <code>Dir.children(path, max_entries: 1000)</code>.</li>
 <li>Use a module member for a domain algorithm with no natural value receiver,
 such as <code>Math.sqrt(9.0)</code> or <code>JSON.decode&lt;Value&gt;(text)</code>.</li>
 <li>Import an intentionally direct language or DSL operation by exact name, as

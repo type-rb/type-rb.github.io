@@ -712,7 +712,7 @@ based and do not affect an unrelated type also named <code>File</code>.</li>
 value is an instance method on that value. An operation naturally associated
 with an actual nominal type but not an existing instance is a class member on
 that type; this includes factories such as <code>File.open</code> and associated
-operations such as <code>Dir.children</code>. An algorithm with no natural value or
+operations such as <code>Dir.children</code> and <code>Dir.create_all</code>. An algorithm with no natural value or
 nominal-type owner is a module member. A type-associated operation does not
 justify inventing a utility class when no actual nominal type exists. A
 second public spelling is permitted only when it expresses a documented
@@ -900,6 +900,24 @@ lexical binding keeps ordinary scope precedence over a same-named member.</li>
 to the local unused-binding rule. The REPL also permits an import-only
 submission because a later submission may use it; project builds still
 enforce ordinary import usage.</li>
+</ul>
+<h4 id="typed-filesystem-boundary">Typed filesystem boundary</h4>
+<ul>
+<li>Ambient <code>File.open</code>, <code>Dir.children</code>, and <code>Dir.create_all</code> require the exact
+standard <code>Path</code> value. Neither String nor <code>RelativePath</code> converts implicitly.</li>
+<li><code>DirEntry&lt;P&gt;</code> retains its path domain; ambient listing returns
+<code>DirEntry&lt;Path&gt;</code>. Listing requires named <code>max_entries</code>, checks that bound
+during enumeration, and returns <code>InvalidLimit</code> or <code>TooLarge</code> for invalid
+bounds or overflow. It never returns a silently truncated listing.</li>
+<li><code>FileSystemError.target</code> is the sum <code>FileSystemTarget::Host(Path)</code>,
+<code>Relative(RelativePath)</code>, or <code>Root</code>. Currently implemented ambient APIs
+produce Host targets; the other value variants do not introduce a resource.</li>
+<li><code>File#read_text</code> uses strict UTF-8, preserving a leading BOM and returning
+<code>InvalidEncoding</code> for invalid bytes after enforcing <code>max_bytes</code>. Explicit
+Bytes conversion retains its separate replacement policy.</li>
+<li><code>Dir.create_all</code> returns <code>Result&lt;Unit, FileSystemError&gt;</code>, follows ordinary
+host path resolution, preserves existing directory permissions, and does not
+roll back completed ancestor creation on failure. It is not a containment API.</li>
 </ul>
 <h3 id="38-program-entry">3.8 Program Entry</h3>
 <ul>
