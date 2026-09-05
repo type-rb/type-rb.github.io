@@ -212,10 +212,13 @@ declaration identity.</p>
 <p>Resource packages follow the same rule. <code>import trb/std/file</code> binds the opaque
 <code>File</code> type used by <code>File.open</code> and by its block parameter; it does not bind a
 module containing a second file-handle type. Source cannot construct the
-standard resource with <code>File.new()</code>. Its exact value type is inferred only for
-the trusted <code>File.open</code> block parameter and cannot appear recursively in
-authored parameters, returns, fields, collections, function types, or
-transparent aliases.</p>
+standard resource with <code>File.new()</code>. The trusted <code>File.open</code> block acquires and
+closes it. An immutable required <code>File</code> parameter borrows it for a checked
+synchronous source call; an immutable local alias shares that lifetime. It
+cannot escape through returns, fields, collections, nullable/function types,
+transparent aliases, <code>Any</code>, or first-class callbacks. Nested acquisition and
+synchronous inline iteration can borrow an outer resource; suspension and
+unverified native calls while holding it are rejected.</p>
 <h2 id="choosing-an-operation-owner">Choosing an operation owner</h2>
 <p>TypeRB keeps one public spelling for an operation whenever the spellings would
 have the same semantics:</p>
