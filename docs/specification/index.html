@@ -700,8 +700,9 @@ members, and instance members when the value's lifecycle permits authored
 annotations. It does not reserve that type name for a static-only utility
 namespace. In particular, <code>trb/std/file</code> exposes the opaque resource class
 <code>File</code>; source cannot construct it with <code>File.new()</code>.</li>
-<li>The trusted <code>File.open</code> block acquires the exact standard <code>File</code> resource and
-owns its close. A required immutable <code>File</code> parameter of an authored method
+<li>Trusted <code>File.open</code>, <code>Dir.open</code>, and <code>Dir#open_file</code> blocks acquire exact
+standard <code>File</code> or <code>Dir</code> resources and own their close. A required immutable
+<code>File</code> or <code>Dir</code> parameter of an authored method
 borrows an existing resource for that call; it does not acquire or close it.
 Immutable local aliases preserve that origin. Borrow annotations use the
 ordinary parameter/local syntax, without a public lifetime annotation.
@@ -710,7 +711,7 @@ resource types, <code>Any</code> erasure, and escaping callback capture are forb
 Nested acquisition blocks and synchronous inline collection blocks can use
 outer resources; <code>concurrent_map</code> and first-class closures cannot capture them.
 External declaration providers cannot mint resource values or certify borrows.
-These rules use declaration identity, not the spelling <code>File</code>.</li>
+These rules use declaration identity, not the spelling <code>File</code> or <code>Dir</code>.</li>
 <li>While a resource is held, reached operations must be verified synchronous
 TypeRB source or explicitly admitted compiler-owned intrinsics. The shared
 typed-IR pass checks imported/generated helper bodies, constructors, defaults,
@@ -914,7 +915,7 @@ enforce ordinary import usage.</li>
 </ul>
 <h4 id="typed-filesystem-boundary">Typed filesystem boundary</h4>
 <ul>
-<li>Ambient <code>File.open</code>, <code>Dir.children</code>, and <code>Dir.create_all</code> require the exact
+<li>Ambient <code>File.open</code>, <code>Dir.open</code>, <code>Dir.children</code>, and <code>Dir.create_all</code> require the exact
 standard <code>Path</code> value. Neither String nor <code>RelativePath</code> converts implicitly.</li>
 <li><code>File.open</code> exposes only an acquired regular-file handle. It checks handle
 metadata before the body and, for <code>Write</code>, before truncation. Non-regular
@@ -924,18 +925,35 @@ before validation. Host implementations unable to provide this contract
 reject acquisition before opening, rather than using a pathname precheck.
 This is not a general filesystem time bound or path-containment guarantee.</li>
 <li><code>DirEntry&lt;P&gt;</code> retains its path domain; ambient listing returns
-<code>DirEntry&lt;Path&gt;</code>. Listing requires named <code>max_entries</code>, checks that bound
+<code>DirEntry&lt;Path&gt;</code> and anchored listing returns <code>DirEntry&lt;RelativePath&gt;</code>.
+Listing requires named <code>max_entries</code>, checks that bound
 during enumeration, and returns <code>InvalidLimit</code> or <code>TooLarge</code> for invalid
 bounds or overflow. It never returns a silently truncated listing.</li>
 <li><code>FileSystemError.target</code> is the sum <code>FileSystemTarget::Host(Path)</code>,
-<code>Relative(RelativePath)</code>, or <code>Root</code>. Currently implemented ambient APIs
-produce Host targets; the other value variants do not introduce a resource.</li>
+<code>Relative(RelativePath)</code>, or <code>Root</code>. Ambient operations produce Host targets.
+Anchored operations, including operations on a borrowed File acquired from
+a Dir, preserve their Relative or Root domain and do not expose native error
+text containing the absolute anchor path.</li>
 <li><code>File#read_text</code> uses strict UTF-8, preserving a leading BOM and returning
 <code>InvalidEncoding</code> for invalid bytes after enforcing <code>max_bytes</code>. Explicit
 Bytes conversion retains its separate replacement policy.</li>
 <li><code>Dir.create_all</code> returns <code>Result&lt;Unit, FileSystemError&gt;</code>, follows ordinary
 host path resolution, preserves existing directory permissions, and does not
 roll back completed ancestor creation on failure. It is not a containment API.</li>
+<li><code>Dir.open(Path)</code> acquires an opened directory anchor. <code>Dir#children</code>,
+<code>Dir#create_all</code>, and <code>Dir#open_file</code> resolve validated RelativePath values
+without escaping that anchor, including under concurrent pathname replacement.
+Root listing uses omitted/nil path, not an empty RelativePath. Child entry
+paths remain relative to the original anchor. Internal relative symlinks may
+be followed; absolute, escaping, or unresolvable symlinks are rejected.
+Listing classifies symlinks as Other and rejects any name outside the
+RelativePath component grammar with UnsupportedName.</li>
+<li>Anchored operations currently require the Go native Linux/macOS adapter
+(also used by the Go-mode typed-IR REPL). Other backends reject these operations
+at build time. Runtime hosts unable to supply the guarantee reject acquisition;
+no pathname-prefix or realpath-check fallback is permitted. This guarantee
+concerns pathname resolution, not mounts, hardlink provenance, special
+filesystems, other ambient authority, or a general sandbox.</li>
 </ul>
 <h3 id="38-program-entry">3.8 Program Entry</h3>
 <ul>

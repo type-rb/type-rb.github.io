@@ -810,11 +810,70 @@ Errors retain operation <code>create_all</code> and the original input Path.</p>
 <span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> Dir</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">create_all</span><span style="color:#E6EDF3">(directory)</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
+<h3 id="opened-directory-anchors">Opened directory anchors</h3>
+<p><code>Dir.open(path: Path) do |root| ... end</code> acquires an opaque directory resource.
+The block owns cleanup and returns <code>Result&lt;T, FileSystemError&gt;</code>. Required
+immutable <code>Dir</code> parameters and immutable aliases borrow that anchor under the
+same non-escape and synchronous-call-graph rules as <code>File</code>.</p>
+<p>The instance surface is:</p>
+<ul>
+<li><code>root.children(path: RelativePath? = nil, *, max_entries: Integer)</code> returns
+<code>Result&lt;Array&lt;DirEntry&lt;RelativePath&gt;&gt;, FileSystemError&gt;</code>.</li>
+<li><code>root.create_all(path: RelativePath)</code> returns <code>Result&lt;Unit, FileSystemError&gt;</code>.</li>
+<li><code>root.open_file(path: RelativePath, *, mode: FileMode = Read) do |file| ... end</code>
+returns <code>Result&lt;T, FileSystemError&gt;</code> with the same regular-file validation,
+bounded reads, and cleanup precedence as <code>File.open</code>.</li>
+</ul>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/path</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">RelativePath</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/path</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/dir</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">FileSystemError</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/errors</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> read_input</span><span style="color:#E6EDF3">(root: </span><span style="color:#FFA657">Dir</span><span style="color:#E6EDF3">, path: </span><span style="color:#FFA657">RelativePath</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">FileSystemError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#E6EDF3"> root.</span><span style="color:#D2A8FF">open_file</span><span style="color:#E6EDF3">(path) </span><span style="color:#FF7B72">do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">file</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">		try</span><span style="color:#E6EDF3"> file.</span><span style="color:#D2A8FF">read_text</span><span style="color:#E6EDF3">(max_bytes: </span><span style="color:#79C0FF">4096</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> load</span><span style="color:#E6EDF3">(directory: </span><span style="color:#FFA657">Path</span><span style="color:#E6EDF3">, path: </span><span style="color:#FFA657">RelativePath</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">FileSystemError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> Dir</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">open</span><span style="color:#E6EDF3">(directory) </span><span style="color:#FF7B72">do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">root</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#FF7B72">		try</span><span style="color:#D2A8FF"> read_input</span><span style="color:#E6EDF3">(root, path)</span></span>
+<span class="line"><span style="color:#FF7B72">	end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Instance pathname resolution cannot escape the opened directory anchor, even
+if the anchor is renamed or pathname components are concurrently replaced.
+Relative symlinks resolving inside it may be followed. Absolute, escaping, and
+unresolvable symlinks fail; listing reports symlinks as <code>Other</code>. Anchored <code>Write</code>
+opens an existing file first and uses exclusive creation for an absent leaf,
+so it never creates a dangling symlink's target. A concurrent creator may make
+that exclusive attempt return <code>AlreadyExists</code>; there is no implicit retry.</p>
+<p>Listing the root uses no path argument or <code>nil</code>. Listing a child directory
+returns paths relative to the original root, not relative to that child.
+The operation opens the listed directory as a stable anchor for both enumeration
+and metadata checks. Results are immediate, bounded, and sorted by UTF-8 bytes.
+A name that fails the RelativePath component grammar, including a non-UTF-8
+host name, fails the whole listing with <code>UnsupportedName</code>; names are neither
+filtered nor normalized. A vanished entry fails the whole operation.</p>
+<p>Anchored errors have <code>Relative(path)</code> or, for root listing, <code>Root</code> targets.
+Files retain this domain through borrowed helpers. Native error text is replaced
+by a generic message while preserving classified error kinds; it does not leak
+an absolute root path. <code>Dir.open</code> itself is ambient and retains the input Host
+target for acquisition and cleanup errors. Containment failures without a
+portable native classification use <code>Other</code>.</p>
+<p>The secure adapter is currently available for Go native Linux/macOS and the
+Go-mode typed-IR REPL. Ruby and TypeScript builds reject anchored operations;
+unsupported runtime hosts reject acquisition before opening. There is no weaker
+realpath/prefix fallback. Mounts, bind mounts, hardlink provenance, device or
+special-filesystem behavior, and other ambient APIs are outside this guarantee.
+Holding a Dir does not activate a restricted execution profile or sandbox.</p>
 <p>These host operations need privileged runtime bridges: ordinary packages cannot
 yet acquire scoped descriptors or enumerate native directory entries through
 the extension protocol. The integration does not grant that authority to
-external providers. Scoped File borrowing is supported; an opened <code>Dir</code>
-capability, atomic publication, locks, and a sandbox are not yet implemented.</p>
+external providers. Scoped File/Dir borrowing and opened directory anchors are
+supported; atomic publication, locks, and a sandbox are not yet implemented.</p>
 <h2 id="process">Process</h2>
 <p><code>trb/std/process</code> provides argument, environment, working-directory, and
 shell-free process operations:</p>
