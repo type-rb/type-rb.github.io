@@ -382,11 +382,11 @@ filesystem, or change relative text into absolute text. Both newtypes use
 representation equality, not filesystem identity.</li>
 <li><code>RelativePath.parse(String)</code> returns <code>Result&lt;RelativePath, RelativePathError&gt;</code>
 and preserves accepted text. Its host-independent slash-component grammar
-rejects empty input/components, <code>.</code>/<code>..</code>, control characters U+0000–U+001F,
-backslash, <code>&lt; &gt; : &quot; | ? *</code>, trailing component dot/ASCII space, and the fixed
-ASCII-case-insensitive reserved stems specified in the
-<a href="/docs/standard-library/#logical-descendant-grammar">standard-library reference</a>.
-It does not normalize Unicode or guarantee creation on every filesystem.</li>
+rejects empty input/components, <code>.</code>/<code>..</code>, NUL, backslash, and colon.
+Backslash and colon are excluded to avoid alternate separators, drive prefixes,
+and stream syntax. Filename policies such as reserved device names, trailing
+dots/spaces and display-safe characters belong to the application or host,
+not this value type. Parsing does not guarantee creation on every filesystem.</li>
 <li><code>RelativePath#join(RelativePath)</code> composes validated paths infallibly;
 <code>child(String)</code> validates a single component and returns a Result.
 <code>parent()</code> returns <code>RelativePath?</code>, with <code>nil</code> for a one-component path.
@@ -959,8 +959,9 @@ rules as File acquisition. Scope exit or process termination releases the
 lock; the file is never removed or replaced by the operation.
 This coordinates writers using the same stable file and protocol, not
 independent clones, uncooperative writers, or distributed leases. The native
-adapter accepts local APFS on macOS and ext-family/tmpfs on Linux; other
-filesystem profiles return <code>Unsupported</code>, with no fallback protocol.
+Linux/macOS adapter uses the host's advisory flock operation. Unsupported
+host operations return Unsupported; filesystem names are not an allowlist.
+Cross-machine/network locking semantics are not guaranteed by TypeRB.
 Nonblocking describes lock contention, not a bound on filesystem I/O time.</li>
 <li>Anchored operations currently require the Go native Linux/macOS adapter
 (also used by the Go-mode typed-IR REPL). Other backends reject these operations

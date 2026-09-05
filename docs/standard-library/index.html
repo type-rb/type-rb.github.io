@@ -521,23 +521,17 @@ body, so portable source must use its public factory.</p>
 components and preserves the input exactly. The fixed rules reject:</p>
 <ul>
 <li>Leading or trailing <code>/</code>, repeated <code>/</code>, and components equal to <code>.</code> or <code>..</code>.</li>
-<li>Backslash, U+0000 through U+001F, and the ASCII characters <code>&lt; &gt; : &quot; | ? *</code>.
-This also excludes absolute, drive-prefixed, UNC, and alternate-data-stream
-spellings; it does not reinterpret any of them as relative input.</li>
-<li>A component ending in an ASCII dot or space.</li>
-<li>Reserved device-name stems, using ASCII-only case-insensitive comparison:
-<code>CON</code>, <code>PRN</code>, <code>AUX</code>, <code>NUL</code>, <code>CONIN$</code>, <code>CONOUT$</code>, and <code>COM</code> or <code>LPT</code> followed by
-one of <code>0</code>–<code>9</code>, <code>¹</code>, <code>²</code>, or <code>³</code>. The stem is the text before the first dot,
-with trailing ASCII spaces removed for this check only. Extensions do not
-escape the rule: <code>con.txt</code>, <code>CON .txt</code>, and <code>lpt¹.log</code> are rejected.</li>
+<li>NUL, backslash, and colon. This excludes alternate separators, drive prefixes,
+UNC and alternate-data-stream spellings rather than reinterpreting them.</li>
 </ul>
-<p>This deliberately conservative logical grammar is informed by
-<a href="https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file">Windows filename rules</a>,
-but does not delegate validation to the current operating system. It does not
-normalize Unicode, change case, trim the returned value, limit path length, or
-guarantee that every accepted name can be created on every filesystem. Case
-and Unicode-normalization collisions remain application concerns. <code>.config</code>,
-<code>..name</code>, leading spaces, and non-ASCII names such as <code>日本語/😀.md</code> are valid.</p>
+<p>This is a logical descendant grammar, not a universal filename validator.
+Reserved device names, trailing dots/spaces, wildcard-looking characters and
+non-NUL control characters are accepted as literal text. Acceptance does not
+promise that a host can represent the name or that two names identify distinct
+files there. Applications define naming/display policies; the target host
+controls actual filesystem names. No Unicode normalization, case folding,
+trimming or path-length policy is applied. For example, <code>con.txt</code>, <code>report.</code>
+and <code>draft?.txt</code> are valid logical values but are not portable filenames.</p>
 <p><code>join</code> composes two validated descendants with one <code>/</code> and cannot introduce an
 invalid component. <code>child</code> accepts exactly one new component and validates it;
 it is not a String overload of <code>join</code>. <code>parent</code> removes the last component and
@@ -567,14 +561,6 @@ representing the root.</p>
 <tr>
 <td><code>InvalidCharacter</code></td>
 <td>A component contains a prohibited character.</td>
-</tr>
-<tr>
-<td><code>TrailingDotOrSpace</code></td>
-<td>A component ends with an ASCII dot or space.</td>
-</tr>
-<tr>
-<td><code>ReservedName</code></td>
-<td>A component has a reserved device-name stem.</td>
 </tr>
 <tr>
 <td><code>MultipleComponents</code></td>
@@ -738,9 +724,8 @@ synchronization, or persistence after power loss.</p>
 sorted immediate <code>DirEntry&lt;Path&gt;</code> values. Each entry has a <code>name: String</code>,
 a host-native <code>path: Path</code>, and a typed <code>DirEntryKind</code>: <code>File</code>, <code>Directory</code>,
 or <code>Other</code>. Symbolic links and other entries that must not be traversed as
-directories are <code>Other</code>. The operation does not recurse. <code>Dir</code> is a
-nonconstructible type root in this slice; it owns directory operations but does
-not yet represent an open directory resource.</p>
+directories are <code>Other</code>. The operation does not recurse. The class operation
+is ambient; the instance operation below uses an opened directory anchor.</p>
 <p>A negative <code>max_entries</code> returns <code>InvalidLimit</code>. A directory containing more
 entries than the bound returns <code>TooLarge</code>, not a truncated success. Zero
 succeeds only for an empty directory. Enumeration consumes bounded batches and
@@ -893,19 +878,24 @@ This does not prevent edits by other applications, coordinate Git clones, or
 provide a distributed lock. A lock does not make writes atomic or roll back a
 body's completed filesystem operations. The body must satisfy the same checked
 synchronous TypeRB rules as a held File/Dir resource.</p>
-<p>The Go native/Go-mode REPL adapter accepts local APFS on macOS and ext-family
-or tmpfs on Linux. Unknown, network, and other filesystem profiles return
-<code>Unsupported</code>; there is no weaker locking fallback. Profile identification is
-not a defense against a malicious kernel or filesystem. Lock contention never
-waits, but pathname access and other filesystem operations have no time bound.
+<p>The Go native/Go-mode REPL Linux/macOS adapter uses the host's advisory
+<code>flock</code> operation. An OS-reported unsupported operation returns <code>Unsupported</code>;
+there is no filesystem-name allowlist or fallback locking protocol. TypeRB
+coordinates processes on a host using the same stable file. Network shares,
+cross-machine exclusion and filesystem-specific enforcement are not a
+portable guarantee. Applications requiring those properties must establish
+an appropriate storage/protocol contract. Lock contention never waits, but
+pathname access and other filesystem operations have no time bound.
 Errors use operation <code>try_lock</code>, a Relative target, and sanitized native text;
 cleanup failures use operation <code>close</code>.</p>
 <p>Generated Go trees include compiler-owned OS-specific support source and a
-fixed <code>golang.org/x/sys</code> requirement. The CLI includes them in <code>run</code>, executable
-builds, and ordinary target-tree builds; no C compiler is required. Source-only
-<code>build --stdout</code> rejects projects requiring these additional files. A conflicting
-explicit dependency version or source occupying the support package is an
-error, not an implicit overwrite. Compiler providers cannot replace this bridge.</p>
+minimum <code>golang.org/x/sys</code> requirement. Newer explicit application requirements
+are retained, older ones are raised to the required minimum, and ordinary Go
+module resolution (including replace/exclude directives) applies. The CLI
+includes support source in <code>run</code>, executable builds, and target-tree builds;
+no C compiler is required. Source-only <code>build --stdout</code> rejects projects
+requiring these additional files. A source occupying the support package is
+an error, not an implicit overwrite. Compiler providers cannot replace this bridge.</p>
 <h2 id="process">Process</h2>
 <p><code>trb/std/process</code> provides argument, environment, working-directory, and
 shell-free process operations:</p>
