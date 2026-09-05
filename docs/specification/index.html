@@ -373,6 +373,34 @@ or unforgeability guarantee. Custom members are statically selected and
 lowered to nominal-owner helpers, including in the REPL; they are not added
 to the representation's native prototype or class.</li>
 </ul>
+<h4 id="path-values">Path values</h4>
+<ul>
+<li><code>trb/std/path</code> exports String-backed <code>Path</code> and closed <code>RelativePath</code>
+newtypes, with the peer <code>RelativePathError</code> enum. <code>Path.new(String)</code> is an
+infallible exact wrapper; it does not validate, normalize, access the
+filesystem, or change relative text into absolute text. Both newtypes use
+representation equality, not filesystem identity.</li>
+<li><code>RelativePath.parse(String)</code> returns <code>Result&lt;RelativePath, RelativePathError&gt;</code>
+and preserves accepted text. Its host-independent slash-component grammar
+rejects empty input/components, <code>.</code>/<code>..</code>, control characters U+0000–U+001F,
+backslash, <code>&lt; &gt; : &quot; | ? *</code>, trailing component dot/ASCII space, and the fixed
+ASCII-case-insensitive reserved stems specified in the
+<a href="/docs/standard-library/#logical-descendant-grammar">standard-library reference</a>.
+It does not normalize Unicode or guarantee creation on every filesystem.</li>
+<li><code>RelativePath#join(RelativePath)</code> composes validated paths infallibly;
+<code>child(String)</code> validates a single component and returns a Result.
+<code>parent()</code> returns <code>RelativePath?</code>, with <code>nil</code> for a one-component path.
+Root is not an empty relative value. Both path types expose <code>to_s()</code>.</li>
+<li><code>Path#join(RelativePath)</code> uses the target host's separators, preserves the
+parent text exactly, and retains Windows drive-relative and POSIX double-root
+semantics. It performs no filesystem access or lexical cleaning and grants
+no containment guarantee. The method requires a host runtime; explicit
+TypeScript browser builds reject it without rejecting the pure value APIs.
+The REPL uses its evaluator host, independently of code-generation mode.</li>
+<li>Path methods obey ordinary nominal receiver, argument evaluation, nullable
+safe-navigation, Result must-use, and closed-newtype representation-boundary
+rules. There is no static <code>Path.join</code> mirror or automatic inbound factory.</li>
+</ul>
 <h4 id="fresh-empty-mutable-collections">Fresh empty mutable collections</h4>
 <ul>
 <li>An unannotated <code>mut values := []</code> or <code>mut values := {}</code> starts with a

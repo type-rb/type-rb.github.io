@@ -246,9 +246,10 @@ requiring class-owned nesting:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/file</span></span>
 <span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">FileMode</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/file</span></span>
 <span class="line"></span></code></pre>
-<p>The <code>Path</code> name is reserved for a future host-path value with defined value
-semantics. A static-only <code>Path</code> class is not used as a placeholder for path
-functions.</p>
+<p><code>trb/std/path</code> exposes a genuine nominal <code>Path</code> value with <code>new</code> and receiver
+methods, plus the validated peer <code>RelativePath</code>. Host composition is
+<code>path.join(relative)</code>, not a static <code>Path.join</code> utility. See
+<a href="/docs/standard-library/#path-values">path values</a> for their distinct contracts.</p>
 <p>Portable libraries use <code>trb/std/*</code>. Target-specific APIs use
 <code>trb/platform/&lt;mode&gt;/*</code> and are rejected when imported from another mode:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/platform/go/http</span></span>

@@ -81,7 +81,7 @@
 			</aside>
 			<main class="docs-main">
 				<article class="markdown-body"><h1 id="typerb-status">TypeRB Status</h1>
-<p>Last updated: 2026-09-02</p>
+<p>Last updated: 2026-09-05</p>
 <p>TypeRB is an alpha compiler implemented in Go. The language, standard library,
 official packages, generated output, command-line interface, and compiler-owned
 protocols may change before beta. Existing behavior is implementation evidence,
@@ -214,6 +214,16 @@ propagation and recovery with prefix <code>try</code> and postfix <code>catch</c
 current semantics. Generated Go targets Go 1.27 and represents generic class
 instance methods directly with native generic methods instead of package-level
 helper functions.</p>
+<p><code>trb/std/path</code> provides nominal host <code>Path</code> values and closed <code>RelativePath</code>
+values with explicit Result-returning parsing, validated child construction,
+logical joining, and nullable parents. Its fixed logical grammar rejects
+traversal components and conservative reserved filenames without normalizing
+Unicode or consulting the filesystem. Host joining preserves the parent text
+and chooses separators on the target host, including Windows drive-relative
+paths. Go, Ruby, Node/Bun TypeScript, and the typed-IR REPL share conformance
+tests; browser builds retain the pure operations and reject host joining.
+These values do not promise filesystem containment. Existing I/O operations
+still consume host-native Strings.</p>
 <p>Array transformations such as <code>map</code>, <code>select</code>, <code>reduce</code>, predicate searches,
 and key-based sorting accept ordinary statements followed by one final result
 expression. Their structured typed IR runs the same block scope in generated

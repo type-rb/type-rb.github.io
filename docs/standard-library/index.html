@@ -451,6 +451,169 @@ query strings without a leading <code>?</code>. Parsing treats <code>+</code> as
 uses <code>+</code> for spaces and percent-encodes reserved bytes. Invalid escapes and
 decoded bytes that are not valid UTF-8 return <code>URL::DecodeError</code>.</p>
 <p>Complete URL parsing remains a future addition to the package.</p>
+<h2 id="path-values">Path values</h2>
+<p><code>trb/std/path</code> provides two distinct String-backed nominal values. A <code>Path</code>
+contains host-native path text. A <code>RelativePath</code> contains a validated logical
+descendant, independent of the host's separator rules. Neither represents an
+opened resource or grants filesystem access.</p>
+<!-- raw HTML omitted -->
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Path</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">RelativePath</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">RelativePathError</span><span style="color:#E6EDF3"> } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/std/path</span></span>
+<span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/result</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> output_path</span><span style="color:#E6EDF3">(root: </span><span style="color:#FFA657">Path</span><span style="color:#E6EDF3">, name: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Path</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">RelativePathError</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#E6EDF3">	base </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> try</span><span style="color:#FFA657"> RelativePath</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">parse</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"generated/reports"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#E6EDF3">	leaf </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> try</span><span style="color:#E6EDF3"> base.</span><span style="color:#D2A8FF">child</span><span style="color:#E6EDF3">(name)</span></span>
+<span class="line"><span style="color:#FF7B72">	return</span><span style="color:#FFA657"> Result</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Path</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">RelativePathError</span><span style="color:#FF7B72">>::</span><span style="color:#FFA657">Ok</span><span style="color:#E6EDF3">(root.</span><span style="color:#D2A8FF">join</span><span style="color:#E6EDF3">(leaf))</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The declaration-root import <code>import trb/std/path</code> binds <code>Path</code>. Import the peer
+<code>RelativePath</code> and <code>RelativePathError</code> declarations by exact name when needed.</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Path.new(source: String)</code></td>
+<td><code>Path</code></td>
+</tr>
+<tr>
+<td><code>Path#to_s()</code></td>
+<td><code>String</code></td>
+</tr>
+<tr>
+<td><code>Path#join(path: RelativePath)</code></td>
+<td><code>Path</code></td>
+</tr>
+<tr>
+<td><code>RelativePath.parse(source: String)</code></td>
+<td><code>Result&lt;RelativePath, RelativePathError&gt;</code></td>
+</tr>
+<tr>
+<td><code>RelativePath#to_s()</code></td>
+<td><code>String</code></td>
+</tr>
+<tr>
+<td><code>RelativePath#join(path: RelativePath)</code></td>
+<td><code>RelativePath</code></td>
+</tr>
+<tr>
+<td><code>RelativePath#child(name: String)</code></td>
+<td><code>Result&lt;RelativePath, RelativePathError&gt;</code></td>
+</tr>
+<tr>
+<td><code>RelativePath#parent()</code></td>
+<td><code>RelativePath?</code></td>
+</tr>
+</tbody>
+</table>
+<p>Both values retain the ordinary public newtype <code>value()</code> projection and String
+equality. Equality compares exact text, not filesystem identity or normalized
+filenames. <code>Path.new</code> accepts any String, including an empty one; it performs
+no validation, normalization, existence check, environment or home expansion,
+or conversion to an absolute path. <code>RelativePath.new</code> is private to its type
+body, so portable source must use its public factory.</p>
+<h3 id="logical-descendant-grammar">Logical descendant grammar</h3>
+<p><code>RelativePath.parse</code> accepts a nonempty sequence of nonempty <code>/</code>-separated
+components and preserves the input exactly. The fixed rules reject:</p>
+<ul>
+<li>Leading or trailing <code>/</code>, repeated <code>/</code>, and components equal to <code>.</code> or <code>..</code>.</li>
+<li>Backslash, U+0000 through U+001F, and the ASCII characters <code>&lt; &gt; : &quot; | ? *</code>.
+This also excludes absolute, drive-prefixed, UNC, and alternate-data-stream
+spellings; it does not reinterpret any of them as relative input.</li>
+<li>A component ending in an ASCII dot or space.</li>
+<li>Reserved device-name stems, using ASCII-only case-insensitive comparison:
+<code>CON</code>, <code>PRN</code>, <code>AUX</code>, <code>NUL</code>, <code>CONIN$</code>, <code>CONOUT$</code>, and <code>COM</code> or <code>LPT</code> followed by
+one of <code>0</code>–<code>9</code>, <code>¹</code>, <code>²</code>, or <code>³</code>. The stem is the text before the first dot,
+with trailing ASCII spaces removed for this check only. Extensions do not
+escape the rule: <code>con.txt</code>, <code>CON .txt</code>, and <code>lpt¹.log</code> are rejected.</li>
+</ul>
+<p>This deliberately conservative logical grammar is informed by
+<a href="https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file">Windows filename rules</a>,
+but does not delegate validation to the current operating system. It does not
+normalize Unicode, change case, trim the returned value, limit path length, or
+guarantee that every accepted name can be created on every filesystem. Case
+and Unicode-normalization collisions remain application concerns. <code>.config</code>,
+<code>..name</code>, leading spaces, and non-ASCII names such as <code>日本語/😀.md</code> are valid.</p>
+<p><code>join</code> composes two validated descendants with one <code>/</code> and cannot introduce an
+invalid component. <code>child</code> accepts exactly one new component and validates it;
+it is not a String overload of <code>join</code>. <code>parent</code> removes the last component and
+returns <code>nil</code> for a one-component path. There is no empty <code>RelativePath</code> value
+representing the root.</p>
+<p><code>RelativePathError</code> is a payload-free enum, separate from I/O errors:</p>
+<table>
+<thead>
+<tr>
+<th>Case</th>
+<th>Failure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Empty</code></td>
+<td>The input is empty.</td>
+</tr>
+<tr>
+<td><code>EmptyComponent</code></td>
+<td>A leading, trailing, or repeated <code>/</code> occurs.</td>
+</tr>
+<tr>
+<td><code>DotComponent</code></td>
+<td>A component is <code>.</code> or <code>..</code>.</td>
+</tr>
+<tr>
+<td><code>InvalidCharacter</code></td>
+<td>A component contains a prohibited character.</td>
+</tr>
+<tr>
+<td><code>TrailingDotOrSpace</code></td>
+<td>A component ends with an ASCII dot or space.</td>
+</tr>
+<tr>
+<td><code>ReservedName</code></td>
+<td>A component has a reserved device-name stem.</td>
+</tr>
+<tr>
+<td><code>MultipleComponents</code></td>
+<td>A <code>child</code> argument contains <code>/</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><code>parse</code> checks empty input and empty components first, then components in
+source order, using the remaining validation cases in the order above. <code>child</code>
+checks for <code>/</code> before calling the same parser. <code>error.to_s()</code> provides a human
+diagnostic without embedding the input; applications should branch on the enum,
+not the message text.</p>
+<p>Generic inbound representation decoding cannot construct <code>RelativePath</code>.
+Decode a String or representation DTO and call <code>RelativePath.parse</code> explicitly.
+Outgoing codecs may project it to String, as for other closed newtypes.</p>
+<h3 id="host-composition">Host composition</h3>
+<p><code>Path#join</code> appends a validated descendant using the <strong>target runtime's</strong> host
+separator, not the compiler machine's. The parent is preserved byte for byte,
+including <code>..</code>, repeated separators, and mixed slash styles. On Windows only
+the child's <code>/</code> characters become <code>\</code>. A separator is inserted unless the
+parent is empty, already ends in an accepted host separator, or is exactly a
+Windows drive letter followed by <code>:</code>. Thus POSIX <code>/</code> and <code>//</code> stay distinct,
+Windows <code>C:</code> produces <code>C:child</code>, <code>C:\</code> produces <code>C:\child</code>, and a UNC share
+root receives a separator. An empty parent produces just the host-spelled child.
+Receiver and argument are each evaluated once, in that order; safe navigation
+skips the argument when the receiver is <code>nil</code>.</p>
+<p>There is no cleaning join, parent resolution, or filesystem access. A parent
+containing <code>symlink/..</code> retains its host interpretation, and a descendant can
+still traverse a symlink when later opened: these value types do <strong>not</strong> provide
+root containment or a security boundary.</p>
+<p>Logical validation and composition are ordinary TypeRB source. The one
+compiler-owned operation is host joining: portable source and the current
+adapter protocol do not expose a target-host separator query without introducing
+a platform dependency. The intrinsic keeps that host choice separate from the
+pure package and can move to an ordinary adapter when that boundary is available.</p>
+<p>Go, Ruby, and Node/Bun TypeScript support host joining. An explicit
+<code>typescript.runtime: &quot;browser&quot;</code> build rejects <code>Path#join</code>; it still supports
+<code>Path.new</code>, <code>to_s</code>, and all <code>RelativePath</code> operations. The typed-IR REPL uses
+the machine running the evaluator for host joining, regardless of output mode.</p>
 <h2 id="filesystem">Filesystem</h2>
 <p><code>trb/std/file</code> and <code>trb/std/dir</code> are separate host-filesystem bridges. <code>File</code>
 is an actual opaque resource type rather than a module containing a second file
@@ -551,9 +714,11 @@ given to <code>Dir.children</code> and appends the entry name without a cleaning
 therefore preserves host resolution for parents containing symbolic links and
 <code>..</code>. The appended separator is host-native, existing Windows <code>/</code> or <code>\</code>
 suffixes are accepted, <code>C:</code> remains drive-relative as <code>C:child</code>, and UNC share
-roots receive a separator. General parsing, cleaning, volume handling, and
-cross-host path conversion are deferred until TypeRB has a genuine nominal
-<code>Path</code> value type.</p>
+roots receive a separator. These I/O calls currently consume Strings;
+<code>Path#to_s()</code> supplies their host-native input. The separate
+<a href="#path-values">path value API</a> can construct a not-yet-existing descendant
+without enumerating a directory. General host-path parsing, cleaning, volume
+inspection, and cross-host conversion are not provided.</p>
 <h2 id="process">Process</h2>
 <p><code>trb/std/process</code> provides argument, environment, working-directory, and
 shell-free process operations:</p>
