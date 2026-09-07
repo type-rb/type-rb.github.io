@@ -304,6 +304,14 @@ expansion. Nullable Strings, <code>Any</code>, numeric and Boolean values, colle
 enums, newtypes, and other user-defined values are rejected rather than
 inheriting a target runtime's implicit String conversion. Convert a value
 explicitly, for example with <code>value.to_s()</code>, before interpolation.</li>
+<li>In a double-quoted String, <code>\#</code> produces a literal <code>#</code> and prevents it from
+starting interpolation. For example, <code>&quot;\#{name}&quot;</code> contains the text
+<code>#{name}</code> without evaluating <code>name</code>. Escapes are consumed left to right:
+<code>&quot;\\#{name}&quot;</code> contains one backslash followed by the interpolated String.
+Escape decoding never starts another interpolation pass. Undefined escapes,
+including <code>\{</code> and <code>\q</code>, are compile-time errors in every mode, both in plain
+Strings and in literal segments surrounding interpolation. REPL evaluation
+follows the same rule.</li>
 </ul>
 <h4 id="aliases-and-nominal-newtypes">Aliases and nominal newtypes</h4>
 <ul>
