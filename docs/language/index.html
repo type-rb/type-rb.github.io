@@ -806,6 +806,15 @@ writeback for binding reassignment. Operations documented as returning a new
 Array, such as <code>dup</code>, <code>slice</code>, <code>reverse</code>, sorting, transformations, <code>uniq</code>, and
 <code>concat</code>, create a distinct outer Array and remain shallow with respect to
 their elements.</p>
+<p>For an element assignment, TypeRB evaluates the Array and index once and fixes
+the nonnegative position before evaluating the right-hand side. Thus, if
+<code>grow(values)</code> appends <code>3</code> and returns <code>9</code>, starting from <code>[1, 2]</code>,
+<code>values[-1] = grow(values)</code> produces <code>[1, 9, 3]</code>. A compound assignment saves
+the old value first, so <code>values[-1] += grow(values)</code> produces <code>[1, 11, 3]</code>.
+The target must be in bounds both initially and when the write occurs; a
+right-hand-side removal can cause the final write to fail. Earlier side
+effects remain. <a href="https://github.com/type-rb/type-rb/blob/main/docs/decisions/0014-stable-array-assignment-positions.md">Array assignment rules</a>
+also define short-circuit assignments and nested receivers.</p>
 <p>Membership and occurrence counting use portable <code>==</code> and are therefore
 available for numeric, Boolean, String, and payloadless enum elements. They do
 not implicitly enable target-native structural equality for nested values.
