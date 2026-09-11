@@ -596,10 +596,14 @@ nonnegative, ordered, and within the collection. The exclusive
 an existing element. Array slices return a new shallow Array.</li>
 <li>Range values retain their bounds and inclusivity through variables and
 function boundaries. Converting <code>Range&lt;Integer&gt;</code> to <code>Iterable&lt;Integer&gt;</code>
-enumerates the represented values without changing slice semantics.
+retains the bounds without enumerating or copying the sequence. Each iteration
+starts at the beginning, including after an earlier iteration exits. Array
+conversion retains the original Array reference: mutations before the next
+iteration are visible, while rebinding the original variable does not replace
+the retained source. These conversions do not change slice semantics.
 <code>range.to_a()</code> materializes those values as a new <code>Array&lt;Integer&gt;</code>; a
 reversed Range materializes an empty Array.</li>
-<li>Direct Range <code>each</code>, <code>each.with_index</code>, and <code>each_slice</code> evaluate the
+<li>Range and <code>Iterable</code> <code>each</code>, <code>each.with_index</code>, and <code>each_slice</code> evaluate the
 receiver once and consume values incrementally. <code>each_slice</code> allocates only
 the current batch; its size is evaluated once before iteration, including
 for an empty Range. Loop transfers retain their ordinary lexical owners.

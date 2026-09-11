@@ -118,9 +118,9 @@ semantics.</p>
 REPL, matching the Ruby Range path without allocating the complete sequence.
 The REPL's former fixed Range/while iteration caps are removed; evaluation
 cancellation remains active, including while building an explicit Range Array.
-Go/TypeScript conversion from Range to an <code>Iterable</code> parameter still materializes
-its representation; replacing that separate representation boundary remains
-follow-up work.</p>
+Range and Array conversions to <code>Iterable</code> retain a repeatable source instead of
+materializing a copy. Function, generic, and nullable boundaries preserve this
+behavior; each iteration starts at the beginning of the retained collection.</p>
 <p><code>trb lint</code> runs project checking before a small configurable built-in ruleset.
 The recommended rules safely rewrite simple one-transfer guard blocks and
 remove redundant terminal bare returns from Void callables. Built-in rules
