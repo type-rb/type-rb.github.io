@@ -546,6 +546,10 @@ reverse search. Ctrl-B/F moves by
 character, Ctrl-A/E by line, Alt-B/F by word, and Ctrl-P/N moves vertically or
 through history. Ctrl-C cancels current input or evaluation without exiting;
 Ctrl-D exits.</p>
+<p>The REPL imposes no fixed iteration-count limit on Range or <code>while</code> loops.
+Range <code>each</code> reads values incrementally, and <code>each_slice</code> materializes only the
+current batch. Explicit <code>to_a()</code> still needs memory for the resulting Array;
+its enumeration also observes evaluation cancellation.</p>
 <p>Ordinary results retain the <code>value : Type</code> form. A result directly associated
 with a mutable REPL binding includes a trailing <code>[mut]</code>; arbitrary expressions
 do not inherit the marker:</p>
