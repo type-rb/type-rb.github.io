@@ -127,6 +127,9 @@ before tokenization, formatting, or semantic analysis.</li>
 use <code>values.each do |value| ... end</code> syntax.</li>
 <li>Functions and methods with an explicit return type must return a value on
 every reachable path. Final expressions are not implicit returns.</li>
+<li>An ordinary expression statement evaluates its expression once and discards
+its value. The standard <code>Result</code> required-use rule still rejects discarded
+Result values.</li>
 <li>Complete <code>if</code> flow and exhaustive enum or union <code>case</code> flow can satisfy the
 return rule. A return inside a loop alone does not prove that the function
 returns because initial loop analysis is conservative.</li>
