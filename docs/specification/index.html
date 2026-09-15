@@ -686,6 +686,8 @@ expose their representation through portable semantics.</li>
 <li>A non-nullable <code>Integer</code> is assignable to a non-nullable <code>Float</code>. The checker
 records this widening explicitly and typed IR lowers it in initializers,
 assignments, arguments, record and enum payloads, defaults, and returns.
+The same widening applies from <code>Integer?</code> to <code>Float?</code>: <code>nil</code> stays <code>nil</code>,
+a present Integer becomes a present Float, and the source is evaluated once.
 <code>Float</code> does not narrow implicitly to <code>Integer</code>.</li>
 <li>Function and method parameters are immutable bindings unless their
 declaration uses <code>mut</code>. The marker controls the implementation binding only;
