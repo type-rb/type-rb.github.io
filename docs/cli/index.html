@@ -550,6 +550,12 @@ Ctrl-D exits.</p>
 Range <code>each</code> reads values incrementally, and <code>each_slice</code> materializes only the
 current batch. Explicit <code>to_a()</code> still needs memory for the resulting Array;
 its enumeration also observes evaluation cancellation.</p>
+<p>If evaluation fails or is interrupted, writes and external effects that already
+completed remain observable. The session discards earlier flow narrowing at that
+input boundary, so a nullable value may need a new guard before member access.
+A statically rejected input does not change runtime state or invalidate earlier
+facts. <code>:reload</code> and <code>:load</code> replay accepted inputs with their recorded checking
+boundaries; they do not replay the failed input or its partial effects.</p>
 <p>Ordinary results retain the <code>value : Type</code> form. A result directly associated
 with a mutable REPL binding includes a trailing <code>[mut]</code>; arbitrary expressions
 do not inherit the marker:</p>
