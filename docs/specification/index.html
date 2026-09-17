@@ -1508,7 +1508,8 @@ records, classes, interfaces, top-level functions, and instance methods:
 <code>response.json&lt;T&gt;()</code>.</li>
 <li><code>alias Alias&lt;T&gt; = Target&lt;T, ...&gt;</code> creates a transparent alias rather than a
 nominal type. Assignment and member checking use the expanded target, while
-diagnostics, completion, imports, and generated signatures retain the alias.
+diagnostics, completion, and imports retain the alias. Generated signatures
+may expand it when the target language cannot represent the alias directly.
 An alias of an enum also qualifies its variants, such as
 <code>DbResult&lt;Integer&gt;::Ok(1)</code> and <code>when DbResult::Err(error)</code>.</li>
 <li>Calls, construction, and generic method selection use explicit type
