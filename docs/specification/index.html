@@ -894,6 +894,19 @@ resolution produces <code>Ok</code>, and a synchronous throw or Promise rejectio
 produces <code>Err</code> from <code>Error.message</code> or <code>String(value)</code>. <code>Promise&lt;void&gt;</code> maps
 to <code>Result&lt;Unit, String&gt;</code>. If String conversion throws, the error is
 <code>&quot;Unknown native rejection&quot;</code>. Other error projections are not yet accepted.</li>
+<li>Automatically indexed native TypeScript functions preserve their top-level
+<code>null</code> and <code>undefined</code> representations at direct call boundaries. Both map to
+TypeRB <code>nil</code>; a returned <code>undefined</code> becomes the TypeScript backend's <code>null</code>.
+A <code>nil</code> argument becomes <code>undefined</code> only when that native parameter accepts
+<code>undefined</code> but not <code>null</code>. Parameters accepting both receive <code>null</code> for an
+explicit <code>nil</code>. An omitted optional argument stays omitted, so omission and
+explicit <code>nil</code> may have different native behavior. Conversion evaluates each
+argument once, preserves evaluation order and non-null values, and does not
+copy arrays or other values. A native function requiring conversion must be
+called directly; wrap its call in a typed <code>fn</code> to pass it as a value. Array
+elements and callback signatures requiring nested <code>undefined</code> conversion are
+not supported by automatic indexing and produce diagnostics. This rule does
+not add native object member or JSX property conversion.</li>
 <li>A package-owned declaration adapter uses a versioned, mode-independent
 semantic catalog selected for one native ecosystem by
 <code>declarationAdapters.&lt;mode&gt;</code> in the package manifest. The common host
