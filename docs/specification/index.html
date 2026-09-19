@@ -655,6 +655,10 @@ does not restart the exhausted iteration. No initial collection-size hint
 changes the requested batch size.</li>
 <li>Array <code>index(value)</code> returns the zero-based position of the first value that
 is equal under portable <code>==</code>, or <code>nil</code> when no value matches.</li>
+<li>Array <code>include?</code>, <code>index</code>, and <code>count</code> retain the receiver once and evaluate
+the target argument once before inspecting the Array. Mutations performed
+by the argument are visible, including growth and shrinking through another
+alias. Rebinding the receiver variable does not replace the retained Array.</li>
 <li>String <code>index(substring)</code> and <code>rindex(substring)</code> search literal substrings
 and return a code-point position as <code>Integer?</code>. They return <code>nil</code> when the
 substring is absent. An empty substring is found at position zero for
