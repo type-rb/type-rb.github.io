@@ -1192,6 +1192,9 @@ arguments, collection literals and operator operands, and support postfix
 chaining. Both brace and <code>do/end</code> blocks retain ordinary statement bodies in
 these positions. For example, <code>puts([1, 2].map { |value| value * 2 }[1])</code>
 prints <code>4</code>.</p>
+<p>Sequential Range transformations traverse retained bounds directly. They do not
+first expand the Range into an Array. Short-circuit operations stop before
+visiting later elements; <code>map</code> and <code>select</code> allocate only their output sequence.</p>
 <p><code>reduce</code> evaluates its source once, then its initial argument
 once, before traversal begins. Changes to the retained source made by the
 initial argument are visible to traversal. An empty source still evaluates the
