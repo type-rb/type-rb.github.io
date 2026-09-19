@@ -208,7 +208,9 @@ means no return value; a non-Void function uses <code>: Type</code> and must ret
 type on every reachable path.</li>
 <li>Function types are written <code>(ParameterType, ...) -&gt; ReturnType</code>. <code>Void</code> is
 permitted in a function type, for example <code>(String) -&gt; Void</code>, but remains
-omitted from the corresponding <code>fn</code> declaration.</li>
+omitted from the corresponding <code>fn</code> declaration. Function types may be used
+directly as type arguments, including <code>Array&lt;() -&gt; Void&gt;</code> and
+<code>Hash&lt;String, (Integer) -&gt; String&gt;</code>, without declaring an alias.</li>
 <li><code>Void</code> is the compiler's no-result type, not a source value type. It is valid
 only as the return type of a function type. A Void expression may be used as
 a standalone statement but cannot be initialized, assigned, passed,
