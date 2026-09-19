@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Authoring native package adapters — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/guides/native-package-adapters/">
+		<title>Authoring native package adapters — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a class="active" aria-current="page" href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a class="active" aria-current="page" href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="authoring-native-package-adapters">Authoring native package adapters</h1>
+<p>Start with one application workflow and a fixed native package version. The
+goal is to expose the smallest useful, checked contract while keeping the
+native library responsible for its implementation. Sometimes direct imports
+or application startup code already provide everything needed.</p>
+<p>This guide describes the authoring workflow. The
+<a href="/docs/guides/packages/">package reference</a> owns manifests, protocol schemas, supported
+types, bridge kinds, and validation rules. The
+<a href="/docs/cli/">CLI reference</a> owns command and JSON-report details.</p>
+<h2 id="1-fix-the-scope-and-native-input">1. Fix the scope and native input</h2>
+<p>Write down two or three calls or interactions, their expected outputs, and a
+failure or boundary case. Pin the native dependency and native toolchain, then
+commit the native lockfile and, when using external TypeRB packages, <code>trb.lock</code>.
+Distinguish tested workflows from untested APIs; successfully compiling one
+call does not establish whole-library compatibility.</p>
+<p>Use upstream declarations and documentation for the selected version. Check
+the actual runtime exports as well as the <code>.d.ts</code>, RBS, or other metadata. A
+declaration correction must describe a real call: it cannot create a runtime
+export that the native package does not have.</p>
+<h2 id="2-try-the-existing-path">2. Try the existing path</h2>
+<p>For a TypeScript package, configure the native dependency and the supported
+TypeScript 6.x toolchain, then use <code>trb install</code>. Installation indexes supported
+named exports from the package's <code>.d.ts</code> files. Write the ordinary native import
+in <code>.trb</code> source and obtain structured diagnostics:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> fmt</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> check</span><span style="color:#79C0FF"> --diagnostic-format</span><span style="color:#A5D6FF"> json</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> build</span></span>
+<span class="line"></span></code></pre>
+<p>Read the diagnostic code, source span, and explanation before writing a
+catalog. Automatic indexing does not support all TypeScript types or default
+exports. A package that exports a default object must not be treated as though
+its methods were named module exports. Regenerate the index with <code>trb install</code>
+after upgrading the compiler; <code>.trb/native-types.json</code> is an internal cache,
+not an author-edited signature file or a stable inspection protocol.</p>
+<p>Markup-driven libraries may need no TypeRB-callable API. The
+<a href="https://github.com/type-rb/type-rb/blob/main/examples/adapters/htmx/README.md">htmx fixture</a> emits attributes from
+TypeRB JSX and keeps native startup in a small authored TypeScript file. It
+checks the generated output against native types and executes browser requests
+and DOM swaps. It also retains an expected diagnostic for the unsupported
+default-object import. This is a useful result without an adapter catalog.</p>
+<p>Ruby can use a package-owned fixed declaration provider for gem classes and
+mixins, with runtime loading owned by its ordinary TypeRB root source. Go and
+Ruby do not currently have the automatic native declaration importer available
+for TypeScript. Consult the package reference rather than assuming the same
+indexing path works in every ecosystem.</p>
+<h2 id="3-choose-the-narrowest-sufficient-boundary">3. Choose the narrowest sufficient boundary</h2>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Boundary</th>
+<th>Author responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The indexed named export already checks and runs</td>
+<td>Direct native import</td>
+<td>Pin dependencies and verify generated output</td>
+</tr>
+<tr>
+<td>HTML attributes and browser startup suffice</td>
+<td>Ordinary application source plus native bootstrap</td>
+<td>Keep DOM ownership explicit and execute the interaction</td>
+</tr>
+<tr>
+<td>Existing native exports need a smaller type projection</td>
+<td>Declaration adapter</td>
+<td>Describe only real exports and preserve generics, nullability, and failure semantics</td>
+</tr>
+<tr>
+<td>A Ruby gem contributes classes or mixins</td>
+<td>Fixed Ruby declaration provider</td>
+<td>Own the catalog, root activation, and native <code>require</code></td>
+</tr>
+<tr>
+<td>A native operation needs conversion or error normalization</td>
+<td>Package-owned runtime shim with the supported runtime adapter contract</td>
+<td>Own conversion, native errors, and conformance in every declared mode</td>
+</tr>
+<tr>
+<td>An external schema determines declarations</td>
+<td>Explicit generator</td>
+<td>Produce ordinary source or declaration data, then run normal checks</td>
+</tr>
+<tr>
+<td>Application declarations determine new APIs</td>
+<td>Project declaration/generation capability</td>
+<td>Verify that existing declared inputs can express the requirement before requesting a new provider capability</td>
+</tr>
+</tbody>
+</table>
+<p>A declaration adapter is data; it does not implement runtime conversion.
+Native Runtime Adapter v1 has a narrow, non-generic <code>String -&gt; String</code> leaf
+ABI. Do not pass arbitrary objects, handles, or lifecycle protocols through it
+by pretending they are already supported. Fixed Ruby providers and
+project-aware bundled providers also have different capabilities.</p>
+<p>For a new requirement, keep the competing choices concrete. For example, a
+markup interaction can keep the native library in application bootstrap;
+a representable named function can use a direct import; a real complex export
+may need a declaration projection. Choose using the workflow's ownership,
+types, and failures, rather than the library's popularity.</p>
+<h2 id="4-validate-a-projection-in-layers">4. Validate a projection in layers</h2>
+<p>An adapter package owns its <code>trbpackage.json</code>, declaration data, native version
+requirements, and conformance project. Use existing small examples instead of
+copying a complete upstream type surface:</p>
+<ul>
+<li><a href="https://github.com/type-rb/type-rb/blob/main/examples/adapters/tanstack-query/README.md">TanStack Query</a>: explicit
+generic specialization, discriminated results, and Result-returning callbacks.</li>
+<li><a href="https://github.com/type-rb/type-rb/blob/main/examples/adapters/tanstack-router/README.md">TanStack Router</a>: typed
+members and interfaces.</li>
+<li><a href="https://github.com/type-rb/type-rb/blob/main/examples/adapters/auth0-react/README.md">Auth0 React</a>: readonly fields
+and Promise rejection mapping.</li>
+<li><a href="https://github.com/type-rb/type-rb/blob/main/examples/adapters/amplify-auth/README.md">Amplify Auth</a>: direct
+asynchronous calls with a checked Result boundary.</li>
+</ul>
+<p>From a TypeRB source checkout, this pinned example demonstrates the complete
+catalog workflow:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">./trb</span><span style="color:#A5D6FF"> adapter</span><span style="color:#A5D6FF"> check</span><span style="color:#79C0FF"> --format</span><span style="color:#A5D6FF"> json</span><span style="color:#A5D6FF"> examples/adapters/tanstack-query</span></span>
+<span class="line"><span style="color:#FFA657">./trb</span><span style="color:#A5D6FF"> install</span><span style="color:#79C0FF"> --frozen</span><span style="color:#79C0FF"> --config</span><span style="color:#A5D6FF"> examples/adapters/tanstack-query/conformance/trbconfig.jsonc</span></span>
+<span class="line"><span style="color:#FFA657">./trb</span><span style="color:#A5D6FF"> adapter</span><span style="color:#A5D6FF"> test</span><span style="color:#79C0FF"> --format</span><span style="color:#A5D6FF"> json</span><span style="color:#A5D6FF"> examples/adapters/tanstack-query</span></span>
+<span class="line"></span></code></pre>
+<p><code>adapter check</code> validates the manifest and catalog using the selected native
+consumer. It does not prove compatibility with installed native signatures.
+<code>adapter test</code> runs adapter validation, a TypeRB build, and the package's
+declared native conformance command. Dependencies must already be installed;
+the command never installs them implicitly. The configured native command is
+an explicitly executed program, not sandboxed compiler data.</p>
+<p>Run generated code when runtime behavior matters. A native type check alone
+cannot establish Promise rejection mapping, DOM effects, resource cleanup, or
+native loading. Include failure and boundary inputs in those runtime checks,
+and preserve diagnostics for intentionally unsupported operations. Run an
+existing, structurally different fixture when changing shared adapter code.</p>
+<h2 id="5-classify-gaps-and-leave-a-reproducible-result">5. Classify gaps and leave a reproducible result</h2>
+<p>Record whether a gap is documentation, author tooling, a reusable compiler or
+protocol capability, or a library-specific integration requirement. Reduce a
+compiler problem to an independent example with expected behavior. Do not add
+library-name branches to the compiler, weaken the projection to <code>Any</code>, or edit
+generated target output to get a green test.</p>
+<p>An adapter README should state:</p>
+<ul>
+<li>the native and toolchain versions, installation command, and lockfiles;</li>
+<li>supported calls or interactions and their ownership/failure boundaries;</li>
+<li>the exact validation commands and what each command proves;</li>
+<li>intentionally unsupported shapes and their diagnostics; and</li>
+<li>when to revalidate, including compiler, protocol, or upstream changes.</li>
+</ul>
+<p>An upstream library author or community maintainer can own the resulting
+package and conformance tests independently of the compiler. Keep the workflow
+human-readable; AI assistance should follow this same guide and consume the
+same CLI diagnostics.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.4.8-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/guides/native-package-adapters.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>
