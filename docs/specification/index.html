@@ -1190,6 +1190,12 @@ Empty Arrays produce <code>false</code>, <code>true</code>, and <code>true</code
 value-producing transformation block; use <code>each</code> when control must leave or
 skip the enclosing iteration. Indexed predicate blocks are not currently
 enabled.</p>
+<p>Brace iteration and call blocks use the same statement grammar as <code>do/end</code>
+blocks. Newlines and semicolons separate statements; nested <code>if</code>, <code>case</code>,
+<code>while</code> and iteration retain their ordinary lexical scope and control-transfer
+owners. Changing the delimiter does not relax a block's type, effect or
+control-transfer restrictions. Comments and diagnostics retain their original
+source positions.</p>
 <p><code>Array#concurrent_map</code> is the import-free bounded concurrent transformation:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">pages </span><span style="color:#FF7B72">:=</span><span style="color:#E6EDF3"> urls.</span><span style="color:#D2A8FF">concurrent_map</span><span style="color:#FF7B72"> do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">url</span><span style="color:#FF7B72">|</span></span>
 <span class="line"><span style="color:#D2A8FF">	fetch_page</span><span style="color:#E6EDF3">(url)</span></span>
