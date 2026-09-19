@@ -1193,6 +1193,29 @@ initial argument are visible to traversal. An empty source still evaluates the
 initial argument and returns its value without invoking the block. Failure in
 the source prevents the initial argument from running; failure in the initial
 argument prevents traversal.</p>
+<p>Sequential Array transformations retain their source reference once and use
+the same live traversal as <code>each</code>: before each invocation, read the current
+length and the element at the next nonnegative index. This applies to <code>map</code>,
+<code>select</code>, <code>reduce</code>, the predicates and searches below, and key collection for
+<code>sort_by</code> and <code>sort_by_descending</code>. Appended elements are visited, replacement
+of unvisited elements is visible, and shortening can end traversal. Insertion
+or removal before the next index can cause a value to be revisited or skipped.
+Rebinding the source variable does not replace the retained Array. Suspending
+and synchronous blocks follow the same rule.</p>
+<p>Each invocation retains the visited element before running the block.
+<code>select</code> and <code>find</code> return that value when their predicate matches, and keyed
+sorting pairs that value with the block's resulting key. Reassigning the block
+parameter or replacing the source entry does not replace the retained value;
+mutation of a referenced object remains shared. <code>with_index</code> binds the current
+position separately from the traversal cursor, so reassigning its block
+parameter does not affect traversal. Key collection completes before sorting,
+and equal keys retain visitation order.</p>
+<p>Readonly bindings restrict mutation through that reference; they do not freeze
+the Array, copy it, or hide changes made through a mutable alias. These rules
+therefore apply equally to traversal through a readonly alias. To isolate the
+outer sequence from mutations to the original Array, traverse an explicit
+<code>dup</code>; its referenced elements remain shallowly shared. <code>concurrent_map</code> has
+its separate concurrency and ownership contract below.</p>
 <p>The short-circuit predicates <code>any?</code>, <code>all?</code>, and <code>none?</code>
 and searches <code>find</code> and <code>find_index</code> require one non-nullable Boolean result
 expression at the end of their block. Transformation blocks may contain

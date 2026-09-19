@@ -411,7 +411,15 @@ Hash safe fetch returns
 <code>Result&lt;V, KeyLookupError&gt;</code> with the missing <code>String | Integer</code> key. Both errors
 also carry a stable message.</p>
 <p>Array <code>map</code>, <code>select</code>, and <code>reduce</code> are structured language expressions rather
-than target callbacks. See the
+than target callbacks. Like <code>each</code>, sequential transforms retain the source
+Array and read its current length and next element for each invocation. They
+visit appended elements and observe replacement or shortening, even through a
+readonly alias and after backing-storage growth. Rebinding the source variable
+does not redirect traversal. <code>select</code> and <code>find</code> retain the element passed to
+the block rather than its reassigned parameter. Keyed sorting follows this
+same traversal while collecting keys, then sorts the retained values stably.
+See the <a href="/docs/specification/#311-loop-control">specification</a> for the contract
+and the
 <a href="/docs/language/#arrays-hashes-and-iteration">language guide</a> for examples.</p>
 <p><code>Array#concurrent_map</code> is the import-free bounded I/O-concurrency form. It
 returns block results in input order, uses a portable default limit of 8, and
