@@ -334,8 +334,9 @@ including <code>\{</code> and <code>\q</code>, are compile-time errors in every 
 Strings and in literal segments surrounding interpolation. REPL evaluation
 follows the same rule.</li>
 <li>Portable Symbol spellings such as <code>:ready</code> and <code>:&quot;a b&quot;</code> produce <code>String</code>
-values. A double-quoted Symbol uses the same validated escapes as a String,
-but <code>#{...}</code> is literal text and is never evaluated. Ruby-native syntax keeps
+values. Keyword names stay literal: <code>:if</code> is the String <code>&quot;if&quot;</code> and does not
+open a conditional or extend REPL input. A double-quoted Symbol uses the same
+validated escapes as a String, but <code>#{...}</code> is literal text and is never evaluated. Ruby-native syntax keeps
 its explicit target-language Symbol representation.</li>
 </ul>
 <h4 id="aliases-and-nominal-newtypes">Aliases and nominal newtypes</h4>
