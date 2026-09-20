@@ -218,6 +218,8 @@ as <code>callback := calculate</code> retains that signature. Lexical bindings t
 precedence over a same-named top-level function. Generic functions and
 declarations with defaults or named-only parameters require an explicit
 typed <code>fn</code> wrapper that performs the desired call.</li>
+<li>A nullable function value must be narrowed to its non-null function type
+before it is called, just like other nullable values.</li>
 <li><code>Void</code> is the compiler's no-result type, not a source value type. It is valid
 only as the return type of a function type. A Void expression may be used as
 a standalone statement but cannot be initialized, assigned, passed,
