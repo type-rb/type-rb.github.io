@@ -1434,6 +1434,10 @@ String or Integer type. <code>value.raw_value()</code> performs the outward conv
 <code>EnumName.from_raw(raw)</code> returns
 <code>Result&lt;EnumName, EnumValueError&gt;</code>. These generated names are reserved only
 inside enum declarations.</li>
+<li>A qualified variant such as <code>OrderStatus::Completed</code> is an enum value and
+supports the same instance methods as a stored value. Nested module names
+and import aliases preserve the enum's declaration identity for both raw
+conversion directions.</li>
 </ul>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">enum</span><span style="color:#FFA657"> OrderStatus</span></span>
 <span class="line"><span style="color:#FFA657">	Pending</span><span style="color:#FF7B72"> =</span><span style="color:#A5D6FF"> "PENDING"</span></span>
