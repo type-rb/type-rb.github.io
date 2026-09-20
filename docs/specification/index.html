@@ -714,6 +714,8 @@ receivers, failure order and examples.</p>
 <ul>
 <li>Private class/method names must start with <code>_</code>.</li>
 <li>External access to private members is forbidden and must be a compile-time error.</li>
+<li>A module may call its own private methods through its declaration name;
+selecting that private method from outside the owning module is rejected.</li>
 </ul>
 <h3 id="34-instance-variables">3.4 Instance Variables</h3>
 <ul>
@@ -768,6 +770,10 @@ restricted to a target language's compile-time constant subset.</li>
 <li>Constants are always immutable and cannot be declared with <code>mut</code>, rebound,
 or passed to destructive APIs. For example,
 <code>DEFAULT_TAGS.push(&quot;work&quot;)</code> is a compile-time error.</li>
+<li><code>Owner::NAME</code> selects a constant by its declaration owner, including nested
+modules and imported aliases. It retains the constant's checked type and
+immutability. Same-named constants in different owners remain distinct, and
+unqualified reads inside a method retain their lexical declaration owner.</li>
 </ul>
 <h3 id="37-imports-and-formatting">3.7 Imports and Formatting</h3>
 <ul>
