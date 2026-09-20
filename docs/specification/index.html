@@ -1129,8 +1129,9 @@ compound assignments are checked against the portable Integer range. An
 out-of-range result is a runtime failure rather than wraparound, rounding, or
 a recoverable <code>Result</code>.</li>
 <li>Float arithmetic follows binary64 edge behavior in every backend and the
-REPL. Division by positive or negative zero produces the corresponding
-infinity, <code>0.0 / 0.0</code> produces NaN, overflow produces infinity, and a
+REPL. Unary negation reverses the sign of zero, including literal operands
+and nested negation. Division by positive or negative zero produces the
+corresponding infinity, <code>0.0 / 0.0</code> produces NaN, overflow produces infinity, and a
 negative base raised to a non-integral Float exponent produces NaN rather
 than a target-specific complex value.</li>
 <li>Parenthesized TypeRB expressions retain their AST precedence in generated
