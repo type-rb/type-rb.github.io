@@ -288,6 +288,13 @@ formatting does not change provider-visible text whitespace.</li>
 <li>Local variable initialization uses <code>:=</code>.</li>
 <li>Type inference is enabled for <code>:=</code>.</li>
 <li>Explicit type with initialization is allowed: <code>x: T := expr</code>.</li>
+<li>A lowercase binding at source-module top level keeps that module's storage
+when referenced from a function, method or closure. A local declaration with
+the same spelling does not change earlier references, including a closure
+created before that local declaration. Separate source modules retain
+independent bindings. Ordinary <code>mut</code> and readonly rules still apply.
+Calls invalidate nullable and field narrowing for visible mutable top-level
+bindings; establish a fresh guard after a call that may replace the value.</li>
 <li><code>nil</code> by itself cannot infer a binding type. <code>x := nil</code> is a compile error;
 use an explicit nullable annotation such as <code>x: String? := nil</code>.</li>
 <li><code>Nil</code> and <code>Void</code> are internal compiler types rather than ordinary source
