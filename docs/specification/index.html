@@ -622,8 +622,9 @@ structured <code>SliceRangeError</code>.</li>
 nonnegative, ordered, and within the collection. The exclusive
 <code>size...size</code> range is a valid empty slice; an inclusive finish always names
 an existing element. Array slices return a new shallow Array.</li>
-<li>Array <code>slice</code>, <code>try_slice</code>, and <code>try_fetch</code> retain the receiver once before
-evaluating their argument, then inspect that Array's current storage. Argument
+<li>Array <code>slice</code>, <code>try_slice</code>, <code>try_fetch</code>, value queries, <code>push</code>, <code>unshift</code>,
+<code>concat</code>, and <code>join</code> retain the receiver once before evaluating their arguments,
+then inspect that Array's current storage. Argument
 effects can grow, shorten or update the retained Array; rebinding the original
 variable does not redirect the lookup. Bounds failures describe the retained
 Array after those effects.</li>
