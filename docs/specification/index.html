@@ -211,6 +211,13 @@ permitted in a function type, for example <code>(String) -&gt; Void</code>, but 
 omitted from the corresponding <code>fn</code> declaration. Function types may be used
 directly as type arguments, including <code>Array&lt;() -&gt; Void&gt;</code> and
 <code>Hash&lt;String, (Integer) -&gt; String&gt;</code>, without declaring an alias.</li>
+<li>A local or explicitly imported TypeRB top-level function can also be used as
+a value by its name, including an import alias. Its required positional
+parameter types and return type determine its function type; a binding such
+as <code>callback := calculate</code> retains that signature. Lexical bindings take
+precedence over a same-named top-level function. Generic functions and
+declarations with defaults or named-only parameters require an explicit
+typed <code>fn</code> wrapper that performs the desired call.</li>
 <li><code>Void</code> is the compiler's no-result type, not a source value type. It is valid
 only as the return type of a function type. A Void expression may be used as
 a standalone statement but cannot be initialized, assigned, passed,
