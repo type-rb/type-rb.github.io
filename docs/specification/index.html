@@ -758,6 +758,16 @@ selecting that private method from outside the owning module is rejected.</li>
 <li>Zero-value initialization is not adopted initially.
 <ul>
 <li>Therefore, initialization must be explicit (e.g., in <code>initialize</code>).</li>
+<li>Every normally completing constructor path, including an early <code>return</code>,
+must initialize every declared field. Branches contribute only assignments
+made on all continuing paths; a loop or iteration body alone does not prove
+initialization because it may execute zero times.</li>
+<li>A field cannot be read before it is initialized. Compound assignment reads
+its previous value and therefore cannot serve as the first initialization.
+Declaration defaults are checked in field order before the initializer body.</li>
+<li>Before all fields are initialized, code may read an already initialized
+field directly, but may not pass, alias, capture or call an instance method
+on <code>self</code>. A deferred function body does not initialize the outer receiver.</li>
 </ul>
 </li>
 </ul>

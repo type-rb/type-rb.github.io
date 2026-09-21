@@ -507,6 +507,11 @@ Integer division truncates toward zero in every target.</p>
 <p>Instance fields are declared at class scope. Names beginning with <code>_</code> and
 <code>@_</code> are private. <code>readonly</code> fields can be assigned during initialization but
 not externally. Class methods use <code>def self.name()</code>.</p>
+<p>Every completing constructor path must initialize all fields, including paths
+that return early. Reads and compound assignments require an initialized field.
+Initialize the complete receiver before passing or capturing <code>self</code>, or calling
+its instance methods. Branches are checked separately, and assignments made only
+inside a possibly empty loop do not establish initialization after that loop.</p>
 <p>Classes support inheritance, generic interfaces, modules, class constants, and
 checked instance/class member access. Superclass construction, override rules,
 generic interface methods, and a final field/method collision rule remain alpha
