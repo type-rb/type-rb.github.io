@@ -1599,6 +1599,9 @@ This rule does not make loops into expressions, add values to <code>break</code>
 <span class="line"></span></code></pre>
 <h3 id="316-class-member-model-and-deferred-design">3.16 Class member model and deferred design</h3>
 <ul>
+<li>An interface describes an instance contract and cannot be constructed with
+<code>.new</code>, including through a type alias, namespace, import, or type application.
+Construct a class that explicitly implements the interface instead.</li>
 <li>Instance fields and instance methods are accessed through an instance. A
 method declared with <code>def self.name()</code> is a class member and is accessed
 through the class. Using either member kind through the wrong receiver is a
