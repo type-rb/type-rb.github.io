@@ -206,6 +206,10 @@ compiler implementation detail rather than a target-language API contract.</li>
 value. Every parameter has an explicit type. An absent return annotation
 means no return value; a non-Void function uses <code>: Type</code> and must return that
 type on every reachable path.</li>
+<li>A function literal may appear directly in an expression, including a call
+argument, collection element, or constructor field value. Its <code>end</code> closes
+only the function body; following arguments and enclosing delimiters retain
+their ordinary meaning.</li>
 <li>Function types are written <code>(ParameterType, ...) -&gt; ReturnType</code>. <code>Void</code> is
 permitted in a function type, for example <code>(String) -&gt; Void</code>, but remains
 omitted from the corresponding <code>fn</code> declaration. Function types may be used
