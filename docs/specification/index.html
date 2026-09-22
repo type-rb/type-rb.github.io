@@ -1635,6 +1635,10 @@ compile-time error, including for imported and inherited classes.</li>
 <li>A <code>readonly</code> field may be assigned while its declaring object is being
 initialized, but external assignment is a compile-time error. This rule is
 retained across project imports.</li>
+<li>Constructor parameter defaults are evaluated before the new instance is
+available. They cannot access <code>self</code>, an <code>@field</code>, or an implicit instance
+method. Field defaults and the initializer body run with a receiver; ordinary
+instance-method parameter defaults also have their receiver.</li>
 <li>Class constants are runtime-initialized immutable bindings and are available
 to both instance and class methods.</li>
 <li>A class value is assignable to an interface only when the class explicitly
