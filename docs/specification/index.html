@@ -694,6 +694,8 @@ variable does not redirect the lookup. Bounds failures describe the retained
 Array after those effects.</li>
 <li>A Range literal evaluates its start and then its end exactly once, retaining
 each endpoint value before evaluating the next expression.</li>
+<li>An authored Range type must be <code>Range&lt;Integer&gt;</code> (or use an alias resolving to
+<code>Integer</code>); a bare <code>Range</code> or another element type is rejected during checking.</li>
 <li>Range values retain their bounds and inclusivity through variables and
 function boundaries. Converting <code>Range&lt;Integer&gt;</code> to <code>Iterable&lt;Integer&gt;</code>
 retains the bounds without enumerating or copying the sequence. Each iteration
