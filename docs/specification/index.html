@@ -624,7 +624,8 @@ subsumes its literals, so <code>200 | Integer</code> normalizes to <code>Integer
 array, and generic modifiers are not accepted on a literal type.</li>
 <li><code>case</code> accepts explicit Integer and String values. A case over an ordinary
 scalar may be open and normally uses <code>else</code>; a case over a literal union is
-exhaustive and may omit <code>else</code> after handling every alternative.</li>
+exhaustive and may omit <code>else</code> after handling every alternative. An open
+statement with no matching branch and no <code>else</code> continues after the <code>case</code>.</li>
 <li>One literal branch may list multiple comma-separated values, such as
 <code>when &quot;index&quot;, &quot;show&quot;</code>. The values share one body. Enum and union patterns,
 including payload bindings, use separate <code>when</code> branches.</li>
@@ -1586,7 +1587,8 @@ common-type selection, typed IR, and backend behavior with the complete
 form.</li>
 <li>An <code>if</code> expression must contain an <code>else</code>, even when it has one or more
 <code>elsif</code> branches. A <code>case</code> expression must be exhaustive under the ordinary
-enum or union rules; an <code>else</code> may cover the remaining alternatives.</li>
+enum or union rules; an <code>else</code> may cover the remaining alternatives. A case
+expression over an ordinary Integer or String therefore requires <code>else</code>.</li>
 <li>A branch must end in a result expression or transfer control with <code>return</code>,
 <code>break</code>, or <code>next</code>. Blank lines and comments after the final expression or
 transfer do not change the branch. Earlier statements execute within the
