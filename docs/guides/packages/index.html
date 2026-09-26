@@ -191,10 +191,10 @@ install or update and is then pinned.</p>
 <span class="line"><span style="color:#E6EDF3">}</span></span>
 <span class="line"></span></code></pre>
 <p><code>formatVersion</code>, <code>name</code>, and a semantic <code>version</code> are required. <code>sourceDir</code>
-defaults to <code>src</code>, and omitted <code>modes</code> support all three backends. Dependency
-aliases are local to the declaring package. Native dependencies are selected
-only for the application's active mode and merge into its generated target
-manifest.</p>
+defaults to <code>src</code>, and omitted <code>modes</code> support every declared mode, including
+<code>trb</code>. Dependency aliases are local to the declaring package. Native
+dependencies are selected only for the application's active mode and merge
+into its generated target manifest.</p>
 <h3 id="fixed-declaration-providers">Fixed declaration providers</h3>
 <p>A Ruby platform package may attach fixed type declarations for classes and
 modules supplied by one of its native gems. This is useful for APIs such as a

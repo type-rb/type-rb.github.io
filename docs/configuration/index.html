@@ -114,10 +114,16 @@ accepts line and block comments. Trailing commas are not allowed.</p>
 <span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> init</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> typescript</span><span style="color:#A5D6FF"> .</span></span>
 <span class="line"></span></code></pre>
 <h2 id="modes">Modes</h2>
-<p>A project declares one mode: <code>go</code>, <code>ruby</code>, or <code>typescript</code>. The mode selects
-the backend, target toolchain, and package ecosystem. It does not select a
-grammar variant or loosen portable type checking. Target-specific capabilities
-require an explicit <code>trb/platform/&lt;mode&gt;/*</code> import.</p>
+<p>A project declares one mode: <code>go</code>, <code>ruby</code>, <code>typescript</code>, or <code>trb</code>. The mode
+selects the backend, target toolchain, and package ecosystem. It does not
+select a grammar variant or loosen portable type checking. Target-specific
+capabilities require an explicit <code>trb/platform/&lt;mode&gt;/*</code> import.</p>
+<p>The <code>trb</code> mode produces machine-code executables with the TypeRB runtime. This
+implementation does not build it. In a <code>trb</code> project, <code>check</code>, <code>fmt</code>, <code>lint</code>,
+<code>lsp</code>, <code>install</code>, <code>update</code>, and <code>web</code> work. <code>build</code>, <code>run</code>, <code>test</code>, <code>repl</code>, the
+<code>jobs</code> commands, and native package management report that the mode is not
+available. A <code>trb</code> project has no host package manifest, and
+<code>trb init --mode trb</code> writes only <code>trbconfig.jsonc</code>.</p>
 <p>Go mode owns <code>go.mod</code>, Ruby mode owns <code>Gemfile</code> and <code>.ruby-version</code>, and
 TypeScript mode owns <code>package.json</code>. These files are deterministic views of
 the native <code>dependencies</code> and <code>devDependencies</code> in <code>trbconfig.jsonc</code>. Edit

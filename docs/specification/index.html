@@ -96,13 +96,17 @@ experience demonstrates substantial value.</li>
 </ul>
 <h2 id="2-project-target-modes">2. Project Target Modes</h2>
 <p>A project declares exactly one output mode in <code>trbconfig.jsonc</code>: <code>go</code>, <code>ruby</code>,
-or <code>typescript</code>. Source files do not contain mode declarations. A standalone
+<code>typescript</code>, or <code>trb</code>. The <code>trb</code> mode produces machine-code executables with
+the TypeRB runtime. Source files do not contain mode declarations. A standalone
 CLI or editor session without a discoverable project configuration may select
-the same mode as session metadata; Go is the default. This selection does not
-create a fourth configuration source or change the source language.</p>
-<p>Mode selection controls transpilation output and target package/toolchain
+a mode as session metadata; Go is the default. This selection does not create
+another configuration source or change the source language.</p>
+<p>Mode selection controls the output, target package ecosystem, and toolchain
 integration. The concrete manifest and toolchain settings belong to the
-<a href="/docs/configuration/">project configuration reference</a>.</p>
+<a href="/docs/configuration/">project configuration reference</a>. An implementation may
+build only some declared modes. It still loads, analyzes, formats, and lints a
+project in any declared mode, and a command that needs a missing backend fails
+explicitly. This implementation builds <code>go</code>, <code>ruby</code>, and <code>typescript</code>.</p>
 <p>Mode never changes TypeRB grammar or relaxes its portable type rules. The same
 source syntax has the same meaning in every mode. Target-specific APIs,
 framework integration, native escape syntax, and compatibility behavior are
