@@ -109,7 +109,8 @@ for component props:</p>
 <span class="line"><span style="color:#D2A8FF">	mount</span><span style="color:#E6EDF3">(</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">App</span><span style="color:#FF7B72"> /></span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"root"</span><span style="color:#E6EDF3">)</span></span>
 <span class="line"><span style="color:#FF7B72">end</span></span>
 <span class="line"></span></code></pre>
-<p>Create <code>index.html</code> for Vite:</p>
+<p>Create <code>index.html</code> for Vite. Load the generated startup driver so dependency
+initializers run before <code>main</code>:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">&#x3C;!</span><span style="color:#7EE787">doctype</span><span style="color:#79C0FF"> html</span><span style="color:#E6EDF3">></span></span>
 <span class="line"><span style="color:#E6EDF3">&#x3C;</span><span style="color:#7EE787">html</span><span style="color:#79C0FF"> lang</span><span style="color:#E6EDF3">=</span><span style="color:#A5D6FF">"en"</span><span style="color:#E6EDF3">></span></span>
 <span class="line"><span style="color:#E6EDF3">	&#x3C;</span><span style="color:#7EE787">head</span><span style="color:#E6EDF3">></span></span>
@@ -119,7 +120,7 @@ for component props:</p>
 <span class="line"><span style="color:#E6EDF3">	&#x3C;/</span><span style="color:#7EE787">head</span><span style="color:#E6EDF3">></span></span>
 <span class="line"><span style="color:#E6EDF3">	&#x3C;</span><span style="color:#7EE787">body</span><span style="color:#E6EDF3">></span></span>
 <span class="line"><span style="color:#E6EDF3">		&#x3C;</span><span style="color:#7EE787">div</span><span style="color:#79C0FF"> id</span><span style="color:#E6EDF3">=</span><span style="color:#A5D6FF">"root"</span><span style="color:#E6EDF3">>&#x3C;/</span><span style="color:#7EE787">div</span><span style="color:#E6EDF3">></span></span>
-<span class="line"><span style="color:#E6EDF3">		&#x3C;</span><span style="color:#7EE787">script</span><span style="color:#79C0FF"> type</span><span style="color:#E6EDF3">=</span><span style="color:#A5D6FF">"module"</span><span style="color:#79C0FF"> src</span><span style="color:#E6EDF3">=</span><span style="color:#A5D6FF">"/build/main.tsx"</span><span style="color:#E6EDF3">>&#x3C;/</span><span style="color:#7EE787">script</span><span style="color:#E6EDF3">></span></span>
+<span class="line"><span style="color:#E6EDF3">		&#x3C;</span><span style="color:#7EE787">script</span><span style="color:#79C0FF"> type</span><span style="color:#E6EDF3">=</span><span style="color:#A5D6FF">"module"</span><span style="color:#79C0FF"> src</span><span style="color:#E6EDF3">=</span><span style="color:#A5D6FF">"/build/trb/entry/application/main.ts"</span><span style="color:#E6EDF3">>&#x3C;/</span><span style="color:#7EE787">script</span><span style="color:#E6EDF3">></span></span>
 <span class="line"><span style="color:#E6EDF3">	&#x3C;/</span><span style="color:#7EE787">body</span><span style="color:#E6EDF3">></span></span>
 <span class="line"><span style="color:#E6EDF3">&#x3C;/</span><span style="color:#7EE787">html</span><span style="color:#E6EDF3">></span></span>
 <span class="line"></span></code></pre>
