@@ -90,6 +90,17 @@ expose missing language features.</p>
 <a href="/docs/status/">status.md</a>. Language decisions belong in
 <a href="/docs/specification/">specification.md</a>; this document tracks outcomes rather than
 detailed syntax.</p>
+<h2 id="v050-make-native-the-canonical-implementation">v0.5.0: make Native the canonical implementation</h2>
+<p>The <a href="/docs/native-transition/">v0.5.0 transition contract</a> requires complete
+coverage of the reviewed Go implementation feature contract before replacing
+the canonical compiler. Preserve the Go implementation in <code>type-rb-go</code> with
+matching release versions and Go/Ruby/TypeScript outputs; the Native
+implementation additionally emits Native executables. Practical application
+previews may precede full parity. Repository migration and archiving
+<code>type-rb-native</code> follow verified history, distribution and release handoff.
+The contract is a release gate, not a claim of current Native support.</p>
+<p>The broader outcomes below remain the roadmap. Features absent from the
+reviewed Go release contract are not automatically v0.5.0 requirements.</p>
 <h2 id="1-complete-the-portable-language-core">1. Complete the portable language core</h2>
 <ul>
 <li>Extend Result-returning higher-order functions across third-party package

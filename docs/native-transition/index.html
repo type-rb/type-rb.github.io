@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="TypeRB v0.5.0 implementation transition — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/native-transition/">
+		<title>TypeRB v0.5.0 implementation transition — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="typerb-v050-implementation-transition">TypeRB v0.5.0 implementation transition</h1>
+<p>Implementation is tracked by <a href="https://github.com/type-rb/type-rb-native/issues/1164">the v0.5.0 transition initiative</a>.</p>
+<h2 id="release-outcome">Release outcome</h2>
+<p>TypeRB v0.5.0 makes the TypeRB-authored Native compiler the canonical
+implementation in <code>type-rb/type-rb</code>. It must provide every feature in the
+reviewed Go implementation release contract before the switch is released.
+The existing Go implementation is preserved, with its Git history, in
+<code>type-rb/type-rb-go</code> and maintained at matching release version numbers for the
+time being. This is the accepted destination; it does not claim that current
+Native builds have reached feature parity or authorize an immediate cutover.</p>
+<p>Compiler implementation and program output are separate choices:</p>
+<table>
+<thead>
+<tr>
+<th>Implementation</th>
+<th>Go output</th>
+<th>Ruby output</th>
+<th>TypeScript output</th>
+<th>Native executable output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Canonical TypeRB-authored Native compiler</td>
+<td>Required</td>
+<td>Required</td>
+<td>Required</td>
+<td>Required</td>
+</tr>
+<tr>
+<td>Retained Go compiler</td>
+<td>Required</td>
+<td>Required</td>
+<td>Required</td>
+<td>Not provided</td>
+</tr>
+</tbody>
+</table>
+<p>The retained Go implementation does not acquire a Native backend. A source
+backend includes generation, build/run integration, applicable runtime and
+package integration, and interactive behavior, not merely producing source
+text. Explicit platform-specific APIs retain their documented applicability;
+this policy does not make a Go-only platform API portable to every backend.
+The Native executable path must implement the portable language and official
+application contracts with its own qualified runtime providers.</p>
+<h2 id="repository-ownership">Repository ownership</h2>
+<ul>
+<li><code>type-rb/type-rb</code> owns the language specification, public documentation,
+portable standard/official sources, shared feature contract and conformance
+tests, and the canonical Native implementation after cutover.</li>
+<li><code>type-rb/type-rb-go</code> owns the maintained Go implementation and its
+implementation-specific tests and build tooling. It consumes the same
+versioned shared contracts rather than maintaining an independent dialect or
+a separately edited copy of the specification and official packages.</li>
+<li><code>type-rb/type-rb-native</code> remains the Native development repository until the
+migration gates pass. Then archive it as a historical repository, point users
+to the canonical project, and retain access to its history and immutable
+release, seed and evidence assets. Do not keep a third independent active
+implementation line.</li>
+</ul>
+<h2 id="complete-feature-contract">Complete feature contract</h2>
+<p>Create and review a versioned manifest from the Go implementation's public
+specification, source registries, CLI/help, tests, integrations and release
+configuration. Record the exact source revisions and manifest identity.
+Inventory the whole exposed surface; passing a sampled corpus or counting its
+cases is not a completeness claim. Future roadmap features absent from the
+reviewed Go release contract are not implicitly added to v0.5.0.</p>
+<p>The manifest covers:</p>
+<ul>
+<li>language syntax, types, module/name resolution, effects, failure behavior,
+diagnostics and source origins;</li>
+<li>standard-library and official-package APIs, including Web, ORM, jobs and
+their composed application workflows;</li>
+<li>project configuration, dependency/lock behavior, local and remote packages,
+host ecosystems, declarations, generators, adapters and supported plugin
+protocols;</li>
+<li>every exposed CLI operation, REPL and retained state, formatting, linting,
+testing, compiler services, LSP and editor-facing contracts;</li>
+<li>Go, Ruby and TypeScript emission/execution and their supported environments;</li>
+<li>install/update/distribution paths, supported host targets, release metadata,
+provenance, support/security routing, and bootstrap/recovery requirements.</li>
+</ul>
+<p>Each row states the observable contract, applicable implementation/output
+modes, expected success and failure behavior, owning test command, exact
+candidate/tool identities, result and remaining work owner. The shared
+manifest also identifies additional Native executable requirements. Missing,
+untested, blocked and contradictory rows remain visible; they cannot count as
+passing or disappear from the denominator. Existing narrower inventories
+remain useful evidence sources, not substitutes for the complete manifest.</p>
+<p>Keep the release baseline explicit. A shared feature added before v0.5.0 must
+enter the reviewed manifest and pass both implementations' applicable tests.
+Do not silently chase a moving branch or remove a failing feature to qualify a
+release. Changes to language/API contracts use the specification decision
+process and update both implementations and first-party consumers.</p>
+<h2 id="meaning-of-equivalence">Meaning of equivalence</h2>
+<p>The shared specification and conformance suite are the authority. Compare
+accepted and rejected programs, types, observable results and side effects,
+failure/lifetime behavior, public APIs, command behavior and structured
+protocols. Cover composed workflows, invalid input, runtime failure and
+retained REPL behavior, as well as individual features. A known Go bug or a
+mode inconsistency requires a reviewed correction, not automatic reproduction
+as language semantics.</p>
+<p>Generated source bytes, internal representations and implementation strategy
+need not match. Human-readable diagnostic wording need only match where the
+public contract or an existing required test specifies it; failure category,
+origin and structured diagnostics remain observable contracts. Performance
+is qualified separately under the existing criteria, not inferred from
+functional equivalence. Required correctness, memory, target, bootstrap,
+recovery and performance gates are not weakened by this transition.</p>
+<h2 id="versions-and-shared-maintenance">Versions and shared maintenance</h2>
+<p>Starting with the switch, publish matching TypeRB and Go implementation
+release versions, beginning with v0.5.0. A matching version means both releases
+satisfy the same shared contract, with the output difference above. Record
+implementation identity, source revision, contract digest, artifacts and
+provenance separately so equal version numbers never hide different binaries.
+Pair subsequent releases, including implementation-specific fixes; no shared
+feature is released on only one implementation under a supposedly equivalent
+version. Shared specifications, package sources and conformance fixtures have
+one canonical owner and are consumed at exact release identities.</p>
+<p>Reassess the duration and scope of Go maintenance after practical Native
+application use and release operations are stable. No automatic retirement
+date or silent reduction in the promised shared functionality is established.</p>
+<p>Before cutover, the Native repository retains its current independent
+implementation identity and exact compatibility pins. This policy replaces
+independent release numbering prospectively at v0.5.0; it does not rename old
+tags, relabel existing seeds, update a pin without validation, or reinterpret
+historical measurements. New immutable identities are required for new assets.</p>
+<h2 id="development-and-release-gates">Development and release gates</h2>
+<p>Prioritize complete practical application paths while closing the full
+contract. Native previews may become useful before all v0.5.0 requirements
+pass; publish their supported boundary explicitly. A preview does not waive
+the final parity gate or require delaying useful application work until every
+language edge case is complete.</p>
+<p>The release and repository cutover require:</p>
+<ol>
+<li>The reviewed full feature manifest passes for exact candidates on both
+implementations and every applicable output/target. There are no missing
+results, unexplained differences or silently excluded Go features.</li>
+<li>The Native executable path passes its additional portable application and
+supported-target contracts. Ordinary self-hosting/fixed points and the
+separate recovery path have current evidence.</li>
+<li>Required integration, memory/safety, diagnostic, performance and
+release/security qualification is complete. Migration CI alone is not
+final release qualification; historical criteria and failures retain their
+meaning.</li>
+<li>A reversible rehearsal preserves Go and Native source history and checks
+tags, immutable seeds/assets, package sources and Go module identities.
+Verify Homebrew, OCI, installers, Pages, editor integrations, checksums and
+provenance against the new repository/implementation ownership.</li>
+<li>Publish and verify the canonical v0.5.0 and matching Go release using the
+established release authorization and verified artifacts. Confirm that
+supported existing workflows still work with the replacement compiler.</li>
+<li>Transfer or explicitly dispose of every active issue, PR, claim, workflow,
+consumer and support/security route before archiving <code>type-rb-native</code>.
+Verify old links and historical assets remain useful, publish the redirect
+notice, then archive. Do not archive the development repository first.</li>
+</ol>
+<p>Work state, ownership, acceptance evidence and remaining dependencies belong
+in the linked initiative and its tasks. Existing language, MIR, tooling and
+application initiatives keep their criteria and ownership; this release
+outcome connects their evidence without closing or duplicating them.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.4.12-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-transition.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>
