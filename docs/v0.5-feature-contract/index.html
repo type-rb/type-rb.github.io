@@ -1,0 +1,1310 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="v0.5.0 shared feature contract — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/v0.5-feature-contract/">
+		<title>v0.5.0 shared feature contract — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Learn</a>
+				<a href="/play/">Playground</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="v050-shared-feature-contract">v0.5.0 shared feature contract</h1>
+<p>Generated by <code>go run ./tools/release-contract --write-view</code>. Edit the reviewed
+<a href="../contracts/v0.5/manifest.json">manifest</a>, not this view. See the <a href="https://github.com/type-rb/type-rb/blob/main/contracts/v0.5/README.md">maintenance and result contract</a>.</p>
+<p>Source: <a href="https://github.com/type-rb/type-rb/tree/a337ea6c5d72d495d8ea918dd8bfa30d1fa8ddc8"><code>a337ea6c5d72d495d8ea918dd8bfa30d1fa8ddc8</code></a>.
+Manifest SHA-256: <code>de700bf0224f6881059df5aeea5e5bfb5ba4fce69e82073cd5931a1413197ba7</code>.</p>
+<p>These are release obligations, <strong>not a support percentage</strong>. Every baseline is
+explicitly unqualified, blocked or contradictory. Existing tests and Native
+feature batches are evidence inputs; they do not qualify all release cells.</p>
+<p>Both implementations require each listed shared output. <code>service</code> means a
+CLI/protocol/distribution contract independent of emitted program language.
+The Native compiler additionally requires the executable path where indicated.
+All four retained host targets apply: darwin-amd64, darwin-arm64, linux-amd64, linux-arm64.</p>
+<h2 id="languagecore--lexical-forms-declarations-and-control-flow">language.core — Lexical forms, declarations and control flow</h2>
+<p>Preserve tokens, literal encodings, lexical source spans, declarations, constants, boolean conditions, evaluation order, value-producing branches, loops and transfers. Preserve comments/formatting where observable; internal AST nodes are ownership markers, not extra language features.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: language, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/454">https://github.com/type-rb/type-rb-native/issues/454</a></li>
+<li>Explicitly owned surfaces: 50 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="languagetypes--typing-identity-narrowing-and-effects">language.types — Typing, identity, narrowing and effects</h2>
+<p>Preserve portable integer/float bounds, mutable/readonly and fresh-collection inference, nullable/union/literal refinement, Any boxing, generic substitution, declaration identity and effect restrictions across ordinary and interactive paths.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: language, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/454">https://github.com/type-rb/type-rb-native/issues/454</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1120">https://github.com/type-rb/type-rb-native/issues/1120</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1128">https://github.com/type-rb/type-rb-native/issues/1128</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1135">https://github.com/type-rb/type-rb-native/issues/1135</a>, <a href="https://github.com/type-rb/type-rb-native/issues/691">https://github.com/type-rb/type-rb-native/issues/691</a>, <a href="https://github.com/type-rb/type-rb-native/issues/692">https://github.com/type-rb/type-rb-native/issues/692</a></li>
+<li>Explicitly owned surfaces: 13 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="languagecalls--methods-defaults-blocks-and-function-values">language.calls — Methods, defaults, blocks and function values</h2>
+<p>Preserve positional/named/default arguments, declaration-scoped defaults, callbacks, captured bindings, callable values, private access, generic methods and evaluation count/order.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: language, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/454">https://github.com/type-rb/type-rb-native/issues/454</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1134">https://github.com/type-rb/type-rb-native/issues/1134</a></li>
+<li>Explicitly owned surfaces: 6 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="languagenominal--classes-records-enums-aliases-and-newtypes">language.nominal — Classes, records, enums, aliases and newtypes</h2>
+<p>Preserve nominal and structural rules, construction/initialization, field defaults, inheritance, dispatch, aliases, raw/payload enum matching, interfaces and private newtype constructors. Keep deferred class design and known cross-mode dispatch discrepancies explicit.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>contradictory</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: language, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/454">https://github.com/type-rb/type-rb-native/issues/454</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1160">https://github.com/type-rb/type-rb-native/issues/1160</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1143">https://github.com/type-rb/type-rb-native/issues/1143</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1208">https://github.com/type-rb/type-rb-native/issues/1208</a>, <a href="https://github.com/type-rb/type-rb/issues/797">https://github.com/type-rb/type-rb/issues/797</a></li>
+<li>Explicitly owned surfaces: 16 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="languagemodules--imports-module-ownership-and-project-entry">language.modules — Imports, module ownership and project entry</h2>
+<p>Preserve named/namespace/bare aliases, import privacy, declaration origins, target activation, unused-binding rules, dependency loading and exactly-once project/interactive initialization.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: language, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/454">https://github.com/type-rb/type-rb-native/issues/454</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1180">https://github.com/type-rb/type-rb-native/issues/1180</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1127">https://github.com/type-rb/type-rb-native/issues/1127</a></li>
+<li>Explicitly owned surfaces: 6 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="languageresult--result-and-failure-control-flow">language.result — Result and failure control flow</h2>
+<p>Preserve Result variants, try/attempt/catch propagation, nested failure domains, handler signatures and control transfers through cleanup; success and failure payload types remain observable.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: language, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/454">https://github.com/type-rb/type-rb-native/issues/454</a></li>
+<li>Explicitly owned surfaces: 5 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="languagejsx--jsx-and-typescript-native-interoperation">language.jsx — JSX and TypeScript native interoperation</h2>
+<p>Preserve JSX intrinsic/component typing and expressions, typed native islands and target-specific capabilities on the documented TypeScript path. Do not turn platform APIs into portable Native APIs.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: typescript; Native executable: false.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: language, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="languagenative-islands--explicit-host-native-boundaries">language.native-islands — Explicit host native boundaries</h2>
+<p>Preserve declared Go/Ruby/TypeScript native declarations, blocks and expressions, package capabilities, symbol typing and target rejection. Host source islands are not an additional Native executable backend.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: false.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: language, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 3 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="builtinarray--array-receiver-api">builtin.array — Array receiver API</h2>
+<p>Preserve every public Array receiver declaration and signature in the catalog, including argument/default/block rules, mutation, bounds, result values, failure and retained interactive values. Test composed operations as well as individual calls.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="builtinboolean--boolean-receiver-api">builtin.boolean — Boolean receiver API</h2>
+<p>Preserve every public Boolean receiver declaration and signature in the catalog, including argument/default/block rules, mutation, bounds, result values, failure and retained interactive values. Test composed operations as well as individual calls.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="builtinbytes--bytes-receiver-api">builtin.bytes — Bytes receiver API</h2>
+<p>Preserve every public Bytes receiver declaration and signature in the catalog, including argument/default/block rules, mutation, bounds, result values, failure and retained interactive values. Test composed operations as well as individual calls.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="builtinfloat--float-receiver-api">builtin.float — Float receiver API</h2>
+<p>Preserve every public Float receiver declaration and signature in the catalog, including argument/default/block rules, mutation, bounds, result values, failure and retained interactive values. Test composed operations as well as individual calls.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="builtinhash--hash-receiver-api">builtin.hash — Hash receiver API</h2>
+<p>Preserve every public Hash receiver declaration and signature in the catalog, including argument/default/block rules, mutation, bounds, result values, failure and retained interactive values. Test composed operations as well as individual calls.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="builtininteger--integer-receiver-api">builtin.integer — Integer receiver API</h2>
+<p>Preserve every public Integer receiver declaration and signature in the catalog, including argument/default/block rules, mutation, bounds, result values, failure and retained interactive values. Test composed operations as well as individual calls.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="builtinrange--range-receiver-api">builtin.range — Range receiver API</h2>
+<p>Preserve every public Range receiver declaration and signature in the catalog, including argument/default/block rules, mutation, bounds, result values, failure and retained interactive values. Test composed operations as well as individual calls.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="builtinstring--string-receiver-api">builtin.string — String receiver API</h2>
+<p>Preserve every public String receiver declaration and signature in the catalog, including argument/default/block rules, mutation, bounds, result values, failure and retained interactive values. Test composed operations as well as individual calls.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="builtinstringbuilder--stringbuilder-receiver-api">builtin.stringbuilder — StringBuilder receiver API</h2>
+<p>Preserve every public StringBuilder receiver declaration and signature in the catalog, including argument/default/block rules, mutation, bounds, result values, failure and retained interactive values. Test composed operations as well as individual calls.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packageauthoidc--trbauthoidc">package.auth.oidc — trb/auth/oidc</h2>
+<p>Preserve OidcBearerOptions construction/defaults, OidcPrincipal fields and OidcAuthError kinds, including issuer/audience/JWKS/roles/clock-skew configuration consumed by Web Bearer authentication. This package does not promise an authorization-code/token-exchange client. Every public catalog member/signature belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagecli--trbcli">package.cli — trb/cli</h2>
+<p>Preserve typed command declarations, parsing, generated help, dispatch and process exit/error behavior on its currently supported Go output. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 7 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagehttp--trbhttp">package.http — trb/http</h2>
+<p>Preserve HttpMethod values, ordered Headers operations and byte-backed Body values, including construction, aliases, type identity, mutation/copy and text/byte conversion. Browser HttpClient belongs to its TypeScript platform package; networking is not inferred from the HTTP value package. Every public catalog member/signature belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/631">https://github.com/type-rb/type-rb-native/issues/631</a>, <a href="https://github.com/type-rb/type-rb-native/issues/626">https://github.com/type-rb/type-rb-native/issues/626</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagejobs--trbjobs">package.jobs — trb/jobs</h2>
+<p>Preserve job declaration, enqueue/perform/retry/discard, durable payload and lease lifecycle. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/631">https://github.com/type-rb/type-rb-native/issues/631</a>, <a href="https://github.com/type-rb/type-rb-native/issues/627">https://github.com/type-rb/type-rb-native/issues/627</a></li>
+<li>Explicitly owned surfaces: 9 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagejobssql--trbjobssql">package.jobs.sql — trb/jobs/sql</h2>
+<p>Preserve SQL job persistence, claim/release/timeout and database adapter failure semantics. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/631">https://github.com/type-rb/type-rb-native/issues/631</a></li>
+<li>Explicitly owned surfaces: 3 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packageorm--trborm">package.orm — trb/orm</h2>
+<p>Preserve typed schema/query/projection, relation loading, CRUD, transactions and SQLite/MySQL failure/cleanup contracts. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/629">https://github.com/type-rb/type-rb-native/issues/629</a>, <a href="https://github.com/type-rb/type-rb-native/issues/630">https://github.com/type-rb/type-rb-native/issues/630</a></li>
+<li>Explicitly owned surfaces: 11 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packageplatformgocontext--trbplatformgocontext">package.platform.go.context — trb/platform/go/context</h2>
+<p>Preserve the documented trb/platform/go/context host API, native symbol declarations, provider behavior and target-specific dependency integration. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go; Native executable: false.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: ecosystem, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packageplatformgogorm--trbplatformgogorm">package.platform.go.gorm — trb/platform/go/gorm</h2>
+<p>Preserve the documented trb/platform/go/gorm host API, native symbol declarations, provider behavior and target-specific dependency integration. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go; Native executable: false.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: ecosystem, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packageplatformgohttp--trbplatformgohttp">package.platform.go.http — trb/platform/go/http</h2>
+<p>Preserve the documented trb/platform/go/http host API, native symbol declarations, provider behavior and target-specific dependency integration. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go; Native executable: false.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: ecosystem, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packageplatformrubynative--trbplatformrubynative">package.platform.ruby.native — trb/platform/ruby/native</h2>
+<p>Preserve the documented trb/platform/ruby/native host API, native symbol declarations, provider behavior and target-specific dependency integration. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: ruby; Native executable: false.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: ecosystem, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packageplatformrubyrails--trbplatformrubyrails">package.platform.ruby.rails — trb/platform/ruby/rails</h2>
+<p>Preserve the documented trb/platform/ruby/rails host API, native symbol declarations, provider behavior and target-specific dependency integration. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: ruby; Native executable: false.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: ecosystem, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packageplatformtypescriptbrowser--trbplatformtypescriptbrowser">package.platform.typescript.browser — trb/platform/typescript/browser</h2>
+<p>Preserve the documented trb/platform/typescript/browser host API, native symbol declarations, provider behavior and target-specific dependency integration. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: typescript; Native executable: false.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: ecosystem, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 5 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packageplatformtypescriptdom--trbplatformtypescriptdom">package.platform.typescript.dom — trb/platform/typescript/dom</h2>
+<p>Preserve the documented trb/platform/typescript/dom host API, native symbol declarations, provider behavior and target-specific dependency integration. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: typescript; Native executable: false.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: ecosystem, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packageplatformtypescriptnode--trbplatformtypescriptnode">package.platform.typescript.node — trb/platform/typescript/node</h2>
+<p>Preserve the documented trb/platform/typescript/node host API, native symbol declarations, provider behavior and target-specific dependency integration. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: typescript; Native executable: false.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: ecosystem, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packageplatformtypescriptreact--trbplatformtypescriptreact">package.platform.typescript.react — trb/platform/typescript/react</h2>
+<p>Preserve the documented trb/platform/typescript/react host API, native symbol declarations, provider behavior and target-specific dependency integration. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: typescript; Native executable: false.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: ecosystem, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 5 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestddigest--trbstddigest">package.std.digest — trb/std/digest</h2>
+<p>Preserve documented digest algorithms, byte inputs and encoded outputs. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestddir--trbstddir">package.std.dir — trb/std/dir</h2>
+<p>Preserve anchored directory capabilities, RelativePath containment, listing/creation, lifetime and escape/close failure boundaries. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 4 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdencodingbase64--trbstdencodingbase64">package.std.encoding.base64 — trb/std/encoding/base64</h2>
+<p>Preserve Base64 alphabets/padding, round trips and malformed-input errors. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdencodinghex--trbstdencodinghex">package.std.encoding.hex — trb/std/encoding/hex</h2>
+<p>Preserve hexadecimal encoding/decoding and malformed-input errors. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestderrors--trbstderrors">package.std.errors — trb/std/errors</h2>
+<p>Preserve standard error domains and identity across imports and nested Result values. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdfile--trbstdfile">package.std.file — trb/std/file</h2>
+<p>Preserve scoped File.open modes, bounded byte/text reads, byte/text writes, FileSystemError domains and close/error precedence. Preserve scoped resource typing and reject escape/suspension as specified. Every public catalog member/signature belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 3 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdhmac--trbstdhmac">package.std.hmac — trb/std/hmac</h2>
+<p>Preserve keyed digest algorithms, byte keys/messages and result encodings. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdio--trbstdio">package.std.io — trb/std/io</h2>
+<p>Preserve IO.puts output, accepted argument and newline behavior, output errors where specified and interactive execution. Do not infer additional stream APIs from the package name. Every public catalog member/signature belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdjson--trbstdjson">package.std.json — trb/std/json</h2>
+<p>Preserve JSON parse/encode and typed codecs, numeric/string/null/container values and deterministic codec errors. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>contradictory</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/1138">https://github.com/type-rb/type-rb-native/issues/1138</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1179">https://github.com/type-rb/type-rb-native/issues/1179</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdjsonc--trbstdjsonc">package.std.jsonc — trb/std/jsonc</h2>
+<p>Preserve JSONC line/block comments and JSON value/error semantics. Both JSON and JSONC reject trailing commas. Every public catalog member/signature belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdmath--trbstdmath">package.std.math — trb/std/math</h2>
+<p>Preserve portable numeric functions, domains, finite/non-finite results and rounding boundaries. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdpath--trbstdpath">package.std.path — trb/std/path</h2>
+<p>Preserve Path/RelativePath grammar, validation precedence, join/child/parent and exact parent spelling without filesystem I/O. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/1219">https://github.com/type-rb/type-rb-native/issues/1219</a></li>
+<li>Explicitly owned surfaces: 6 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdprocess--trbstdprocess">package.std.process — trb/std/process</h2>
+<p>Preserve process arguments/environment, subprocess execution, status, signals and pipe/resource cleanup. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdrandom--trbstdrandom">package.std.random — trb/std/random</h2>
+<p>Preserve Random.integer bound rules and Random.float result range, including invalid-bound behavior. No public seeding or generator-state API is implied. Every public catalog member/signature belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdresult--trbstdresult">package.std.result — trb/std/result</h2>
+<p>Preserve Result variants, generic payloads, predicates/projections and propagation. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdsecure-compare--trbstdsecure-compare">package.std.secure_compare — trb/std/secure_compare</h2>
+<p>Preserve equal-length and unequal-length constant-time comparison behavior. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdsecure-random--trbstdsecure-random">package.std.secure_random — trb/std/secure_random</h2>
+<p>Preserve SecureRandom.bytes length/result/error behavior and use of the host cryptographic entropy source. Every public catalog member/signature belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdstring-builder--trbstdstring-builder">package.std.string_builder — trb/std/string_builder</h2>
+<p>Preserve StringBuilder.new and from_string construction and initial content; the complete receiver API is separately owned by builtin.stringbuilder. Every public catalog member/signature belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdtest--trbstdtest">package.std.test — trb/std/test</h2>
+<p>Preserve test/suite declarations, assertions, selection, isolation, failure reporting and exit behavior. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>contradictory</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/624">https://github.com/type-rb/type-rb-native/issues/624</a>, <a href="https://github.com/type-rb/type-rb-native/issues/643">https://github.com/type-rb/type-rb-native/issues/643</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdtime--trbstdtime">package.std.time — trb/std/time</h2>
+<p>Preserve Instant/duration/time-zone/clock operations, parsing/formatting/codecs and portable range/error semantics. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>contradictory</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/625">https://github.com/type-rb/type-rb-native/issues/625</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1187">https://github.com/type-rb/type-rb-native/issues/1187</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1188">https://github.com/type-rb/type-rb-native/issues/1188</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1189">https://github.com/type-rb/type-rb-native/issues/1189</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdunicode--trbstdunicode">package.std.unicode — trb/std/unicode</h2>
+<p>Preserve the versioned Unicode scalar, letter/digit/whitespace/case/identifier predicates and from_codepoint conversion, including invalid scalar behavior. Case predicates do not imply normalization or case-conversion APIs. Every public catalog member/signature belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdunit--trbstdunit">package.std.unit — trb/std/unit</h2>
+<p>Preserve Unit values in generic results and target emission. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagestdurl--trbstdurl">package.std.url — trb/std/url</h2>
+<p>Preserve URL component encode/decode and query parse/build behavior, repeated keys and malformed-input handling; this is not a general URL parser. Every public catalog member/signature belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: library, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packageweb--trbweb">package.web — trb/web</h2>
+<p>Preserve routing/context/typed parameter binding, response serialization, endpoint contracts, OpenAPI/client generation and server/request lifecycle. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>contradictory</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/628">https://github.com/type-rb/type-rb-native/issues/628</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1175">https://github.com/type-rb/type-rb-native/issues/1175</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1178">https://github.com/type-rb/type-rb-native/issues/1178</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1183">https://github.com/type-rb/type-rb-native/issues/1183</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1184">https://github.com/type-rb/type-rb-native/issues/1184</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1192">https://github.com/type-rb/type-rb-native/issues/1192</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1207">https://github.com/type-rb/type-rb-native/issues/1207</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1211">https://github.com/type-rb/type-rb-native/issues/1211</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1212">https://github.com/type-rb/type-rb-native/issues/1212</a></li>
+<li>Explicitly owned surfaces: 3 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagewebauthbearer--trbwebauthbearer">package.web.auth.bearer — trb/web/auth/bearer</h2>
+<p>Preserve Bearer token extraction, verification, context propagation and authentication failures. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagewebmiddleware--trbwebmiddleware">package.web.middleware — trb/web/middleware</h2>
+<p>Preserve middleware registration/order, next-handler invocation and request/response/error propagation. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagewebmiddlewarecompression--trbwebmiddlewarecompression">package.web.middleware.compression — trb/web/middleware/compression</h2>
+<p>Preserve negotiated response compression and header/body consistency. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagewebmiddlewarecors--trbwebmiddlewarecors">package.web.middleware.cors — trb/web/middleware/cors</h2>
+<p>Preserve cross-origin headers, preflight and allowed/denied request behavior. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagewebmiddlewarelogger--trbwebmiddlewarelogger">package.web.middleware.logger — trb/web/middleware/logger</h2>
+<p>Preserve request logging fields, completion/errors and middleware ordering. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagewebmiddlewarerequest-id--trbwebmiddlewarerequest-id">package.web.middleware.request_id — trb/web/middleware/request_id</h2>
+<p>Preserve request ID input/generation, response propagation and context. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagewebmiddlewaresecure-headers--trbwebmiddlewaresecure-headers">package.web.middleware.secure_headers — trb/web/middleware/secure_headers</h2>
+<p>Preserve documented security response headers and override behavior. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagewebmiddlewaretimeout--trbwebmiddlewaretimeout">package.web.middleware.timeout — trb/web/middleware/timeout</h2>
+<p>Preserve request deadlines, timeout responses and cleanup after cancellation. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="packagewebtesting--trbwebtesting">package.web.testing — trb/web/testing</h2>
+<p>Preserve in-process request/response testing, typed handlers and faithful error/status/body observation. Every public catalog member/signature, alias, capability and provider belongs to this row; registry membership alone is not passing evidence.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="clifmt--formatting">cli.fmt — Formatting</h2>
+<p>Preserve deterministic formatting, check/write/stdin/config behavior, comments and origin-sensitive syntax.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 4 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="clilint--linting">cli.lint — Linting</h2>
+<p>Preserve configured rule set, severities, diagnostics, safe fixes and invalid-config handling.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 18 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="clicheck--checking">cli.check — Checking</h2>
+<p>Preserve project/standalone analysis, target validation, structured diagnostics and exit status without executing user code.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 3 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="clibuild--build">cli.build — Build</h2>
+<p>Preserve target generation, outfile/stdout/project outputs, native dependency setup, compile integration and build failures.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 3 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="clirun--run">cli.run — Run</h2>
+<p>Preserve standalone/project entry, arguments, build caching, execution status, signals and cleanup.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="clirepl--repl">cli.repl — REPL</h2>
+<p>Preserve interactive declarations/imports, retained bindings and values, display/diagnostic contracts, failed-submission rollback and exit.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 4 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="clitest--project-tests">cli.test — Project tests</h2>
+<p>Preserve discovery, name patterns, execution, assertions, suite nesting, reporting, failure status and project configuration. Resolve the known suite-name selection discrepancy before qualification.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>contradictory</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/643">https://github.com/type-rb/type-rb-native/issues/643</a>, <a href="https://github.com/type-rb/type-rb-native/issues/624">https://github.com/type-rb/type-rb-native/issues/624</a></li>
+<li>Explicitly owned surfaces: 6 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="clipackages--project-and-dependency-commands">cli.packages — Project and dependency commands</h2>
+<p>Preserve init/add/remove/update/sync/install, trbconfig/trb.lock, local/remote/official dependencies, integrity/frozen/offline behavior and deterministic configuration edits.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 27 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="cliadapter--adapter-operations">cli.adapter — Adapter operations</h2>
+<p>Preserve adapter check/test, canonical declaration projections, fixture selection, structured diagnostics and layer-specific failures.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 5 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="clicompiler--compiler-services">cli.compiler — Compiler services</h2>
+<p>Preserve compiler inspect/bootstrap-snapshot output schema, exact inputs, deterministic source identity and invalid/unsupported requests.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 11 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="clidb--database-operations">cli.db — Database operations</h2>
+<p>Preserve schema check/export/plan/lock/apply, database target/credentials input, transactional behavior, lock identity and failure status.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 19 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="clijobs--job-administration">cli.jobs — Job administration</h2>
+<p>Preserve worker start and job list/retry/discard, filtering, lease/status persistence, signal shutdown and invalid-operation errors.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 6 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="cliweb--web-artifacts">cli.web — Web artifacts</h2>
+<p>Preserve endpoint OpenAPI and browser client generation, deterministic artifacts, collision/invalid-contract rejection and package boundaries until their architecture review.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/1211">https://github.com/type-rb/type-rb-native/issues/1211</a></li>
+<li>Explicitly owned surfaces: 6 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="clilsp--language-server">cli.lsp — Language server</h2>
+<p>Preserve stdio/service startup, capabilities, request/cancel/shutdown and document/project state synchronization.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 3 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="clibrowser--playground-and-tour">cli.browser — Playground and tour</h2>
+<p>Preserve local browser/HTTP and WASM playground, interactive tour examples, versions, diagnostics and load/update behavior.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: browser, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 5 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="cliclean--generated-output-cleanup">cli.clean — Generated-output cleanup</h2>
+<p>Preserve the documented output/cache scope and configuration validation; do not remove source or unrelated files.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 3 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="clihelp--help-and-version">cli.help — Help and version</h2>
+<p>Preserve command spellings/aliases, help/status, implementation/version/target reporting and invalid-command rejection.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: cli, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Explicitly owned surfaces: 7 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="ecosystemprotocols--packages-adapters-and-extension-protocols">ecosystem.protocols — Packages, adapters and extension protocols</h2>
+<p>Preserve manifest/lock schemas, source and native dependency resolution, declaration/provider/runtime adapters, generation protocols, version negotiation, sandbox/trust boundaries and fail-closed invalid responses. Preserve all public fields in the catalog.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: ecosystem, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/636">https://github.com/type-rb/type-rb-native/issues/636</a></li>
+<li>Explicitly owned surfaces: 140 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="toolingprotocols--diagnostics-compiler-and-lsp-schemas">tooling.protocols — Diagnostics, compiler and LSP schemas</h2>
+<p>Preserve diagnostic codes/categories/spans/source maps, JSON service envelopes, capabilities, all LSP inputs/notifications and editor-facing result structures; reject malformed messages without corrupting retained state.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: protocol, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/455">https://github.com/type-rb/type-rb-native/issues/455</a></li>
+<li>Explicitly owned surfaces: 126 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="editorintegrations--editor-integration-and-syntax-distribution">editor.integrations — Editor integration and syntax distribution</h2>
+<p>Preserve VS Code commands/settings/activation/debug-test tooling, syntax grammar and Neovim/JetBrains/GitHub integration instructions against the canonical compiler and stable LSP behavior.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: editor, github-extension, syntax-grammar, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1168">https://github.com/type-rb/type-rb-native/issues/1168</a></li>
+<li>Explicitly owned surfaces: 11 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="distribution--installation-and-paired-release-artifacts">distribution — Installation and paired release artifacts</h2>
+<p>Preserve Darwin/Linux amd64/arm64 CLI archives, executable permissions, Homebrew, OCI, checksums/provenance, release notes, Pages/WASM, package indexes and editor release routes. Rehearse history/immutable seed/support/security handoff before cutover; current Native host gaps remain unqualified.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: accepted-input, rejected-input, structured-output, retained-state-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: distribution, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1168">https://github.com/type-rb/type-rb-native/issues/1168</a></li>
+<li>Explicitly owned surfaces: 31 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="outputgo--go-source-backend">output.go — go source backend</h2>
+<p>Preserve go source generation, backend naming/effects and dependency wiring, build/run execution, source origins, failure behavior and retained interactive semantics for every applicable language/package contract. Source text alone is insufficient.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go; Native executable: false.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: outputs, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/1164">https://github.com/type-rb/type-rb-native/issues/1164</a></li>
+<li>Explicitly owned surfaces: 2 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="outputruby--ruby-source-backend">output.ruby — ruby source backend</h2>
+<p>Preserve ruby source generation, backend naming/effects and dependency wiring, build/run execution, source origins, failure behavior and retained interactive semantics for every applicable language/package contract. Source text alone is insufficient.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: ruby; Native executable: false.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: outputs, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/1164">https://github.com/type-rb/type-rb-native/issues/1164</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="outputtypescript--typescript-source-backend">output.typescript — typescript source backend</h2>
+<p>Preserve typescript source generation, backend naming/effects and dependency wiring, build/run execution, source origins, failure behavior and retained interactive semantics for every applicable language/package contract. Source text alone is insufficient.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: typescript; Native executable: false.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: outputs, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/1164">https://github.com/type-rb/type-rb-native/issues/1164</a></li>
+<li>Explicitly owned surfaces: 1 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="applicationcomposed--composed-web-orm-and-durable-jobs">application.composed — Composed Web, ORM and durable jobs</h2>
+<p>Run the public Web/ORM/jobs tutorial and corresponding project scenarios end to end: route input, transactional data changes, job enqueue/retry, durable database state, HTTP response and worker cleanup. Retain SQLite/MySQL and backend applicability rather than treating isolated helpers as application acceptance.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: go, native.</li>
+<li>Shared outputs: go, ruby, typescript; Native executable: true.</li>
+<li>Obligations: check-accepted, check-rejected, emit-build, execute, repl-state, failure-cleanup.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: application, native-projects, native-cli.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/622">https://github.com/type-rb/type-rb-native/issues/622</a>, <a href="https://github.com/type-rb/type-rb-native/issues/628">https://github.com/type-rb/type-rb-native/issues/628</a>, <a href="https://github.com/type-rb/type-rb-native/issues/629">https://github.com/type-rb/type-rb-native/issues/629</a>, <a href="https://github.com/type-rb/type-rb-native/issues/630">https://github.com/type-rb/type-rb-native/issues/630</a>, <a href="https://github.com/type-rb/type-rb-native/issues/631">https://github.com/type-rb/type-rb-native/issues/631</a>, <a href="https://github.com/type-rb/type-rb-native/issues/632">https://github.com/type-rb/type-rb-native/issues/632</a></li>
+<li>Explicitly owned surfaces: 12 (full names and members in the manifest/catalog).</li>
+</ul>
+<h2 id="nativequalification--native-bootstrap-runtime-and-retained-gates">native.qualification — Native bootstrap, runtime and retained gates</h2>
+<p>Qualify ordinary self-hosting/fixed points, independent snapshot recovery, managed memory/resource stability, interruption, supported targets and existing performance/security criteria at exact source and tool identities. This inventory does not replace their existing acceptance procedures.</p>
+<p>Failure boundary: Reject invalid types, visibility, arguments and unsupported target operations with the specified category/origin; retain defined runtime errors and cleanup. Known disagreements require a specification decision, not changed expectations.</p>
+<ul>
+<li>Implementations: native.</li>
+<li>Shared outputs: service; Native executable: false.</li>
+<li>Obligations: ordinary-bootstrap, recovery, runtime-safety, targets, performance, security.</li>
+<li>Baseline: <strong>unqualified</strong>; qualification plan ready: <strong>false</strong>.</li>
+<li>Owning commands: native-cli, native-language.</li>
+<li>Remaining: Map every owned declaration and semantic boundary to an exact-candidate scenario; review the per-output plan and record non-skipped success/failure evidence on all required hosts. Existing source tests are not a complete paired-candidate result.</li>
+<li>Next action owner: <a href="https://github.com/type-rb/type-rb-native/issues/1221">https://github.com/type-rb/type-rb-native/issues/1221</a></li>
+<li>Existing work/decisions: <a href="https://github.com/type-rb/type-rb-native/issues/104">https://github.com/type-rb/type-rb-native/issues/104</a>, <a href="https://github.com/type-rb/type-rb-native/issues/608">https://github.com/type-rb/type-rb-native/issues/608</a>, <a href="https://github.com/type-rb/type-rb-native/issues/439">https://github.com/type-rb/type-rb-native/issues/439</a>, <a href="https://github.com/type-rb/type-rb-native/issues/1164">https://github.com/type-rb/type-rb-native/issues/1164</a></li>
+<li>Explicitly owned surfaces: 0 (full names and members in the manifest/catalog).</li>
+</ul>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.4.12-dev</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/v0.5-feature-contract.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>
