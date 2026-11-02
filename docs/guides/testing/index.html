@@ -163,6 +163,17 @@ other tools.</p>
 </ul>
 <p>Equality assertions compare portable values structurally across backends,
 including Arrays, Hashes, records, and value-carrying enums.</p>
+<p>Failures show the names you wrote in TypeRB. For example, comparing two
+<code>Point</code> records produces the same message in Go, Ruby, and TypeScript:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span>expected Point(x: 1, y: 2) to equal Point(x: 1, y: 3)</span></span>
+<span class="line"><span></span></span></code></pre>
+<p>Nested values keep this display, including Result payloads and records decoded
+from JSON. Hash keys have a stable sorted order. Long strings and collections
+use <code>...</code>, and recursive values use <code>&lt;cycle&gt;</code>. Rendering does not call your
+<code>to_s</code> method. A payloadless enum displays its member name, such as <code>&quot;North&quot;</code>;
+a raw-value enum displays its declared raw value, such as <code>&quot;READY&quot;</code>.
+This diagnostic display is not a serialization format; its complete bounds
+and value rules are in the <a href="/docs/specification/#43-test-declarations">testing specification</a>.</p>
 <p><code>describe()</code> contains nested <code>describe()</code> and <code>test()</code> declarations. A
 <code>test()</code> body is ordinary TypeRB code, so shared setup is an explicit helper
 function and data-driven tests use an Array with <code>each</code>:</p>
