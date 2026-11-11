@@ -154,10 +154,22 @@ Floats provide <code>abs()</code>, <code>floor()</code>, <code>ceil()</code>, <c
 non-finite and out-of-range results. <code>round()</code> resolves halfway values away
 from zero. <code>abs()</code> converts negative zero to positive zero and leaves NaN as
 NaN.</p>
-<p><code>trb/std/math</code> provides <code>sqrt</code>, <code>exp</code>, <code>log</code>, <code>log2</code>, and <code>log10</code>, returning
+<p><code>trb/std/math</code> provides <code>sqrt</code>, <code>exp</code>, <code>log</code>, <code>log2</code>, <code>log10</code>, <code>sin</code>, <code>cos</code>, and <code>pow</code>, returning
 Float. Integer arguments use the ordinary safe widening to Float. Negative
 square roots and logarithms are NaN, and logarithms of zero are negative
-infinity. Exponentiation remains the <code>**</code> operator.</p>
+infinity.</p>
+<p><code>Math.sin(value)</code> and <code>Math.cos(value)</code> take radians. Sine preserves signed zero;
+cosine of either zero is 1. Both return NaN for infinite or NaN inputs.
+<code>Math.pow(base, exponent)</code> always selects Float exponentiation, including when
+its arguments are Integers; Integer <code>**</code> continues to use checked Integer
+arithmetic. Power follows the special-value rules of
+<a href="https://pkg.go.dev/math#Pow">Go math.Pow</a>: a zero exponent or base 1 produces 1
+even with NaN, and <code>pow(-1, Infinity)</code> and <code>pow(-1, -Infinity)</code> produce 1. A finite
+negative base with a finite non-integral exponent produces NaN, never a complex
+value. Signed zero and infinity retain the sign for odd integral powers;
+overflow produces infinity and underflow can produce zero. Finite results use
+each backend's binary64 math implementation, so last-bit rounding differences
+are permitted across backends and the REPL.</p>
 <p><code>Boolean#to_s()</code> returns lowercase <code>&quot;true&quot;</code> or <code>&quot;false&quot;</code>.</p>
 <p><code>String#size</code>, <code>[]</code>, <code>try_fetch</code>, <code>slice</code>, <code>try_slice</code>, <code>index</code>, and <code>rindex</code>
 operate on Unicode code points rather than encoded bytes. Indexes are
