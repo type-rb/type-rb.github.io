@@ -134,6 +134,27 @@ the configured roles claim. Provider metadata and JWKS documents are bounded
 to 1 MiB and cached for five minutes. An unknown key ID triggers one
 rate-limited JWKS refresh so normal signing-key rotation does not create an
 unbounded provider request path.</p>
+<p>Endpoint hostnames are normalized before connecting, including discovery,
+JWKS URLs and redirect targets. Every output uses non-transitional UTS #46
+with Unicode 17.0.0 tables and explicit hostname validation. For example,
+<code>ＢＵＣＨＥＲ.example.invalid</code> connects to <code>bucher.example.invalid</code>, while
+<code>bücher.example.invalid</code> connects to <code>xn--bcher-kva.example.invalid</code>.
+Invalid names fail as provider errors before a connection to that target.
+Paths and queries retain their contents. A terminal DNS root dot and ordinary
+IPv4/IPv6 literals are supported; ambiguous numeric URL forms such as <code>127.1</code>
+are rejected.</p>
+<p>This normalization applies to network addresses. The configured issuer,
+discovery issuer and JWT <code>iss</code> claim still require exact string equality;
+Unicode and ASCII spellings do not become interchangeable identity values.
+Redirects use the same hostname validation and one five-second request budget,
+with at most ten requests. HTTP and HTTPS are the supported endpoint schemes.
+Environment proxies continue to follow the selected runtime's transport policy;
+Node requires its explicit environment-proxy option. Hostname normalization
+also precedes the transport's proxy exclusion and TLS name checks.</p>
+<p>See the <a href="https://github.com/type-rb/type-rb/blob/main/internal/oidchost/README.md">provider pins and qualification</a>
+for dependency identities, validation flags and the Ruby source/table update
+procedure. Run <code>trb install</code> to install managed dependencies before running
+generated Go or TypeScript sources directly.</p>
 <p>Server-managed browser sessions, authorization-code PKCE, cookie-key rotation,
 and pluggable session stores are not part of this first bearer profile. Keep
 production issuers and JWKS endpoints on HTTPS and apply authorization policy
