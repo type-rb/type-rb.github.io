@@ -932,6 +932,19 @@ stdout and stderr. A started process with any exit status is
 The command is a literal executable name or path, even with an empty argument
 array. Spaces and shell metacharacters are never interpreted as a command line;
 paths containing spaces and literal argument values remain supported.</p>
+<p>An unsupported executable format is a launch error. There is no implicit shell
+fallback: scripts must have an OS-supported <code>#!</code> interpreter or be passed to an
+explicit interpreter, for example <code>Process.run(&quot;/bin/sh&quot;, [&quot;script&quot;])</code>.
+Captured output uses the same UTF-8 decoding as <code>Bytes#to_s()</code>, independently of
+read boundaries, and preserves a leading U+FEFF. A child that exits with status
+127 is still <code>Ok</code>; signal termination has status <code>-1</code> and <code>success: false</code>.</p>
+<p>On Linux and macOS, Ruby output uses Fiddle 1.1.8 and TypeScript output uses
+Koffi 3.3.7 to call the OS execution API without a shell fallback. Importing
+Process adds the selected adapter to managed host dependencies; run <code>trb install</code>
+before executing the generated program. Externally managed projects declare
+the same dependency in their Gemfile or package.json. Standalone TypeScript
+programs use dependencies already installed alongside their source or an
+ancestor directory. Go output and the typed-IR REPL need no additional adapter.</p>
 <h2 id="json-and-jsonc">JSON and JSONC</h2>
 <p><code>trb/std/json</code> provides an explicit JSON value enum plus typed record codecs:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#A5D6FF"> trb/std/json</span></span>
