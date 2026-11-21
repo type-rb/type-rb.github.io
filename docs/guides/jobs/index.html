@@ -226,6 +226,9 @@ remain deterministic.</p>
 <span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> jobs</span><span style="color:#A5D6FF"> retry</span><span style="color:#A5D6FF"> JOB_ID</span></span>
 <span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> jobs</span><span style="color:#A5D6FF"> discard</span><span style="color:#A5D6FF"> JOB_ID</span></span>
 <span class="line"></span></code></pre>
+<p>Jobs commands require an application entrypoint with a configured adapter and
+a discovered Job class. If the entrypoint cannot dispatch Jobs commands, the
+CLI reports an error before starting the application.</p>
 <p>One command process runs one worker. PostgreSQL and MySQL support multiple
 worker processes through short atomic claims. SQLite is for local and small
 single-worker use only. <code>--once</code> claims at most one ready Job and is useful for
