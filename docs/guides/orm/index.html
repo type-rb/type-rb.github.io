@@ -354,6 +354,10 @@ with <code>try</code> from its body rolls the transaction back; an outer <code>c
 after rollback completes. The block's final successful value becomes the
 transaction's <code>Ok</code> payload. An authored <code>return</code> cannot cross the transaction
 boundary.</p>
+<p>A transaction handle is valid for the duration of its block. A query built with
+<code>using(transaction)</code> returns a database error if executed after that block
+ends. The same rule applies to a nested transaction whose savepoint has ended,
+even while the outer transaction can still execute queries.</p>
 <p>Model classes and filtered relations both support <code>update_all()</code>, <code>delete_all()</code>,
 and <code>destroy_all()</code>. Direct deletes skip lifecycle behavior; destroy operations
 run the configured <code>dependent: destroy</code>, <code>delete</code>, <code>nullify</code>, or <code>restrict</code> rule.</p>
