@@ -206,9 +206,10 @@ implicit Result boundary.</p>
 registry, or mock-generation magic. Tests use ordinary constructors,
 interfaces, and explicit fake implementations. Higher-level testing packages
 can build on this portable core without changing the runner protocol.</p>
-<p>The VS Code extension discovers the same suite hierarchy through <code>trb lsp</code>,
-shows it in Test Explorer, and supports running a project, suite, or individual
-case. Go projects can also debug those selections with ordinary <code>.trb</code>
+<p>The VS Code extension discovers suites through <code>trb lsp</code> and groups them by
+file in Test Explorer. Run a project or a file to execute all its tests.
+Suite and case selections use the compiler's test-name filter when available.
+Go projects can also debug those selections with ordinary <code>.trb</code>
 breakpoints, stepping, and variable inspection through Delve. Test CodeLens
 actions use that same native Testing API and debugger integration.</p>
 <p>TypeScript process tests currently require the Bun or Node runtime. Browser
