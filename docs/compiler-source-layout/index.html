@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Compiler source responsibilities — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/compiler-source-layout/">
+		<title>Compiler source responsibilities — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="compiler-source-responsibilities">Compiler source responsibilities</h1>
+<p>The ordinary compiler entry is <code>compiler/src/compiler.trb</code>. Other production
+modules live under the following responsibility owners. Redundant filename
+prefixes are removed when the directory supplies the same context; meaningful names and
+function names are retained. <code>compiler/cli</code> composes the core with CLI and
+REPL adapters. <code>recovery/src</code> contains the independent recovery implementation.</p>
+<table>
+<thead>
+<tr>
+<th>Owner under <code>compiler/src</code></th>
+<th>Responsibility</th>
+<th>Permitted other owners</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>frontend/syntax</code></td>
+<td>Scanning, escape decoding, parsed declarations and source regions</td>
+<td>types, resolution, state, support</td>
+</tr>
+<tr>
+<td><code>frontend/types</code></td>
+<td>Language type models, nominal identities and substitutions</td>
+<td>resolution, state, support; the two projection exceptions below</td>
+</tr>
+<tr>
+<td><code>frontend/resolution</code></td>
+<td>Import and declaration lookup, specialization and argument binding</td>
+<td>types, syntax, providers, state, support, MIR, project</td>
+</tr>
+<tr>
+<td><code>frontend/checking</code></td>
+<td>Expression, statement and body checking; checked operation construction</td>
+<td>types, resolution, syntax, providers, state, support, MIR, project</td>
+</tr>
+<tr>
+<td><code>frontend/providers</code></td>
+<td>Loader-owned package declarations and checked-schema specialization into ordinary TypeRB bodies</td>
+<td>types, resolution, syntax, state, support, project</td>
+</tr>
+<tr>
+<td><code>state</code></td>
+<td>Compilation state and function-owned checked projections</td>
+<td>types, support, MIR; the parsed-iteration exception below</td>
+</tr>
+<tr>
+<td><code>mir</code></td>
+<td>Target-independent IR, construction, proofs, passes and verification</td>
+<td>checking, types, syntax, resolution, state, support</td>
+</tr>
+<tr>
+<td><code>backend/qbe</code></td>
+<td>QBE serialization and emitted runtime and data routines</td>
+<td>MIR, state, support, types; the intrinsic-identity exception below</td>
+</tr>
+<tr>
+<td><code>project</code></td>
+<td>Configuration, packages, standard-library source catalog and host files</td>
+<td>support, syntax, providers, state</td>
+</tr>
+<tr>
+<td><code>support</code></td>
+<td>Storage, path and literal helpers, Unicode identifier data</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<p>Owners may import themselves. The entry composes core owners. Reciprocal
+frontend/MIR imports are permitted; a directory cycle is not an error. These
+rules constrain architecture independently of the language's compilation-unit
+and initialization rules.</p>
+<p>Four declaration-specific edges supplement the table:</p>
+<ul>
+<li><code>backend/qbe/emit/constants</code> imports <code>frontend/resolution/entry_resolution</code>
+for declaration-bound intrinsic identity.</li>
+<li><code>frontend/types/transform_model</code> imports <code>frontend/syntax/iteration_syntax</code>
+and <code>mir/model/iteration</code> for its shared parsed and checked projections.</li>
+<li><code>state/source_state</code> imports <code>frontend/syntax/iteration_syntax</code> for the parsed
+iteration regions retained by <code>CompilerParsedProgram</code>.</li>
+</ul>
+<p>The exceptions do not grant other modules access to those whole layers.
+Core modules cannot import CLI adapters. Production modules cannot import test
+modules, <code>testing</code> helpers or <code>trb/std/test</code>. Unit tests live beside their owner
+as <code>&lt;filename&gt;_test.trb</code> for <code>&lt;filename&gt;.trb</code>, even when preparing an input uses
+other components. Tests may exercise the complete core pipeline and share
+explicit helpers under <code>testing</code>, but cannot import another test file.
+Compiler system suites live in <code>compiler/src/tests/compiler/</code>, split into source
+loading, scale and execution contracts. CLI tests can exercise the composed CLI
+and core. All discovered <code>.trb</code> files, including
+modules outside the entry's reachable closure, participate in the ownership
+check; unknown directories, unresolved imports and composed path collisions fail.</p>
+<p>Test placement follows the contract being verified, not the number of imports
+or whether setup runs QBE. Feature contracts spanning checking, MIR and execution
+belong in <code>tests/&lt;family&gt;</code> using the shared language registry's family ids.
+System contracts belong with their subsystem. Local invariants remain colocated;
+move unit tests with their production owner when splitting a directory. A large
+local suite may have concern-specific <code>&lt;filename&gt;_&lt;concern&gt;_test.trb</code> companions.
+Do not create tests merely to match every implementation file.</p>
+<p>Split a mixed suite by its individual guarantees. Malformed escape rejection
+belongs beside the decoder; literal execution across the pipeline belongs in
+<code>tests/lexical</code>. Argument evaluation with source erasure and forced collection
+belongs in <code>tests/arguments</code>, while binding identities remain beside the
+resolver. Intrinsic declaration identity remains a resolver unit even when
+execution checks that ordinary sibling declarations are not intercepted.
+Malformed MIR rejection belongs beside the verifier, independently of where
+the test obtains or constructs its MIR fixture.</p>
+<p><code>testing</code> contains fixtures, pipeline adapters and execution helpers without
+test-case registration. Dependencies run from tests to helpers to production;
+production cannot import helpers, and helpers cannot import test cases. These
+are repository roles, not new TypeRB directory semantics. Staging and content
+keys exclude <code>testing</code>, <code>tests</code> and <code>_test.trb</code> files using the same selection.
+The ordinary compiler import closure and recovery inventories contain no test
+helpers. CLI and recovery-specific helpers belong with those subsystems.</p>
+<h2 id="responsibility-subdirectories">Responsibility subdirectories</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Subdirectories</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>frontend/checking</code></td>
+<td><code>program</code> (declarations, generics and submissions), <code>body</code> (expressions, calls, members, statements and control), <code>builtins</code>, <code>nominal</code>, <code>collections</code></td>
+</tr>
+<tr>
+<td><code>mir</code></td>
+<td><code>model</code>, <code>build</code>, <code>lowering</code>, <code>analysis</code>, <code>passes</code>, <code>verify</code></td>
+</tr>
+<tr>
+<td><code>backend/qbe</code></td>
+<td><code>emit</code> for verified-MIR adaptation, <code>runtime</code> for emitted support routines and tables; shared context and output stay at the owner root</td>
+</tr>
+<tr>
+<td><code>compiler/cli</code> (outside <code>src</code>)</td>
+<td><code>repl</code> for session orchestration, checking, evaluation, values and terminal interaction; the CLI entry, host adapter and diagnostics stay at the CLI root</td>
+</tr>
+<tr>
+<td><code>recovery/src</code></td>
+<td><code>snapshot</code>, <code>scalar</code>, <code>aggregate</code>, <code>managed</code>, <code>compiler</code>, <code>driver</code>, <code>support</code>, plus test-only <code>testing</code> and <code>tests</code></td>
+</tr>
+</tbody>
+</table>
+<p>Around 25–30 production files in one directory or more than three directory
+levels below <code>compiler/src</code> prompts a responsibility review; neither is a limit.
+Split cohesive responsibilities, not arbitrary batches. Test counts alone do
+not justify moving a local invariant away from its owner. For example,
+<code>mir/lowering/arrays.trb</code> keeps <code>arrays_test.trb</code> beside it, while an Array
+execution contract spanning the toolchain lives under <code>tests/arrays/</code>.
+A shared runtime helper can support a colocated unit without changing its role.</p>
+<p><code>frontend/checking/body/expressions.trb</code> owns primary and precedence-based
+expression checking. Calls, collections, members, statements, control and
+iteration have separate body owners; <code>lambdas.trb</code> owns lambda body checking.
+Their explicit imports may be mutually recursive; there are no forwarding
+copies. Checking constructs independently verified MIR; QBE consumes those facts.</p>
+<p>Authored QBE runtime functions use word predicates for conditional branches.
+QBE <code>jnz</code> examines only the low 32 bits: compare a pointer or other long value
+with <code>cnel %value, 0</code> before branching on whether the complete value is nonzero.
+Use the same explicit spelling for long Boolean flags, so reviewing a condition
+does not require reconstructing its possible range. The source preflight checks
+complete authored functions; runtime boundary tests exercise valid pointers with
+zero low words and exponents across the 32-bit boundary.</p>
+<h2 id="semantic-names-and-numeric-encodings">Semantic names and numeric encodings</h2>
+<p>Use names at both the producer and consumer of a semantic tag. Equal numbers
+do not imply equal meanings: source operators, specialized MIR operators,
+receiver methods, checked plans and type identities have independent owners.
+Keep the mapping in that owner, including ordered group boundaries and offsets.
+For example, <code>mir_op_string_index()</code> identifies an instruction, while
+<code>string_method_slice()</code> identifies a checked receiver method. Neither is a
+replacement for an arbitrary <code>instruction.payload</code> with the same value.</p>
+<p>The compiler currently expresses these names as ordinary nullary functions
+returning a nonnegative Integer literal. Verified MIR folds eligible calls;
+the language has no new constant or enum syntax for this convention. Check the
+generated code and compiler cost when introducing a different representation.
+In particular, a helper returning a negative expression does not automatically
+receive the same fold.</p>
+<table>
+<thead>
+<tr>
+<th>Semantic domain</th>
+<th>Definition owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Token, parsed control, default and checking phase tags</td>
+<td><code>state/*_kinds</code>, <code>state/checking_phases</code></td>
+</tr>
+<tr>
+<td>Shared checked-state slot indices and packed use obligations</td>
+<td><code>state/local_slots</code>, <code>state/binding_kinds</code></td>
+</tr>
+<tr>
+<td>Source operators, checked operator plans, declaration receivers and methods</td>
+<td><code>frontend/types/operators</code>, <code>operator_plans</code>, <code>value_categories</code>, <code>method_kinds</code></td>
+</tr>
+<tr>
+<td>Declaration, generic, attribute, iteration and transform kinds</td>
+<td>Corresponding <code>frontend/types/*_kinds</code> modules</td>
+</tr>
+<tr>
+<td>MIR instructions, types, control, calls, Hash actions and numeric proofs</td>
+<td>Corresponding <code>mir/model</code> modules</td>
+</tr>
+<tr>
+<td>Instruction-specific conversion, query, copy, guard and field modes</td>
+<td><code>mir/model/operation_modes</code></td>
+</tr>
+<tr>
+<td>Parsed JSON node categories</td>
+<td><code>project/json_kinds</code></td>
+</tr>
+<tr>
+<td>Loader-owned standard source identities</td>
+<td><code>state/standard_source_kinds</code></td>
+</tr>
+<tr>
+<td>Shared QBE runtime requirement slots</td>
+<td><code>backend/qbe/runtime_slots</code></td>
+</tr>
+<tr>
+<td>REPL display, control flow and input status</td>
+<td><code>repl/display_kinds</code>, <code>flow_kinds</code>, <code>input_status</code> in the CLI</td>
+</tr>
+</tbody>
+</table>
+<p>Name shared-array indices without changing alias ownership: writes must remain
+visible to the other holders of the same state cell. A sole <code>[0]</code> cell, ordinary
+counts, source positions and SSA identities remain numbers. Negative checked
+categories encode <code>-value_id - 1</code>; nullable replacement barriers and unknown
+analysis states need their own explanations, not a shared &quot;invalid&quot; constant.</p>
+<p>Keep ABI layouts, generated catalogs, protocol versions, Unicode tables and
+algorithm data at their existing boundaries. Tests that independently assert an
+encoding or deliberately forge invalid MIR may retain literal values. Such
+fixtures should not derive their expected value from the implementation being
+tested. Regenerate recovery inventories with <code>tools/recovery_layout_sync.py</code>
+after moving or adding an owner; do not maintain a second mapping in recovery.</p>
+<p>The remaining numerical boundaries are intentional:</p>
+<ul>
+<li>The official source generator assigns catalog IDs from 100. Handwritten
+loader code names that boundary; the generated catalog and upstream source
+bytes remain generator-owned.</li>
+<li>Process and Math use negative virtual import targets. Their translation to
+checked receivers and runtime adapters is documented at the translation
+sites, rather than treating the targets as source module IDs.</li>
+<li>MIR payloads can hold SSA operands, literal indices, capacity limits or an
+unused zero. Use an operation mode only when that opcode defines one.
+Runtime assembly strings preserve the corresponding wire representation.</li>
+<li>Callable flow distinguishes unresolved and unknown negative states;
+nullable facts distinguish a binding from a replacement barrier.
+These meanings stay with their analysis owners.</li>
+<li>One-cell mutable flags, terminal bytes, OS exit codes, word offsets,
+allocation sizes, hash parameters and checksum constants are data at their
+existing boundaries. Naming semantic tags does not require renaming them.</li>
+</ul>
+<p>Recovery has its own <code>recovery/trbconfig.jsonc</code>, project name
+<code>type-rb-native-recovery</code>, and Go module
+<code>github.com/type-rb/type-rb-native/recovery</code>. Compiler production code cannot
+import recovery. Recovery imports stay within its own root and read ordinary
+compiler sources as data. Similar MIR/QBE names do not imply that independently
+validated recovery implementations should share ordinary compiler code.</p>
+<h2 id="checking-and-repeating-the-migration">Checking and repeating the migration</h2>
+<p><code>python3 tools/compiler_layout.py</code> checks the ownership rules in preflight and
+quick CI. Its synthetic tests demonstrate that permitted cycles pass and that
+forbidden ownership edges, test-to-test imports and misplaced unit filenames
+still fail. Filename checks support the placement rule; reviewers decide the
+contract a suite guarantees. The complete compiler unit runner discovers
+nested tests dynamically.</p>
+<p>When rebasing source changes, retain the accepted helper extraction and test
+splits first. The migration tool relocates assigned modules and imports from
+flat or previous nested identities; it does not reconstruct historical test
+splits. Then run:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/migrate_compiler_layout.py</span><span style="color:#79C0FF"> --write</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/migrate_compiler_layout.py</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/recovery_layout_sync.py</span><span style="color:#79C0FF"> --check</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/compiler_layout.py</span></span>
+<span class="line"></span></code></pre>
+<p>The migration manifest records module assignments, checker function ownership
+and explicit current tooling consumers. A newly added flat module or checker
+function needs a reviewed assignment before migration. The tool validates all
+assignments and destinations before writing, retains function bodies, rewrites
+leading imports and updates the registered current consumers. Repeating it is
+idempotent. It also regenerates the canonical recovery inventories with the
+shared synchronization tool, preserving reviewed mutation needles when their
+module paths change and the needles still match exactly once.</p>
+<p>Embedded test programs, recovery imports, immutable evidence and historical
+cross-revision consumers are outside general import rewriting. Current probes
+that deliberately import the compiler and own-frontend identity assertions have
+explicit replacements. Frozen source paths retain their original identities;
+<code>tools/compiler-project.sh</code> continues to resolve historical project layouts.</p>
+<p>Source migration requires the accepted cycle-capable checkout seed and its
+historical consumer handoff. Validate the resulting source with the exact pinned
+reference, ordinary core/CLI fixed points, shared language contracts, and complete
+hosted recovery and target checks. The count of production modules at the root
+is a layout metric; passing ownership and execution checks establish the result.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/compiler-source-layout.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

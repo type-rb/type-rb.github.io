@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Ordinary Hash implementation — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/native-hash/">
+		<title>Ordinary Hash implementation — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="ordinary-hash-implementation">Ordinary Hash implementation</h1>
+<p>Status: initial ordinary implementation accepted in <a href="https://github.com/type-rb/type-rb-native/pull/401">PR #401</a>.
+The separate <a href="https://github.com/type-rb/type-rb/blob/main/docs/decisions/0033-hash-compiler-budget.md">Hash cost decision</a>
+records that acceptance budget. The <a href="../tools/native-language-cases.json">ordinary-language registry</a>
+tracks subsequent coverage and remaining gaps; this document is not a claim of
+complete TypeRB library support.</p>
+<h2 id="language-boundary">Language boundary</h2>
+<p>Use the pinned TypeRB revision as the semantic authority. This slice supports
+homogeneous Integer or String keys and existing scalar, Array, named record,
+and recursively typed Hash values. Literals support <code>key =&gt; value</code>, String
+label keys, contextual <code>Hash&lt;K, V&gt;</code> annotations, and a fresh mutable empty
+binding refined by its first indexed write. Values written within the same
+<code>if</code> or <code>case</code> can join numeric, <code>Nil</code>, and union alternatives; later
+separate assignments and explicit Hash annotations retain their declared type.
+An inferred Hash whose first value is <code>[]</code> uses <code>Array&lt;Any&gt;</code> as its value
+boundary. Later differently typed Array elements are boxed through verified
+MIR, so each stored Array can grow independently. Explicit <code>Array&lt;Any&gt;</code> and
+<code>Hash&lt;K, Any&gt;</code> storage use the same representation; dynamic operations on an
+extracted <code>Any</code> are still tracked as separate language coverage.
+Function parameters/results and
+record fields carry concrete Hash types. Existing immutable rules remain in
+force; copy is shallow and iteration order is unspecified.</p>
+<p>Indexed reads and <code>fetch</code> require a present key. Indexed writes insert or
+replace. The method subset is <code>size</code>, <code>empty?</code>, <code>key?</code>, <code>delete</code>, <code>dup</code>, <code>merge</code>,
+<code>update</code>, <code>keys</code>, <code>values</code>, and <code>fetch</code>. Deletion also requires a present key.
+The returned Arrays use the ordinary Array element implementation. <code>try_fetch</code>
+uses a structured Result, and Hash iteration blocks use entry snapshots. The
+registry records the precise receiver and value combinations still pending.</p>
+<p>An unresolved empty Hash can survive a REPL submission and answer <code>size</code> and
+<code>empty?</code>; subsequent indexed insertion establishes its key/value type. Ordinary
+compiled code needs a concrete type by the end of checking. Aliases of an
+untyped binding require an explicit annotation. Hash keys use the shared UTF-8
+String representation; additional Unicode APIs remain separate coverage work.</p>
+<h2 id="representation-and-ownership">Representation and ownership</h2>
+<p><code>compiler/src/frontend/types/hash_types.trb</code> owns canonical type decomposition and managed layout
+classification. <code>compiler/src/mir/model/hashes.trb</code> owns the named <code>MirHashOperation</code> carrier,
+mutation requirements and literal capacity planning. The checked frontend
+publishes one plan per operation; <code>compiler/src/frontend/checking/collections/hashes.trb</code> verifies source boundaries,
+operation kinds, key/value metadata and mutation permissions before MIR construction
+or REPL evaluation. <code>compiler/src/mir/lowering/hashes.trb</code> publishes typed allocation, lookup, store and
+method instructions. <code>compiler/src/mir/lowering/collection_inference.trb</code> finalizes checked first-store types
+across CFG arguments and parameters before publication. It inserts the required
+Float, nullable, or union representation at a joined store, without speculative
+allocation for exact-type stores; raw MIR verification
+never infers or repairs malformed types. Independent empty bindings retain
+independent constraints.</p>
+<p>Admitted functions use <code>compiler/src/backend/qbe/emit/hashes.trb</code> without reading source operation plans.
+Stores retain the evaluated Hash and key across RHS effects. <code>merge</code> becomes an
+explicit copy followed by update, so the copied table is an SSA value with a
+verified live root at the allocating update. Shared MIR effects and liveness own
+managed roots for lookup results, updates, deletion and returned Arrays. Direct
+functions with remaining intrinsic/result boundaries still consume checked source
+plans; those paths remain until their enclosing functions migrate.</p>
+<p>The runtime uses open addressing with linear probing, a power-of-two capacity
+and a maximum occupied load of three quarters. A compact Hash header references
+two word Arrays: one for keys and one for values. Each slot costs two machine
+words; the Hash itself adds no per-entry box, while <code>Any</code> and union values
+carry their own tagged boxes. Integer keys encode the entire portable range;
+String keys compare length and bytes. Integer mixing and String hashing are
+independent of the frontend representation.</p>
+<p>Existing precise GC Array descriptors trace only managed keys/values. The Hash
+header is 48 payload bytes plus its descriptor word; the existing collector's
+allocation bookkeeping is additional. A removed value cell is cleared at once.
+String deletion replaces its key with a static tombstone. An empty Hash drops
+both backing Arrays; sparse tables shrink geometrically and accumulated
+tombstones are rebuilt during insertion. These operations preserve Hash
+identity and shallow aliases. GC reclaims detached backing and unreachable
+payloads on collection; clearing a reference does not promise an immediate
+reduction in OS resident memory.</p>
+<p>The adapter roots the receiver and computed key across the right-hand side.
+It finds the destination only after that expression finishes, so an allocating
+call that grows or changes the table cannot leave a stale entry address. Reads
+and deletion preserve managed results across subsequent allocation. The runtime
+uses the existing collector and its cycle handling, without a separate GC kind.</p>
+<h2 id="stateful-repl">Stateful REPL</h2>
+<p><code>compiler/cli/repl/model.trb</code> separates value identity/storage from rendering and evaluation.
+<code>compiler/cli/repl/hash.trb</code> implements hash-table buckets containing pool identities, with
+content equality for String keys. Its bounded byte scan reuses the internal
+CLI byte reader without allocating a String per character. Scalar pool entries
+share a read-only empty child list; language aggregate lists remain independent.
+Deletion clears both bucket references;
+empty tables release their Arrays and sparse ones shrink. <code>compiler/cli/repl/values.trb</code>
+traces live Hash keys/values during the existing between-submission pool
+compaction, preserving aliases and cycles. Runtime state is not reconstructed
+by replaying previous input.</p>
+<p>The REPL's existing value pool retains evaluation temporaries until the current
+submission completes. A long loop can therefore use substantially more memory
+than its live Hash entries. Bucket reclamation and whole-session RSS are tested
+and reported separately. This slice does not introduce collection of active
+interpreter stack temporaries.</p>
+<h2 id="verification-and-seed-boundary">Verification and seed boundary</h2>
+<p><code>compiler/src/frontend/checking/collections/hashes_test.trb</code> covers typing, immutable rejection, operation
+metadata and malformed plans. <code>tools/native-hash-test.py</code> runs ordinary and REPL
+fixtures, automatic-GC stress, cycles, alias preservation, recoverable missing
+keys, and a compiled bucket-storage probe. Pass <code>--reference /path/to/trb</code> to
+also verify the fixtures against the pinned reference compiler. The ordinary
+CLI suite includes Hash fixtures; the recovery closure includes all four new
+core modules and verifies their missing/malformed/mutated source boundaries.</p>
+<p>The compiler uses <code>Hash&lt;String, Integer&gt;</code> for module names, module-qualified
+function declarations and project source ordering. Function declarations enter
+the index when parsing succeeds. A missing name remains <code>-1</code>; replacing an entry
+preserves the previous last-declaration lookup rule without changing duplicate
+diagnostics. Declaration vectors retain their stable ordering and identities.</p>
+<p>This removes the former custom symbol index and its bucket/chain/growth/rebuild helpers.
+<code>find_name_index</code> and <code>function_index_key</code> own the small lookup boundary; the
+ordinary Hash runtime owns storage and content equality. The key separates the
+decimal module identity from the name with <code>:</code>. Import-cycle traversal now owns
+an invocation-local color array, instead of overwriting function-index storage.</p>
+<p>Compiler self-use starts from the verified Hash seed in PR #405. Recovery uses
+only its accepted String/Integer Hash subset and existing integer formatting;
+ordinary <code>Integer.to_s</code> is outside that snapshot subset. No new snapshot
+operation or broader source fallback is needed for the indexes.</p>
+<h2 id="compiler-self-use-recovery-boundary">Compiler self-use recovery boundary</h2>
+<p><a href="https://github.com/type-rb/type-rb-native/issues/403">Issue #403</a> establishes
+the prerequisites for replacing compiler name indexes. The reference pin
+<code>bae19032aa1bb7b263bc827d02606edc6e981c52</code> supplies internal snapshot-v4 data
+for <code>Hash&lt;String, Integer&gt;</code> construction, indexed assignment, required lookup
+and key presence. It retains source origins and receiver/key/RHS order, with
+explicit rejection of other Hash shapes and operations in this recovery path.
+Ordinary Hash coverage remains wider.</p>
+<p>The recovery MIR checks canonical key layout, Hash receiver identity, operand
+types, entry-list arity and source origins. <code>recovery/src/managed/hash_runtime.trb</code> owns
+only this snapshot ABI's storage: content-hashed String buckets, Integer values,
+geometric growth and the existing precise collector's root frames. It is emitted
+only for snapshots containing Hash values; existing snapshots keep their output.
+Tests exercise empty and duplicate keys, record/closure aliases, growth, forced
+collection, missing-key failure and malformed metadata.</p>
+<p>Linux amd64 keeps the immutable initial root and existing setup bridges, then
+builds exact accepted Hash source <code>8a6d9ff73b14a97bca1b010ddaad6a38972b5373</code>
+before reading candidate source. Its process traces, source/compiler identities
+and capability probe are setup-only. Ordinary candidate B2/B3/B4 and all existing
+bounds remain unchanged. This neither republishes an old seed nor substitutes
+snapshot recovery for the ordinary chain. PR #405 pairs this recovery support
+with the
+<a href="/docs/bootstrap-seed-updates/#current-verified-checkout-seed">verified checkout seed handoff</a>;
+compiler index adoption uses these same operations.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-hash.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

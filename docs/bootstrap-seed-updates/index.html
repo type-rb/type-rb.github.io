@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Bootstrap seed updates — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/bootstrap-seed-updates/">
+		<title>Bootstrap seed updates — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="bootstrap-seed-updates">Bootstrap seed updates</h1>
+<p>A seed is an already-built Native compiler used to build its successor. The
+checked-in TypeRB compiler remains the implementation; the seed is neither
+generated application code nor a new dependency on Go.</p>
+<h2 id="keep-compatibility-current-not-the-download-url-floating">Keep compatibility current, not the download URL floating</h2>
+<p>Refresh the seed before compiler implementation source adopts supported syntax
+that the pinned seed cannot read, after relevant bootstrap/security fixes, or
+at a deliberate stable development checkpoint. Check this boundary when adding
+compiler implementation syntax, not only after a fresh checkout fails.</p>
+<p>Use the latest <strong>verified, accepted</strong> source at that checkpoint. Do not publish
+an unaccepted optimization candidate as a shortcut around its acceptance checks.
+Refreshing on every commit is unnecessary: documentation and compatible source
+changes do not inherently require a new seed. Expensive publication/verification
+jobs remain manually dispatched; ordinary checkout builds always use an exact
+immutable tag and digests, never a floating <code>latest</code> asset.</p>
+<h2 id="refresh-sequence">Refresh sequence</h2>
+<p>The registered refresh is tracked by <a href="https://github.com/type-rb/type-rb-native/issues/320">issue #320</a>.
+Preparation tooling alone does not mean that a release is published or that
+checkout pins have switched. The current accepted handoff is recorded below.</p>
+<ol>
+<li>Register a new tag, accepted source revision/closure, predecessor identities,
+target matrix and current bounds. Merge the reviewed observer changes first.</li>
+<li>Dispatch <code>bootstrap-seed-refresh.yml</code> on main with <code>mode=prepare</code>. It verifies
+predecessor release state, strict manifest, checksums, asset digests and
+source-bound GitHub attestations <strong>before</strong> executing the old compiler.</li>
+<li>Build two setup-only transitions from the previous Native seed, matching the
+existing worker-memory authority: the first generated compiler still carries
+the predecessor runtime. Both transitions permit the registered system linker;
+they remain process-traced and outside ordinary measurements. Then verify
+ordinary B2/B3/B4 builds, the complete existing corpus and registered adjacent
+measurement bounds (1.25 for adjacent generation medians, and 2.0 for every
+retained time/RSS/CPU observation against the strongest adjacent median).
+These are seed-generation checks, not the optimizer's 1.05 baseline contract.
+Record each ordinary Linux compiler build with a closed
+process allowlist. Darwin's inventory is boundary-only, not a dynamic trace.</li>
+<li>Review both target results and paired bounds. Publish the four attested assets
+from that exact successful run as a new immutable experimental prerelease.
+Publication is a separate authorized operation; the preparation workflow
+itself never creates or edits a release.</li>
+<li>Dispatch <code>mode=verify</code> from main. Fresh target jobs check out the release's
+exact source and download its actual published assets. Authenticate before
+execution, rebuild, compare the downloaded seed with the fixed point and
+rerun the corpus/measurement authorities. A failure leaves checkout pins alone.</li>
+<li>In a separate PR, update checkout tag/digests and tag-scoped cache identity,
+run fresh core/CLI bootstrap on both targets, and update this status. Only
+then use the new syntax in compiler implementation source.</li>
+</ol>
+<p>The v2 manifest records the predecessor tag/revision/manifest and target digests,
+the source revision, QBE source/build identities and target compiler identities.
+Unknown fields, altered identities, duplicate keys, invalid sizes, changed asset
+sets, mutable/draft releases and incorrect checksum indexes fail closed.
+Attestations bind compilers, manifest and checksums to the preparation workflow,
+exact main revision and hosted runners. Manifest validation alone is not an
+attestation check.</p>
+<p>The three earlier published refreshes retain their source-era manifest caps of
+350,000 bytes on Darwin arm64, 317,000 on Linux arm64 and 667,000 combined.
+Current-source ordinary compiler validation uses the revised complete-compiler
+budgets in <a href="https://github.com/type-rb/type-rb/blob/main/docs/decisions/0029-array-assignment-compiler-budget.md">Decision 0029</a>
+and <a href="https://github.com/type-rb/type-rb/blob/main/docs/decisions/0030-record-array-compiler-budget.md">Decision 0030</a>.
+A future refresh must register its own exact source and manifest limits; this
+decision does not republish a seed or alter historical release verification.
+Refreshes change no ordinary relative limit, measurement baseline or runtime
+performance claim. The legacy initial-root verifier remains unchanged.</p>
+<h2 id="retention-and-failure-handling">Retention and failure handling</h2>
+<p>Keep published tags/assets/attestations immutable and retain the initial root's
+provenance. Later ordinary refreshes do not create another root QBE or invoke
+the reference compiler. Historical release-integrity jobs keep their source-era
+pins. An old target-recovery consumer is not silently repointed to a new release.</p>
+<p>Compiler binaries stay outside Git. Retain compact accepted release identities
+and durable verification links; temporary workflow packages/logs expire normally.
+Never replace a published asset, retry until a favorable measurement hides an
+earlier failure, or switch the default pin before post-publication verification.</p>
+<h2 id="earlier-verified-refreshes">Earlier verified refreshes</h2>
+<p>Earlier registrations, preparation results, predecessor identities and exact
+source-era limits remain in the <a href="https://github.com/type-rb/type-rb-native/blob/f864151fa53a99a9491ca0268198d5ec914124fd/docs/bootstrap-seed-updates.md#registered-conditional-syntax-refresh">immutable handoff history</a>.
+The release manifests and verification runs remain the authority for each tag.
+The current checkout handoff and refresh procedure are below and above.</p>
+<h2 id="registered-module-cycle-refresh">Registered module-cycle refresh</h2>
+<p>Task #706 registers <code>bootstrap-seed-2026-09-29-module-cycles</code> so implementation
+modules can use mutually recursive imports. The compiler source is the accepted
+Stage 2 implementation from PR #705 at
+<code>a0f9147d29d73ad8a0237c7c51a0a5993bbe3a36</code>, validated by the
+<a href="https://github.com/type-rb/type-rb-native/actions/runs/36567058786">complete acceptance run</a>.
+The refresh workflow requires its exact <code>compiler/src</code> tree
+<code>d811b0d7868f5e3701586fd563ef5b496eaba058</code>; a later source edit requires a new
+reviewed registration before preparation. The attested full revision also records
+the merged observer and fixtures used for that run.</p>
+<p>The predecessor is the immutable compiler-name seed. Its exact revision,
+manifest and both target digests remain authenticated in the release manifest.
+Preparation and verification
+retain Darwin arm64 on <code>macos-15</code> and Linux arm64 on <code>ubuntu-24.04-arm</code>, adjacent
+median bounds of 1.25 and every-observation bounds of 2.0. MIR migration continues
+to record exact compiler sizes without introducing an integration ceiling;
+historical strict manifest caps remain unchanged.</p>
+<p>In addition to the complete corpus and fixed points, both modes execute the
+shared mutual-recursion and ordered-initializer contracts and reject value
+cycles and unresolved indirect calls. Linux records each capability invocation's
+process trace; Darwin retains its explicit boundary-only status. Ordinary CLI
+CI exercises the same capability observer before publication.</p>
+<p>The four exact attested assets are published immutably and have passed fresh
+published-asset verification. Checkout builds and active consumers use the
+verified seed recorded below; compiler source adoption retains ordinary and
+recovery validation.</p>
+<h2 id="current-verified-checkout-seed">Current verified checkout seed</h2>
+<p>Checkout builds pin <a href="https://github.com/type-rb/type-rb-native/releases/tag/bootstrap-seed-2026-09-29-module-cycles">bootstrap-seed-2026-09-29-module-cycles</a>,
+an immutable experimental prerelease from accepted source
+<code>04993b6bf598356a51143edd9dbde1a024c403cc</code>. Its compiler source tree is
+<code>d811b0d7868f5e3701586fd563ef5b496eaba058</code> from the accepted module-cycle implementation.</p>
+<ul>
+<li><a href="https://github.com/type-rb/type-rb-native/actions/runs/36579382624">Preparation and attestations</a> passed both arm64 targets and all 28 retained generation observations. All four assets were authenticated against the exact source and hosted preparation workflow before publication.</li>
+<li><a href="https://github.com/type-rb/type-rb-native/actions/runs/36582600586">Fresh published-asset verification</a> passed both targets, including equality of each downloaded seed with B1/B2/B3/B4, the complete corpus, all 42 retained generation observations and ordinary Linux process boundaries. Both runs exercise the shared mutual-recursion and ordered-initializer contracts and reject value cycles and unproven indirect initialization calls. Darwin retains its explicit boundary-only inventory.</li>
+<li>Darwin compiler: 2,365,384 bytes, SHA-256 <code>54337b2b4e3aebc1a81260ad3be071008b88b6e30685d182db81a138f11ac216</code> (asset 598412238).</li>
+<li>Linux compiler: 2,321,904 bytes, SHA-256 <code>3627fd8c574a668173ac6bb25eb41371c0f6cf0fa9da1016eebfc08b078d4060</code> (asset 598412235).</li>
+<li>Combined: 4,687,288 bytes, recorded under the registered MIR migration and generation bounds.</li>
+<li>Manifest: SHA-256 <code>8d0b6a23b004c5a697715f8f0af454615edd7a69d6f7db9e65680e7914ec7b12</code> (asset 598412236).</li>
+<li>Checksum index: SHA-256 <code>4e48f0dcd6428dbea75bc48260cd7b7351438da940963037bc2f657dc807e210</code> (asset 598412237).</li>
+</ul>
+<p>The immutable <a href="https://github.com/type-rb/type-rb-native/releases/tag/bootstrap-seed-2026-09-12-compiler-names">compiler-name predecessor</a>
+remains at <code>d7ffb9384229125216696a220c7f370422472178</code>. Its exact identities,
+preparation/verification runs and earlier predecessor history remain in the
+<a href="https://github.com/type-rb/type-rb-native/blob/04993b6bf598356a51143edd9dbde1a024c403cc/docs/bootstrap-seed-updates.md#current-verified-checkout-seed">source-era handoff record</a>.
+Every historical tag retains its exact predecessor and size contracts.</p>
+<p>Compiler binaries and detailed run artifacts remain outside Git. The current
+seed and the registered historical consumer bridge permit compiler implementation
+modules to adopt cyclic imports while retaining ordinary and recovery validation.</p>
+<h2 id="active-ci-consumers-versus-historical-recovery">Active CI consumers versus historical recovery</h2>
+<p>Current compiler-cost, worker-memory, formal runtime/build benchmark, daily/weekly
+performance and Linux arm64 regression workflows use the exact module-cycle
+seed and the shared strict download/authentication helper. Their manual seed input must match the recorded
+source revision; an older or unknown tag fails rather than bypassing provenance.
+Changing a setup seed does not move a frozen benchmark baseline or change any
+measurement/acceptance bound. Full benchmark jobs remain manually dispatched.</p>
+<p>Linux amd64 retains the original immutable root QBE. Its first setup compiler
+builds exact accepted source <code>21f507e7ee7de2577f4137f6dfb9f732c14c1640</code> and must
+accept logical-condition and <code>elsif</code> fixtures. That compiler then builds exact
+accepted loop-transfer source <code>4e1d0b4aee97b9a5bd73a98f918b31d47985da25</code>; the new
+bridge must accept the loop-transfer fixture. It then builds exact accepted
+Boolean-capable source <code>57cb41ad6be91716e31fa555ed8ea8c8ce7a5f51</code> and checks the
+Boolean Array fixture. It then builds exact accepted record-capable source
+<code>566d00d67172460df0f57dff6d5fe03db3b67cdc</code> and checks the record Array fixture. It then builds accepted Hash source
+<code>8a6d9ff73b14a97bca1b010ddaad6a38972b5373</code> and checks the Hash fixture.
+It next builds accepted Array iteration source
+<code>508f721f8964d67a5893e547d2e2fb3de5b20a63</code> and checks live iteration, control
+transfer and managed-value fixtures. It then builds the accepted compiler-name
+bridge <code>6ca79d22cde2ddba5fe836c66899b6e08a6511dc</code>, verifies its exact entry digest,
+and uses it to check the accepted module-cycle source
+<code>a0f9147d29d73ad8a0237c7c51a0a5993bbe3a36</code>. That next bridge verifies its exact
+entry digest, checks the current candidate, and executes the shared cyclic-module
+capability contracts under process tracing. Only the earlier compiler-name setup
+transition retains the predecessor declaration spellings. The subsequent
+candidate-runtime transition stays separate so a future runtime change still
+precedes ordinary B2/B3/B4. These ordinary and measured generations remain the
+candidate.</p>
+<p>These compatibility bridges are setup-only. Exact clean source revisions and entry digests,
+compiler/QBE identities, emission/QBE/link traces and capability-check output
+are retained separately. It creates neither a new root asset nor Go recovery.
+The arm64 comparison authenticates its verified seed independently. Optional
+source arguments accept only their exact registered revisions. The Boolean
+source requires both earlier sources, the record source requires all three,
+the Hash source requires all four, and the Array iteration source requires all
+five; the compiler-name source requires those six, and the module-cycle source
+requires the compiler-name source. Omitted later arguments retain the earlier setup shapes. Omitting every source argument retains the historical
+direct-current-source setup.</p>
+<p>Initial publication/release-integrity workflows, retained manifests and earlier
+results keep their source-era identities. Refreshing checkout bootstrap alone
+does not establish that every historical recovery compiler understands newly
+adopted implementation syntax; inspect these consumers before adopting it.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/bootstrap-seed-updates.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

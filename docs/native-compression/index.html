@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Native Web response compression — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/native-compression/">
+		<title>Native Web response compression — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="native-web-response-compression">Native Web response compression</h1>
+<p><code>trb/web/middleware/compression</code> runs the pinned whole-buffer gzip contract in
+compiled Native applications. <code>Compression.call</code> and <code>Compression.middleware</code>
+retain the public package implementation; the internal <code>Bytes -&gt; Bytes</code> operation
+uses libdeflate 1.26. No language or public API change is needed.</p>
+<p>The default minimum is 1,024 bytes. Negotiation, wildcard and quality handling,
+compressible content types, HEAD/status/range exclusions, <code>no-transform</code>, existing
+encodings and <code>Vary</code> are the pinned package's responsibility. Compression removes
+the previous <code>Content-Length</code> and <code>ETag</code>; the transport computes the actual wire
+length. Compare decoded bytes and response metadata with Go, not gzip byte
+identity. The pinned Go REPL has no compression runtime adapter; Native reports
+that boundary and remains usable after the diagnostic.</p>
+<h2 id="optional-static-dependency">Optional static dependency</h2>
+<p><code>tools/compression-dependencies.json</code> pins the upstream release archive, commit,
+SHA-256 and MIT license. CMake builds only a static, position-independent gzip
+compressor: decompression, zlib wrappers, tools, tests and install targets are
+disabled. The runtime requests the library's default level (<code>-1</code>, currently 6).
+The C compiler verifies the LP64 pointer/size and C <code>int</code> ABI.</p>
+<p>The compiler selects the archive from verified compression MIR. Importing the
+compression middleware currently includes its internal operation even if a
+particular application does not call it. Ordinary applications and the compiler
+itself do not acquire libdeflate. The middleware also imports <code>trb/web</code>, so its
+applications need the <a href="/docs/native-network/">HTTP network archives</a>.</p>
+<p>Development packages place <code>compression/</code> beside QBE. An explicit installation
+can be selected at <strong>build time</strong>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/build-compression-dependencies.py</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --archives</span><span style="color:#A5D6FF"> /path/to/shared/source-archives</span><span style="color:#79C0FF"> --output</span><span style="color:#A5D6FF"> /path/to/compression</span></span>
+<span class="line"><span style="color:#E6EDF3">TRBN_COMPRESSION_LIB_DIR</span><span style="color:#FF7B72">=</span><span style="color:#A5D6FF">/path/to/compression</span><span style="color:#FFA657"> ./trbn</span><span style="color:#A5D6FF"> build</span><span style="color:#79C0FF"> --compile</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/compression_artifacts.py</span><span style="color:#A5D6FF"> inspect</span><span style="color:#A5D6FF"> ./bin/application</span></span>
+<span class="line"></span></code></pre>
+<p>Building the archive requires Python, CMake and a platform C toolchain. Installing
+a qualified prebuilt archive requires Python, without CMake:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/compression_artifacts.py</span><span style="color:#A5D6FF"> pack</span><span style="color:#A5D6FF"> /path/to/compression</span><span style="color:#A5D6FF"> compression.tar.gz</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/compression_artifacts.py</span><span style="color:#A5D6FF"> install</span><span style="color:#A5D6FF"> compression.tar.gz</span><span style="color:#A5D6FF"> /path/to/new/compression</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --sha256</span><span style="color:#A5D6FF"> EXPECTED_ARTIFACT_SHA256</span></span>
+<span class="line"></span></code></pre>
+<p>The shared artifact verifier checks the trusted artifact hash, host, source pins,
+bounded file inventory, archive hashes and embedded build identity. Obtain the
+expected hash from a trusted qualification or release receipt. Installations are
+new directories; the builder does not replace an active installation. Missing or
+corrupt build inputs preserve the previous application output. Paths containing
+spaces are ordinary arguments, without shell evaluation.</p>
+<p>Generated applications need no libdeflate sidecar or library-directory environment
+variable. Their inventory records the source/build identities and configuration.
+Distribute the MIT notice with the executable. Keep one shared source archive and
+installation; temporary source and object trees are removed on exit. A 128 MiB
+budget covers this dependency's source and installation.</p>
+<h2 id="ownership-and-verification">Ownership and verification</h2>
+<p>Only the loader-owned internal declaration can acquire the gzip intrinsic. Its
+full signature and conservative effects are verified by MIR; a matching authored
+name or forged declaration cannot create the foreign call.</p>
+<p>The synchronous adapter holds the input in the caller's managed roots. It creates
+one foreign compressor and output buffer, frees the compressor after compression,
+copies the result into managed Bytes and frees the raw buffer. No foreign code
+retains a managed address. Compressor creation, bound validation, raw allocation
+and compression failures release acquired resources before the terminal
+allocation diagnostic. Allocation exhaustion follows the existing process-fatal
+runtime contract; this is not a new recoverable compression error.</p>
+<p><code>tools/native-web-compression-test.py</code> checks the fixed 20-case negotiation corpus
+against the exact reference revision and Native check/build/run paths, binary
+Bytes and invalid options, the REPL boundary, forced collection, raw allocation
+accounting and four injected external failure paths. Real HTTP tests exercise
+default middleware, gzip rejection and HEAD using an executable relocated away
+from the compiler and archives. An ablation records executable size with and
+without the compression import; build and startup observations are descriptive.</p>
+<p>CI also qualifies archive installation and ABI on Darwin/Linux arm64/amd64. Full
+application/runtime checks run on the existing Native compiler targets. Archive
+qualification alone does not establish a darwin-amd64 compiler or bootstrap seed.
+CI bundles are finite-retention evidence. Immutable release publication and
+advisory/update ownership remain under #1257 before supported distribution.</p>
+<h2 id="library-selection-observation">Library selection observation</h2>
+<p>One bounded local diagnostic compared libdeflate 1.26 with zlib 1.3.2 on Darwin
+arm64, at each library's default level, allocating a compressor per response.
+Seven fixed synthetic inputs had three adjacent observations per library, with
+decoded-byte checks. This was a dependency selection diagnostic, not a formal
+performance qualification or an application throughput result. No parameter sweep
+or repeat cohort was used.</p>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th style="text-align:right">CPU microseconds/body, libdeflate / zlib (median)</th>
+<th style="text-align:right">gzip bytes, libdeflate / zlib</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Empty</td>
+<td style="text-align:right">3.96 / 3.72</td>
+<td style="text-align:right">23 / 20</td>
+</tr>
+<tr>
+<td>Binary, 256 bytes</td>
+<td style="text-align:right">17.30 / 18.54</td>
+<td style="text-align:right">279 / 279</td>
+</tr>
+<tr>
+<td>Text, 66 bytes</td>
+<td style="text-align:right">10.10 / 2.89</td>
+<td style="text-align:right">45 / 45</td>
+</tr>
+<tr>
+<td>Text, 8 KiB</td>
+<td style="text-align:right">24.04 / 14.54</td>
+<td style="text-align:right">99 / 99</td>
+</tr>
+<tr>
+<td>JSON, 64 KiB</td>
+<td style="text-align:right">104.64 / 97.07</td>
+<td style="text-align:right">286 / 286</td>
+</tr>
+<tr>
+<td>High-entropy bytes, 1 MiB</td>
+<td style="text-align:right">8,650.88 / 16,461.12</td>
+<td style="text-align:right">1,048,684 / 1,048,914</td>
+</tr>
+<tr>
+<td>Repeated text, 1 MiB</td>
+<td style="text-align:right">1,625.75 / 1,558.75</td>
+<td style="text-align:right">2,650 / 2,610</td>
+</tr>
+</tbody>
+</table>
+<p>The isolated probe executable was 87,824 bytes with libdeflate and 70,504 with
+zlib, a 17,320-byte increase. Median process peak RSS varied by input: the 8 KiB
+case used 2,310,144 / 2,080,768 bytes; the high-entropy case used
+5,505,024 / 5,472,256 bytes. These include the probe and are not allocator-only
+measurements. Small-body CPU and size costs remain visible; libdeflate is not a
+universal improvement. The selected MIT whole-buffer library provides a small
+integration API and a useful large high-entropy result. Reconsider it using
+application evidence, or consider streaming libraries if that contract changes.</p>
+<p>A separate fixed three-pair HTTP application diagnostic on Darwin arm64 alternated
+the same server with and without the compression import/call. It includes the
+middleware's code as well as the external library, using the shared warm cache.</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th style="text-align:right">With compression</th>
+<th style="text-align:right">Without compression</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Executable bytes</td>
+<td style="text-align:right">410,072</td>
+<td style="text-align:right">359,088</td>
+</tr>
+<tr>
+<td>Build seconds, median</td>
+<td style="text-align:right">1.999</td>
+<td style="text-align:right">1.969</td>
+</tr>
+<tr>
+<td>Startup seconds, all three observations</td>
+<td style="text-align:right">0.261 / 0.069 / 0.194</td>
+<td style="text-align:right">0.497 / 0.064 / 0.059</td>
+</tr>
+</tbody>
+</table>
+<p>The size cost is 50,984 bytes (14.2%); median build cost is about 30 milliseconds.
+Startup varied widely, with a higher compressed median (0.194 versus 0.064
+seconds). The cause and stable increment are unqualified; retain that result
+rather than inferring a speedup or attributing it to the operating system.
+This optional feature cost is accepted for functional coverage, with release-host
+qualification still required. No further cohort was run. Only libSystem was
+dynamically imported. In the separate negotiation/GC acceptance application,
+forced collection reclaimed all 473,543 managed bytes; foreign compressor and
+buffer counters also returned to zero.</p>
+<p>The <a href="native-dependencies.json">dependency register</a> records this implementation
+separately from supported-release qualification.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-compression.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

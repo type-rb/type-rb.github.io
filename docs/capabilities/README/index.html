@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="TypeRB Native capability map — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/capabilities/README/">
+		<title>TypeRB Native capability map — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="typerb-native-capability-map">TypeRB Native capability map</h1>
+<p>This directory contains a dependency-free static capability map for the
+TypeRB Native toolchain under development toward production use. It catalogs
+capabilities before they become scheduled implementation work.</p>
+<p>The same GitHub Pages artifact also contains a
+<a href="/docs/capabilities/benchmarks/README/">benchmark explorer</a>. Its committed data is generated
+from the formal runtime and build median TSV files under <code>results/</code>.</p>
+<p>The <a href="dependencies/">dependency register</a> is generated from
+<code>docs/native-dependencies.json</code>, <code>tools/network-dependencies.json</code> and the QBE
+manifest. It distinguishes dependencies in the current source from candidates,
+and separates application runtime, system data, build and validation needs.
+Update the records in the implementing PR, run
+<code>python3 tools/dependency-pages.py --write</code>, and verify <code>--check</code> before publishing.
+The deployment workflow checks the same generated view. Dependency qualification
+still requires actual artifact imports, versions/configuration and license
+receipts; this page does not replace per-artifact inventories.</p>
+<p>The four evidence states have narrow meanings:</p>
+<ul>
+<li><code>verified</code>: reproducible public evidence exists for the stated scope;</li>
+<li><code>partial</code>: some behavior exists, but coverage or evidence remains incomplete;</li>
+<li><code>open</code>: the capability is needed but not implemented or verified; and</li>
+<li><code>unassessed</code>: the capability is cataloged, but its exact gap has not been
+inventoried.</li>
+</ul>
+<p>These states report current implementation evidence. They do not establish
+release support or compatibility guarantees; production readiness and full
+coverage remain <a href="/docs/mir-consolidation/">project goals</a>. Public evidence links
+point only to this repository.
+The stated execution path is part of the scope: snapshot/recovery verification
+must not be presented as ordinary <code>trbn</code> check, execution or REPL support.
+See the <a href="/docs/native-language-coverage/">ordinary coverage plan</a> for that separate
+feature-level boundary.</p>
+<p>The ordinary-language panel is generated from the same reviewed case registry
+that the pinned reference and Native CLI jobs execute. It displays check, build,
+execution and REPL separately, including negative cases, reference REPL
+limitations and explicitly untested contracts. Its probe counts are not a
+language-support percentage. The broad catalog above and these concrete cases
+are complementary views; neither implies that a whole feature family passes
+because one example works.</p>
+<h2 id="maintenance-boundary">Maintenance boundary</h2>
+<p>This catalog is the public, project-wide coverage view. It is not a task
+tracker, roadmap, changelog, or record of work in progress.</p>
+<p>Update <code>catalog.js</code> when a merged public result changes at least one
+capability's status, scope, description, or best evidence link. Set
+<code>catalog.updatedAt</code> to the date of that coverage review. A <code>verified</code> entry
+must link to reproducible evidence already present in this public repository;
+<code>partial</code> may omit a link when the remaining coverage is described accurately.
+When ordinary behavior changes, review the relevant broad catalog entries as
+well as the case expectations. Regenerate <code>ordinary-language.js</code> using the
+commands in the ordinary coverage plan; never edit that data by hand. Its
+registry hash, reference revision and exact generated contents are checked in
+CI, so changing the contract without updating the public detail view fails.</p>
+<p>Do not add an entry for every implementation or optimization. If a result
+improves an already represented capability without changing its catalog state,
+leave the catalog unchanged. Formal performance snapshots belong in the
+benchmark explorer and should be regenerated only from complete committed
+result sets. Planning, prioritization, and current task state remain outside
+both public views.</p>
+<p>Run the structural check from the repository root:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/native-language-coverage.py</span><span style="color:#79C0FF"> --check-pages-data</span><span style="color:#A5D6FF"> docs/capabilities/ordinary-language.js</span></span>
+<span class="line"><span style="color:#FFA657">node</span><span style="color:#A5D6FF"> tools/capability-map-check.mjs</span></span>
+<span class="line"><span style="color:#FFA657">node</span><span style="color:#A5D6FF"> tools/benchmark-pages-data.mjs</span><span style="color:#79C0FF"> --check</span></span>
+<span class="line"><span style="color:#FFA657">node</span><span style="color:#A5D6FF"> tools/benchmark-pages-check.mjs</span></span>
+<span class="line"></span></code></pre>
+<p>For local review, serve <code>docs/capabilities</code> with any static HTTP server. The
+site has no package-manager or build dependency.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/capabilities/README.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Reproducible Language Benchmark Plan — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/benchmarksgame/">
+		<title>Reproducible Language Benchmark Plan — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="reproducible-language-benchmark-plan">Reproducible Language Benchmark Plan</h1>
+<p>This plan implements the bounded benchmark work registered in
+<a href="https://github.com/type-rb/type-rb-native/issues/103">issue #103</a>. It follows
+<a href="https://github.com/type-rb/type-rb-native/blob/7726ff18e9230cd149e9f0c317577f6429f907fc/docs/decisions/0023-reproducible-benchmark-layers.md">Decision 0023</a> and keeps the
+identical-TypeRB comparison separate from cross-language implementation
+context.</p>
+<h2 id="daily-status-and-occasional-detailed-comparisons">Daily status and occasional detailed comparisons</h2>
+<p><a href="/docs/daily-performance/">Daily performance</a> is now the primary Pages view for
+current status and improvements. It uses a bounded diagnostic suite and updates
+independently of this full seven-implementation snapshot. These formal runtime
+and build workflows remain manual and are run for a concrete comparison or
+publication question, not for every merge or a mandatory monthly refresh.
+Daily measurements do not change the acceptance authorities below.</p>
+<h2 id="status">Status</h2>
+<p>The capability corpus and formal runtime and build/distribution layers cover
+three numeric cases. The <a href="https://github.com/type-rb/type-rb/blob/main/results/2026-09-10-benchmarksgame-runtime-loop-local-headers-linux-arm64/README.md">current Linux arm64 result</a>
+retains every registered observation at accepted Native revision <code>8980b597</code>,
+including assignment recovery and subsequent MIR Array-header improvements.
+One-core spectral-norm takes 2.25684 seconds versus Pure Go's 3.21985 seconds,
+29.91% less wall time. N-body and fannkuch take 7.87414 and 61.8302 seconds;
+both recover the earlier published regressions and improve beyond the former
+pre-regression snapshot, while remaining slower than Pure Go.</p>
+<p>The <a href="https://github.com/type-rb/type-rb/blob/main/results/2026-09-10-benchmarksgame-build-loop-local-headers-linux-arm64/README.md">same-source build result</a>
+finds that Native uses 38.2% to 39.7% of TypeRB Go's build wall time. All 546
+runtime and 78 build observations are retained. Separate local Native A/B
+cohorts assess individual optimization effects; changes between publication
+dates do not establish causal attribution. These three programs do not establish
+general language parity.</p>
+<h2 id="runtime-objective-and-benchmark-expansion">Runtime objective and benchmark expansion</h2>
+<p>The long-term execution objective is to match or exceed established statically
+typed language implementations on representative portable workloads. The
+identical-TypeRB Go path remains the primary backend control because it holds
+source and semantics constant; it does not define the final Native performance
+ceiling. Cross-language rows remain exact implementation context rather than a
+composite language ranking.</p>
+<p>The current three cases are the first numeric slice, not a broad application
+suite. Expansion proceeds in this order:</p>
+<ol>
+<li>rerun all three runtime and build cases from one current Native revision and
+one current compatible TypeRB Go revision before replacing the published
+snapshot;</li>
+<li>add allocation and collection pressure, with <code>binary-trees</code> as the first
+candidate once its specification is expressible without semantic changes;</li>
+<li>add byte, String, and I/O workloads from <code>fasta</code> and
+<code>reverse-complement</code>, followed by Hash and String pressure from
+<code>k-nucleotide</code> and binary-output numeric work from <code>mandelbrot</code>;</li>
+<li>admit <code>regex-redux</code> and <code>pidigits</code> only after the corresponding portable
+Regex and arbitrary-precision surfaces exist; and</li>
+<li>keep persistent worker, eventual Web/Job service, leak, latency, and soak
+measurements in a separate application-lifecycle layer.</li>
+</ol>
+<p>Each addition must pin its upstream specification, license, source revision,
+input, exact output, toolchains, and measurement policy before results are
+reviewed. Pull-request optimization checks may use bounded Native-to-Native A/B
+runs, while the larger cross-language suite runs periodically from a complete
+revision. Profiles and generated-code evidence select optimization work; the
+project does not weaken TypeRB semantics or trade away its measured build-time
+and compactness advantages merely to improve a benchmark.</p>
+<h2 id="pinned-upstream-boundary">Pinned upstream boundary</h2>
+<ul>
+<li>project: <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/">The Computer Language Benchmarks Game</a>;</li>
+<li>site version: <code>25.03</code>;</li>
+<li>repository revision:
+<a href="https://salsa.debian.org/benchmarksgame-team/benchmarksgame/-/commit/40296663ed350d5fe4a6ab5e367bab61cb77c219"><code>40296663ed350d5fe4a6ab5e367bab61cb77c219</code></a>;</li>
+<li>source archive path: <code>public/download/benchmarksgame-sourcecode.zip</code> at that
+revision;</li>
+<li>source archive SHA-256:
+<code>aabcf6726cdc14f0f45b99e5daba48584f94bbb48883fd3711a1d040474d1cb4</code>;</li>
+<li>measurement procedure:
+<a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/how-programs-are-measured.html">How programs are measured</a>;</li>
+<li>license: <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/license.html">Revised BSD</a>.</li>
+</ul>
+<p>The repository retains the two upstream license instances that cover the
+adapted TypeRB programs in <a href="../benchmarks/benchmarksgame/licenses"><code>benchmarks/benchmarksgame/licenses</code></a>.</p>
+<h2 id="admitted-typerb-cases">Admitted TypeRB cases</h2>
+<table>
+<thead>
+<tr>
+<th>Case</th>
+<th style="text-align:right">Correctness input</th>
+<th style="text-align:right">Performance input</th>
+<th>Published performance output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fannkuch-redux</code></td>
+<td style="text-align:right"><code>7</code></td>
+<td style="text-align:right"><code>12</code></td>
+<td><code>3968050</code>, then <code>Pfannkuchen(12) = 65</code></td>
+</tr>
+<tr>
+<td><code>n-body</code></td>
+<td style="text-align:right"><code>1000</code></td>
+<td style="text-align:right"><code>50000000</code></td>
+<td><code>-0.169075164</code>, then <code>-0.169059907</code></td>
+</tr>
+<tr>
+<td><code>spectral-norm</code></td>
+<td style="text-align:right"><code>100</code></td>
+<td style="text-align:right"><code>5500</code></td>
+<td><code>1.274224153</code></td>
+</tr>
+</tbody>
+</table>
+<p>The sources and complete correctness/performance expected outputs are under
+<a href="../benchmarks/benchmarksgame"><code>benchmarks/benchmarksgame</code></a>. Their admission
+does not weaken a specification:</p>
+<ul>
+<li><code>fannkuch-redux</code> uses mutable Integer Arrays, remainder, permutation
+generation, process arguments, and exact Integer output;</li>
+<li><code>n-body</code> uses binary64 Arrays grouped in a record, the published symplectic
+integration order, square root, and exact nine-place output; and</li>
+<li><code>spectral-norm</code> keeps the four published matrix functions, ten power-method
+iterations, square root, and exact nine-place output.</li>
+</ul>
+<p>The Float programs render nine decimal places in user source by rounding a
+finite value to an Integer-scaled billionth and padding the fractional digits.
+The published values are far inside the portable Integer range and are not
+halfway cases. This uses only existing portable TypeRB behavior and remains
+identical in both backend paths.</p>
+<h2 id="primary-backend-pair-procedure">Primary backend-pair procedure</h2>
+<p>For each case:</p>
+<ol>
+<li>hash the authored source and expected output;</li>
+<li>check the source with both compilers;</li>
+<li>build the same source with the pinned optimized Go path and with the
+canonical self-hosted Native compiler;</li>
+<li>run the correctness input and require zero status, empty stderr, exact
+published stdout, and byte identity between backends;</li>
+<li>perform two untimed compiler warmups, then retain eleven alternating clean
+builds for compiler wall time, CPU time, and peak RSS;</li>
+<li>validate the performance output before timing runtime, perform two runtime
+warmups, and retain eleven alternating observations for wall time, CPU time,
+and peak RSS; and</li>
+<li>record raw and stripped executable size plus the complete compiler,
+generator, linker, runtime, shared-library, and required distribution
+inventory.</li>
+</ol>
+<p>The first run is never reported. Alternation order changes each observation so
+one backend is not systematically favored by thermal or host drift. Failures,
+timeouts, and memory-limit outcomes remain in raw data. Medians and the full
+per-case distribution are reported; no aggregate score is calculated.</p>
+<p><a href="../tools/benchmarksgame-verify.sh"><code>tools/benchmarksgame-verify.sh</code></a> owns the
+fast correctness boundary and is run by ordinary pull-request CI. The formal
+measurement controllers extend this boundary without changing its sources or
+oracles.</p>
+<h2 id="cross-language-context-selection">Cross-language context selection</h2>
+<p>The initial arm64-compatible context uses these exact paths from the pinned
+archive:</p>
+<table>
+<thead>
+<tr>
+<th>Case</th>
+<th>C</th>
+<th>C++</th>
+<th>Go</th>
+<th>Rust</th>
+<th>Java</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fannkuch-redux</code></td>
+<td><code>fannkuchredux.gcc</code></td>
+<td><code>fannkuchredux.gpp-3.gpp</code></td>
+<td><code>fannkuchredux.go-8.go</code></td>
+<td><code>fannkuchredux.rust-2.rust</code></td>
+<td><code>fannkuchredux.java-3.java</code></td>
+</tr>
+<tr>
+<td><code>n-body</code></td>
+<td><code>nbody.gcc</code></td>
+<td><code>nbody.gpp-2.gpp</code></td>
+<td><code>nbody.go-8.go</code></td>
+<td><code>nbody.rust</code></td>
+<td><code>nbody.java-4.java</code></td>
+</tr>
+<tr>
+<td><code>spectral-norm</code></td>
+<td><code>spectralnorm.gcc-8.gcc</code></td>
+<td><code>spectralnorm.gpp</code></td>
+<td><code>spectralnorm.go-8.go</code></td>
+<td><code>spectralnorm.rust-3.rust</code></td>
+<td><code>spectralnorm.java-8.java</code></td>
+</tr>
+</tbody>
+</table>
+<p>These variants compile on Darwin arm64 and reproduce every small published
+oracle with the locally recorded toolchains. They avoid x86-only SIMD
+requirements; Linux arm64 remains part of the formal run rather than an
+inference from that check. Some upstream implementations create threads, so
+the one-core and four-core lanes are published separately. The one-core lane
+does not rewrite source to remove threading; BenchExec constrains the complete
+process tree and records the resulting overhead.</p>
+<p><a href="../benchmarks/benchmarksgame/context-sources.tsv"><code>context-sources.tsv</code></a> pins
+each archive path and source hash.
+<a href="../tools/benchmarksgame-context-verify.sh"><code>tools/benchmarksgame-context-verify.sh</code></a>
+refuses a different archive, extracts only those 15 sources, compiles them,
+records the complete commands and tool versions, and requires exact published
+output for every small input. This is a correctness and toolchain-capability
+check, not a performance result.</p>
+<p>The preregistered
+<a href="https://github.com/type-rb/type-rb/blob/main/tools/benchmarksgame-formal/README.md"><code>formal runtime controller</code></a> pins
+BenchExec <code>runexec</code> 3.35, runs correctness before timing, rotates all seven
+candidates through two warmup and eleven retained rounds, and preserves every
+failure and raw process-tree metric. One-core and four-core lanes are separate.
+This controller measures complete fresh processes only. Its current
+<a href="https://github.com/type-rb/type-rb/blob/main/results/2026-09-10-benchmarksgame-runtime-loop-local-headers-linux-arm64/README.md">formal result</a>
+publishes all one-core and four-core raw observations, independently reproduced
+medians, and exact artifact identities. Compiler measurements and complete
+artifact/distribution inventory use the separate
+<a href="https://github.com/type-rb/type-rb/blob/main/tools/benchmarksgame-build-formal/README.md">formal build controller</a>. It
+measures alternating clean outputs through both TypeRB backends, verifies every
+measured artifact, process-traces representative builds, and separates
+controlled payloads from platform prerequisites and deploy artifacts. Its
+current
+<a href="https://github.com/type-rb/type-rb/blob/main/results/2026-09-10-benchmarksgame-build-loop-local-headers-linux-arm64/README.md">formal result</a>
+publishes all raw observations, independently reproduced medians, artifact
+variants, process closure, dynamic dependencies, and distribution totals. See
+<a href="https://github.com/type-rb/type-rb-native/blob/7726ff18e9230cd149e9f0c317577f6429f907fc/docs/decisions/0024-benchexec-runtime-controller.md">Decision 0024</a> and
+<a href="https://github.com/type-rb/type-rb/blob/main/docs/decisions/0027-formal-build-distribution-controller.md">Decision 0027</a>. The
+dispatch-only <a href="../.github/workflows/benchmarksgame-formal.yml">runtime workflow</a>
+and <a href="../.github/workflows/benchmarksgame-build-formal.yml">build workflow</a>
+isolate each case on a fresh runner and retain complete result trees even when
+an observation fails.</p>
+<h2 id="native-optimization-ab-procedure">Native optimization A/B procedure</h2>
+<p>The cross-language result is a durable reference point, not a same-host baseline
+for every compiler optimization. The daily measurement compares each main
+revision with the previously measured one on the same host. The former
+<code>native-runtime-ab</code> controller, its registered contracts and accepted or
+rejected results remain in the
+<a href="https://github.com/type-rb/type-rb-native/blob/f864151fa53a99a9491ca0268198d5ec914124fd/docs/benchmarksgame.md#native-optimization-ab-procedure">immutable experiment history</a>.
+New portable facts and transforms belong in verified Native MIR as described by
+<a href="https://github.com/type-rb/type-rb/blob/main/docs/decisions/0028-native-mir-optimization-boundary.md">Decision 0028</a>.</p>
+<p>Builds use release optimization without unsafe fast-math substitutions: C and
+C++ use <code>-O3</code>, Go uses <code>go build -trimpath</code>, Rust uses <code>rustc -C opt-level=3</code>,
+and Java uses <code>javac</code> followed by the same recorded JVM for every run. The
+selected n-body C++ source additionally needs <code>-include cstdlib</code> with current
+Clang because it uses <code>std::size_t</code> without including that header. This is a
+recorded compiler-compatibility flag, not a source rewrite. Exact compiler
+versions and complete command lines are result inputs. Raw and stripped
+artifacts are distinct; Java application size and required JRE distribution
+size are both explicit.</p>
+<p>Formal context runs use pinned BenchExec <code>runexec</code> 3.35 on a fresh Linux arm64
+hosted runner, with no other project workload in that job. The harness checks
+cgroup support, validates all output
+before timing, drops the Linux page cache before every measured process, uses
+two warmup and eleven retained rounds, prevents network access during
+execution, and records every timeout or failure. One-core and four-core results
+use the same binaries and inputs.</p>
+<h2 id="measurement-host-procedure">Measurement-host procedure</h2>
+<p>For an optimization A/B, first register the candidate and baseline revisions,
+source bytes, inputs, output oracle, target, sample count and stop conditions.
+Run both candidates on the same host, with no other project build, profiler or
+benchmark running during timed observations. Use the registered controller's
+warmups and alternating order. Keep every raw observation, including failures;
+do not retry individual slow samples or select the best cohort.</p>
+<p>For a formal cross-language result, use the dispatch-only workflow's fresh
+runner for one case. The controller runs candidates serially under its cgroup
+CPU and memory limits, with swap disabled and the registered cache policy.
+Review the retained host identity, cgroup/setup checks, command traces,
+resource-limit outcomes and full sample spread before promoting a claim. A
+hosted runner isolates this job from other project jobs, but does not establish
+that the underlying physical machine had no competing workload. Describe that
+limit explicitly instead of treating a small wall-time difference as certain.</p>
+<p>If setup isolation fails, another project workload ran on the measurement host,
+or the recorded run shows material CPU/memory contention or outliers beyond its
+registered contract, retain the evidence and mark that cohort inconclusive.
+After removing the cause, run a new complete cohort under the same declared
+policy; never silently discard one observation. Compare Native and Pure Go
+within one cohort. Absolute times from separate hosts or dates are trend
+signals, not causal evidence for one compiler change.</p>
+<h2 id="interpretation-limits">Interpretation limits</h2>
+<p>These cases have insignificant I/O and primarily test tight numeric kernels.
+They do not represent application architecture, package ecosystems, latency
+under load, persistent services, allocation behavior, or developer
+productivity. The primary layer supports backend claims only. The context layer
+supports statements about these exact implementations, inputs, host, and
+toolchains only.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/benchmarksgame.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

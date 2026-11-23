@@ -22,8 +22,8 @@
 			</a>
 			<nav class="site-nav" aria-label="Primary navigation">
 				<a class="active" href="/docs/">Docs</a>
-				<a href="/tour/">Learn</a>
-				<a href="/play/">Playground</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
 				<a href="https://github.com/type-rb/type-rb">GitHub</a>
 			</nav>
 		</header>
@@ -43,7 +43,7 @@
 					
 					<section>
 						<h2>Tooling</h2>
-						<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
 					</section>
 					
 					<section>
@@ -68,7 +68,7 @@
 						
 						<section>
 							<h2>Tooling</h2>
-							<a href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
 						</section>
 						
 						<section>
@@ -281,8 +281,9 @@ environment and that VS Code can select either through <code>typerb.server.path<
 <li>Publish and validate both prereleases before updating <code>Formula/trb.rb</code>.
 Verify platform archives and checksums, installation, upgrades from v0.4,
 command identity, REPL, a small application, and packaged toolchain assets.
-Record the available targets and release gaps in the alpha notes. Keep the
-existing v0.4 install available until its replacement passes on that host.
+Record the available targets and release gaps in the alpha notes. Hosts
+awaiting a Native archive can install the matching Go companion as
+<code>trbg</code> and can retrieve v0.4 binaries from their original release.
 Native executable builds need the system C toolchain. Install the pinned QBE
 and library sidecars with the Native compiler.</li>
 <li>Update the existing tap through a pull request. The normal <code>trb</code> upgrade
@@ -326,7 +327,7 @@ application initiatives keep their criteria and ownership; this release
 outcome connects their evidence without closing or duplicating them.</p>
 </article>
 				<footer class="docs-footer">
-					<span>TypeRB 0.4.12-dev</span>
+					<span>TypeRB 0.5.0-alpha.1</span>
 					<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-transition.md">Edit this page on GitHub</a>
 				</footer>
 			</main>

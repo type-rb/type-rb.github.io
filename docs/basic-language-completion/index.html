@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Basic-language completion — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/basic-language-completion/">
+		<title>Basic-language completion — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="basic-language-completion">Basic-language completion</h1>
+<p>The next language milestone is completion of the 28 <code>basic</code> families in the
+<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-language-feature-inventory.md">reference-derived inventory</a>, owned by
+<a href="https://github.com/type-rb/type-rb-native/issues/454">issue #454</a>. Finish cohesive
+families and their verified MIR dependencies without introducing a new acceptance
+milestone for each helper or individual receiver method. Integration PRs remain
+reviewable units; they are not separate user decisions to continue.</p>
+<p>The pinned reference specification, standard-library declarations and AST define
+the inventory. Counts of successful probes do not establish a percentage of the
+language. Distinguish a missing implementation, a supported contract needing
+broader verification, a diagnostic/display difference, and a reference defect.
+Adding tests must not make a known rejection look like implemented support.</p>
+<h2 id="remaining-implementation-families">Remaining implementation families</h2>
+<p>These are work groups, not equal amounts of effort. Their order follows type and
+runtime dependencies; independent groups may advance while CI runs.</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Remaining work</th>
+<th>Existing foundation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Builtin values and conversions</td>
+<td>Remaining Symbol operator/control boundaries and malformed-source origins</td>
+<td>Portable numbers, strict/safe numeric String conversions, structured Result errors, UTF-8 Strings and Unicode identifiers, nullable values and enums</td>
+</tr>
+<tr>
+<td>Collection operations</td>
+<td>Remaining collection-inference and receiver combinations; unguarded nullable indexing and reference nullable Hash lowering; portable Unicode case contract across reference output modes</td>
+<td>Exact nullable and nonnullable contexts and literal-closure constraints for fresh mutable empty Arrays and Hashes, literal String splitting/replacement and simple Unicode case conversion, safe Array/String/Hash retrieval and slicing, checked indexes, stable natural and key-based sorting, safe blocks, streamed sliced iteration, retained receivers, shallow copies and String joining, Hash snapshots, Range materialization, sequential transforms</td>
+</tr>
+<tr>
+<td>Value declarations and identity</td>
+<td>Forward initializer dependencies, qualified namespace binding members and remaining pending-collection constraints</td>
+<td>Nested/reopened modules, lexical privacy, inferred imported constants, qualified aliases, typed runtime constants and lexical file/project/namespace variables, ordered initializer functions, shared REPL cells with lexical declaration identity, and persistent global roots</td>
+</tr>
+<tr>
+<td>Nominal and union types</td>
+<td>Reference common-field visibility and assignment defects; remaining enum patterns and attribute effects in output modes</td>
+<td>Literal constraints and literal-union Hash keys, common record/class fields and readonly class discriminants with overlapping narrowing; nominal newtypes with explicit construction/projection and closed factories; general union values and scalar type cases, nominal records, payload/raw enums, checked raw conversions and ordinary enum methods</td>
+</tr>
+<tr>
+<td>Object declarations</td>
+<td>Initialized superclass construction, inherited overrides and deferred receiver contracts</td>
+<td>Classes and generic fields, ordered initialization with MIR definite-assignment checks, instance/class/private methods including lexical class <code>self</code>, canonical class-alias construction, field-free inheritance, explicit interfaces and managed witness dispatch</td>
+</tr>
+<tr>
+<td>Callable and generic completion</td>
+<td>Remaining nullable-signature and parameter-capability combinations; generic interface methods and constraints; alias diagnostic/presentation gaps and reference branch compatibility</td>
+<td>Anonymous and named function values, verified comparison rejection and nullable capture boundaries, shared captures, generic functions/records/enums/classes/interfaces, concrete generic instance methods, receiver-specialized enum methods and transparent aliases across literal, discriminated-union and nominal targets, with checked enum alias presentation in retained REPL values</td>
+</tr>
+<tr>
+<td>Structured runtime dependencies</td>
+<td>Import-free bounded <code>concurrent_map</code> and its transfer, cancellation and lifetime contract</td>
+<td>Sequential structured iteration and function values</td>
+</tr>
+</tbody>
+</table>
+<p>The core API audit includes every import-free receiver declared for the covered
+types, including less frequently used safe forms. It must not silently omit an
+operation because a benchmark or the compiler does not call it. Wider package
+APIs, JSX/package activation and Go/Ruby/TypeScript emission remain visible in
+their existing later phases; they are still part of the full project objective.</p>
+<h2 id="cross-cutting-verification-work">Cross-cutting verification work</h2>
+<p>These boundaries are already substantially implemented. They require systematic
+positive, negative and combination coverage before their pending entries close:</p>
+<ul>
+<li>Lexical forms, malformed input, reserved words, source normalization and origins.</li>
+<li>Every operator/assignment form, widening, portable failure limit and lazy RHS.</li>
+<li>Shadowing, duplicate/unused/discard bindings and mutation through projections.</li>
+<li>Calls/defaults/named arguments, all-path returns and mutable argument boundaries.</li>
+<li>Nested value controls and transfers, exhaustive patterns and unreachable cases.</li>
+<li>Nullable/union narrowing, optional calls and common result types.</li>
+<li>Recursive/defaulted/generic nominal values, import identity and initialization.</li>
+<li>Retained collection receivers, shortening/growth, managed aliases and GC roots.</li>
+<li>File check/build/run and retained REPL state, failures, replay and type display.</li>
+</ul>
+<p>Diagnostic position, failure class and erroneous acceptance are observable
+contracts. Wording, formatting and terminal presentation differences remain
+separately visible under <a href="https://github.com/type-rb/type-rb-native/issues/455">issue #455</a>;
+do not represent them as missing parser/runtime features or remove their evidence.
+Transparent aliases of one enum currently disagree at conditional branch joins
+between Native and the pinned reference. <a href="https://github.com/type-rb/type-rb-native/issues/1128">Issue #1128</a>
+records the proposed contract; matching alias names in REPL output does not settle
+that acceptance difference.</p>
+<h2 id="completion-and-integration">Completion and integration</h2>
+<p>For each group, extend the executable registry, implement the required typed MIR
+operations and independent verifier controls, and regenerate the matrix,
+inventory and Capabilities from that registry. Remove a pending entry only after
+its named contract has adequate executable coverage. Reference bugs receive
+consumer-neutral corrections and an explicit pin/expectation review when adopted.</p>
+<p>Completion requires no unexplained or untested basic inventory entries and
+passing ordinary-path parity, including boundary and rejection cases. Explicit
+reference defects remain blockers to a full parity claim even when Native has
+the intended behavior. <code>--require-parity</code> must continue to fail while known gaps
+or uncovered basic contracts remain. Keep every required correctness, lifetime,
+target, recovery and ordinary self-hosting check; qualify performance at the
+coherent milestone described in <a href="/docs/mir-consolidation/">MIR consolidation</a>.</p>
+<p>The current source adds Unicode identifiers, safe collection retrieval/slicing,
+structured number parsing and retained Result values through verified MIR and
+shared core/REPL parsing. It also adds lexical namespace-body variables, including same-submission
+REPL ordering and earlier outer bindings, shared interactive globals with checked lexical scope,
+once-only initializers and explicit replay, optional scalar output through verified
+MIR branches, and file/project lowercase bindings with verified mutable
+global storage, reference-correct nullable invalidation and source identity,
+literal constraints and common record/class fields with verified
+widening and readonly discriminant narrowing, nominal newtypes with erased storage and
+verified construction policy, callable suffixes, reserved-name checks and nested generic token boundaries,
+streamed Array/Range batches, safe collection blocks, exact nullable collection contexts
+and first-statement inference across literal closure bodies,
+stable natural and key-based Array sorting, raw enum conversions and ordinary/generic enum instance methods,
+general union values and scalar type cases,
+Float/Boolean String conversion and Float output,
+nested/reopened modules and runtime constants with
+verified MIR globals, portable Symbol expressions and keyword framing, Unicode
+String trimming, named function values, nullable/generic combinations, and
+colon-separated Hash key expressions. These extend String
+joining, Hash snapshot iteration and scoped numeric value inference, Range materialization, Array search,
+uniqueness, concatenation, insertion/removal, edges/copies/slicing, and the String
+query, sequence, slice and escape families. Literal-union Hash keys preserve
+their semantic identity through lookup, copies, snapshots and collection.
+The registered cases include explicit remaining differences; green regression CI
+does not close #454.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/basic-language-completion.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

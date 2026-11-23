@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Checked Web endpoint contracts — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/native-web-endpoints/">
+		<title>Checked Web endpoint contracts — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="checked-web-endpoint-contracts">Checked Web endpoint contracts</h1>
+<p>A configured Web project can describe a file-route handler with the existing
+<code>trb/web</code> endpoint declarations. In <code>src/routes/items.trb</code>:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> { </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Response</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">Endpoint</span><span style="color:#E6EDF3">, handles, response } </span><span style="color:#FF7B72">from</span><span style="color:#A5D6FF"> trb/web</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">record</span><span style="color:#FFA657"> Item</span></span>
+<span class="line"><span style="color:#E6EDF3">  id: </span><span style="color:#79C0FF">Integer</span></span>
+<span class="line"><span style="color:#E6EDF3">  title: </span><span style="color:#79C0FF">String</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> get</span><span style="color:#E6EDF3">(_context: </span><span style="color:#FFA657">Context</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">Response</span></span>
+<span class="line"><span style="color:#FF7B72">  return</span><span style="color:#FFA657"> Response</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">json</span><span style="color:#E6EDF3">(</span><span style="color:#FFA657">Item</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">new</span><span style="color:#E6EDF3">(id: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, title: </span><span style="color:#A5D6FF">"sample"</span><span style="color:#E6EDF3">))</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FF7B72">class</span><span style="color:#FFA657"> ItemsEndpoint</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#FFA657"> Endpoint</span></span>
+<span class="line"><span style="color:#D2A8FF">  handles</span><span style="color:#E6EDF3">(get)</span></span>
+<span class="line"><span style="color:#E6EDF3">  response</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Item</span><span style="color:#FF7B72">></span><span style="color:#E6EDF3">(status: </span><span style="color:#79C0FF">200</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>The top-level contract class directly extends the owned <code>Endpoint</code>, names exactly one
+local file-route handler and declares one or more unique literal response
+statuses from 100 through 599. Optional <code>input&lt;T&gt;()</code> declares the input envelope.
+The ordinary checker resolves the handler signature, type arguments and marker
+function identities. Marker calls are compile-time metadata and never execute
+as route or program behavior. Runtime input binding and response construction
+remain explicit application operations; declarations do not infer or validate
+an implementation's responses automatically.</p>
+<h2 id="openapi-generation">OpenAPI generation</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> openapi</span><span style="color:#79C0FF"> --config</span><span style="color:#A5D6FF"> trbconfig.jsonc</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> openapi</span><span style="color:#79C0FF"> --output</span><span style="color:#A5D6FF"> docs/openapi.json</span><span style="color:#79C0FF"> --title</span><span style="color:#A5D6FF"> "Sample API"</span><span style="color:#79C0FF"> --api-version</span><span style="color:#79C0FF"> 1.0</span></span>
+<span class="line"></span></code></pre>
+<p>The target-neutral command uses the project's checked endpoint catalog. It emits
+OpenAPI 3.1 in every declared project mode without invoking a compiler toolchain,
+server, handler or program entry point. The pinned integration requires a project
+with a <code>main</code> entry, although generation never runs it. See the
+<a href="/docs/native-cli/">CLI contract</a> for defaults and atomic file output.</p>
+<p>An input envelope is a non-nullable, non-generic record containing only <code>params</code>,
+<code>query</code> and <code>body</code>. Path parameters match the route exactly and are required.
+Query fields retain declaration order; nullable fields and repeated array fields
+are optional. The body is required JSON when declared. Response status codes
+that prohibit bodies require <code>Unit</code>.</p>
+<p>JSON schemas cover Boolean, portable Integer, Float, String, nullable types,
+arrays, String-keyed hashes, records, raw String/Integer enums, transparent aliases,
+newtypes and the portable time scalars. Record properties use their JSON wire
+names. Components retain declaration identity and reject colliding public names;
+required fields retain declaration order. Paths, methods, status maps and component
+maps are deterministic.</p>
+<p>The pinned generator rejects recursive and generic schemas, generic aliases,
+catch-all routes, unsupported parameter shapes and invalid JSON field names.
+These are generation-only restrictions: an otherwise valid ordinary program
+continues to check and execute. A project with no endpoint contracts cannot
+produce an OpenAPI document.</p>
+<h2 id="identity-restrictions-and-verification">Identity restrictions and verification</h2>
+<p>The current reference accepts a renamed superclass import but does not recognize
+renamed marker functions or a type alias as the superclass. Renamed time imports
+are rejected by OpenAPI; transparent time aliases work. A renamed <code>Unit</code> import
+is an ordinary empty-record response schema, whereas canonical <code>Unit</code> and a
+transparent alias of it describe a bodyless response. Native preserves these
+reference distinctions pending the <a href="https://github.com/type-rb/type-rb-native/issues/1207">canonical identity decision</a>.
+Qualified types reached through an imported namespace are also rejected by the
+pinned schema provider, including nested records, enums, newtypes and aliases.
+Locally declared qualified types and aliases exported by their defining shared
+module retain their existing schema behavior.</p>
+<p>Owned contracts do not grant metadata privileges to unrelated class bodies or
+local declarations with the same names. Nested contract classes do not acquire
+the top-level metadata capability. General class-body call execution is
+still an <a href="https://github.com/type-rb/type-rb-native/issues/1208">ordinary language gap</a>; it is rejected explicitly rather than silently
+removed. Network serving remains a separate provider.</p>
+<h2 id="browser-client-generation">Browser client generation</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> client</span><span style="color:#79C0FF"> --config</span><span style="color:#A5D6FF"> trbconfig.jsonc</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> client</span><span style="color:#79C0FF"> --name</span><span style="color:#A5D6FF"> PublicClient</span><span style="color:#79C0FF"> --output</span><span style="color:#A5D6FF"> generated/api_client.trb</span></span>
+<span class="line"></span></code></pre>
+<p>The command generates TypeRB source over <code>trb/platform/typescript/browser</code>.
+It uses the same checked endpoint catalog and pinned JSON wire subset as
+OpenAPI generation. It does not run handlers, the program entry point, a server,
+an external formatter or a target toolchain. Generation works in every declared
+project mode; executing the generated client requires a browser-target consumer.
+This command does not establish Native execution of browser APIs or Native
+source-backend support.</p>
+<p>Each endpoint produces a status-tagged result enum and a client method derived
+from its name. Methods encode path parameters, omit absent nullable queries,
+repeat array query fields, encode JSON bodies and accept optional headers and
+timeouts. Declared response statuses use typed JSON decoding or bodyless
+responses. Unexpected statuses return a contract error retaining the response;
+transport and decoding failures remain explicit <code>Result</code> errors.</p>
+<p>Contract types must be imported from shared modules or packages that the browser
+consumer can resolve. The generator imports them instead of copying their
+definitions. Route-local types, colliding generated/imported names and duplicate
+or reserved method names are generation errors. Paths, methods, response statuses
+and imports have deterministic ordering.</p>
+<p>Pinned reference limitations remain explicit. A renamed shared type import can
+generate an import that the shared module does not export
+(<a href="https://github.com/type-rb/type-rb-native/issues/1183">canonical imported identity</a>).
+Shared application records named <code>Body</code> retain a different declaration identity
+from the transport body. Both the original <code>Body</code> fixture and its <code>Payload</code>
+control compile through the reference browser backend and exercise the same
+synthetic Fetch checks. Generation success alone does not qualify consumers;
+the remaining renamed-import failure is retained explicitly. Package and
+generator responsibility boundaries are subject to a separate
+<a href="https://github.com/type-rb/type-rb-native/issues/1211">ownership review</a>.</p>
+<p>Shared ordinary cases cover checking, compilation, execution and REPL loading.
+Provider units check ownership, corrupted catalog identities and types, and
+source-erased MIR emission. <code>tools/native-web-openapi-test.py</code> compares complete
+reference-derived documents and checks configuration modes, metadata overrides,
+output replacement, failures, path constraints and absence of external tools.
+<code>tools/native-web-client-test.py</code> compares complete reference-derived client
+sources and the same publication boundaries. Its reference mode additionally
+projects generated sources through the pinned TypeScript/browser backend and
+executes a synthetic Fetch transport harness with Node. That harness uses
+in-memory responses, not a network service or browser UI. The Go-free Native CLI
+lane independently compares its own generated source to the same fixtures.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-web-endpoints.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

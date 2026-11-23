@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="CLI key-reader interruption boundaries — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/native-cli-interruption/">
+		<title>CLI key-reader interruption boundaries — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="cli-key-reader-interruption-boundaries">CLI key-reader interruption boundaries</h1>
+<p>The current TypeRB editor uses a finite poll followed by one byte read. A
+finite poll does not make the subsequent read nonblocking: readiness can be
+invalidated before read starts. A pending-signal check immediately after poll
+cannot cover a signal delivered after that check.</p>
+<p>The key reader now temporarily sets <code>O_NONBLOCK</code> for the read and restores the
+exact original file-status flags before returning. It captures errno before
+restoration, distinguishes EOF and real read errors from EAGAIN/EINTR, and
+checks pending interruption after restoring flags. Poll errors never enter the
+read path. An interrupted flag-restoration syscall retries that syscall;
+terminal shutdown also restores any active temporary flags, including SIGTERM
+at the read boundary. Originally nonblocking input remains nonblocking.</p>
+<p>Supported Darwin/Linux hosts resolve their libc errno accessor during terminal
+setup. Setup fails with terminal restoration if that accessor is unavailable;
+it never calls a missing function pointer. The host bridge remains repository-
+owned TypeRB source emitting the existing internal QBE ABI. The standalone
+compiler source closure is unchanged.</p>
+<h2 id="deterministic-regression">Deterministic regression</h2>
+<p><code>tools/native-cli-key-test.py</code> extracts the actual host QBE and compiles it with
+test-only syscall wrappers. It uses a real PTY, waits for terminal setup before
+sending bytes, and injects events at syscall boundaries. The production bridge
+contains no test hooks. Each observation has a fixed one-second completion
+bound; a timed-out child is inspected, killed and reaped, and its transcript
+and state are retained. There is no retry-until-success policy.</p>
+<p>The 17 controls cover normal bytes and raw Ctrl-C, idle timeout, pending SIGINT,
+SIGINT at poll entry, SIGINT before read, input drain before read with/without
+SIGINT, poll/read errors, EOF, invalid descriptors, preexisting nonblocking
+flags, get/set flag errors, interrupted restoration and SIGTERM before read.
+The parent checks flags and terminal modes after exit. PENDIN is retained in
+the observations but excluded from mode equality: the kernel can mark queued
+input for reprocessing when canonical mode returns. All other mode fields and
+control characters are compared.</p>
+<p>Against source <code>8980b5978f0e8519964d200b7f7799b741796478</code>, both drain-at-read
+controls block until the test deadline; poll failure incorrectly continues to
+read the available byte. New flag-syscall failure controls also distinguish the
+new path from the old implementation, which had no such calls. The repaired
+bridge passes all 17 controls locally. Both hosted CLI jobs run the same test
+and retain its full JSON alongside the existing complete CLI/editor authorities.</p>
+<p>Run it after building the ordinary CLI:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/native-cli-key-test.py</span><span style="color:#79C0FF"> --qbe</span><span style="color:#A5D6FF"> bin/qbe</span><span style="color:#79C0FF"> --output</span><span style="color:#A5D6FF"> key-observations.json</span></span>
+<span class="line"></span></code></pre>
+<h2 id="relationship-to-the-original-intermittent-failure">Relationship to the original intermittent failure</h2>
+<p><a href="https://github.com/type-rb/type-rb-native/issues/298">Issue #298</a> originally
+observed a Darwin timeout in the retired libedit path. This test proves and
+repairs a blocking-read boundary in the replacement host implementation. It
+does not establish the exact interleaving of the historical failure. In
+particular, the test explicitly drains input; raw-mode Ctrl-C is a byte and
+must not be described as automatically flushing input through an OS signal.
+The original failure and unchanged-head successful retry remain historical
+evidence. Full editing Ctrl-C, explicit SIGINT, evaluation after interruption,
+running-program interruption and SIGTERM restoration remain separate real-CLI
+regressions. No timeout is extended and no benchmark result is relabelled.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-cli-interruption.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Native digest, HMAC and secure comparison — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/native-crypto/">
+		<title>Native digest, HMAC and secure comparison — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="native-digest-hmac-and-secure-comparison">Native digest, HMAC and secure comparison</h1>
+<p>Native implements the pinned portable <code>Digest.md5</code>, <code>sha1</code>, <code>sha256</code>, <code>sha512</code>,
+<code>HMAC.sha256</code>, <code>sha512</code>, <code>equal</code>, and <code>SecureCompare.equal</code> APIs in compiled
+applications and the retained REPL. Results retain raw bytes, including NUL and
+invalid UTF-8. Public declarations and names follow <code>TYPE_RB_REVISION</code>.</p>
+<p>The provider is OpenSSL 3.5.9 <code>libcrypto</code>, built from the exact commit and archive
+hash in <a href="../tools/crypto-dependencies.json">crypto-dependencies.json</a>. The
+<a href="native-dependencies.json">dependency register</a> records its scope and remaining
+release qualification. Digest consumers share this crypto archive with the
+<a href="/docs/native-oidc/">OIDC TLS/RS256 provider</a>. Database client profiles remain separate
+work.</p>
+<h2 id="dependency-scope">Dependency scope</h2>
+<table>
+<thead>
+<tr>
+<th>Executable</th>
+<th>Crypto dependency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Core compiler and lockfile checksum implementation</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Native CLI, including the retained REPL</td>
+<td>Statically linked libcrypto</td>
+</tr>
+<tr>
+<td>Application using Digest, HMAC or SecureCompare</td>
+<td>Statically linked libcrypto</td>
+</tr>
+<tr>
+<td>Application without these APIs or OIDC</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<p>REPL evaluation calls the ordinary standard APIs, so it has the same results and
+provider as compiled programs. It does not run the Go implementation. This means
+the full CLI is a crypto consumer even when its current command is not <code>repl</code>.
+Compiler lockfile SHA-256 stays in the existing independent implementation.</p>
+<p>The compiler selects libraries from verified MIR declarations. Authored names or
+paths cannot grant access to internal hashing or HMAC intrinsics. Missing or
+corrupt archives fail the build while preserving an existing output executable.</p>
+<h2 id="build-and-installation">Build and installation</h2>
+<p>Contributor source builds require a C toolchain, Perl and make. Build the fixed
+profile with a shared source archive directory:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/build-crypto-dependencies.py</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --archives</span><span style="color:#A5D6FF"> /path/to/shared-source-cache</span><span style="color:#79C0FF"> --output</span><span style="color:#A5D6FF"> bin/crypto</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#79C0FF"> --version</span></span>
+<span class="line"></span></code></pre>
+<p>An existing installation is never overwritten. A qualified archive can instead
+be verified and installed without rebuilding OpenSSL:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/crypto_artifacts.py</span><span style="color:#A5D6FF"> verify</span><span style="color:#A5D6FF"> bin/crypto</span><span style="color:#79C0FF"> --target</span><span style="color:#A5D6FF"> darwin-arm64</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/crypto_artifacts.py</span><span style="color:#A5D6FF"> pack</span><span style="color:#A5D6FF"> bin/crypto</span><span style="color:#A5D6FF"> crypto-darwin-arm64.tar.gz</span></span>
+<span class="line"></span></code></pre>
+<p>Application compilation finds <code>crypto/libcrypto.a</code> and <code>crypto/crypto-identity.o</code>
+beside QBE, or in the explicit <strong>build-time</strong> <code>TRBN_CRYPTO_LIB_DIR</code> directory.
+The same location supplies a checkout CLI build. Its content hashes participate
+in CLI cache invalidation. Executables require neither that directory nor a
+runtime library environment variable after compilation.</p>
+<p>The archive includes the Apache-2.0 license, exact source pins and build receipt.
+Each consuming executable embeds one <code>TRBN-CRYPTO-V1</code> inventory; inspect it with
+<code>tools/crypto_artifacts.py inspect</code>. CI builds and tests development artifacts on
+Darwin/Linux arm64/amd64. Archive qualification is separate from the current
+ordinary compiler host matrix, which still lacks darwin-amd64. Immutable release
+publication and advisory/update ownership remain in
+<a href="https://github.com/type-rb/type-rb-native/issues/1257">#1257</a>.</p>
+<h2 id="initialization-and-lifetime">Initialization and lifetime</h2>
+<p>The fixed profile keeps upstream assembly and disables shared libraries,
+loadable modules, DSO loading, engines, legacy provider, tests, apps, documentation
+and automatic configuration loading. PIC, sectioned objects, build-path remapping
+and the pinned commit timestamp are recorded in the receipt. Before digest or
+HMAC use, the runtime also calls <code>OPENSSL_init_crypto</code> with
+<code>OPENSSL_INIT_NO_LOAD_CONFIG</code>.</p>
+<p>The default provider is built in. <code>OPENSSL_CONF</code> cannot load a host configuration,
+and <code>OPENSSL_MODULES</code> cannot inject a provider. Tests run with a blocking FIFO as
+the configuration path and absent provider directories. This profile does not
+claim inherited distribution crypto policy, FIPS behavior, or TLS trust parity.
+Future TLS/DB composition must preserve one OpenSSL stack per process as specified
+by the <a href="/docs/native-dependency-policy/">dependency policy</a>.</p>
+<p>One-shot EVP calls own and release their native contexts. A 64-byte native stack
+buffer holds the result across managed allocation, then is cleansed after the
+immutable Bytes copy. No TypeRB-owned native crypto context survives a call.
+OpenSSL manages its bounded process caches and exit cleanup. Provider failures
+remain terminal and do not fall back to another implementation.</p>
+<p>Comparison returns false immediately for unequal public lengths, matching the
+reference. Equal lengths go through OpenSSL <code>CRYPTO_memcmp</code>, including first-byte
+and last-byte mismatches. The pinned arm64/amd64 implementations branch on length,
+accumulate differences without early mismatch exits, and select the final result
+without a content-dependent branch. This is a claim about comparison for a fixed
+length, not about hiding lengths or making an entire application constant-time.</p>
+<h2 id="validation">Validation</h2>
+<p>The frozen <a href="../tools/crypto-cases.json">82-observation corpus</a> includes standard
+digest answers, RFC 4231 HMAC vectors, padding boundaries, long keys, binary data,
+empty values and unequal comparisons. It runs through check, build, execution,
+run and retained REPL against the exact reference revision. Additional probes
+cover declaration/MIR forgery, erased source, forced GC, cleansed output buffers,
+initialization/provider failures, archive corruption and relocated executables.</p>
+<p><code>tools/native-crypto-test.py</code> runs correctness checks. Its separate <code>--measure</code>
+mode records the prospectively bounded three-pair application size/build/startup
+diagnostic; ordinary correctness reruns do not repeat that cohort. The initial
+digest application guardrail is a 4 MiB executable increment. A miss requires
+comparison with HACL* or AWS-LC before adoption. These dependencies are not
+introduced by this implementation.</p>
+<h3 id="initial-adoption-diagnostic">Initial adoption diagnostic</h3>
+<p>The one three-pair Darwin arm64 run used Apple clang 21.0.0, the pinned Native
+QBE variant, and the exact profile above. A SHA-256 application was 3,268,776
+bytes versus 51,160 bytes for the plain control: <strong>3,217,616 bytes (3.07 MiB)</strong>
+additional, within the predeclared 4 MiB guardrail. The core compiler was
+2,796,392 bytes with no crypto inventory; the full CLI was 6,679,192 bytes
+(including the REPL provider), compared with 3,426,120 before this batch. The complete 82-observation
+application was 3,301,784 bytes and imported only platform libSystem.</p>
+<table>
+<thead>
+<tr>
+<th>Observation</th>
+<th>Plain control</th>
+<th>SHA-256</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Build seconds, all three pairs</td>
+<td>0.1725, 0.1697, 0.1783</td>
+<td>0.1886, 0.1695, 0.1997</td>
+</tr>
+<tr>
+<td>First process execution seconds, all three pairs</td>
+<td>0.0718, 0.0269, 0.0250</td>
+<td>0.2600, 0.0620, 0.0773</td>
+</tr>
+</tbody>
+</table>
+<p>These are a bounded local cost diagnostic, including tool launch, linker and OS
+first-execution effects. The variable startup samples do not establish a stable
+provider overhead or a cross-platform performance claim. No repeat cohort or
+profile tuning was used to select the result. Four-host development CI qualifies
+ABI and correctness; release artifact and TLS composition qualification remain
+separate obligations.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-crypto.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Byte encodings and request IDs — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/native-encodings/">
+		<title>Byte encodings and request IDs — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="byte-encodings-and-request-ids">Byte encodings and request IDs</h1>
+<p>Native loads the pinned public <code>Hex</code> and <code>Base64</code> wrappers unchanged. Their
+private implementations are TypeRB sources, checked and lowered like ordinary
+code. <code>encode</code> operates on <code>Bytes</code>; <code>decode</code> returns the original public
+<code>Result&lt;Bytes, DecodeError&gt;</code> identity. Hex accepts either letter case and emits
+lowercase. Base64 uses padded standard encoding, while its URL variant uses the
+URL alphabet without padding. Decoders preserve the pinned error kind, original
+input, code-point index, validation order and strict unused-bit checks.</p>
+<p>Plain payloadless enum output is lowered to its declaration ordinal for compiled
+execution, matching the pinned Go output used by decode error kinds. The REPL
+retains its symbolic display. The frontend selects this projection and lowers it
+to existing enum tests and scalar joins; source-erased MIR preserves the result.
+This does not broaden output for enums with payloads or explicit raw values.</p>
+<p>The immutable octet table is private to the decoder implementations. Aliases,
+record names or authored import paths cannot acquire standard-source ownership.
+Public wrappers and their implementations form one compilation unit each;
+canonical public error identities remain distinct between Hex and Base64.</p>
+<p><code>SecureRandom.bytes</code> checks the public length range in TypeRB and obtains bytes
+from the operating system. The private, loader-owned entropy declaration has a
+complete checked signature and an independently verified MIR adapter. The
+backend transfers bytes through libc <code>getentropy</code> in chunks no larger than 256
+bytes on supported Darwin and Linux profiles. A failed transfer returns no
+partial result and the checked wrapper fails; there is no weaker fallback.
+Zero-length requests do not call the entropy source. This implementation is
+bounded by the pinned public maximum rather than a new Native option.</p>
+<p>The retained REPL uses the same host bridge and executes the same library bodies.
+MIR retains conservative allocation, I/O and failure effects, and ordinary root
+liveness protects returned bytes across later allocation and collection.</p>
+<p>These services allow the pinned <code>trb/web/middleware/request_id</code> source to run
+unchanged: it validates incoming identifiers, generates replacements, updates
+request and response headers, and retains typed context values through
+<code>with_request</code>. Header names and length limits follow the package's existing
+options. This does not establish routing, server execution or other cryptographic
+package support.</p>
+<p>Validation combines the shared language-coverage registry, source-erased and
+mutated-MIR checks, cross-module and retained-session execution, forced garbage
+collection, and an injected OS test fixture for chunk boundaries and failures.
+Random outputs are tested by their public properties and round trips; they are
+not stored as exact expected values or judged by probabilistic uniqueness tests.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-encodings.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

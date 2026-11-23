@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Ordinary compiler project layout — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/compiler-project-layout/">
+		<title>Ordinary compiler project layout — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="ordinary-compiler-project-layout">Ordinary compiler project layout</h1>
+<p><code>compiler/src/</code> is the canonical ordinary compiler source closure.
+<code>compiler/conformance/</code> contains its authored behavior and diagnostic cases;
+<code>compiler/trbconfig.jsonc</code> is the reference-side project configuration.
+The <a href="/docs/architecture/">architecture</a> and <a href="/docs/compiler-source-layout/">directory map</a>
+record current responsibilities and enforced dependency rules.
+There is one implementation tree, with no old-path copy, symlink or forwarding layer.
+<code>lexer.trb</code> owns tokenization, String interpolation scanning and source slicing;
+the compiler and CLI import those declarations directly.</p>
+<p>Ordinary builds start at the canonical entry and follow explicit imports.
+Snapshot recovery validates that closure and derives a temporary flattened input;
+it does not replace normal source loading. <code>recovery/src/compiler/layout.trb</code>
+records every canonical module and exact import prefix. Recovery reading, flattening
+and staging consume that inventory; module mutation controls cover its dependencies. Source moves update imports, recovery,
+CLI staging, tests, CI routing and operational consumers together.</p>
+<p>CLI and snapshot staging use <code>tools/compiler_sources.py</code> to preserve every
+production module's relative path below its source root. Core and CLI trees
+share one derived import root without flattening basenames. Test sources,
+<code>testing/</code> helpers and <code>tests/</code> suites are excluded from both staging and source
+content keys. Duplicate output paths or symlinks fail before copying files.
+The CLI entry composes <code>compiler/cli/repl/session.trb</code>; the other REPL modules
+retain their paths under <code>repl/</code> in the composed source tree.
+The staging helper is part of the CLI content key, so changing it invalidates
+the CLI cache while preserving an unchanged verified core.</p>
+<p>Recovery inventories retain complete nested module identities and exact import
+headers. Their traversal admits source cycles and rejects missing or escaping
+module paths. Writers create the required subdirectories only after validating
+all names. CI discovery and recovery selection retain the same identities;
+source moves require the complete validation lanes.</p>
+<p>Cross-revision measurement controllers use <code>tools/compiler-project.sh</code> from the
+controller checkout and resolve each source root independently. The helper accepts
+the current or authenticated historical project layout, rejects ambiguous/missing
+projects, and runs before timing. It is not a compiler subprocess.</p>
+<p>The helper also selects <code>recovery/trbconfig.jsonc</code> for current recovery suites
+and the root reference config for frozen historical checkouts. It rejects
+ambiguous or incomplete recovery projects before execution.</p>
+<p>The same helper resolves the configured-project corpus fixture independently
+of the compiler layout. Bootstrap validation and its path-with-spaces copy use
+that one directory from the source checkout. Current controllers therefore
+retain frozen baseline fixtures after a corpus rename, rejecting missing,
+incomplete or ambiguous layouts before generation and measurement.</p>
+<p>Frozen baseline paths, negative layout/rename tests and immutable records remain
+reproduction inputs. Their original layouts are available through the
+<a href="/docs/history/">historical record</a>; current source has no compatibility aliases.</p>
+<p>The historical compiler-name seed skips the first five entry declarations when
+creating its successor. Its exact accepted bridge source retains that ordering.
+The cycle-capable checkout seed and current compiler use declaration identity;
+source moves do not repoint or rewrite that historical transition.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/compiler-project-layout.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

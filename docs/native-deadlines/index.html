@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Native Web deadlines and structured mapping — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/native-deadlines/">
+		<title>Native Web deadlines and structured mapping — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="native-web-deadlines-and-structured-mapping">Native Web deadlines and structured mapping</h1>
+<p><code>trb/web/middleware/timeout</code> uses a compiler-owned deadline scope in ordinary
+Native applications. <code>Timeout.call</code> keeps the portable response contract:
+completed work returns its response, expired work returns the timeout response,
+and a non-positive duration does not enter the handler. Nested scopes observe
+the earliest active deadline; an inner recovery boundary cannot consume a
+parent's timeout and continue its handler.</p>
+<h2 id="execution-and-cleanup">Execution and cleanup</h2>
+<p>The frontend grants the private deadline operation only to its loader-owned
+adapter. MIR owns checkpoint effects and locations: managed basic-block entry
+and continuations after managed or foreign calls. Verification independently
+checks the boundaries. QBE consumes these facts after frontend source and
+checked-body metadata have been removed.</p>
+<p>A monotonic libc clock supplies elapsed time. A dedicated returns-twice
+trampoline records the deadline owner, recovery boundary, root count and
+resource-stack boundary. Expiration unwinds owned resource frames in reverse
+order exactly once, restores the root count and leaves the owning scope.
+Normal returns and ordinary language failures restore the same dynamic state.
+No unwind crosses a live foreign callback or library frame.</p>
+<p>OIDC discovery and JWKS retrieval use the smaller of the remaining scope budget
+and the existing five-second libcurl limit. After libcurl returns, the adapter
+releases its easy handle and response buffer before the managed checkpoint can
+expire the scope. Proxy, redirect, TLS and trust-store policy remain those of
+<a href="/docs/native-oidc/">the OIDC adapter</a>. This is cooperative cancellation, not arbitrary
+preemption of OS calls. Other foreign operations require their own bounded
+operation and cleanup qualification before making the same guarantee.</p>
+<p>Programs without a deadline operation retain the ordinary runtime without
+additional deadline polling or clock imports. The implementation adds no
+external library; libc remains the clock and recovery provider.</p>
+<h2 id="structured-concurrent-mapping">Structured concurrent mapping</h2>
+<p><code>Array.concurrent_map</code> accepts the portable named positive <code>limit</code> (default 8),
+evaluates it once even for empty input, and preserves input order in its result.
+The blocking, single-mutator implementation admits one element at a time. A
+nested call stays within the same serial admission bound, and every admitted
+child finishes or unwinds before the call exits. It promises no CPU parallelism
+or overlapping I/O. Managed deadlines stop subsequent admission.</p>
+<p>The checker preserves the portable safety rules even with serial execution:
+outer bindings cannot be assigned, captures must be concurrency-safe, borrowed
+reference elements and aliases cannot be mutated, and transitively called
+same-module functions and constructor defaults are audited. Imported authored
+implementations retain the pinned reference boundary; this audit does not prove
+that arbitrary imported code is safe for parallel execution. Fresh constructor field
+initialization and independently created task-owned storage remain usable.
+Interface and function-value calls require a future explicit safety contract.
+Scoped File borrows cannot reach <code>concurrent_map</code>, directly or through helpers,
+parameter defaults or constructors. Serial admission preserves this language
+suspension boundary, including empty input; ordinary synchronous <code>map</code> remains
+available while a File is borrowed.
+This implementation follows <a href="https://github.com/type-rb/type-rb/blob/c49b67ec0f9e5941c52b787885f11a33c19f795f/docs/decisions/0004-bounded-structured-concurrent-map.md">the structured mapping decision</a>
+and <a href="https://github.com/type-rb/type-rb/blob/main/docs/decisions/0086-production-web-application-path.md">the Native runtime decision</a>.</p>
+<h2 id="qualification-boundary">Qualification boundary</h2>
+<p>The frozen <a href="../fixtures/projects/native-web-deadlines.json">initial deadline manifest</a>
+separates application behavior, live file/socket lifetime observations and actual
+Native runtime unwind controls. <code>tools/native-web-deadline-test.py</code> records source,
+compiler and controller identities, commands and unsuccessful observations.
+Its <code>--scope applications</code> selects the application groups explicitly and records
+the omitted runtime-unit authority; the complete compiler-unit CI lane runs that
+authority with QBE. A selected subset is never evidence for the full manifest.</p>
+<p>The ordinary CLI jobs exercise the application groups on Darwin and Linux
+arm64. Header qualification separately checks the clock and jump-environment ABI
+on four hosts. Mapping tests cover check, build, execution and retained REPL,
+plus source-independent MIR emission under forced collection. These authorities
+do not establish a complete four-host release, source backends, general foreign
+cancellation, or Web deadline execution in the REPL. Those remain separate v0.5
+obligations.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-deadlines.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

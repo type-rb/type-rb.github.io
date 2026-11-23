@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Native CLI and REPL — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/native-cli/">
+		<title>Native CLI and REPL — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a class="active" aria-current="page" href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a class="active" aria-current="page" href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="native-cli-and-repl">Native CLI and REPL</h1>
+<p>The v0.5 alpha installs this compiler as <code>trb</code>. Development builds in this
+repository also provide the <code>trbn</code> launcher.</p>
+<p><code>trbn</code> is TypeRB Native's command-line executable. Its default mode is
+<code>trb</code>, including a standalone file, a configuration without <code>mode</code>, and the
+REPL. An explicit configuration mode is authoritative. <code>go</code>, <code>ruby</code>, and
+<code>typescript</code> report an unsupported-mode error for execution; they never silently
+run as native code. Checking, portable package installation and Web contract
+generation accept every declared mode. The reference <code>trb</code> command and its
+defaults are unchanged.</p>
+<p>Compiled Web projects can call <code>Web.serve</code> using the pinned
+<a href="/docs/native-network/">HTTP network libraries</a>. Install those libraries once and
+keep them in <code>network/</code> beside QBE, or set <code>TRBN_NETWORK_LIB_DIR</code> when building.
+The compiled server contains the HTTP libraries and needs no runtime override.
+The <a href="/docs/native-compression/">gzip middleware</a> additionally uses the pinned static
+libdeflate installation in <code>compression/</code> beside QBE, or the build-time
+<code>TRBN_COMPRESSION_LIB_DIR</code> override. The compiler itself needs no gzip library.
+The <a href="/docs/native-crypto/">digest/HMAC provider</a> uses static OpenSSL <code>libcrypto</code>.
+The CLI includes it for REPL parity; the core compiler and lockfile checksum
+implementation remain independent. Applications acquire it only when they import
+Digest, HMAC or SecureCompare.</p>
+<p><a href="/docs/native-time-services/">Time services</a> use system or configured timezone data.
+<code>TZ</code> selects the local zone; <code>ZONEINFO</code> can provide a directory or stored ZIP
+archive for named zones. Applications do not yet bundle an embedded timezone
+database. Record the chosen data source when distributing an application.</p>
+<h2 id="build-and-run-from-a-checkout">Build and run from a checkout</h2>
+<p>On Darwin arm64, install the Xcode command-line tools. On Linux arm64, install
+a C toolchain, <code>make</code>, <code>curl</code>, <code>xz</code>, and <code>lld</code>. The contributor crypto source
+build also needs Perl; development CI archives can provide it prebuilt. Then run:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/build-crypto-dependencies.py</span><span style="color:#79C0FF"> --archives</span><span style="color:#A5D6FF"> /path/to/shared-source-cache</span><span style="color:#79C0FF"> --output</span><span style="color:#A5D6FF"> bin/crypto</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#79C0FF"> --version</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> run</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span></span>
+<span class="line"></span></code></pre>
+<p>The first invocation downloads a checksum-verified native bootstrap seed and
+QBE 1.3, builds the compiler from TypeRB sources, and checks byte-identical
+core and CLI rebuilds. It does not invoke Go. Subsequent invocations reuse
+<code>bin/trbn</code> until the compiler sources or build inputs change. Build messages
+go to stderr. Source hashes are computed in batches. Documentation-only
+commits and timestamp-only changes reuse the binary. A CLI-only source change
+reuses the cached, verified core and performs both CLI builds; core or toolchain
+changes still perform the full four-core/two-CLI chain. Test sources are outside
+this bootstrap input set. <code>build-info.txt</code> records the revision at which the
+artifact was built, which can precede the current checkout revision when the
+build inputs are unchanged. To build without launching a command:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">tools/build-native.sh</span></span>
+<span class="line"></span></code></pre>
+<p>The outputs are <code>bin/trbn</code>, its <code>bin/qbe</code> sidecar, and <code>bin/build-info.txt</code>.
+Keep the executables and <code>crypto/</code> archives together when copying a development
+compiler installation elsewhere. The CLI itself runs without the archives, but
+compiling a crypto application needs them. The system C
+driver/linker and system libraries remain runtime build dependencies.
+The terminal editor is implemented in TypeRB and uses POSIX terminal I/O on
+both systems; it has no libedit or Wasm dependency.
+Checkout bootstrap currently supports Darwin arm64 and Linux arm64, even
+though the internal compiler also has a Linux amd64 target profile.</p>
+<p>The script pins the <code>bootstrap-seed-2026-09-29-module-cycles</code> release assets and their SHA-256
+digests, and the QBE 1.3 archive digest. Cache files live in <code>.trb/bootstrap</code>;
+downloaded seeds live under their release tag there. Updating the pin selects
+a new cache entry without overwriting an older seed. The changed build script
+also invalidates the verified core/CLI cache by content.
+See <a href="/docs/bootstrap-seed-updates/">seed update policy</a> for compatibility-driven
+refreshes and the separate pre-/post-publication verification boundary.
+<code>TRBN_BOOTSTRAP_SEED</code> can select a local copy of that exact pinned seed.
+<code>TRBN_QBE</code> and <code>TRBN_CC</code> select explicit executable paths. Overrides participate
+in build invalidation. A lock serializes concurrent checkout builds; a killed
+build may leave a lock that must be inspected before removing it.</p>
+<h2 id="commands-and-project-configuration">Commands and project configuration</h2>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> install</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> install</span><span style="color:#79C0FF"> --frozen</span><span style="color:#79C0FF"> --offline</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> check</span><span style="color:#A5D6FF"> examples/main.trb</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> build</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> build</span><span style="color:#79C0FF"> --stdout</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> build</span><span style="color:#79C0FF"> --compile</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> build</span><span style="color:#79C0FF"> --compile</span><span style="color:#79C0FF"> --outfile</span><span style="color:#A5D6FF"> bin/example</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> run</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> test</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> test</span><span style="color:#A5D6FF"> src/domain</span><span style="color:#A5D6FF"> src/requests_test.trb</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> test</span><span style="color:#79C0FF"> --reporter</span><span style="color:#A5D6FF"> json</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> test</span><span style="color:#79C0FF"> --compile</span><span style="color:#79C0FF"> --outfile</span><span style="color:#A5D6FF"> bin/project-tests</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> /path/to/standalone.trb</span><span style="color:#79C0FF"> --</span><span style="color:#A5D6FF"> "program argument"</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> repl</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> openapi</span><span style="color:#79C0FF"> --output</span><span style="color:#A5D6FF"> docs/openapi.json</span></span>
+<span class="line"><span style="color:#FFA657">./trbn</span><span style="color:#A5D6FF"> web</span><span style="color:#A5D6FF"> client</span><span style="color:#79C0FF"> --name</span><span style="color:#A5D6FF"> PublicClient</span><span style="color:#79C0FF"> --output</span><span style="color:#A5D6FF"> generated/api_client.trb</span></span>
+<span class="line"></span></code></pre>
+<p><code>build</code> writes QBE source to the configured <code>outDir</code> (default <code>build</code>), named
+<code>&lt;project-name&gt;.ssa</code>. <code>build --compile</code> writes <code>bin/&lt;project-name&gt;</code> by default.
+For standalone files, paths are relative to the entry file's directory and
+its basename supplies the project name. <code>--outfile</code> is for executable builds.
+<code>run</code> builds in a temporary directory, forwards arguments after <code>--</code>, and
+returns the program's exit status. Failed builds preserve an existing output.</p>
+<p>Compiled programs and the retained REPL support <code>trb/std/process</code>. <code>argv</code>
+returns a fresh array, <code>environment</code> distinguishes empty and absent values,
+and <code>working_directory</code> reports host errors as a typed result. <code>run</code> starts a
+literal executable with separate arguments, gives it EOF on stdin, and captures
+stdout and stderr independently. Output uses <code>Bytes#to_s()</code> decoding. A child
+that starts and exits with status 127 is an <code>Ok</code> result. Attempting to launch an
+unsupported executable format returns a typed error. REPL interruption joins
+its owned child before accepting the next submission.</p>
+<p><code>test</code> discovers <code>*_test.trb</code> files recursively under the configured <code>sourceDir</code>.
+Positional files and directories select tests relative to the current directory;
+overlapping selections run each file once. Production sources remain available
+for imports, but unselected test bodies are not loaded. Tests execute in file
+order and then declaration order, without invoking the application's <code>main</code>.
+Selected test files must declare a top-level <code>describe</code> suite, and suites must
+contain a <code>test</code> or nested suite. Missing files and empty suites are errors.</p>
+<p>The human reporter prints each outcome and a summary. <code>--reporter json</code> emits
+one JSON object per event: <code>test_started</code>, <code>test_passed</code>, <code>test_failed</code>, and
+<code>test_summary</code>. Test-written output still goes to the same stdout stream.
+Assertion failures retain their call location; supported runtime failures use
+the test declaration's location. Later cases continue after a caught failure,
+and the process exits with status 1 if any case failed. Fatal runtime failures
+remain terminal. Tests share one compiled process and its module state.</p>
+<p><code>test --compile</code> writes a standalone test executable to
+<code>bin/&lt;project-name&gt;.test</code> by default. <code>--outfile</code> chooses another location,
+relative to the current directory. Compile mode cannot be combined with path
+selection or the JSON reporter. Compilation checks the complete selected source
+before replacing an existing output; temporary build files are removed after
+execution or a failed build. Test compilation uses the same QBE, C driver and
+package dependency installations as application compilation.</p>
+<p>Name selection with <code>-t</code> or <code>--test-name-pattern</code> is an
+<a href="https://github.com/type-rb/type-rb-native/issues/643">approved v0.5 deferral</a>.
+Both flags report an error directing the caller to file or directory selection.
+<code>test --debug</code> and test execution in source-backend modes remain unavailable.
+<code>expect</code> provides deep equality, inequality and scalar predicates, and
+<code>expect_ok</code>/<code>expect_err</code> return typed Result payloads. Failure messages use TypeRB
+names and declaration-order fields, including nested collections, enums and
+classes. Hashes have deterministic key order. Rendering does not call authored
+formatters; cycles, depth, element counts and total visited values are bounded.
+Strings use JSON control escaping and preserve other Unicode. The
+<a href="https://github.com/type-rb/type-rb/blob/main/docs/guides/testing.md">shared display contract</a>
+also applies to the reference source backends. Full test-command parity is tracked
+by the <a href="https://github.com/type-rb/type-rb-native/issues/1221">v0.5 contract qualification</a>;
+<a href="https://github.com/type-rb/type-rb-native/issues/624">#624</a> owns the initial runner slice.
+Comparisons involving opaque provider values such as <code>StringBuilder</code> remain
+unavailable; their Boolean/nil predicates can report the opaque value normally.
+Boolean predicates preserve the current Go behavior for nullable values; the
+cross-mode inconsistency is tracked in
+<a href="https://github.com/type-rb/type-rb-native/issues/1310">#1310</a>.
+Authored <code>Nil</code> type arguments also expose a separate reference-checking
+inconsistency tracked in <a href="https://github.com/type-rb/type-rb-native/issues/1297">#1297</a>;
+they are not included in passing portable Result coverage.</p>
+<p>Configuration discovery searches from the source file/directory, or the
+current directory when no source is given, upwards for <code>trbconfig.jsonc</code>.
+A discovered configuration selects the project. <code>--config PATH</code> explicitly
+selects one. <code>--mode</code> may select a standalone mode; it cannot override a
+configured build. <code>repl --mode trb</code> can explicitly select a REPL mode.</p>
+<h3 id="sqlite-models">SQLite models</h3>
+<p>Native projects can declare a class derived from the official <code>Model</code> and
+configure <code>packageOptions.trb/orm</code> with the SQLite adapter, database source and
+committed schema lock. Checking and compilation read the lock offline. A
+compiled application opens its configured SQLite database when it runs a model
+operation.</p>
+<p>A model with one primary key can use
+<code>Report.create(title: &quot;draft&quot;)</code>, <code>Report.find(id)</code> and <code>report.delete()</code>.
+The lock can declare Integer, String, Boolean, Float, Bytes, Date, TimeOfDay,
+DateTime and Instant columns. Temporal values retain fractional seconds, and
+Instant values round-trip in UTC. Use <code>create</code> or <code>find</code> to obtain models
+with required temporal columns. Omitting an optional column lets
+SQLite apply its default. Passing <code>nil</code> to a nullable column stores SQL NULL.
+A missing key returns <code>Ok(nil)</code>. Deleting a loaded model returns <code>Ok(true)</code>
+when it removes a row and <code>Ok(false)</code> when the row has already been deleted.
+Use <code>report.update(title: &quot;ready&quot;)</code> to write immediately, or prepare changes
+with <code>report.with(title: &quot;ready&quot;)</code> and call <code>save()</code> later. Each update writes
+only the supplied columns and returns the refreshed model. Saving changes
+after the target row has been deleted returns an <code>InvalidData</code> error.
+Models can also use <code>count()</code>. These operations use the same pinned SQLite
+bundle as SQLite Jobs.</p>
+<p>Use <code>Model.using(tx)</code> inside a transaction to keep operations on its
+connection. A successful block commits its final value. A propagated database
+error rolls back before the caller's <code>catch</code> runs.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> publish</span><span style="color:#E6EDF3">(title: </span><span style="color:#79C0FF">String</span><span style="color:#E6EDF3">): </span><span style="color:#FFA657">DbResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Integer</span><span style="color:#FF7B72">></span></span>
+<span class="line"><span style="color:#FF7B72">    return</span><span style="color:#FFA657"> Database</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">transaction</span><span style="color:#E6EDF3">() </span><span style="color:#FF7B72">do</span><span style="color:#FF7B72"> |</span><span style="color:#E6EDF3">tx</span><span style="color:#FF7B72">|</span></span>
+<span class="line"><span style="color:#E6EDF3">        reports </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Report</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">using</span><span style="color:#E6EDF3">(tx)</span></span>
+<span class="line"><span style="color:#E6EDF3">        report </span><span style="color:#FF7B72">:=</span><span style="color:#FF7B72"> try</span><span style="color:#E6EDF3"> reports.</span><span style="color:#D2A8FF">create</span><span style="color:#E6EDF3">(title: title)</span></span>
+<span class="line"><span style="color:#E6EDF3">        report.</span><span style="color:#D2A8FF">id</span></span>
+<span class="line"><span style="color:#FF7B72">    end</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p>Build a read query from the model or its transaction scope. Equality filters
+accept scalar values (including <code>nil</code> for nullable columns), integer ranges
+and single-column subqueries.
+For example, <code>Report.where(id: 2...5)</code> includes 2, 3 and 4.
+<code>select(:id)</code> creates a typed subquery and preserves its filters, ordering,
+limit and offset. A transaction-scoped subquery requires the same outer
+transaction or savepoint. An unscoped subquery can be used in either context.
+The three-argument form checks the column, operator and value against the lock;
+<code>=</code> and <code>!=</code> also accept a compatible subquery.
+Text columns also support SQLite <code>LIKE</code>. Each modifier returns a new query. Table reads also work when the locked
+schema has no primary key or has a composite primary key.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> recent_reports</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">DbResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#FFA657">Report</span><span style="color:#FF7B72">>></span></span>
+<span class="line"><span style="color:#E6EDF3">    base </span><span style="color:#FF7B72">:=</span><span style="color:#FFA657"> Report</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">where</span><span style="color:#E6EDF3">(title: </span><span style="color:#A5D6FF">"published"</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">    return</span><span style="color:#E6EDF3"> base.</span><span style="color:#D2A8FF">where</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"id"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">">"</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">order</span><span style="color:#E6EDF3">(id: </span><span style="color:#79C0FF">:desc</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">limit</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">20</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">offset</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">all</span><span style="color:#E6EDF3">()</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>order</code> accepts one or more named columns with <code>:asc</code> or <code>:desc</code> in priority
+order. Use an explicit order when row identity matters. <code>first()</code> returns a
+nullable model. <code>count()</code> counts the selected page, including its limit and
+offset. A zero limit gives an empty array, a missing first row and a count of
+zero. These reads also work through <code>Report.using(tx)</code>.</p>
+<p>Use <code>sum(:column)</code> and <code>average(:column)</code> for numeric columns. For example,
+<code>Report.order(id: :desc).offset(2).limit(3).sum(:id)</code> adds the IDs of the
+three rows after the first two. <code>minimum</code> and <code>maximum</code> also accept text
+and temporal columns. These operations ignore SQL NULL and respect the
+selected transaction. If the page has no non-NULL values, <code>sum</code> gives a
+typed zero and the other three operations give <code>nil</code>.</p>
+<p>Use <code>pluck(:column)</code> to read one typed column and <code>pick(:column)</code> to
+read its first value. Both preserve the ordering and bounds on the query.
+A nullable column keeps its SQL NULL values, and an empty page gives
+<code>pick</code> a nil result. <code>ids()</code> returns the declared type of the primary key
+on models with a single key. These operations select only the requested
+column, so other fields do not need to be decoded.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> recent_titles</span><span style="color:#E6EDF3">(): </span><span style="color:#FFA657">DbResult</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">Array</span><span style="color:#FF7B72">&#x3C;</span><span style="color:#79C0FF">String</span><span style="color:#FF7B72">>></span></span>
+<span class="line"><span style="color:#FF7B72">    return</span><span style="color:#FFA657"> Report</span><span style="color:#E6EDF3">.</span><span style="color:#D2A8FF">order</span><span style="color:#E6EDF3">(id: </span><span style="color:#79C0FF">:desc</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">limit</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">20</span><span style="color:#E6EDF3">).</span><span style="color:#D2A8FF">pluck</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">:title</span><span style="color:#E6EDF3">)</span></span>
+<span class="line"><span style="color:#FF7B72">end</span></span>
+<span class="line"></span></code></pre>
+<p><code>Report.exists?(status: &quot;published&quot;)</code> checks whether a matching row exists.
+On a transaction scope or a derived query, add the conditions with <code>where</code>
+and call <code>exists?()</code>. <code>find_by</code> accepts one or more named column filters
+and returns the first matching model or nil. Each terminal runs on the
+connection selected by <code>using(tx)</code>.</p>
+<p>A nested <code>tx.transaction() do |inner| ... end</code> uses a savepoint. Catching an
+inner failure lets the outer transaction continue with its earlier changes.
+Unscoped model calls use their own connection.</p>
+<h3 id="sqlite-jobs">SQLite Jobs</h3>
+<p>Use <code>trbn jobs start</code> from a Native project with <code>jobs.configuration</code> and a
+SQLite <code>JOBS_ADAPTER</code>. <code>--config PATH</code> selects the project explicitly,
+<code>--queue NAME</code> limits acquisition to one queue, and <code>--once</code> processes up to
+one eligible job. The initial worker dispatches Integer, String, Float and
+Boolean payload arguments to <code>perform</code> and records its outcome in SQLite.</p>
+<p>Use the same project and SQLite adapter to manage its persistent queue:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>trbn jobs list</code></td>
+<td>Lists jobs by creation time, then ID. Each line contains the ID, state, job name, attempts/maximum attempts and last error, separated by tabs. An empty queue prints nothing.</td>
+</tr>
+<tr>
+<td><code>trbn jobs retry ID</code></td>
+<td>Makes a failed job eligible immediately and clears its attempts, claim and last error. A worker picks it up on a subsequent poll.</td>
+</tr>
+<tr>
+<td><code>trbn jobs discard ID</code></td>
+<td>Removes a job in any state except running.</td>
+</tr>
+</tbody>
+</table>
+<p>All three commands accept <code>--config PATH</code>. A missing or ineligible ID gives a
+nonzero exit status. The administration commands leave running handlers and
+their leases intact.</p>
+<p>The worker updates the active lease while the handler runs in a child process.
+The first interrupt or termination request stops acquisition and gives the
+handler 30 seconds to finish. A repeated request or grace expiry terminates
+and reaps the active handler, preserving its lease for recovery. The CLI waits
+for the worker to exit before removing its temporary build directory.</p>
+<p>SQLite Jobs links the pinned static bundle beside QBE in <code>sqlite/</code> or from
+<code>TRBN_SQLITE_LIB_DIR</code>. A development checkout can build the bundle with
+<code>python3 tools/build-sqlite-dependencies.py --output bin/sqlite</code>.</p>
+<p>Configurations follow the reference schema and validation, including <code>lint</code>,
+<code>packageOptions</code>, <code>jobs</code>, <code>db</code> and the mode-specific sections. <code>check</code> accepts
+every declared mode (<code>go</code>, <code>ruby</code>, <code>typescript</code> and <code>trb</code>). Commands that build,
+run or evaluate a program need mode <code>trb</code> and report that other modes are not
+available. <code>install</code> resolves portable TypeRB local-path and Git packages in
+every declared mode. It writes reference-compatible <code>trb.lock</code> metadata and
+uses a content-addressed <code>.trb/packages</code> cache. Git must be installed and on
+<code>PATH</code>; TypeRB passes argument vectors to it without a shell. Git handles normal
+SSH/HTTPS credentials. Password-bearing URLs, URL queries/fragments and
+unsupported version ranges are rejected before acquisition. Host-language
+dependencies and executable package providers remain separate capabilities.</p>
+<p>Git requirements accept exact semantic-version tags, <code>latest</code> (the greatest
+semantic-version tag), or a commit revision. Exact refs retain short versions
+and build metadata, such as <code>v1.2</code> and <code>v1.2.3+build.9</code>; version precedence is
+used only to select <code>latest</code>. The manifest identity determines
+the canonical import name; configured aliases can differ. Dependencies retain
+their own alias scopes. Conflicting canonical identities, dependency cycles,
+tag/manifest version mismatches and unsupported package modes are rejected.
+Successful acquisition removes Git metadata and verifies every regular file's
+raw bytes and relative path. Symlinks are rejected. Temporary fetch trees are
+removed on success or failure; cached trees are reused by checksum.</p>
+<p><code>check</code>, build, run and REPL read the current lock and verify cached contents;
+they never fetch a missing dependency or repair a stale lock implicitly. Local
+package source edits remain live, while local manifest edits require install.
+Git cache edits fail checksum verification. <code>localPackages</code> also maps names
+directly to source directories without a manifest or lock. Aliases take
+precedence over an identically spelled project import.</p>
+<p><code>install --frozen</code> requires a current lock and preserves its bytes, modification
+time and file identity. It may restore a missing Git cache from the locked
+revision when online. <code>--offline</code> requires cached Git packages and rejects an
+unlocked direct Git requirement; the flags can be combined. <strong>Pinned reference
+exception:</strong> fresh resolution through a local-path requirement can still fetch
+its transitive Git dependencies during <code>--offline</code>. This is retained for
+compatibility and tracked by <a href="https://github.com/type-rb/type-rb-native/issues/1224">proposal #1224</a>.
+Do not treat that fresh local/transitive path as an unconditional no-Git mode.
+Current locked offline installations do not invoke Git. Empty projects need no
+lock. Explicit Boolean flag values such as <code>--frozen=false</code> are accepted.</p>
+<p><code>add [--source GIT | --path DIRECTORY] PACKAGE [VERSION]</code> changes the configured
+requirement and resolves the graph. <code>PACKAGE@VERSION</code> is also accepted; an
+omitted Git version means <code>latest</code>. <code>remove PACKAGE</code> removes a direct requirement.
+Both follow the reference's full-resolution behavior. <code>update</code> resolves all
+requirements again, while <code>update PACKAGE...</code> requires a current lock and pins
+the unselected dependency graphs. A selected graph that conflicts with a pinned
+graph fails without replacing the lock. Each metadata file is published by
+atomic replacement after successful resolution; configuration and lock are two
+separate files, not a filesystem transaction. Resolution failures preserve both.</p>
+<p><code>web openapi</code> generates an OpenAPI 3.1 document from checked
+<a href="/docs/native-web-endpoints/">endpoint contracts</a>. It accepts <code>--config</code>, <code>--title</code>,
+<code>--api-version</code> and <code>--output</code>. Title and API version default to the project name
+and version. Output defaults to stdout; <code>--output -</code> also selects stdout.
+A file output path must be relative to and remain below the project root.
+Successful file output atomically replaces the destination and prints its path;
+failed generation preserves an existing file. No handler, program entry point,
+server or external target tool is executed. The pinned Web integration still
+requires a project with a <code>main</code> entry for contract discovery.</p>
+<p><code>web client</code> generates TypeRB browser-client source from the same checked
+contracts. It accepts <code>--config</code>, <code>--name</code> and <code>--output</code>; the class name defaults
+to <code>ApiClient</code>. It has the same stdout, file publication, configuration discovery
+and target-tool independence rules as <code>web openapi</code>. Shared imported contract
+types must also be available to the consuming browser project. See the endpoint
+guide for generated request/response behavior and pinned consumer limitations.
+This metadata command does not provide general source-backend compilation or
+execution of browser APIs in Native programs.</p>
+<p>Nonempty native-dependency/adapter manifest fields and target-language
+dependency-management options remain unimplemented and fail explicitly. Configuration JSON Unicode
+escapes retain their current limitations; package manifests and locks decode
+JSON Unicode escapes separately.</p>
+<p><code>trb/std/path</code> provides <code>Path</code> and validated <code>RelativePath</code> values. Validation,
+composition, parent lookup and private construction follow the portable source.
+<code>Path#join</code> preserves its parent text and appends the validated descendant using
+the slash separator of the supported Native targets. These value operations do
+not access the filesystem. Scoped <code>File.open</code>, bounded byte/text reads and writes,
+<code>Dir.children</code> and <code>Dir.create_all</code> use these values in ordinary programs and the
+REPL. See <a href="/docs/native-path-values/">path values</a> and
+<a href="/docs/native-filesystem/">file and directory operations</a>.</p>
+<p>The checkout root contains a small <code>mode: trb</code> example project in <code>examples/</code>.
+Reference-compiler development checks use the separate
+<code>recovery/trbconfig.jsonc</code> explicitly:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> check</span><span style="color:#79C0FF"> --config</span><span style="color:#A5D6FF"> recovery/trbconfig.jsonc</span></span>
+<span class="line"><span style="color:#FFA657">trb</span><span style="color:#A5D6FF"> test</span><span style="color:#79C0FF"> --config</span><span style="color:#A5D6FF"> recovery/trbconfig.jsonc</span></span>
+<span class="line"><span style="color:#FFA657">tools/check-native-cli.sh</span><span style="color:#A5D6FF"> /path/to/trb</span></span>
+<span class="line"></span></code></pre>
+<p>There is no special directory exemption in Native configuration discovery.
+The core and benchmark subprojects retain their explicit reference-validation
+configurations; opening one with <code>trbn</code> honors its configured mode too.</p>
+<h2 id="editing-in-vs-code">Editing in VS Code</h2>
+<p>Set <code>typerb.server.path</code> in the official TypeRB extension to the absolute
+path of the built <code>bin/trbn</code>. The extension starts <code>trbn lsp --config &lt;trbconfig.jsonc&gt;</code> for a project, or <code>trbn lsp --mode &lt;mode&gt; &lt;file.trb&gt;</code>
+for a standalone file. The language server communicates over standard input
+and output. Each server owns its project or standalone import graph.</p>
+<p>The server checks unsaved edits and publishes the Native checker's first
+diagnostic. Fixing an error or closing the document clears its diagnostic.
+Go to Definition resolves visible record names and direct function calls
+to their declarations in project source, including imported files. Editor
+positions and incremental edits use UTF-16 units. Syntax highlighting and
+snippets come from the extension.</p>
+<p>Hover over a local binding, a record field, or a visible record or function
+to see its checked type or declaration. Completion offers visible functions,
+records and local bindings, including the fields of a local record after a
+dot. Signature help shows the parameters of a direct function or record
+constructor and follows the active argument in a nested call. These operations
+use the current project and its unsaved buffers. References, rename, debugger
+integration and additional completion providers have separate acceptance work.</p>
+<p>For a configured project, <code>typerb/discoverTests</code> lists suites and cases
+with their parent identities, file URIs and declaration ranges. Project
+and file runs use the ordinary <code>test --reporter json</code> command. Native
+supports file and directory selection. Test-name selection is
+<a href="https://github.com/type-rb/type-rb-native/issues/643">deferred for v0.5</a>.</p>
+<p>Format Document applies the same formatter as <code>trbn fmt</code> to the editor
+buffer. An incomplete expression or an already formatted document produces
+no edit. Saving a document or changing a watched source on disk refreshes
+diagnostics against the open buffers and the updated project sources.</p>
+<h2 id="source-formatting">Source formatting</h2>
+<p><code>trbn fmt [PATH ...]</code> formats <code>.trb</code> files, including test files. Directory
+selections skip <code>.git</code>, <code>.trb</code> and <code>node_modules</code>; overlapping selections are
+deduplicated. Without paths, the configured source directory is selected,
+falling back to the current directory. <code>--check</code> reports changed paths on stderr
+and exits unsuccessfully without writing. <code>-w=false</code> lists changed paths without
+writing; <code>fmt -</code> formats stdin to stdout. Existing file permissions are preserved.</p>
+<p>The formatter and interactive REPL share a TypeRB implementation. It parses
+supported declarations and statements before printing lossless token spellings,
+preserving comments, quoted text and escapes. It verifies the formatted syntax
+and normalized token stream before accepting a result. It does not execute
+input, resolve imported modules, or require expressions to type-check.
+Unsupported or incomplete input is rejected before that file is written; in the
+editor it remains unchanged for normal diagnostics. File indentation uses tabs;
+the REPL uses two spaces.</p>
+<p>Full reference formatting remains incomplete: project-aware import
+canonicalization, native-language islands, percent/heredoc/JSX literals and
+spellings not accepted by the Native parser still need qualification. In
+particular, raw multiline quoted strings, exponent/base numeric spellings and
+keyword Hash labels
+remain explicit rejected cases in the formatter comparison. Reference formatting
+success alone is not evidence of Native execution support.</p>
+<h2 id="repl">REPL</h2>
+<p>No arguments start a REPL when stdin and stdout are terminals. Noninteractive
+no-argument invocations print usage; use <code>trbn repl</code> to read a piped session.</p>
+<p>The REPL uses the ordinary compiler's parser, name resolution and type checker.
+A TypeRB-authored evaluator retains bindings and aggregate identities between
+submissions. It executes only the new input, so earlier I/O is not replayed.
+Functions, records, imports, multiline control flow, scalar values and the
+ordinary compiler's supported arrays can be explored interactively.</p>
+<p>Successful nullable assignments retain the ordinary checker's flow facts across
+inputs. <code>:type</code> uses those facts without evaluation; direct assignments display
+their declared type and mutable marker, with Nil for a nil assignment. Static
+rejection preserves existing facts. Runtime failure or interruption discards
+earlier narrowing because completed writes may have changed retained values.
+A fresh guard or successful assignment can establish narrowing again.</p>
+<p>Explicit replay rebuilds accepted inputs with their recorded checking boundaries;
+it does not replay failed inputs or their partial effects. See the
+<a href="https://github.com/type-rb/type-rb/blob/main/docs/decisions/0043-checked-repl-submissions.md">checked submission decision</a>.
+As in the reference REPL, authored <code>return</code> requires a function or method.</p>
+<p>Unique project exports are available automatically. Authored named imports
+(including aliases), unaliased bare imports and local declarations suppress the
+corresponding generated imports. The ordinary resolver still rejects duplicate
+authored bindings. A declaration that invalidates earlier session input is
+rejected before evaluation and leaves the session usable. Only explicit load or
+reload replays earlier effects.</p>
+<p>Project/prelude construction is isolated in <code>compiler/cli/repl/project.trb</code>.
+The filter uses parsed declarations and preserves hidden prelude line counts;
+comments and strings do not become imports. Reconstructed bindings and type
+labels use visible record aliases, including nested Array/Hash values, while
+stored values retain their canonical record identity. Supported standard-package
+aliases resolve through the checked import binding in the evaluator.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span>mut values := [1, 2]</span></span>
+<span class="line"><span>values.push(3)</span></span>
+<span class="line"><span>values</span></span>
+<span class="line"><span>:type values</span></span>
+<span class="line"><span></span></span></code></pre>
+<p><code>:type EXPRESSION</code> checks without evaluating. <code>:load FILE</code> adds declarations or
+statements and replays the session,
+<code>:reload</code> reloads the project and replays the session, <code>:help</code> shows help, and
+<code>:quit</code> (<code>:q</code> / <code>:exit</code>) or Ctrl-D exits. Explicit <code>:load</code> and <code>:reload</code>
+replay earlier side effects; ordinary submissions do not. Ctrl-C cancels input or evaluation.
+An interactive terminal provides:</p>
+<ul>
+<li>Live syntax colors for keywords, strings, numbers, comments, types and calls,
+with unfinished strings marked separately. Prompts, type annotations and
+diagnostic severity have distinct roles. <code>NO_COLOR=1</code> disables colors;
+<code>TERM=dumb</code> uses plain line input without terminal editing sequences.</li>
+<li>A single editable multiline buffer, two-space indentation on Enter, and
+canonical spacing when the complete submission is accepted (for example,
+<code>s:=123</code> becomes <code>s := 123</code>). Up/Down move between
+buffer lines and then through history at the first/last line.</li>
+<li>Bracketed paste, retained as one submission until Enter. Pasted control
+sequences are not interpreted as editing commands.</li>
+<li>Tab completion of session/project names, record fields and supported methods,
+filtered at type positions. Tab/Shift-Tab cycle ambiguous candidates with a
+type/signature description; Enter accepts a selected candidate before a
+subsequent Enter submits the buffer.</li>
+<li>Ctrl-R reverse history search; another Ctrl-R finds an older match. Enter
+accepts the match for editing, and Ctrl-G restores the draft.</li>
+<li>Left/Right, Home/End, Delete/Backspace, Ctrl-A/E/B/F/P/N, Ctrl-K/U/W to kill
+text, Ctrl-L to clear the screen, Ctrl-Y to yank it, and Ctrl-_ to undo up to 64 edits.</li>
+<li>UTF-8 codepoint movement and deletion, combining-mark attachment, wide
+character cell widths, and a cursor-following viewport for long input.
+Resize starts a fresh display region so old terminal reflow cannot corrupt
+cursor placement. Terminal settings are restored before evaluation and exit.</li>
+</ul>
+<p>Project history is <code>.trb/repl_history</code>; standalone
+history is <code>~/.cache/trbn/repl_history_trb</code>. <code>TRBN_HISTORY</code> overrides that file.
+History uses the reference REPL's JSON string-array format.</p>
+<p>The CLI currently implements part of <code>trb</code>. Full command and backend parity,
+stable CLI contracts and supported distribution are <a href="/docs/mir-consolidation/">project goals</a>.
+See the <a href="/docs/native-language-coverage/">ordinary coverage plan</a> for path-specific
+tracking; snapshot/recovery capabilities do not establish ordinary CLI support.
+The ordinary compiler's language and package restrictions still apply.
+Ordinary UTF-8 literals, code-point size/indexing and concatenation work in compiled programs
+and the REPL; invalid source encoding is rejected before token decoding.
+Language-server commands and host-language dependency management remain gaps.
+The editor does not yet provide every readline/vi binding, import-repair and argument-aware completion,
+or full Unicode grapheme-cluster segmentation (for example joined emoji).
+Completion follows the executable Native subset. Submissions are bounded to
+64 KiB, including paste; overflow is rejected without evaluating a prefix.
+The evaluator has a 256-call depth bound and retains reachable session values.
+It is not a sandbox and is not yet qualified for production use.</p>
+<h2 id="ci-artifacts-and-validation">CI artifacts and validation</h2>
+<p>Run the <strong>Native CLI validation</strong> workflow with <code>workflow_dispatch</code>, selecting
+the desired revision. The same checkout launcher builds Darwin arm64 and
+Linux arm64, verifies fixed points, runs CLI and real-terminal tests, and
+uploads <code>trbn-&lt;platform&gt;</code> artifacts containing a tarball and checksum. Each
+archive includes <code>trbn</code>, QBE, build metadata, this guide, and the project
+license. The <code>network</code> directory contains qualified libuv and llhttp
+binaries, dependency notices and a build receipt; <code>HTTP-NETWORK.md</code> describes
+their runtime configuration. Artifacts are development CI outputs, not supported
+releases.</p>
+<p>Run the same integration tests locally after building:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/native-cli-test.py</span><span style="color:#A5D6FF"> bin/trbn</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#79C0FF"> -m</span><span style="color:#A5D6FF"> venv</span><span style="color:#A5D6FF"> .trb/repl-tests</span></span>
+<span class="line"><span style="color:#FFA657">.trb/repl-tests/bin/pip</span><span style="color:#A5D6FF"> install</span><span style="color:#79C0FF"> -r</span><span style="color:#A5D6FF"> tools/repl-test-requirements.txt</span></span>
+<span class="line"><span style="color:#FFA657">.trb/repl-tests/bin/python</span><span style="color:#A5D6FF"> tools/native-repl-editor-test.py</span><span style="color:#A5D6FF"> bin/trbn</span></span>
+<span class="line"><span style="color:#8B949E"># Optional: run the shared screen scenarios against the reference REPL too.</span></span>
+<span class="line"><span style="color:#FFA657">.trb/repl-tests/bin/python</span><span style="color:#A5D6FF"> tools/native-repl-editor-test.py</span><span style="color:#A5D6FF"> bin/trbn</span><span style="color:#79C0FF"> --reference</span><span style="color:#A5D6FF"> /path/to/trb</span></span>
+<span class="line"></span></code></pre>
+<p>Compiler implementation stays in <code>compiler/src</code>; CLI, terminal integration
+and evaluation live in <code>compiler/cli</code>. The bootstrap stages a shared import
+root without changing those canonical source trees. Typed host declarations
+are backed by a compiler-owned POSIX QBE template only at the CLI compiler
+entry. This is internal bootstrap machinery, not a public FFI facility.</p>
+<h2 id="builtin-output">Builtin output</h2>
+<p>Like the reference prelude, <code>puts</code> takes one value and writes its text followed
+by a newline. The Native subset accepts String, Integer and Boolean in both
+compiled programs and the REPL. Integer uses decimal digits; Boolean uses
+<code>true</code> or <code>false</code>. Arguments are evaluated once. This builtin output conversion
+does not invoke user-defined <code>to_s</code> methods or make ordinary String parameters
+accept other types. Float, collection and record output remain explicitly
+unsupported; their portable formatting requires separate coverage.</p>
+<p><code>python3 tools/native-puts-test.py bin/trbn --reference /path/to/trb</code> compares
+compiled and REPL output with the reference compiler. After a normal checkout
+build, <code>python3 tools/native-bootstrap-test.py</code> checks cache invalidation, core
+reuse, failed-build preservation and concurrent callers in an isolated copy.
+<code>tools/build-native.sh --plan</code> prints the scope a build would take (<code>cached</code>,
+<code>cli</code> or <code>core</code>) from the same content keys without building; the test uses it
+for edits, additions, removals and nested inputs, and performs two real
+rebuilds: a replaced core, and a CLI rebuild shared by concurrent callers.</p>
+<h2 id="diagnostics">Diagnostics</h2>
+<p>File checking, QBE emission, executable builds and execution report frontend
+errors on stderr as <code>path:line[:column]: error[CODE]: message</code>, using the actual entry or
+imported file. REPL diagnostics use <code>(trb)</code> and the cumulative authored line
+number of accepted submissions; generated imports, the entry function and
+stored bindings do not add visible lines. Failed submissions do not advance
+that line count. REPL runtime failures use <code>error: message</code> at the invoking
+statement, including division by zero.</p>
+<p>This follows the pinned reference CLI's location/severity/code presentation.
+Operator failures name the operator and operand types, for example
+<code>operator + does not support Integer and String</code>. For directly authored
+operators, the column identifies that operator token, including compact input,
+tabs and Unicode identifiers. Interpolation is currently lowered to String
+concatenation, so its type errors still describe that generated operation;
+generic-template diagnostics may retain only a line origin.
+The reference currently points to the start of the expression instead. Other
+diagnostics include a column only when an actual token origin is available;
+line-only diagnostics do not fabricate one. Structured colored REPL diagnostics emphasize
+the severity word and reset before the code and message. Its <code>TRBN</code> diagnostic codes and detailed messages
+remain distinct where its supported subset and diagnosis differ from the
+reference frontend. It reports the first error rather than accumulating the
+reference compiler's complete diagnostic set. Compiled-program runtime
+failures and external tool diagnostics retain their existing runtime/tool
+contracts. The internal core compiler protocol remains unchanged.</p>
+<p>Run <code>python3 tools/native-diagnostics-test.py bin/trbn --reference /path/to/trb</code>
+to compare file, imported-module and cumulative REPL origins against the pinned
+reference executable. The artifact workflow runs the same Native assertions
+on both supported checkout platforms.</p>
+<h2 id="string-interpolation">String interpolation</h2>
+<p>Double-quoted Strings evaluate <code>#{expression}</code> through the shared Native
+frontend in both compiled programs and the REPL. Expressions must return
+String; use an explicit supported conversion such as <code>value.to_s()</code> for an
+Integer. Multiple expressions run once each, from left to right. Grouping
+preserves expression precedence and postfix operations on the resulting String.
+Nested quoted Strings and nested interpolation support UTF-8 literal text
+within the existing expression subset.</p>
+<p>Use <code>\#</code> to suppress interpolation: <code>&quot;\#{name}&quot;</code> produces the literal text
+<code>#{name}</code>. With two backslashes, <code>&quot;\\#{name}&quot;</code> produces one backslash followed
+by the value of <code>name</code>. Undefined escapes such as <code>\{</code> and <code>\q</code> are errors,
+including in literal segments next to interpolation. Escaped markers retain
+literal coloring in the REPL and round-trip unchanged through its history.</p>
+<p>The REPL colors interpolation delimiters and embedded expressions separately
+from literal text, including while input is incomplete. JSON history retains
+interpolation as source text and never interprets it while loading.</p>
+<p><code>python3 tools/native-interpolation-test.py bin/trbn --reference /path/to/trb</code>
+compares evaluation, side effects and type rejection with the pinned reference.
+Empty interpolation markers remain literal as in that reference. Malformed
+nonempty expressions and unterminated interpolation receive diagnostics; no
+implicit conversion or unchecked evaluation is introduced.</p>
+<p>The <a href="/docs/native-cli-interruption/">key-reader interruption checks</a> document the
+nonblocking read boundary, exact flag restoration and deterministic regressions.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-cli.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

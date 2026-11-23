@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Exact-candidate release scenarios — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/release-scenarios/">
+		<title>Exact-candidate release scenarios — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="exact-candidate-release-scenarios">Exact-candidate release scenarios</h1>
+<p>The <a href="https://github.com/type-rb/type-rb/tree/main/contracts/v0.5">shared release contract</a>
+owns the release denominator, output/host obligations, qualification decisions
+and approved deferrals. The Native <a href="../tools/release-scenarios.json">scenario plan</a>
+binds its declarations to executable examples. It supplements the existing
+language/project corpora; it does not modify their frozen expectations or replace
+the canonical result validator.</p>
+<p>Inspect the complete inventory against an identified reference checkout:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/release-scenarios.py</span><span style="color:#79C0FF"> --contract-root</span><span style="color:#A5D6FF"> /path/to/type-rb</span><span style="color:#79C0FF"> --inventory</span></span>
+<span class="line"></span></code></pre>
+<p>Every canonical row stays visible. New members and surfaces remain unmapped;
+removed or foreign declarations invalidate existing bindings. Mapping every
+declared member still leaves semantic boundaries, failure cleanup and the other
+output/host observations to qualify. Neither mapping counts nor matching examples
+are a support percentage. The plan records remaining boundaries independently.</p>
+<p>Run a candidate identified by its source revision and expected binary digest:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/release-scenarios.py</span><span style="color:#79C0FF"> --contract-root</span><span style="color:#A5D6FF"> /path/to/type-rb</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --compiler</span><span style="color:#A5D6FF"> /path/to/compiler</span><span style="color:#79C0FF"> --compiler-sha256</span><span style="color:#A5D6FF"> EXACT_SHA256</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --source-revision</span><span style="color:#A5D6FF"> EXACT_COMMIT</span><span style="color:#79C0FF"> --implementation</span><span style="color:#A5D6FF"> go</span><span style="color:#79C0FF"> --mode</span><span style="color:#A5D6FF"> ruby</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --report</span><span style="color:#A5D6FF"> /path/to/new-observations.json</span></span>
+<span class="line"></span></code></pre>
+<p><code>--implementation</code> is <code>go</code> or <code>native</code>. <code>--mode</code> selects <code>go</code>, <code>ruby</code>,
+<code>typescript</code> or Native's additional <code>native</code> executable output. TypeScript
+uses <code>--typescript-runtime node|bun</code>. The supplied revision must come from the
+candidate's build receipt: a binary hash binds the executable, but cannot prove
+its source provenance by itself. The runner records the actual host, compiler,
+controller, plan, catalog and manifest hashes and required tool identities.
+It verifies the binary identity again after execution. Native observations use
+the configured QBE and dependency archives; they do not build a compiler from a
+neighboring checkout or fall back to the Go implementation.</p>
+<p>Each example exercises project checking, source/native build, actual application
+execution and a fresh retained REPL session. Ruby and TypeScript execute the
+compiler's generated application entry, which performs initialization and calls
+<code>main</code>; loading the declarations module alone does not run the application.
+Negative inputs require the reviewed diagnostic and cannot pass because a
+package or operation is unsupported. A zero REPL exit code with diagnostics or
+missing expected output fails. Timeouts, invalid output encoding, missing tools,
+missing artifacts and empty plans cannot become skipped passes.</p>
+<p>Exit zero means only that the selected candidate/output matched this plan on
+this host. Exit one retains semantic mismatches; exit two reports preparation
+failure. Reports retain each observed phase, incomplete cases and interruption
+reasons, and existing files are never overwritten. Temporary projects and
+generated executables are removed after success or failure; keep the small
+reports and exact commands rather than copying build caches.</p>
+<p>Reports always retain <code>releaseQualified: false</code> and unqualified inventory rows.
+They are evidence inputs, not canonical v2 result bundles or result-side
+waivers. Review the complete mapping and remaining boundaries in #1221 before
+changing any canonical <code>qualificationReady</code> value. Independent recovery,
+performance, memory, distribution and repository-transition gates remain.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/release-scenarios.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Native HTTP transport — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/native-network/">
+		<title>Native HTTP transport — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="native-http-transport">Native HTTP transport</h1>
+<p>The Native Web project provider connects the pinned <code>Web.serve(ServerConfig)</code>
+API to libuv for TCP and event delivery, and llhttp for HTTP/1.1 framing. Routing,
+request/response values, typed input, middleware and recovery remain TypeRB
+implementations. The public package source remains pinned to <code>TYPE_RB_REVISION</code>.
+The public <a href="https://type-rb.github.io/type-rb-native/dependencies/">dependency register</a>
+tracks runtime, tooling and candidate dependencies separately.
+Whole-buffer <a href="/docs/native-compression/">response compression</a> uses a separately
+pinned static gzip archive when the compression middleware is imported.</p>
+<p>Compile a file-route project that calls <code>Web.serve()</code> or passes a
+<code>Web::ServerConfig</code>. The server supports IPv4, IPv6 and host-name binding. REPL
+evaluation reports the reference's explicit unavailable-runtime diagnostic;
+it does not start a listener. See <a href="/docs/native-cli/">Native CLI</a> for building the
+compiler and applications.</p>
+<h2 id="build-and-distribution">Build and distribution</h2>
+<p><code>tools/network-dependencies.json</code> pins libuv 1.53.0 and llhttp 9.4.3 by version,
+upstream commit and source archive SHA-256. Both use the MIT license. The generated
+llhttp release archive contains C sources; Node.js is not a build or runtime
+requirement. Repository-owned runtime behavior remains TypeRB. A C toolchain
+builds the external libraries and compile-only ABI assertions; the artifact
+identity is assembly data, with no additional C runtime implementation.</p>
+<p>The compiler selects static archives from verified network MIR. It links them
+only for an application containing the network provider. Importing <code>trb/web</code>
+currently includes that provider, including programs using only its response
+values. The CLI, ordinary compiler and programs using only <code>trb/http</code> values
+need no HTTP archives. An HTTP
+application requires only its executable, the platform runtime and the dependency
+notices at deployment; it does not load libuv/llhttp from the environment.</p>
+<p>Development packages keep <code>network/</code> beside QBE. Alternatively,
+<code>TRBN_NETWORK_LIB_DIR</code> selects an explicit <strong>build-time</strong> installation:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/build-network-dependencies.py</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --archives</span><span style="color:#A5D6FF"> /path/to/shared/source-archives</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --output</span><span style="color:#A5D6FF"> /path/to/network</span></span>
+<span class="line"><span style="color:#E6EDF3">TRBN_NETWORK_LIB_DIR</span><span style="color:#FF7B72">=</span><span style="color:#A5D6FF">/path/to/network</span><span style="color:#FFA657"> ./trbn</span><span style="color:#A5D6FF"> build</span><span style="color:#79C0FF"> --compile</span></span>
+<span class="line"><span style="color:#FFA657">./bin/application</span></span>
+<span class="line"></span></code></pre>
+<p>Building the dependency archives requires Python, CMake and a platform C toolchain.
+Installing prebuilt archives and compiling applications does not require CMake.
+The platform assembler/linker and QBE remain application build tools. If QBE is
+overridden, its adjacent <code>network/</code> directory becomes the default; set the
+build-time override when using a separate installation. Paths containing spaces
+are passed as individual arguments, without shell evaluation. Missing dependencies
+or failed links preserve an existing output and remove the build's intermediates.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/network_artifacts.py</span><span style="color:#A5D6FF"> pack</span><span style="color:#A5D6FF"> /path/to/network</span><span style="color:#A5D6FF"> network.tar.gz</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/network_artifacts.py</span><span style="color:#A5D6FF"> install</span><span style="color:#A5D6FF"> network.tar.gz</span><span style="color:#A5D6FF"> /path/to/new/network</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --sha256</span><span style="color:#A5D6FF"> EXPECTED_ARTIFACT_SHA256</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/network_artifacts.py</span><span style="color:#A5D6FF"> inspect</span><span style="color:#A5D6FF"> ./bin/application</span></span>
+<span class="line"></span></code></pre>
+<p>Installation checks the artifact hash, target, exact source pins, file inventory,
+archive hashes and embedded identity before publishing a new directory. Obtain the
+expected hash from a trusted qualification or release receipt; a hash file supplied
+by an untrusted archive is not authentication. Existing installations are not
+overwritten. The executable inventory includes versions, commits, source and static
+archive hashes, configuration and build tools. It identifies the selected build;
+it is not a signature or a runtime integrity attestation.</p>
+<p>Temporary source/object trees are removed after success and failure. Reuse source
+archives and one installation across applications. A 128 MiB budget covers the
+installation and source archives. Keep both license notices with deployed apps.
+The optional <code>--linkage dynamic</code> builder profile is retained for comparison and
+older development binaries; the current compiler emits static calls.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Role</th>
+<th>Application dependency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Platform C runtime / system library</td>
+<td>Allocation, process and OS primitives</td>
+<td>Existing macOS libSystem / Linux libc and recorded platform imports</td>
+</tr>
+<tr>
+<td>libuv 1.53.0</td>
+<td>TCP, address resolution, events, signals and timers</td>
+<td>Selectively static for the network provider</td>
+</tr>
+<tr>
+<td>llhttp 9.4.3</td>
+<td>HTTP/1 request framing and validation</td>
+<td>Selectively static for the network provider</td>
+</tr>
+<tr>
+<td>QBE and platform compiler/linker</td>
+<td>Build the Native executable</td>
+<td>Build tools, not invoked by a running server</td>
+</tr>
+<tr>
+<td>Python and CMake</td>
+<td>Build and qualify external archives</td>
+<td>Dependency build tools; prebuilt installation needs only Python</td>
+</tr>
+</tbody>
+</table>
+<p>The CI qualification matrix builds and links archives on Darwin/Linux arm64/amd64,
+including a fresh installation and isolated execution. Application socket/lifetime
+and compiler verification remain separate authorities on the registered Native
+targets; archive ABI success alone does not establish a darwin-amd64 compiler or
+seed. CI bundles retain source archives, notices and build receipts. They are
+qualification artifacts with finite retention, not immutable release assets.
+Before supported release distribution, #1257 still requires immutable publication,
+source mirrors, advisory/update ownership and deadlines, plus the remaining TLS/DB
+profiles. See the <a href="/docs/native-dependency-policy/">dependency policy</a>.</p>
+<h2 id="ownership-and-execution">Ownership and execution</h2>
+<p>The source loader assigns the internal Web server and network declarations their
+identities. An authored path, alias, function name or matching declaration cannot
+grant foreign-call privileges. Full signatures are checked again by MIR; network
+calls conservatively retain allocation, failure, I/O and mutation effects.
+The application-specific server/router is a project provider. The exact owned
+<code>Web</code> to server-provider edge binds the application's routes and is excluded from
+ordinary package-dependency traversal; authored package cycles remain errors.</p>
+<p>One thread runs the libuv loop and TypeRB handlers. Foreign callbacks only parse
+or copy into explicitly owned raw buffers; they cannot invoke managed handlers or
+allocate GC-managed values. A complete request pauses reading on its connection.
+The TypeRB loop copies immutable request bytes into managed objects, dispatches
+with the existing recovery boundaries, and copies the response out before an
+asynchronous write. No managed address remains in libuv or llhttp after returning
+to TypeRB. Write and close callbacks release raw buffers after their last use.</p>
+<p>Each connection has an opaque checked identity. The transport bounds the read
+chunk, pipelined remainder, header storage and number of accepted connections.
+<code>body_limit_bytes</code> bounds each decoded body, including chunked input. A partial
+request does not prevent another connection from receiving a complete request.
+Only one managed handler executes at a time; this is not a general task scheduler
+or a claim of concurrent TypeRB handler execution.</p>
+<p>SIGINT and SIGTERM stop accepting connections, close idle connections, and allow
+pending responses to drain until <code>shutdown_timeout_milliseconds</code>. Close callbacks
+run before the loop is released. Shutdown signals and drain deadlines are
+serviced by the event loop: interrupting an indefinitely running synchronous TypeRB handler requires
+execution cancellation and is not established by transport shutdown tests.</p>
+<p>Per-request <a href="/docs/native-deadlines/">Web deadlines</a> use managed checkpoints,
+independently of the transport shutdown drain deadline. Their application
+acceptance includes repeated requests after expiration and ordinary failure.</p>
+<h2 id="http-behavior">HTTP behavior</h2>
+<p>HTTP/1.0 and HTTP/1.1 requests share the existing Web route and middleware
+dispatcher. The transport handles fragmented headers and bodies, chunked input,
+binary bodies, keep-alive, pipelining and <code>Expect: 100-continue</code>. Request method
+tokens retain the public <code>HttpMethod</code> semantics rather than llhttp's narrower
+method enumeration. Host and transfer-framing headers do not become application
+headers; trailers are not promoted into them. Framing/header failures are rejected
+before application middleware. Decoded-body parsing failures and limits enter the
+existing Web error dispatcher; an oversized body retains its accepted prefix up
+to the configured limit for middleware inspection. Peer EOF terminates an
+incomplete request without dispatch, matching the pinned server.</p>
+<p>The transport retains llhttp's strict parser with one explicit reference
+compatibility setting: chunked Transfer-Encoding takes precedence over
+Content-Length, and the latter is removed before application dispatch. The shared
+suite checks the decoded body and the following request boundary. Other leniency
+flags stay disabled. A common policy that rejects conflicting framing before
+middleware is tracked in <a href="https://github.com/type-rb/type-rb-native/issues/1239">proposal #1239</a>.
+Adopting stricter behavior requires agreement across implementations rather than a
+Native-only change.
+This slice does not establish byte-for-byte equivalence to every <code>net/http</code>
+behavior. Protocol upgrades, streaming and HTTP/2 need separate transport contracts.</p>
+<h2 id="validation-and-remaining-work">Validation and remaining work</h2>
+<p><code>tools/native-network-distribution-test.py</code> checks selective linkage, missing/corrupt
+archives, preserved outputs, relocated packages and execution without runtime
+libraries. Its build/startup/size observations are descriptive qualification data,
+not a throughput benchmark. <code>tools/native-web-network-test.py</code> retains real socket tests for fragmented and chunked input,
+keep-alive/pipelining, body limits, malformed/conflicting framing, binary bodies,
+routing and middleware, handler failure, disconnects, bind failure, concurrent
+partial requests, signals and restart. Force GC at managed allocation boundaries
+while requests remain alive, and verify raw/managed cleanup independently.
+The CLI CI matrix exercises Darwin arm64 and Linux arm64; the Linux amd64 target
+lane exercises its built core compiler. Cross-target ABI, compiler recovery,
+ordinary fixed points and hosted integration remain required. Process supervision,
+streaming, generic scheduling, TLS and
+performance qualification have separate acceptance; do not infer them from this
+transport.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-network.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

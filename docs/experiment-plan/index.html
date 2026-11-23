@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Development and Validation Plan — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/experiment-plan/">
+		<title>Development and Validation Plan — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="development-and-validation-plan">Development and Validation Plan</h1>
+<h2 id="engineering-objective">Engineering objective</h2>
+<p>Build a TypeRB-authored toolchain for production use, covering the reference
+language, standard library and official packages, Go/Ruby/TypeScript emission and
+execution, and Native AOT output. The <a href="/docs/mir-consolidation/">project roadmap</a>
+includes stable public interfaces and supported releases as coverage matures.
+Native performance targets are:</p>
+<ol>
+<li>End-to-end application build time that outperforms equivalent Pure Go builds.</li>
+<li>Generated-program execution time that outperforms equivalent Pure Go programs
+and is competitive with established statically typed implementations across
+representative portable workloads.</li>
+<li>Deployed executable size smaller than equivalent Pure Go executables.</li>
+</ol>
+<p>Use matched inputs, outputs, algorithms, concurrency and optimized toolchains.
+These are measured targets; current results do not establish universal wins.</p>
+<p>The compiler and runtime are implemented in TypeRB, reproduce themselves, and
+must retain competitive build time and generated-code behavior once the
+complete self-hosted toolchain is measured. Early checks establish this outcome
+incrementally; they are not a sequence of throwaway demonstrations.</p>
+<p>Secondary outcomes include compiler and runtime peak memory, startup latency,
+toolchain distribution size, portability, diagnostics, correctness risk, and
+maintenance cost.</p>
+<p>The <a href="/docs/performance-policy/">performance engineering policy</a> governs corpus
+selection, representative applications, input diversity and bounded CI cadence.</p>
+<p>The identical-source comparison baseline is an optimized release executable
+produced by the reference compiler's Go backend. It isolates backend and
+runtime changes, but it is not the final execution-performance ceiling.
+Cross-language runtime context uses pinned established implementations without
+an intentionally unoptimized, unstripped, cold, or otherwise disadvantaged
+configuration.</p>
+<p>The active <a href="/docs/mir-consolidation/">MIR consolidation policy</a> supersedes the
+per-checkpoint cost scheduling below during migration. Its fixed baselines and
+correctness requirements remain binding; detailed cost qualification follows
+the coherent milestone.</p>
+<h2 id="principles">Principles</h2>
+<ul>
+<li>Correctness precedes performance.</li>
+<li>All candidates use the same TypeRB inputs, supported semantics, Native MIR
+corpus, benchmark policy, and, for same-target comparisons, the same target
+ABI profile.</li>
+<li>Unsupported behavior fails explicitly.</li>
+<li>Measurements include serialization, lowering, optimization, code generation,
+assembly, linking, runtime, and required external components.</li>
+<li>TypeRB semantic analysis and reusable optimization decisions belong to
+verified Native MIR and target-independent passes, not to a backend emitter.</li>
+<li>Quality and performance targets are recorded before reviewing a result.</li>
+<li>Microbenchmarks diagnose a phase; representative programs determine
+viability.</li>
+</ul>
+<p>Before a checkpoint begins, its issue must record metric-specific non-inferiority
+bounds, a minimum meaningful primary-metric improvement where the checkpoint is
+expected to provide one, and catastrophic-regression limits. A miss identifies
+required engineering work or an architectural decision; it does not by itself
+end the native implementation. Targets cannot be weakened after results are
+reviewed merely to label a checkpoint complete.</p>
+<p>Follow <a href="/docs/optimization-tradeoffs/">Optimization costs and trade-off evaluation</a>.
+Ordinary acceptance retains existing limits; a preregistered, candidate-specific
+diagnostic can measure benefit despite a cost miss. Any later acceptance-budget
+change needs a separate reviewed decision and enforcement, not retrospective
+relabeling. Track same-feature and frozen cumulative controls and actual Go
+comparisons. Reassess after two size-only attempts without a current runtime
+benefit assessment, rather than polishing small overruns indefinitely.</p>
+<h2 id="current-implementation-focus">Current implementation focus</h2>
+<p>Complete the <a href="/docs/mir-consolidation/">MIR consolidation milestone</a> through cohesive
+families of typed operations, control flow, managed lifetimes and shared facts.
+Use the <a href="/docs/native-language-coverage/">ordinary language coverage plan</a> to add
+needed basic features and adopt them in the compiler while removing superseded
+semantic owners and splitting large modules. Separate check/build/execution/REPL
+coverage from recovery evidence. Detailed performance qualification follows the
+coherent milestone; correctness and reproducibility remain blocking throughout.</p>
+<h2 id="candidate-sequence">Candidate sequence</h2>
+<p>Backend candidates are not implemented to production completeness in parallel.
+They advance through small shared checks, and only implementations with a clear
+role continue to accumulate maintenance cost.</p>
+<ol>
+<li>Use hand-authored bootstrap and MIR fixtures to validate the boundary.</li>
+<li>Use QBE for the cheapest runtime and ABI feasibility check.</li>
+<li>Consider Cranelift only if the QBE result leaves a measured development
+code-generation problem worth testing.</li>
+<li>Add LLVM only after the corpus is representative enough to measure an
+optimization ceiling.</li>
+<li>Attempt a direct emitter only if profiling shows codegen or toolchain
+overhead dominates and the MIR, layouts, and ABI have stabilized.</li>
+</ol>
+<p>This order is a starting hypothesis, not a compatibility promise.</p>
+<p>TinyGo may be measured once as a time-boxed calibration of the optimized Go
+baseline. It is not a path to the required Go-independent compiler and is not
+a checkpoint deliverable. A C emitter is likewise deferred unless later profiling
+shows that it answers a specific question more cheaply than the selected
+backend. Neither is built merely to populate a comparison table.</p>
+<h2 id="self-hosted-mir-optimization-transition">Self-hosted MIR optimization transition</h2>
+<p>The <a href="/docs/mir-consolidation/">MIR consolidation milestone</a> supersedes the per-slice
+transition envelopes. <a href="https://github.com/type-rb/type-rb/blob/main/docs/decisions/0028-native-mir-optimization-boundary.md">Decision 0028</a>
+keeps TypeRB facts and optimizations in verified MIR. The transition size
+markers are retired; the earlier transition sequence, its markers and
+source-era bounds are in the
+<a href="https://github.com/type-rb/type-rb-native/blob/04c6ca7263c066fd13e83b3faa09c4e80d707c13/docs/experiment-plan.md#self-hosted-mir-optimization-transition">prior version of this plan</a>.
+LLVM remains deferred until the shared path and benchmark corpus cover scalar,
+Array, allocation and I/O behavior; its first role is a bounded
+optimization-ceiling comparison over the same MIR and ABI.</p>
+<h2 id="repository-organization">Repository organization</h2>
+<p>Use the <a href="/docs/repository-organization/">current ownership map</a> and the
+<a href="/docs/mir-consolidation/">MIR consolidation milestone</a>. Combine connected semantic
+ownership moves and retire their superseded code with the consumers. Keep recovery,
+ordinary fixed points, lifetime and target correctness blocking; defer detailed
+performance qualification until the coherent milestone.</p>
+<p>Completed experimental contracts are available in the <a href="/docs/history/">historical record</a>.</p>
+<h2 id="correctness-checks">Correctness checks</h2>
+<p>Each supported feature requires:</p>
+<ul>
+<li>reference-backend differential tests;</li>
+<li>valid and invalid MIR fixtures;</li>
+<li>boundary-value tests for layout and arithmetic;</li>
+<li>deterministic diagnostics for unsupported input;</li>
+<li>reproducible output checks; and</li>
+<li>randomized or fuzz validation when a verifier or encoder accepts structured
+untrusted input.</li>
+</ul>
+<p>A candidate fails correctness if it obtains performance by weakening TypeRB
+integer ranges, Unicode behavior, failure semantics, initialization order,
+source attribution, or another portable guarantee.</p>
+<h2 id="measurements">Measurements</h2>
+<h3 id="build-measurements">Build measurements</h3>
+<p>Report separately:</p>
+<ul>
+<li>reference frontend and snapshot production;</li>
+<li>snapshot validation and Native MIR lowering;</li>
+<li>optimization;</li>
+<li>backend code generation;</li>
+<li>assembly and object writing;</li>
+<li>linking; and</li>
+<li>total cold, warm, and incremental build time.</li>
+</ul>
+<p>Also record peak compiler RSS and every process executed by the build.</p>
+<h3 id="runtime-measurements">Runtime measurements</h3>
+<p>Depending on the workload, report:</p>
+<ul>
+<li>startup latency;</li>
+<li>steady-state throughput or completion time;</li>
+<li>latency distribution rather than only the best result;</li>
+<li>allocation count where available; and</li>
+<li>peak runtime RSS.</li>
+</ul>
+<h3 id="size-measurements">Size measurements</h3>
+<p>Report:</p>
+<ul>
+<li>raw and stripped executable size;</li>
+<li>compressed artifact size when relevant;</li>
+<li>static and dynamic runtime dependencies;</li>
+<li>backend sidecars, assembler, linker, and required SDK components; and</li>
+<li>complete toolchain distribution size.</li>
+</ul>
+<p>An executable that relies on a shared VM or uncounted runtime is not directly
+comparable to a standalone binary without reporting both views.</p>
+<h2 id="benchmark-record">Benchmark record</h2>
+<p>Every published result should include:</p>
+<ul>
+<li>TypeRB, native repository, runtime, and backend revisions;</li>
+<li>exact commands, release flags, stripping, path metadata, and configuration;</li>
+<li>hardware, operating system, architecture, and toolchain versions;</li>
+<li>cache state and environment constraints;</li>
+<li>input corpus revision;</li>
+<li>warmup, repetition count, aggregation, and variance; and</li>
+<li>raw machine-readable results.</li>
+</ul>
+<p>Store results under a date- and experiment-specific directory only after the
+first executable benchmark exists. Do not commit placeholder result files.
+Follow the <a href="/docs/evidence-retention/">evidence lifecycle policy</a>: only registered
+active reports and observation tables stay in main. Replace a result and retire
+its predecessor in the same PR, retaining significant decisions and pinned
+historical links. Archive generated payloads only when they have a durable use.
+Preserve active measurement cohorts, frozen baselines and seed consumers.</p>
+<h2 id="backend-selection-policy">Backend selection policy</h2>
+<p>A backend implementation remains active only when it:</p>
+<ul>
+<li>passes the current correctness and reproducibility checks;</li>
+<li>satisfies the pre-registered non-inferiority and catastrophic-regression
+limits;</li>
+<li>achieves the pre-registered minimum improvement in at least one primary
+outcome before product feasibility, or has a concrete diagnostic role in
+reaching that outcome;</li>
+<li>has a credible path for the next required target and runtime feature;</li>
+<li>does not impose disproportionate distribution, security, or maintenance
+costs.</li>
+</ul>
+<p>One production default is preferred. Separate development and release backends
+remain possible only when their end-to-end advantages are both material and
+stable. Experimental backends should not become user-visible configuration
+merely because they win a microbenchmark.</p>
+<p>A secondary improvement may justify a bounded diagnostic experiment, but it
+does not pass product feasibility when all three primary outcomes miss their
+registered checks.</p>
+<h2 id="reassessment-policy">Reassessment policy</h2>
+<p>A missed checkpoint triggers diagnosis of the MIR, runtime, backend, or build
+pipeline and a recorded plan to close the gap. Backend adapters may be replaced
+or removed when another implementation serves their role better. The native
+implementation itself is reconsidered only when evidence exposes a fundamental
+conflict with portable TypeRB semantics, safe implementation, or sustainable
+self-hosting—not merely because an early implementation needs optimization.</p>
+<p>Temporary bootstrap surfaces still have no compatibility guarantee. Remove
+them when the independent frontend replaces them, and retain generally useful
+benchmark methodology, conformance tests, and architectural findings.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/experiment-plan.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

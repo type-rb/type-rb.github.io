@@ -22,8 +22,8 @@
 			</a>
 			<nav class="site-nav" aria-label="Primary navigation">
 				<a class="active" href="/docs/">Docs</a>
-				<a href="/tour/">Learn</a>
-				<a href="/play/">Playground</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
 				<a href="https://github.com/type-rb/type-rb">GitHub</a>
 			</nav>
 		</header>
@@ -43,7 +43,7 @@
 					
 					<section>
 						<h2>Tooling</h2>
-						<a class="active" aria-current="page" href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						<a href="/docs/native-cli/">Native command line</a><a class="active" aria-current="page" href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
 					</section>
 					
 					<section>
@@ -68,7 +68,7 @@
 						
 						<section>
 							<h2>Tooling</h2>
-							<a class="active" aria-current="page" href="/docs/cli/">Command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+							<a href="/docs/native-cli/">Native command line</a><a class="active" aria-current="page" href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
 						</section>
 						
 						<section>
@@ -81,6 +81,8 @@
 			</aside>
 			<main class="docs-main">
 				<article class="markdown-body"><h1 id="command-line-reference">Command-line reference</h1>
+<p>This guide describes the Go implementation. Invoke the companion as <code>trbg</code>.
+See the <a href="/docs/native-cli/">Native command guide</a> for the default <code>trb</code> compiler.</p>
 <p>Run commands from a directory containing <code>trbconfig.jsonc</code> unless the command
 explicitly supports a standalone file or scratch session.</p>
 <h2 id="projects-and-dependencies">Projects and dependencies</h2>
@@ -692,7 +694,7 @@ The repository test suite compiles and evaluates every lesson in Go, Ruby, and
 TypeScript modes before Pages is published.</p>
 </article>
 				<footer class="docs-footer">
-					<span>TypeRB 0.4.12-dev</span>
+					<span>TypeRB 0.5.0-alpha.1</span>
 					<a href="https://github.com/type-rb/type-rb/blob/main/docs/cli.md">Edit this page on GitHub</a>
 				</footer>
 			</main>

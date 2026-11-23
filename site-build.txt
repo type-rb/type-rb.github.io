@@ -1,0 +1,5 @@
+942dcc763678f0c7e315014690f095c5ef6e7876
+go version go1.27.4 linux/amd64
+81501e7c13dcd943ac1cc4b61351276e034c034caa87d8c1b459f15a14dbf853  .site-generator/go.mod
+5e807543c1b8f78e2753cf1ba6876190e1e11d052c768b01573e318d79f9ea7b  .site-generator/go.sum
+d95bc1be624b776e32924ba8d926364b770e2b88eb6bc723fbc5c7bd053e13f9  /home/runner/work/_temp/trb-site

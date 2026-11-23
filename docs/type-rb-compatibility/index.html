@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="TypeRB Compatibility — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/type-rb-compatibility/">
+		<title>TypeRB Compatibility — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="typerb-compatibility">TypeRB Compatibility</h1>
+<p>TypeRB Native currently follows exact reference revisions during development. The
+current source and semantic oracle is TypeRB
+<code>cc8c734f73f5149464838825cdbb2165058ed26d</code> (<code>0.4.12-dev</code>, including the shared
+Unicode 17 OIDC hostname policy, declared standalone Go dependencies, portable
+Process text decoding and explicit executable launch, joined Jobs shutdown and portable Math APIs), recorded
+in <code>TYPE_RB_REVISION</code>. This declares one exact reference identity during Native
+development, without claiming a supported version range.</p>
+<p>The machine-readable
+<a href="../compatibility/current.json"><code>compatibility/current.json</code></a> records this
+exact mapping beside the independent Native <code>0.1.0-dev</code> implementation
+identity. Its strict schema and CI validation keep TypeRB, bootstrap, MIR,
+runtime ABI, backend, target, and evidence identities separate. The current
+target list contains the internal Darwin arm64 and Linux arm64 seed
+profiles plus the independently recovered and verified internal Linux
+amd64 profile. See
+<a href="/docs/versioning/">Native versioning and compatibility</a> for bump and release
+rules.</p>
+<p>Each reference update is reviewed in its own PR, which records the incorporated
+TypeRB changes and their Native effect. Update notes written before this policy
+remain in the <a href="https://github.com/type-rb/type-rb-native/blob/04c6ca7263c066fd13e83b3faa09c4e80d707c13/docs/type-rb-compatibility.md">prior version of this document</a>.</p>
+<h2 id="release-integration">Release integration</h2>
+<p>Treat a new reference release as a compatibility update through a Native PR.
+After the public release workflow succeeds, resolve the stable tag to its exact
+merged commit. Update <code>TYPE_RB_REVISION</code>, the manifest, maintained current
+workflow/controller identities and generated coverage views together. Build
+through <code>tools/build-reference.py</code> and rerun the shared language cases against
+the exact reference AST. Review changed outcomes before editing expectations;
+reference fixes can expose Native gaps that must remain visible.</p>
+<p>Complete the PR's required correctness, recovery, target and memory authorities
+before merging. Preserve frozen experiment pins, immutable seed assets and
+historical evidence. A future release detector can prepare this PR, but must
+not update the default branch or rewrite conformance expectations automatically.
+This consumer-owned procedure requires no Native-specific reference API or
+release hook in the TypeRB repository.</p>
+<h2 id="bundled-official-sources">Bundled official sources</h2>
+<p><a href="../vendor/type-rb/official/provenance.json"><code>vendor/type-rb/official</code></a> retains the
+reference's complete <code>internal/official/packages</code> tree, the URL, JSON, JSONC and time
+standard-library source wrappers and license unchanged.
+The provenance record identifies the repository, exact commit, source paths,
+byte lengths and SHA-256 hashes. A generated TypeRB catalog embeds these exact
+sources and canonical names, so ordinary compilers load reachable official
+modules through the same declaration graph without a repository or reference
+checkout at runtime. The complete portable HTTP, URL, Web value and portable
+middleware sources have ordinary import coverage. URL component encoding/decoding and ordered query operations
+use a Native-owned TypeRB adapter with the pinned nominal types and errors.
+JSON values and JSONC parsing use a Native-owned TypeRB adapter. Typed JSON
+providers cover finite records, nullable values, containers, raw enums, newtypes
+and the six portable time value types. Generic and recursive record schemas
+remain incomplete or retain the pinned explicit rejection.
+Web Request/Response values, middleware composition, CORS and secure headers use
+the unchanged package bodies. Their internal
+<code>Runtime.fail&lt;T&gt;</code> service is bound by loader ownership to a verified MIR
+signature and the checked REPL evaluator. Authored source names and import paths
+cannot grant internal access. Loader-owned providers specialize <code>Context#params&lt;T&gt;</code>
+and <code>Request#query&lt;T&gt;</code> for admitted record schemas through ordinary checked TypeRB
+bodies. Scalar values, string-backed enums, nullable fields and query Arrays
+(at most one non-nullable Array field) preserve the pinned errors and field identities. Integer-backed enums and
+multiple non-nullable Array fields await the cross-mode decision in
+<a href="https://github.com/type-rb/type-rb-native/issues/1175">#1175</a>. Time-valued parameters
+and <code>Context#bind&lt;T&gt;</code> compose these providers with typed JSON body binding.
+Context state, routes and networking remain incomplete. Packages requiring other unimplemented platform or semantic
+providers fail explicitly. The shared ordinary-language registry records the delivered subsets and remaining
+import and codec gaps.</p>
+<p>The complete pinned time wrappers retain Date, TimeOfDay, DateTime, Instant,
+Duration and TimeZone declaration identities. Calendar arithmetic, ISO-shaped
+parsing, formatting, TZif decoding and local/UTC conversion are ordinary TypeRB.
+Two independently verified host adapters transfer wall-clock seconds/nanoseconds
+and bounded zone-file bytes; their <a href="/docs/native-targets/#time-services">system dependencies</a>
+remain explicit. JSON and Web codecs use the same value constructors and typed
+parsers. Reference range and execution-mode inconsistencies remain tracked in
+<a href="https://github.com/type-rb/type-rb-native/issues/1187">#1187</a> and
+<a href="https://github.com/type-rb/type-rb-native/issues/1188">#1188</a>. Codec import-name
+restrictions remain under <a href="https://github.com/type-rb/type-rb-native/issues/1189">#1189</a>;
+retaining those gaps does not establish full time-service parity.</p>
+<p>After changing the reference pin, synchronize from a Git checkout containing
+that exact commit:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/official-sources.py</span><span style="color:#79C0FF"> --reference-checkout</span><span style="color:#A5D6FF"> /path/to/type-rb</span><span style="color:#79C0FF"> --write</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/official-sources.py</span><span style="color:#79C0FF"> --reference-checkout</span><span style="color:#A5D6FF"> /path/to/type-rb</span><span style="color:#79C0FF"> --check</span></span>
+<span class="line"></span></code></pre>
+<p>The tool also regenerates <code>compiler/src/project/official_catalog.trb</code>. Never
+edit embedded source strings separately from the pinned bundle. Internal
+imports remain inaccessible to authored code; an authored path spelling does
+not confer compiler-owned source identity.</p>
+<p>The tool reads pinned Git objects instead of working files or the checkout's
+current HEAD. It requires no network or reference executable. PR quick and Main
+validation compare the complete file inventory and bytes, including provenance,
+with the pinned reference. Modified, missing, additional or symlinked bundle
+files and altered catalogs fail validation even if the local hashes were
+updated to match a change.
+Keep this comparison in the reference-update procedure; never edit vendored
+sources as a separate fork.</p>
+<h2 id="current-declaration-import-mapping">Current declaration-import mapping</h2>
+<p>The self-hosted frontend preserves canonical declaration identity for its
+implemented declaration families:</p>
+<table>
+<thead>
+<tr>
+<th>TypeRB behavior</th>
+<th>Current Native behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Named import</td>
+<td>Selects an exact supported record, class, interface, enum, function, alias, module or constant declaration</td>
+</tr>
+<tr>
+<td>Named <code>as</code> alias</td>
+<td>Changes only the local binding; canonical declaration identity remains exact</td>
+</tr>
+<tr>
+<td>Bare project import</td>
+<td>Selects one matching supported record, class, interface, enum, generic nominal, alias, module or constant root</td>
+</tr>
+<tr>
+<td>Bare <code>as</code> alias</td>
+<td>Selects the same unique declaration first, then changes its local binding</td>
+</tr>
+<tr>
+<td>Root key</td>
+<td>Removes ASCII <code>_</code> from the logical final path segment and folds ASCII case; declaration names fold ASCII case without removing <code>_</code></td>
+</tr>
+<tr>
+<td>Directory entry</td>
+<td>A resolved <code>name/index</code> module uses <code>name</code> as its logical root segment; <code>name</code> and <code>name/index</code> can resolve to that same module</td>
+</tr>
+<tr>
+<td>Direct/index conflict</td>
+<td>Rejects a resolved graph containing both <code>name</code> and <code>name/index</code>; there is no precedence between two loaded module identities</td>
+</tr>
+<tr>
+<td>Duplicate identity</td>
+<td>Rejects importing the same declaration identity again, including through a different alias or equivalent index path</td>
+</tr>
+<tr>
+<td>Binding and usage</td>
+<td>Rejects duplicate local bindings, local-declaration collisions, missing exports, and unused aliases under their local names</td>
+</tr>
+</tbody>
+</table>
+<p>Bare imports do not create lowercase namespaces and never import every export.
+A top-level function remains available through an exact named import but cannot
+become a bare root. Zero matches, multiple matching declaration roots, and a
+function-only match produce deterministic diagnostics.</p>
+<p>Nested and reopened modules, owned declarations, runtime constants, generic
+nominals and transparent aliases retain lexical identity. Classes, interfaces,
+newtypes, general package activation and project-aware formatter rewrites remain
+coverage work. Selected compiler-owned standard packages have explicit mappings;
+unsupported imports do not fall back to a namespace or loaded-identity precedence
+model. Repository-owned TypeRB source is still formatted and checked by the
+pinned reference compiler.</p>
+<h2 id="source-pins-and-bootstrap-seeds">Source pins and bootstrap seeds</h2>
+<p>The quick PR job validates reference checkout configuration before downloading
+or building the reference compiler. <code>tools/compatibility_manifest.py</code> inventories
+every reference checkout in the maintained workflows, their post-checkout identity
+checks, and the Linux amd64 controller pin. Missing, added, or changed consumers require
+an explicit validator update. Mutation tests exercise each checkout separately.
+The later executable version check remains required before matrix fan-out.</p>
+<p>Snapshot validation, PR validation, worker memory, formal runtime/build benchmarks, and
+the Linux amd64 workflow follow <code>TYPE_RB_REVISION</code>. Daily and weekly workflows
+derive it from the checked-out file before their reference checkout.
+Retired experiments keep their historical pins in the
+<a href="/docs/retired-experiment-tools/">retired workflows</a>.</p>
+<p>This is a strict check of the maintained block-mapping and shell spellings,
+not a general YAML or shell interpreter. Post-checkout Git identity and the
+reference executable version are still checked when the workflows run.</p>
+<p>The reference pin and a Native bootstrap seed answer different questions:</p>
+<ul>
+<li><code>TYPE_RB_REVISION</code> selects the exact syntax, semantics, formatter, and
+differential oracle used for current development.</li>
+<li>A Native seed is an executable predecessor used to compile the current
+TypeRB-authored compiler. Its source-era metadata records provenance; it does
+not constrain the source revision that a later compatible compiler may
+accept.</li>
+<li>The immutable
+<a href="https://github.com/type-rb/type-rb-native/releases/tag/bootstrap-seed-2026-08-30"><code>bootstrap-seed-2026-08-30</code></a>
+remains unchanged. When its embedded runtime or link policy predates current
+source, compatibility uses separately identified setup-only Native
+transitions before proving exact current B2/B3/B4 fixed points. The
+transitions remain Go-free and outside candidate timing and size claims;
+they do not replace or relabel the seed.</li>
+</ul>
+<p>A later seed is warranted only by a concrete distribution need demonstrated by
+the compatibility chain. The existing attested seed reaches the exact
+<code>0.4.4-dev</code> fixed point on both targets through two setup-only transitions.
+That confirms bootstrap feasibility without making the older embedded runtime
+free: a future seed containing the current runtime can remove both transitions.
+Revision alignment alone does not warrant replacing or relabelling the seed.
+The Linux amd64 target demonstrates the complementary case: it is recovered
+from the immutable seed release's target-neutral root QBE, not from an amd64
+seed executable. Its exact current chain and workflow are therefore recorded
+as target-chain evidence in compatibility schema version 2, while the
+immutable seed manifest remains unchanged. See the
+<a href="https://github.com/type-rb/type-rb/blob/main/results/2026-08-31-gate6n-linux-amd64/README.md">Historical Linux amd64 result</a> and
+<a href="https://github.com/type-rb/type-rb-native/blob/7726ff18e9230cd149e9f0c317577f6429f907fc/docs/decisions/0026-recovered-target-chain-evidence.md">Decision 0026</a>.
+Native SemVer is independently defined. TypeRB compatibility ranges, stable
+installation and release-support policies remain implementation work toward the
+<a href="/docs/mir-consolidation/">production-use goal</a>. The current schema can express only
+this exact verified TypeRB revision; broader claims require evidence and an
+explicit schema/policy update.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/type-rb-compatibility.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

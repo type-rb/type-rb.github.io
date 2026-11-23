@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Native application time services — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/native-time-services/">
+		<title>Native application time services — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="native-application-time-services">Native application time services</h1>
+<p>Native implements the existing <code>trb/std/time</code> API using checked TypeRB calendar,
+TZif and POSIX-footer code. The host supplies clock values, the <code>TZ</code> and
+<code>ZONEINFO</code> environment inputs, and file byte ranges. It does not select time
+zones or decode ZIP/TZif data. No new public API or timezone library is added.</p>
+<h2 id="local-time-and-named-zones">Local time and named zones</h2>
+<p><code>TimeZone.get(&quot;Local&quot;)</code> uses the local zone. Compiled programs retain the first
+use of local zone data for the process; replacing the source file does not
+change an already initialized local zone. A fresh process starts independently.
+The retained REPL keeps that module state within the evaluation session.
+Explicit REPL reset/replay behavior is outside these retained-session checks
+and remains part of the separate replay qualification (#1127).</p>
+<ul>
+<li>With <code>TZ</code> absent, Native reads <code>/etc/localtime</code>.</li>
+<li>An empty <code>TZ</code>, <code>UTC</code>, or <code>:UTC</code> selects UTC.</li>
+<li>A zone name such as <code>Asia/Tokyo</code>, optionally prefixed by <code>:</code>, selects system
+zone data. An absolute path, also optionally prefixed by <code>:</code>, reads a TZif file.</li>
+<li>If local-zone configuration cannot be loaded, the reference fallback is UTC.</li>
+</ul>
+<p>For other named locations, Native reads <code>ZONEINFO</code> once, at the first named
+lookup. A nonempty value identifies either a directory or an uncompressed ZIP
+archive. That source precedes the system locations <code>/usr/share/zoneinfo</code>,
+<code>/usr/share/lib/zoneinfo</code>, <code>/usr/lib/locale/TZ</code>, and <code>/etc/zoneinfo</code>.
+Missing entries fall through. Malformed configured TZif data also falls through,
+following the pinned reference; configured read and ZIP errors take precedence
+only when no system source succeeds. Unknown locations remain typed errors.</p>
+<p>ZIP lookup reads the central directory and selected stored member without
+extracting files or decompressing data. It checks names and byte extents before
+indexing. A compressed matching entry is rejected; its method is not silently
+accepted. Ordinary TZif files use the reference's 10 MiB read ceiling. Selected
+ZIP ranges are checked against the file's size, so unrelated archive members
+need not be loaded. TZif v1, v2 and v3 are supported; v4 is also rejected by the
+selected reference.</p>
+<h2 id="ownership-and-verification">Ownership and verification</h2>
+<p>Only loader-owned declarations with complete checked signatures can acquire the
+host adapters. MIR independently verifies parameter types, mutable output arrays,
+result types and conservative call effects. Authored function names cannot
+select an intrinsic. Output arrays remain rooted while strings are allocated;
+file paths are checked for NUL, files close on success and failure, and failed
+reads never publish partially initialized values.</p>
+<p><code>tools/native-time-services.json</code> freezes the initial twenty M3a scenario groups:
+eight existing Bytes/JSON/calendar/clock cases and twelve environment groups
+with twenty-two variants. Expectations were captured from the pinned reference
+before implementation; they are not generated from Native results.</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/native-time-service-test.py</span><span style="color:#79C0FF"> --native</span><span style="color:#A5D6FF"> bin/trbn</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --reference</span><span style="color:#A5D6FF"> /path/to/pinned/trb</span><span style="color:#79C0FF"> --report</span><span style="color:#A5D6FF"> /tmp/time-services.json</span><span style="color:#79C0FF"> --gc-stress</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/native-time-host-test.py</span><span style="color:#79C0FF"> --qbe</span><span style="color:#A5D6FF"> bin/qbe</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --receipt</span><span style="color:#A5D6FF"> /tmp/time-host.json</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/native-time-test.py</span><span style="color:#A5D6FF"> bin/trbn</span><span style="color:#79C0FF"> --reference</span><span style="color:#A5D6FF"> /path/to/pinned/trb</span></span>
+<span class="line"></span></code></pre>
+<p>The service harness also accepts either compiler separately. A Native-only
+<code>local-unset</code> observation records an independent OS-localtime comparison, not a
+same-host reference replay. Configured cases use deterministic synthetic data.
+Every run retains check/build and ordinary/REPL outcomes, including failures;
+<code>complete</code> becomes true only after all selected groups pass. The mechanical
+adapter test executes the actual emitted QBE against libc, including binary
+bytes, exact ranges, absent/empty environment values, error statuses, clock ABI,
+root-frame balance and descriptor cleanup under a low descriptor limit.
+The service GC mode additionally collects at actual owned host allocations and
+ordinary managed allocations, checking unchanged values, cached roots and full
+reclamation at process shutdown.</p>
+<h2 id="remaining-qualification">Remaining qualification</h2>
+<p>Passing this initial slice does not establish complete time or v0.5 parity.
+Native currently relies on available system/configured data; the reference's
+embedded timezone database is not yet a Native distribution artifact. Record
+OS tzdata and configured sources when qualifying an application image. Embedded
+data distribution remains part of dependency-artifact qualification.
+Monotonic/scheduling services and the separate constructor/parser decisions
+remain explicit work under the owning initiatives. The four-host mechanical
+ABI checks do not establish four-host ordinary compiler or release readiness.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-time-services.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

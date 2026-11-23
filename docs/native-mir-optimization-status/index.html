@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Native MIR ownership status — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/native-mir-optimization-status/">
+		<title>Native MIR ownership status — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="native-mir-ownership-status">Native MIR ownership status</h1>
+<p>The active <a href="/docs/mir-consolidation/">consolidation milestone</a> prioritizes complete
+verified MIR ownership, removal of the ordinary direct path and cohesive source
+organization. Correctness and reproducibility remain required. Detailed
+performance qualification follows the architecture milestone; daily and weekly
+measurements provide intermediate feedback.</p>
+<h2 id="implemented-ownership">Implemented ownership</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Current boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Typed scalar values</td>
+<td>Integer, Boolean and Float literals, unary/binary operations and numeric conversion have explicit operands, result types, origins and failure edges. Verified numeric plans select bounded operation/call expansion from CFG/SSA facts; straight-line leaves retain verified Integer range guards.</td>
+</tr>
+<tr>
+<td>Scalar control</td>
+<td>Mutable scalar locals and parameters, nested <code>if</code>/<code>elsif</code>/<code>else</code>, <code>while</code>, <code>break</code>/<code>next</code>, early returns and continuing joins publish typed blocks and live-value arguments. Loop transfers carry only the enclosing environment; branch/body locals remain lexical. QBE consumes admitted bodies without rereading their source.</td>
+</tr>
+<tr>
+<td>Short-circuit expressions</td>
+<td>Scalar <code>&amp;&amp;</code> and `</td>
+</tr>
+<tr>
+<td>Calls and declarations</td>
+<td>Declaration identities, parameter types/mutability and return types are captured before body checking. Ordinary calls with supported scalar and managed arguments/results, including nominal records and Hash/Range carriers, retain explicit arguments. Module-local direct-call summaries propagate local effects over reverse call edges to a fixed point, including recursion. Calls proved to contain only reads, scalar work and control flow need no GC safe point, and stable Array loop proofs can cross them. The standard <code>Math.sqrt</code> adapter is pure. Allocating, mutating, I/O, indirect and unknown calls retain conservative effects throughout their callers. The verifier independently rebuilds summaries from current bodies without trusting stored call effects.</td>
+</tr>
+<tr>
+<td>Function values and lexical capture</td>
+<td>Authored <code>fn</code> bodies, supported named function values, structural callback signatures, selected captured environments and indirect calls use verified MIR. Module-owned singleton code identities propagate through SSA block arguments and ordinary direct-call parameters, including forwarding cycles. The verifier independently rebuilds call plans before the backend can invoke the ordinary body with the unchanged captured environment. Mixed identities and unsupported producers remain indirect; allocation, effects and roots are unchanged. Mutable captures share cells; the REPL retains checked code, environments and nominal type identities across submissions.</td>
+</tr>
+<tr>
+<td>Namespaces and constants</td>
+<td>Source-owned lexical declarations resolve before lowering. Exact global types, initializer functions, order, guarded reads and persistent managed roots live in MIR; the adapter consumes the verified catalog. Nullable global facts retain declaration identity across lexical scopes. See <a href="https://github.com/type-rb/type-rb/blob/main/docs/decisions/0067-namespaces-and-constant-mir.md">decision 0067</a>.</td>
+</tr>
+<tr>
+<td>Managed Strings and roots</td>
+<td>String literals, concatenation, equality, size, indexing, Integer/String/Float conversions and String/Boolean output use typed operations. Integer output explicitly converts first. Managed parameters, rebinding, returns and control joins use the same value/block path. MIR derives live-before roots at allocating operations and ordinary calls; verification recomputes the complete plan.</td>
+</tr>
+<tr>
+<td>Literal String splits</td>
+<td>Verified per-function literal identities propagate through SSA block arguments, including seeded loops. Bounded constant splitting retains the canonical allocating operation and fresh mutable Array; only immutable fragment bytes are shared. Dynamic, conflicting, empty-delimiter and over-budget cases keep the runtime path.</td>
+</tr>
+<tr>
+<td>Dynamic String splitting</td>
+<td>The runtime reuses fragment byte lengths as point counts when the source header proves every decoding unit has width one, including malformed bytes. Other sources use bounded decoding. The full-result path can derive the larger fragment’s point count when there is exactly one ASCII delimiter. If MIR proves that a fresh Array is observed only through its size and constant nonnegative reads, the runtime copies just the inclusive range between the smallest and largest index read. It still scans all fields and preserves the full Array length, bounds checks and ownership of visible strings.</td>
+</tr>
+<tr>
+<td>String concatenation chains</td>
+<td>Same-block, single-use concatenations separated only by literal materialization have verified ordered fragment and intermediate-elision plans. Root liveness retains every original fragment through the final allocation. The adapter copies each byte once without changing observable String values or crossing calls, allocation, mutation, I/O, failure or CFG edges.</td>
+</tr>
+<tr>
+<td>Managed Arrays</td>
+<td>Supported scalar and managed element Arrays, including nominal records and their nesting, retain semantic element identity. Literals, live size, checked indexing, assignment, compound assignment and push use typed operations with allocation/mutation/failure effects. Admitted parameters, returns, rebinding and loop/branch values share managed liveness. Assignment captures its checked logical position before RHS evaluation, then reloads storage for the final store. A verified within-block plan reuses that position for the same Array until an effect can change collection state.</td>
+</tr>
+<tr>
+<td>Single-use String Array joins</td>
+<td>Independently verified same-block plans elide a bounded intermediate container, preserve canonical operations and directly root its String fragments. The adapter reuses one prologue pointer table and the shared byte-joining runtime. Unsupported uses and effects retain ordinary materialization.</td>
+</tr>
+<tr>
+<td>Nominal records</td>
+<td>Declaration identity, authored names/origins and ordered field types live in MIR. Construction consumes an ordered operand span with allocating/failing effects; projections verify nominal owner and result type. Recursive records through containers retain their shells and field references. GC descriptors consume this verified table.</td>
+</tr>
+<tr>
+<td>Numeric Array induction</td>
+<td>Selected zero-based traversal and Integer/Float reductions retain verified induction, address and accumulator relationships. The adapter consumes the established plan.</td>
+</tr>
+<tr>
+<td>Array effects and headers</td>
+<td>CFG dominance, induction identities and conservative operation effects select stable headers. The retired token regions and direct-adapter header caches are removed; checks remain unless the typed plan proves them redundant. Checked accesses use one comparison for the common nonnegative index, normalize negative indexes against the current length, and take a terminal failure path on invalid indexes.</td>
+</tr>
+<tr>
+<td>Hash</td>
+<td>Typed operations cover construction, lookup, update, deletion, copies and collection projections, including empty-Hash inference and managed carriers. Source-bound plans remain for checking and the REPL; QBE consumes only value/block MIR.</td>
+</tr>
+<tr>
+<td>Range and iteration</td>
+<td>Construction, captured bounds/receiver, live Array length, lexical transfers and Array/Range carriers use the general value/block route. Source-bound shapes are shared by checking and the REPL.</td>
+</tr>
+<tr>
+<td>Assignment and Boolean operations</td>
+<td>Typed operations own captured assignment targets, evaluation order and binary/logical result semantics. The retained <code>checked_operator_plans</code> projection serves the REPL, not QBE.</td>
+</tr>
+</tbody>
+</table>
+<p>Function adapter kinds distinguish scalar leaves and general scalar/managed
+control; independent verifier fixtures retain their separate model kind. The
+ordinary checker requires a MIR body for every accepted function. Verification checks their operation and shape
+contracts as well as table bounds, value definitions, types, argument availability,
+control targets, declaration/call/return types, conservative call effects and source origins. Block arguments are parallel assignments;
+QBE adaptation captures edge values before overwriting destinations. Instruction
+results retain stable MIR operand names even when block storage is reordered.</p>
+<p><code>compiler/src/mir/analysis/flow.trb</code> derives reachability, reverse postorder, immediate dominators and
+value definition sites and function-local value/type and block indexes after structural/identity validation.
+Its predecessor and incoming-argument indexes retain both arms when a branch
+targets the same block. Array-loop alias propagation and natural-loop traversal
+reuse these derived edges instead of rescanning every block for every parameter.
+The verifier rebuilds this information from current MIR; it is not a persistent
+cache or an input optimization fact. Type indexes are rebuilt from current rows,
+so later raw-MIR edits cannot reuse stale types. Function parameters
+are available everywhere; reachable blocks may use dominating definitions, while
+unreachable blocks may only use function parameters and their own earlier
+values. Same-block instruction uses must follow their definitions. Compact IDs use bounded arrays; sparse or malformed identities use Hash fallbacks.
+Block/edge arrays avoid a quadratic dominance matrix. Instruction failure edges must end in
+empty traps; they cannot carry a value into an ordinary continuation. This is
+verifier analysis, not caller-supplied optimization metadata.</p>
+<p>Independent verifier tests reject malformed values, effects, roots, control
+edges and source-dependent plans. Differential fixtures exercise ordinary
+execution and error behavior across generations. Erased frontend state,
+reordered MIR storage and forced collection check that verified MIR retains the
+required semantics and managed lifetimes. These controls establish correctness,
+not a performance improvement.</p>
+<h2 id="responsibility-boundaries">Responsibility boundaries</h2>
+<ul>
+<li><code>compiler/src/mir/model/module.trb</code>: typed module, function, block, instruction and value records, with
+shared scalar encodings and identity/range queries, plus portable declarations
+and conservative call records.</li>
+<li><code>compiler/src/mir/analysis/ranges.trb</code>, <code>compiler/src/mir/analysis/numeric.trb</code>, <code>compiler/src/mir/analysis/flow.trb</code>, <code>compiler/src/mir/passes/optimize.trb</code>: portable numeric proofs, expansion selection, CFG/dominance
+and rewrites. <code>compiler/src/mir/verify/module.trb</code> checks structure/edges; <code>compiler/src/mir/verify/instructions.trb</code>
+checks typed instruction contracts.</li>
+<li>Constant Integer remainders retain their literal divisor, exact reciprocal and shift
+in the verified numeric selection. Existing expansion budgets select positive
+non-power divisors below <code>2^32</code>; QBE consumes those facts with an unsigned
+numerator guard. Numerators below twice the divisor use quotient-zero/one
+paths; other nonnegative 31-bit numerators use an exact wide product and shift
+without correction. Remaining numerators keep signed remainder. Zero, negative, dynamic,
+oversized and power-of-two divisors retain the ordinary selection. Verification
+rederives the complete selection rather than trusting stored reciprocal facts.</li>
+<li><code>compiler/src/frontend/checking/body/values.trb</code>, <code>compiler/src/mir/build/blocks.trb</code>, <code>compiler/src/mir/build/functions.trb</code>, <code>compiler/src/mir/build/control.trb</code>:
+checked value projection, block construction and function publication.</li>
+<li><code>compiler/src/mir/analysis/identities.trb</code>: fresh sparse function/value identities and definition counts, avoiding whole-module pairwise comparisons.</li>
+<li><code>compiler/src/mir/model/types.trb</code>: canonical composite type identities and shared managed/element
+classification, with unique container identities and predeclared nominal shells for recursive record fields.</li>
+<li><code>compiler/src/mir/lowering/arrays.trb</code>: typed Array construction, selection, load/store and push
+contracts; no backend address is retained across a right-hand side.</li>
+<li><code>compiler/src/mir/analysis/loop_calls.trb</code>: independently verified lazy scalar
+call reuse within a natural loop. Every argument keeps the same SSA identity
+on all backedges; the whole loop and direct callee must exclude allocation,
+mutation, I/O and unknown effects. Cache initialization belongs to the single
+external preheader. The first call stays at its original position, preserving
+skipped paths, zero-trip behavior and failure order. Managed return values and
+indirect or external calls remain excluded. The cache stores only a successful
+Integer, Boolean or Float result and is reset on loop reentry.</li>
+<li><code>compiler/src/mir/analysis/array_loops.trb</code>: verified natural-loop plans, composed
+from separate header, bounds, append and value analyses. Stable storage alone
+permits header reuse; it does not prove an index safe. A dominating successful
+length comparison can establish bounds for another Array. Its true edge must
+be exclusive, and the bound and owner must remain unchanged on all backedges.
+Checked endpoint arithmetic also supports reflected indexes.</li>
+<li><code>compiler/src/mir/passes/array_loop_versions.trb</code>: bounded fast/fallback loop
+duplication with explicit length and, where useful, storage-identity guards.
+The original checked path handles short or aliased Arrays. Cloned values,
+calls, origins and edge arguments remain canonical MIR. Expansion is limited
+per function and disabled for large modules to bound compiler cost.</li>
+<li><code>compiler/src/mir/analysis/array_values.trb</code>: primitive load reuse and store
+forwarding within one block. SSA identity alone never proves disjoint storage;
+intervening writes need an independently verified identity guard. Normalized
+assignment indexes retain the original length-stability proof.</li>
+<li><code>compiler/src/mir/analysis/array_promotions.trb</code>: lazy primitive-element
+promotion across a two-block loop with an exclusive exit. A moving index starts
+at checked <code>i + 1</code> and cannot alias the unchanged nonnegative index <code>i</code>;
+foreign owners require disjointness guards. The region excludes observers,
+allocation, resize and possible failures. Values load only after first body
+entry and flush before exit work, preserving zero iterations and Float order.</li>
+<li><code>compiler/src/mir/analysis/array_peeling.trb</code>: a small reflected-index loop may
+duplicate its first checked header/body visit. The verified schedule retains
+every condition and failure edge; the QBE adapter only routes labels and
+ordinary parallel edge copies. The original canonical instructions remain
+available to independently reconstruct bounds, numeric and value plans.</li>
+<li><code>compiler/src/mir/lowering/records.trb</code>, <code>compiler/src/backend/qbe/emit/records.trb</code>: nominal construction/projection contracts and their ABI adaptation. Readonly field bindings remain distinct from SSA IDs and mutable projected values.</li>
+<li><code>compiler/src/backend/qbe/emit/arrays.trb</code>: ABI adaptation of verified Array operations.</li>
+<li><code>compiler/src/mir/lowering/calls.trb</code>: declaration capture, checked calls and their verification.</li>
+<li><code>compiler/src/mir/analysis/call_effects.trb</code>: ephemeral direct-call graph and monotone effect summaries, rebuilt independently for verification. Each function is scanned once and each summary increases at most twice.</li>
+<li><code>compiler/src/mir/analysis/string_splits.trb</code>: bounded String literal-flow and split plans, independently rederived before static fragment adaptation.</li>
+<li><code>compiler/src/mir/analysis/split_fields.trb</code> follows Array aliases and rejects field selection when a dynamic read, write, escape or ambiguous merge can expose another element.</li>
+<li><code>compiler/src/mir/analysis/array_joins.trb</code>: fresh single-use join fragments and
+adjacent size consumers can avoid intermediate Arrays or Strings. Literal
+separator boundaries must prove that UTF-8 code-point counts compose;
+otherwise the ordinary runtime path checks the joined bytes. Observable
+intermediate values, managed roots and evaluation order remain unchanged.</li>
+<li><code>compiler/src/mir/lowering/strings.trb</code>: String, conversion and output construction/contracts.</li>
+<li><code>compiler/src/mir/analysis/literal_data.trb</code>: portable bytes and code-point counts
+for ordinary String literals and String singletons, indexed by MIR payload.
+Input MIR cannot supply these plans; the optimized verifier independently
+reconstructs and compares them after instruction verification. Non-String pool
+entries retain no materialized String data. Static packing/compression consumes
+the verified facts; remaining declaration metadata uses the same portable
+constructor. Reference-host byte limitations retain the existing emit-phase
+diagnostic. Runtime declaration identity follows the bound portable-data
+constructor to its byte accessor, leaving sibling declarations ordinary. This
+ownership change does not claim runtime acceleration.</li>
+<li><code>compiler/src/mir/analysis/string_concats.trb</code>: function-local operand occurrence
+counts include call/constructor/capture arguments, mutation operands and both
+CFG edges and returns. Exact single-use concat results may join a same-block
+chain only across literal instructions. Derived plans retain ordered original
+fragments and elided intermediate indexes; input MIR cannot supply them, and
+optimized verification re-derives them from current instructions before roots
+or adaptation. Original SSA, type and origin records remain intact. The
+runtime handles empty fragments and UTF-8 sequences spanning joins without
+mutating an observable String. Three-fragment chains pass arguments directly to a static constructor
+whose emitter is shared with binary concatenation. Longer chains use a
+function-entry fragment table sized to the largest verified chain and reused
+across loop iterations; recursive calls own separate frames. The optional runtime helper is emitted only when required.
+This ownership does not establish a measured
+performance qualification.</li>
+<li><code>compiler/src/mir/analysis/roots.trb</code>: operation effects, backward managed-value liveness and exact
+safe-point root plans. Block parameters transfer only demanded values. Instruction
+uses and definitions are summarized once per block; a bounded predecessor worklist solves live-in sets
+before the exact safe-point walk. These summaries are rebuilt from verified MIR
+and are never input optimization facts.
+Verified String chains use their original fragments at the surviving safe
+point and omit the elided intermediate safe points.</li>
+<li><code>compiler/src/backend/qbe/emit/strings.trb</code>, <code>compiler/src/backend/qbe/emit/roots.trb</code>: runtime adaptation of those operations and
+publication of the verified root lists. The adapter reuses unchanged leading
+slots within one MIR block and resets the exact root count at every safe point;
+it does not perform a separate backend lifetime analysis.</li>
+<li><code>compiler/src/mir/build/logical.trb</code>: conditional RHS and expression-result join construction.</li>
+<li><code>compiler/src/frontend/checking/body/types.trb</code>: assignability, operator result types and diagnostics.</li>
+<li><code>compiler/src/frontend/resolution/argument_binding.trb</code>: shared required positional/named slots and record labels; authored evaluation precedes operand reordering.</li>
+<li><code>frontend/checking/body/expressions.trb</code> and its call, collection, member,
+statement, control and iteration owners: mutually recursive source checking
+that invokes the shared MIR construction owners.</li>
+<li><code>compiler/src/backend/qbe/context.trb</code>, <code>compiler/src/backend/qbe/emit/functions.trb</code>, <code>compiler/src/backend/qbe/emit/numeric.trb</code>, <code>compiler/src/backend/qbe/emit/constants.trb</code>:
+target operands/labels, function ABI and MIR-selected root-frame prologues,
+selected numeric spelling and static data. No lexical local/header/root analysis.</li>
+<li><code>compiler/src/backend/qbe/emit/mir.trb</code>, <code>compiler/src/backend/qbe/emit/control.trb</code>: existing optimized MIR, explicit calls and scalar-block
+adaptation, sharing one scalar operation adapter.</li>
+</ul>
+<p>The <a href="/docs/architecture/">architecture map</a> records the complete ordinary closure.
+Recovery uses an exact module/import inventory and the same source bodies; no
+extracted implementation is copied or kept behind an old-name wrapper.</p>
+<h2 id="nominal-record-validation">Nominal record validation</h2>
+<p><code>compiler/src/mir/lowering/records_test.trb</code> rejects forged nominal identities, field owners/types and
+origins, wrong constructor arguments and missing initializer roots. Same-shaped
+records remain distinct. Grouping must retain readonly field bindings while
+projected mutable Array values remain usable. The <code>managed-record-mir</code> fixture
+covers recursive and cyclic record Arrays, ordered initializer calls, Float
+conversion, branches, retained aliases and allocation pressure. Its test erases
+admitted source bodies and the old checked field metadata, requires identical
+QBE, reorders blocks, then runs with collection before allocating operations.</p>
+<p>Constructors evaluate authored fields once in source order, store their operands
+by declaration slot and publish a
+fully initialized object from explicit MIR operands. Managed initializers remain
+live across later initializers and the allocation itself; no partially initialized
+record escapes the operation. The backend's function-local operand types and the
+verifier's Hash index avoid repeating whole-module type searches as admission
+grows. These are derived lookup structures, not unverified optimization facts.</p>
+<h2 id="sole-mir-emission-and-numeric-selection">Sole MIR emission and numeric selection</h2>
+<p>The checker rejects an accepted function without a MIR body. QBE uses the verified
+signature for parameter/result ABI and the MIR root plan for frame capacity.
+The direct expression/body emitter, token Array regions and assignment-effect
+analyses, backend numeric budgets, lexical local slots, header caches and textual
+root-publication filtering are removed. <code>compiler/src/backend/qbe/emit/functions.trb</code> owns function emission;
+<code>compiler/src/compiler.trb</code> retains orchestration and declaration-bound runtime hooks. Output
+storage grows with emitted lines instead of imposing a source-token size guess.</p>
+<p><code>compiler/src/mir/analysis/numeric.trb</code> derives natural-loop membership through dominance and selects
+expansion in function/block identity order. Modules with at most 32 bodies have
+64 loop operations, six outside operations and two leaf-call expansions; modules
+with at most 96 bodies have 32 loop and three outside operations. Larger modules
+use shared numeric helpers. This retains a bounded policy while removing the
+old backend's lexical-loop and deferred-function budget state. Every ordinary
+function definition is emitted; call expansion no longer decides definition
+omission implicitly. A future use-graph pass can select dead bodies explicitly.</p>
+<p>Small-operand facts mean Integer values in <code>[0, 1024]</code>, not arbitrary nonnegative
+values. This bound permits a checked multiply without overflowing the machine
+intermediate. Selected Integer additions and subtractions emit the portable
+range guard directly with a shared failure block; proven nonnegative additions
+need only the upper check. Other operations retain shared helpers, explicit
+zero checks or guarded fallback.
+Inline leaf copies can use verified caller argument bounds. Their emitted literal
+operands do not silently become new caller proofs. Optimized-module verification
+recomputes the entire plan, including owners, sites, operations and modes, only
+after validating MIR structure, types and operands. Input MIR cannot supply plans.</p>
+<h2 id="remaining-work">Remaining work</h2>
+<p>The ordinary emission route is unified; this does not establish full TypeRB
+language, standard-library or source-backend coverage. Those gaps remain in the
+<a href="/docs/native-language-coverage/">language coverage contract</a> and Capabilities.
+General constant/range propagation, more precise effect classes, broader inlining and
+explicit dead-body elimination still need shared MIR passes. Indirect and opaque calls
+remain conservative allocation/mutation barriers; managed liveness is
+intraprocedural. Root publication rewrites changed slots from the verified
+live-before plan, republishes at block entries, reloads root-buffer addresses
+across calls and preserves the exact count and managed-return ABI.</p>
+<p>The recursive checker and compiler driver still need responsibility-based
+splitting. Preserve source origins, recovery and ordinary fixed points during
+that work. Full milestone acceptance also requires measurement and improvement
+against the fixed Native/Pure Go baselines; structural completion alone does not
+establish runtime, build-time or binary-size parity.</p>
+<h2 id="measurements-and-history">Measurements and history</h2>
+<p>The accepted <a href="https://github.com/type-rb/type-rb-native/blob/04c6ca7263c066fd13e83b3faa09c4e80d707c13/docs/native-numeric-regression-recovery.md">numeric regression recovery</a>
+and <a href="https://github.com/type-rb/type-rb/blob/main/results/2026-09-10-benchmarksgame-runtime-loop-local-headers-linux-arm64/README.md">formal runtime measurements</a>
+retain their exact source identities and observations. They do not qualify later
+MIR migration candidates. No new Pure Go comparison or formal Pages performance
+claim follows from this structural change.</p>
+<p>Earlier extraction narratives, rejected variants and measurement links remain in
+<a href="https://github.com/type-rb/type-rb-native/blob/7726ff18e9230cd149e9f0c317577f6429f907fc/docs/native-mir-optimization-status.md">the immutable prior status</a>.
+Original evidence and the fixed migration/cumulative baselines are unchanged.</p>
+<h2 id="function-values-and-lexical-capture">Function values and lexical capture</h2>
+<p>Structural callback signatures, closure construction and indirect calls share
+verified MIR type, effect and root ownership. Ordinary <code>fn</code> bodies analyze selected
+captures and lower through the same checked body and MIR pipeline as named
+functions. Mutable captures share cells, and unknown calls invalidate their
+nullable proofs. The backend consumes verified capture layouts and exact
+parameter/result types, including Float and Void. The REPL retains checked code,
+environments and originating nominal types across submissions. See
+<a href="https://github.com/type-rb/type-rb/blob/main/docs/decisions/0051-callable-mir-foundation.md">decision 0051</a>.</p>
+<p>Singleton callable plans use a finite worklist over verified value identities,
+block arguments and ordinary direct-call parameters. Closure and object adapter
+entry parameters remain unknown. Container/global/return producers and mixed
+identities retain indirect dispatch. Unseeded graph components cannot establish
+proofs. Plans bind an instruction to a declaration and captured parameter prefix;
+verification reconstructs them from the current module without consulting stored
+plans. QBE loads that existing environment prefix and invokes the ordinary body,
+without cloning bodies, changing allocation or narrowing call effects. Internal
+body storage order and erased frontend catalogs do not determine identity.</p>
+<p>Shared ordinary-file and REPL probes cover higher-order calls, nested closures,
+managed captures and mutable cells. Internal fixtures add source erasure,
+reordered MIR storage, forced collection and malformed type/operand controls.
+Named declarations used as values and the remaining signature/capability
+boundaries stay open in the <a href="https://github.com/type-rb/type-rb/blob/main/docs/native-language-feature-inventory.md">language inventory</a>.
+This does not establish complete function-value coverage or a public callable ABI.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-mir-optimization-status.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

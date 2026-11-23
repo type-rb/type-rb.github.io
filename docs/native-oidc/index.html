@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Native OIDC Bearer authentication — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/native-oidc/">
+		<title>Native OIDC Bearer authentication — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="native-oidc-bearer-authentication">Native OIDC Bearer authentication</h1>
+<p>Compiled applications implement <code>Bearer.verify</code>, <code>Bearer.authenticate</code> and
+<code>Bearer.principal</code> from the pinned <code>trb/web/auth/bearer</code> package. Public records,
+validation order, error kinds and stable messages follow <code>TYPE_RB_REVISION</code>.
+The retained reference REPL has no OIDC adapter; Native preserves its explicit
+diagnostic before validation or network access. It does not invoke a Go process.</p>
+<p>The TypeRB provider owns configuration, header/token parsing, typed JSON
+compatibility, key selection, claims, cache transitions and Web context values.
+Verified MIR selects narrow host adapters for synchronous HTTP retrieval, RS256
+verification, strict UTS46 conversion, URI/IP parsing, environment access and
+clock/integer conversion.
+Authored paths or lookalike declarations cannot authorize those adapters.</p>
+<h2 id="authentication-behavior">Authentication behavior</h2>
+<p>Authorization accepts exactly one Bearer header. Discovery precedes token
+decoding when no explicit JWKS URI is configured. Tokens require RS256 and a key
+identifier. Keys require RSA, at least 2048 modulus bits, and an odd exponent of
+at least three encoded in no more than four bytes. Verification uses SHA-256 and
+PKCS#1 v1.5 through OpenSSL EVP; it does not implement RSA in TypeRB.</p>
+<p>Issuer, audience, expiration, optional not-before, subject and configured roles
+are checked in reference order. Metadata/JWKS typed fields preserve the reference
+JSON field matching and null behavior. Claims retain float64 number semantics
+instead of passing through the public JSON codec's portable Integer conversion.</p>
+<p>Discovery is cached by issuer and keys by JWKS URI for five minutes. An unknown
+key identifier can force a refresh, throttled for thirty seconds; a failed
+refresh retains prior usable keys and the throttle. The single managed mutator
+and synchronous boundary make each cache transition indivisible.</p>
+<p>Successful middleware attaches a typed principal to the context passed to the
+next handler. It leaves the original context unchanged. All authentication
+failures produce the reference JSON 401 response and <code>WWW-Authenticate: Bearer</code>.</p>
+<h2 id="http-and-trust-boundary">HTTP and trust boundary</h2>
+<p>Each retrieval has a five-second total deadline across redirects. Only HTTP and
+HTTPS are accepted; the tenth redirect is rejected. Non-200 responses fail
+without waiting for their body. Successful bodies are bounded to 1 MiB after
+decompression. Only gzip is automatically decoded, including concatenated
+members; other content encodings remain opaque as in the reference transport.</p>
+<p>Proxy selection is TypeRB-owned and captured on first use: uppercase
+<code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code> and <code>NO_PROXY</code> take precedence over lowercase forms.
+Loopback bypass, host/domain/port/CIDR matching and the CGI HTTP proxy rejection
+are distinct from libcurl's defaults. <code>ALL_PROXY</code> is outside the reference policy.
+HTTPS proxies use CONNECT while preserving end-server certificate verification.</p>
+<p>TLS uses one static OpenSSL build shared by libcurl, RSA and digest consumers.
+The minimum TLS version is 1.2. Automatic OpenSSL configuration and provider/engine
+loading are disabled; <code>OPENSSL_CONF</code> cannot change this profile.</p>
+<p>On macOS, an unset or empty <code>SSL_CERT_FILE</code> and <code>SSL_CERT_DIR</code> selects OS platform
+trust through Security.framework. A nonempty override selects disk roots. Linux
+probes the Go reference's first readable bundle and certificate directories;
+those variables override the respective lists. Directory entries are ordinary
+PEM files, not OpenSSL hash links. No Mozilla bundle is silently added, and
+OpenSSL's compiled default paths are not used. Comparisons record the Go
+toolchain, generated module version and environment; the current baseline is
+Go 1.27 with its default platform-override behavior.</p>
+<p>HTTPS negotiates HTTP/2 through ALPN with HTTP/1.1 fallback; cleartext stays
+HTTP/1.1. libcurl uses the pinned nghttp2 implementation and threaded DNS resolver.
+This profile does not expose a general HTTP client or server TLS API. Shared
+database TLS and immutable release qualification remain separate work.</p>
+<p>Before URL parsing, TypeRB normalizes endpoint and redirect authorities using
+Unicode 17 non-transitional UTS46, with STD3, bidi, joiner, hyphen and DNS-length
+checks. ICU supplies that conversion through a narrow C ABI; TypeRB retains
+root-dot handling, strict numeric IPv4, IPv6 serialization and URL policy.
+Hostnames used in HTTP authority, CONNECT, SNI and certificate verification agree.
+Unicode NO_PROXY domains undergo the same conversion. Path/query escapes remain
+unchanged; percent-encoded UTF-8 hosts are accepted but encoded ASCII hosts,
+ambiguous numeric hosts and scoped IPv6 addresses are rejected. The configured
+issuer, discovery issuer and JWT issuer still require exact string equality.</p>
+<p>Only ICU common code and the 60,960-byte <code>uts46.nrm</code> data package are linked.
+<code>UDATA_NO_FILES</code> disables data-file lookup, including <code>ICU_DATA</code>; no ICU shared
+library or external data bundle is needed. ICU uses the platform C++ runtime.
+The ordinary compiler, lockfile hashing and non-OIDC applications do not select
+these libraries.</p>
+<h2 id="dependencies-and-installation">Dependencies and installation</h2>
+<table>
+<thead>
+<tr>
+<th>Consumer</th>
+<th>Selected libraries</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Core compiler and lockfile checksum</td>
+<td>No OIDC/crypto libraries</td>
+</tr>
+<tr>
+<td>Full CLI and retained REPL</td>
+<td>Existing static libcrypto; no OIDC client</td>
+</tr>
+<tr>
+<td>Compiled Bearer application</td>
+<td>libcurl, libssl, libcrypto, zlib, nghttp2, ICU common/UTS46 data and platform C++ runtime; existing Web transport dependencies also apply</td>
+</tr>
+<tr>
+<td>Web response compression</td>
+<td>Existing libdeflate, independently of OIDC gzip decoding</td>
+</tr>
+</tbody>
+</table>
+<p><a href="../tools/oidc-dependencies.json">oidc-dependencies.json</a> pins curl, zlib, nghttp2 and ICU by
+release archive SHA-256 and upstream revision. OpenSSL comes from the existing
+<a href="../tools/crypto-dependencies.json">crypto pins</a>, with the same configuration and
+accepted <code>libcrypto.a</code> used by all TLS/crypto consumers. zlib supplies bounded
+streaming decoding; libdeflate remains the separate whole-response gzip encoder.</p>
+<p>The builder isolates ambient header/library search variables and pins both the
+OpenSSL archives and include directory. It preprocesses libcurl's actual TLS
+translation unit with its generated compiler command and rejects any OpenSSL
+header outside the qualified source installation. The receipt records this
+header check as well as the static-link ABI probe.</p>
+<p>Source downloads use at most three attempts at the same pinned URL, retaining
+the 60-second socket timeout and waiting one, then two seconds between attempts.
+Only DNS, timeout, connection failures and HTTP 408/429/500/502/503/504 are
+retryable; each failed attempt is logged. Certificate failures, other HTTP
+errors, and archive size or SHA-256 mismatches fail immediately. A failed or
+partial download never replaces the cache, and an invalid existing cache is
+preserved and rejected. These retries do not change the dependency pins or
+artifact qualification checks.</p>
+<p>Contributor builds require C/C++ toolchains, Perl, make and CMake. ICU build
+tools use additional source components temporarily; the installed application
+archives contain only common code and the selected UTS46 data:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/build-crypto-dependencies.py</span><span style="color:#79C0FF"> --archives</span><span style="color:#A5D6FF"> /path/to/shared-crypto-sources</span><span style="color:#79C0FF"> --output</span><span style="color:#A5D6FF"> bin/crypto</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/build-oidc-dependencies.py</span><span style="color:#79C0FF"> --archives</span><span style="color:#A5D6FF"> /path/to/shared-oidc-sources</span><span style="color:#FF7B72"> \</span></span>
+<span class="line"><span style="color:#79C0FF">  --crypto-archives</span><span style="color:#A5D6FF"> /path/to/shared-crypto-sources</span><span style="color:#79C0FF"> --crypto</span><span style="color:#A5D6FF"> bin/crypto</span><span style="color:#79C0FF"> --output</span><span style="color:#A5D6FF"> bin/oidc</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/oidc_artifact_smoke.py</span><span style="color:#A5D6FF"> bin/oidc</span><span style="color:#79C0FF"> --crypto</span><span style="color:#A5D6FF"> bin/crypto</span><span style="color:#79C0FF"> --receipt</span><span style="color:#A5D6FF"> oidc-link.json</span></span>
+<span class="line"></span></code></pre>
+<p>Build-time lookup uses <code>oidc/</code> beside QBE or <code>TRBN_OIDC_LIB_DIR</code>; crypto uses the
+existing matching crypto directory. Neither location is required at application
+runtime. Applications statically contain both <code>TRBN-OIDC-V1</code> and
+<code>TRBN-CRYPTO-V1</code> inventories. The OIDC receipt records the exact crypto archive
+and configuration against which libssl/libcurl were built. Inspect and package
+them with <code>tools/oidc_artifacts.py</code> and <code>tools/crypto_artifacts.py</code>.</p>
+<p>Each OIDC artifact retains curl, zlib, nghttp2, ICU and OpenSSL notices. The crypto bundle
+also retains its OpenSSL notice. Darwin links Security, CoreFoundation and
+SystemConfiguration frameworks and platform libc++. Linux links platform
+libstdc++ and thread/dynamic-loader support. The artifact
+CI matrix covers Darwin/Linux arm64/amd64; it is separate from ordinary compiler
+host support and does not fill the darwin-amd64 compiler gap. Immutable release
+publication and advisory/update ownership remain in <a href="https://github.com/type-rb/type-rb-native/issues/1257">#1257</a>.</p>
+<h2 id="lifetime-and-validation">Lifetime and validation</h2>
+<p>Foreign callbacks operate on native buffers without invoking managed code.
+Handles, RSA objects, trust-store parsing objects and gzip state are released
+before returning. Managed body/error/redirect values are copied only at owned
+allocation boundaries. Upstream process-global caches retain their documented
+lifetime; they are distinct from per-request resources.</p>
+<p><code>tools/native-oidc-test.py</code> runs the same synthetic issuer/key/token corpus against
+the pinned reference and Native, with local HTTP/HTTPS fixtures. It covers
+middleware context propagation, invalid credentials, discovery/JWKS errors,
+refresh behavior, proxies, redirects, trust overrides and bounded decompression.
+Its <code>--stress</code> mode instruments emitted code with forced GC and foreign allocation
+failures, verifies exact resource release, and uses a blocking configuration FIFO
+to test OpenSSL initialization isolation. These probes are test-only C ABI
+instrumentation, not repository-owned C runtime implementation.</p>
+<p>Declaration/MIR tests reject changed ownership, parameters, mutation, bodies,
+results and effects, including after source erasure. Pinned-header ABI assertions
+cover libcurl/OpenSSL/zlib/nghttp2/ICU constants, native structs and platform interfaces.
+<code>tools/native-oidc-http2-test.py</code> uses an independent local Go HTTP/2 server
+(test-only) to require negotiated HTTP/2, fallback, gzip, redirect, size, stream
+reset and deadline behavior. <code>tools/native-oidc-hostname-test.py</code> verifies actual
+HTTP authorities, redirects, proxy bypass, CONNECT/SNI/certificate checks and
+unchanged issuer identities against the pinned reference. Both offer forced-GC
+ownership probes; Native application compilation blocks Go/reference fallback.</p>
+<p>Artifact smoke tests run all 6,391 fixed official Unicode 17 ToASCII cases,
+verify relocated data/TLS operation, embedded inventories and absence of dynamic
+TLS/ICU dependencies. Local checks, hosted target validation and immutable
+release qualification remain separate evidence.</p>
+<p>The <a href="https://github.com/type-rb/type-rb/blob/main/results/2026-09-07-string-escape-reference-compatibility/oidc-transport/observations/README.md">2026-11-12 transport observation</a>
+records the bounded application/compiler size and build/startup costs, all timing
+samples and the separate local/hosted/release evidence boundaries.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/native-oidc.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="Evidence lifecycle and retention — TypeRB documentation">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="/assets/site.css">
+		<script defer src="/assets/docs.js"></script>
+		
+		<link rel="canonical" href="https://type-rb.github.io/docs/evidence-retention/">
+		<title>Evidence lifecycle and retention — TypeRB</title>
+	</head>
+	<body class="docs-page">
+		<header class="site-header">
+			<a class="site-brand" href="/" aria-label="TypeRB home">
+				<span class="brand-mark" aria-hidden="true">trb</span>
+				<span class="brand-name">TypeRB</span>
+				<span class="alpha-pill">alpha</span>
+			</a>
+			<nav class="site-nav" aria-label="Primary navigation">
+				<a class="active" href="/docs/">Docs</a>
+				<a href="/tour/">Tour (paused)</a>
+				<a href="/play/">Playground (paused)</a>
+				<a href="https://github.com/type-rb/type-rb">GitHub</a>
+			</nav>
+		</header>
+		<div class="docs-layout">
+			<aside class="docs-sidebar">
+				<nav class="docs-navigation" aria-label="Documentation navigation">
+					
+					<section>
+						<h2>Get started</h2>
+						<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+					</section>
+					
+					<section>
+						<h2>Build applications</h2>
+						<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+					</section>
+					
+					<section>
+						<h2>Tooling</h2>
+						<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+					</section>
+					
+					<section>
+						<h2>Reference</h2>
+						<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+					</section>
+					
+				</nav>
+				<details class="docs-menu">
+					<summary>Documentation menu</summary>
+					<nav aria-label="Documentation navigation">
+						
+						<section>
+							<h2>Get started</h2>
+							<a href="/docs/">Documentation</a><a href="/docs/getting-started/">Getting started</a><a href="/docs/learning/">Learning path</a><a href="/docs/language/">Language guide</a>
+						</section>
+						
+						<section>
+							<h2>Build applications</h2>
+							<a href="/docs/tutorials/web-orm-jobs/">Web &#43; ORM &#43; Jobs tutorial</a><a href="/docs/containers/">Containers</a><a href="/docs/guides/packages/">Packages</a><a href="/docs/guides/native-package-adapters/">Native adapters</a><a href="/docs/guides/cli-applications/">CLI applications</a><a href="/docs/guides/web/">Web</a><a href="/docs/guides/http/">HTTP values</a><a href="/docs/guides/authentication/">Authentication</a><a href="/docs/guides/browser-http/">Browser HTTP</a><a href="/docs/guides/database/">Database workflow</a><a href="/docs/guides/orm/">ORM</a><a href="/docs/guides/jobs/">Jobs</a><a href="/docs/guides/react/">React and JSX</a><a href="/docs/guides/testing/">Testing</a>
+						</section>
+						
+						<section>
+							<h2>Tooling</h2>
+							<a href="/docs/native-cli/">Native command line</a><a href="/docs/cli/">Go command line</a><a href="/docs/configuration/">Configuration</a><a href="/docs/editor-support/">Editor support</a><a href="/docs/guides/linting/">Linting</a><a href="/docs/lint-rules/">Lint rules</a><a href="/docs/guides/compiler-tooling/">Compiler tooling</a><a href="/docs/ai-assisted-development/">AI-assisted development</a>
+						</section>
+						
+						<section>
+							<h2>Reference</h2>
+							<a href="/docs/specification/">Language specification</a><a href="/docs/standard-library/">Standard library</a><a href="/docs/capabilities/">1.0 capabilities</a><a href="/docs/status/">Current status</a><a href="/docs/roadmap/">Roadmap</a>
+						</section>
+						
+					</nav>
+				</details>
+			</aside>
+			<main class="docs-main">
+				<article class="markdown-body"><h1 id="evidence-lifecycle-and-retention">Evidence lifecycle and retention</h1>
+<p>Keep a bounded working set with an explicit purpose, not every past experiment.
+Storage cleanup must not change a measurement, hide a failed acceptance decision,
+or move the fixed baseline of an experiment that is still running.</p>
+<h2 id="what-belongs-in-main">What belongs in main</h2>
+<p><code>results/active.json</code> is the complete registry. Each dated result occupies one
+named slot and states its current purpose and retirement condition. The slots
+cover published runtime/build measurements, compatibility, the bootstrap seed,
+the amd64 target, persistent memory, the accepted compiler, one candidate, its
+comparison baseline, and one runtime investigation. Unused slots stay empty.</p>
+<p>When a result supersedes another in the same slot, update consumers and remove
+the predecessor directory <strong>in the same PR</strong>. If the old result still has an
+independent active purpose, explicitly assign that purpose's available slot.
+Do not invent permanent slots for individual dates or implementation attempts.</p>
+<p>CI enforces <strong>512 files / 4 MiB across all of results/</strong>, including the registry
+and indexes. Every directory must have exactly one slot and an existing README.
+Unknown slots, duplicate entries, missing reasons/retirement conditions, orphan
+directories and unregistered root files fail. Budget changes require policy
+review; a larger artifact import is not sufficient justification.</p>
+<p>New results also have the existing <strong>100 files / 2 MiB</strong> limit; new or changed
+files must be nonempty text, at most <strong>256 KiB</strong>, without generated executables,
+QBE/assembly or stdout/stderr/status sidecars. Consolidate observations and
+statuses in tables. Existing oversized per-result inventories may shrink but
+not grow; they are <strong>not exempt from the global budget</strong>.</p>
+<p>Current published values retain all required observations, statuses, revisions,
+measurement contracts and digests, not just favorable medians. Keep any
+machine-consumed seed manifests unchanged. Retained reports may link detailed
+source-era inventories to an exact Git revision or an existing verified archive.</p>
+<h2 id="completed-and-intermediate-work">Completed and intermediate work</h2>
+<p>Keep significant conclusions, important numbers and rejected-approach reasons in
+the <a href="https://github.com/type-rb/type-rb-native/blob/7726ff18e9230cd149e9f0c317577f6429f907fc/docs/development-history.md">development history</a> or the relevant decision/PR.
+Retain useful regression cases in their maintained test owner. Do not keep a
+dated folder merely because it passed a checkpoint, was once a baseline, or is linked
+from historical prose: historical links should use the exact archived revision.</p>
+<p>During an experiment, keep successful and failed observations until the decision
+and review are complete. Afterwards, discard intermediate logs and generated
+payloads that have no remaining reproduction, published-evidence or diagnostic
+purpose. Routine CI artifacts are temporary; do not promote all of them into
+permanent release assets. Archive only evidence with a documented durable use.
+Never cherry-pick observations inside a still-active/public measurement cohort.</p>
+<p>The <a href="https://github.com/type-rb/type-rb-native/tree/bd483cfc5b51035d9fac193a74ee9d0eda2419ed/results">pre-retirement snapshot</a>
+preserves existing historical reports and their original inventories. The
+previously published evidence archive and immutable bootstrap release remain
+available. No new full archive is necessary just to remove already-versioned,
+superseded results from main. This policy does not rewrite Git history; history
+still grows through ordinary source changes.</p>
+<h2 id="safe-retirement">Safe retirement</h2>
+<ol>
+<li>Identify current Pages, compatibility, seed, comparison and capability
+consumers; assign only results with a concrete current use to active slots.</li>
+<li>Record significant conclusions/rejection reasons and a pinned historical
+link before removing a superseded record. For new evidence, publish any
+required durable payload before Git import; never commit raw payloads
+temporarily and delete them later.</li>
+<li>Check exact targets against committed public evidence, update historical
+links and current consumers, and remove only those tracked targets.</li>
+<li>Run <code>python3 tools/result_archive.py check BASE HEAD</code>, archival/lifecycle
+tests, link checks, Pages and compatibility validation. Review and merge
+through a PR. Preserve frozen benchmark contracts and published seed assets.</li>
+</ol>
+<p>For evidence that actually needs an archive, the existing <code>pack</code>, <code>verify</code>
+and <code>compact</code> commands remain available. <code>pack</code> accepts already-committed
+historical evidence, not a requirement to commit new raw files first. Publish a
+new evidence-only asset without overwriting one, freshly download it and verify
+its whole-archive and per-member SHA-256 before removing the archived payload.
+Extract verified archives only into a new empty directory.</p>
+<p>Lifecycle checks stay in the lightweight documentation CI. Planning-only
+maintenance uses unconditional routing tests; compiler/execution changes retain
+their normal authority. See <a href="/docs/ci-validation/">CI validation stages</a>.</p>
+<h2 id="formal-measurement-bundles">Formal measurement bundles</h2>
+<p>New formal runtime/build jobs upload one <code>formal-evidence.jsonl.gz</code> file each,
+instead of thousands of small logs. The bundle contains one record per original
+file with its relative path, permission bits, byte length, SHA-256 and base64
+content. Empty logs, failed observations and binary artifacts remain exact;
+missing evidence roots are recorded explicitly. Bundling runs after measurement
+and changes no input, repetition, timing, cache control or acceptance rule.
+If bundling fails, the job remains failed and uploads its original files.
+The explicit evidence roots match the previous uploads. Symlinks and hidden
+files are rejected rather than expanding the publication boundary.</p>
+<p>After checking the downloaded GitHub artifact digest, inspect or restore a bundle:</p>
+<pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/evidence_bundle.py</span><span style="color:#A5D6FF"> verify</span><span style="color:#A5D6FF"> formal-evidence.jsonl.gz</span></span>
+<span class="line"><span style="color:#FFA657">python3</span><span style="color:#A5D6FF"> tools/evidence_bundle.py</span><span style="color:#A5D6FF"> extract</span><span style="color:#A5D6FF"> formal-evidence.jsonl.gz</span><span style="color:#A5D6FF"> restored-evidence</span></span>
+<span class="line"></span></code></pre>
+<p>Extraction validates the full inventory and hashes before creating a new output
+directory. It preserves the original layout for existing correctness, median and
+provenance checks. Storage verification does not imply benchmark acceptance:
+failed or incomplete measurements can also have intact bundles.</p>
+<p>For future formal publication, retain these verified per-job bundles directly
+as evidence-only assets when durable payloads are needed. Record each bundle's
+whole-file digest and original-file count, freshly download and verify it, and
+keep compact observation tables in Git under the existing limits. A complete
+three-case runtime/build cohort needs six payload files. Logical record counts
+remain explicit; aggregation does not discard observations or claim to reduce
+their information volume. Historical <code>.tar.gz</code> assets and their existing
+<code>ARCHIVE.json</code> references remain immutable and verifiable by <code>result_archive.py</code>.
+This representation change does not alter the independent daily data format.</p>
+<p>This reduces small-file handling; compressed byte size can increase because
+binary content uses base64. It is not a measurement-count or storage-byte cut.</p>
+</article>
+				<footer class="docs-footer">
+					<span>TypeRB 0.5.0-alpha.1</span>
+					<a href="https://github.com/type-rb/type-rb/blob/main/docs/evidence-retention.md">Edit this page on GitHub</a>
+				</footer>
+			</main>
+		</div>
+	</body>
+</html>
