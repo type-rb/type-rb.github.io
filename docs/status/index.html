@@ -163,8 +163,9 @@ Bun can be selected explicitly for server packages.</p>
 components directly from configured native packages. <code>trb install</code> derives a
 cached semantic index from installed <code>.d.ts</code> files; ordinary builds, the REPL's
 project compiler, and completion consume the cache without invoking TypeScript.
-The indexer currently uses the TypeScript 6 compiler API; TypeScript 7 support
-is deferred until its replacement programmatic API is stable.
+The Go companion uses the TypeScript 7.0.2 asynchronous compiler API on
+Node.js and Bun to read declarations. Its API is experimental, so the
+companion checks the exact package version.
 Unsupported declaration shapes are diagnosed instead of becoming <code>Any</code>.
 Installed TypeRB packages can supply a versioned, mode-independent declaration
 adapter catalog with generic functions, classes whose instance and class

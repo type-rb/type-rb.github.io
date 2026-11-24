@@ -1,5 +1,5 @@
-942dcc763678f0c7e315014690f095c5ef6e7876
+7638f15416544c562bc22d01ec640bff755b815d
 go version go1.27.4 linux/amd64
-81501e7c13dcd943ac1cc4b61351276e034c034caa87d8c1b459f15a14dbf853  .site-generator/go.mod
+b47ff9a4128ca44bbb254fabdfd7e8ed4f76883a2d169f1950756dab6c1376e7  .site-generator/go.mod
 5e807543c1b8f78e2753cf1ba6876190e1e11d052c768b01573e318d79f9ea7b  .site-generator/go.sum
-d95bc1be624b776e32924ba8d926364b770e2b88eb6bc723fbc5c7bd053e13f9  /home/runner/work/_temp/trb-site
+addb4ef45df6465c6d46bfc14ca6832511086aec156824f9ea448296237c43e6  /home/runner/work/_temp/trb-site

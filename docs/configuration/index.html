@@ -103,7 +103,7 @@ accepts line and block comments. Trailing commas are not allowed.</p>
 <span class="line"><span style="color:#7EE787">  "devDependencies"</span><span style="color:#E6EDF3">: {},</span></span>
 <span class="line"><span style="color:#7EE787">  "go"</span><span style="color:#E6EDF3">: {</span></span>
 <span class="line"><span style="color:#7EE787">    "module"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"example.com/my-app"</span><span style="color:#E6EDF3">,</span></span>
-<span class="line"><span style="color:#7EE787">    "version"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"1.27"</span></span>
+<span class="line"><span style="color:#7EE787">    "version"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"1.27.4"</span></span>
 <span class="line"><span style="color:#E6EDF3">  }</span></span>
 <span class="line"><span style="color:#E6EDF3">}</span></span>
 <span class="line"></span></code></pre>
@@ -131,11 +131,10 @@ native dependencies through the config or <code>trb add --native</code> and
 <p><code>go.version</code> must be Go 1.27 or later. Generated Go uses native generic
 methods introduced in Go 1.27, so projects targeting Go 1.26 are rejected.</p>
 <h2 id="typescript-toolchain">TypeScript toolchain</h2>
-<p>New managed TypeScript projects use ESM, npm, and the latest compatible
-TypeScript 6 patch:</p>
+<p>New managed TypeScript projects created by the Go companion use ESM, npm, and TypeScript 7.0.2:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
 <span class="line"><span style="color:#7EE787">  "devDependencies"</span><span style="color:#E6EDF3">: {</span></span>
-<span class="line"><span style="color:#7EE787">    "typescript"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"^6.0.0"</span></span>
+<span class="line"><span style="color:#7EE787">    "typescript"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"7.0.2"</span></span>
 <span class="line"><span style="color:#E6EDF3">  },</span></span>
 <span class="line"><span style="color:#7EE787">  "typescript"</span><span style="color:#E6EDF3">: {</span></span>
 <span class="line"><span style="color:#7EE787">    "packageManager"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"npm"</span><span style="color:#E6EDF3">,</span></span>
@@ -144,17 +143,17 @@ TypeScript 6 patch:</p>
 <span class="line"><span style="color:#E6EDF3">  }</span></span>
 <span class="line"><span style="color:#E6EDF3">}</span></span>
 <span class="line"></span></code></pre>
-<p>TypeScript 6 is the supported toolchain while the TypeScript 7 programmatic API
-and its surrounding package ecosystem stabilize. The range accepts compatible
-6.x patch releases without moving a project to 7.x. Browser applications are
-the primary TypeScript use case; APIs tied to a particular runtime remain
+<p>The generated manifest fixes the TypeScript compiler version. Browser
+applications are the primary TypeScript use case. Runtime-specific APIs use
 explicit platform packages.</p>
 <p>After native dependencies are installed, <code>trb install</code> also indexes supported
 <code>.d.ts</code> exports into <code>.trb/native-types.json</code>. TypeRB source can import those
 configured packages directly; ordinary builds and completion use the cached
 index and generated TypeScript keeps the original package specifier. Native
-declaration indexing requires TypeScript 6.x and reports the installed version
-when another major version is detected.</p>
+declaration indexing uses the TypeScript 7.0.2 asynchronous compiler API.
+Install that exact version for both npm and Bun projects. The Native
+qualification suite keeps its historical reference compiler pinned and
+checks its generated source with the registered TypeScript compiler.</p>
 <p><code>typescript.runtime</code> selects <code>browser</code>, <code>bun</code>, or <code>node</code> and defaults to
 <code>node</code>. <code>browser</code> projects compile source for a browser application or bundler
 and cannot use <code>trb run</code> as a process entrypoint. Bun server projects can
@@ -324,7 +323,7 @@ which exercises the same manifest and dependency graph as a remote package.</p>
 generated imports are loaded:</p>
 <pre class="shiki github-dark-default" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code><span class="line"><span style="color:#E6EDF3">{</span></span>
 <span class="line"><span style="color:#7EE787">  "ruby"</span><span style="color:#E6EDF3">: {</span></span>
-<span class="line"><span style="color:#7EE787">    "version"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"4.0.9"</span><span style="color:#E6EDF3">,</span></span>
+<span class="line"><span style="color:#7EE787">    "version"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"4.0.10"</span><span style="color:#E6EDF3">,</span></span>
 <span class="line"><span style="color:#7EE787">    "loader"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"zeitwerk"</span></span>
 <span class="line"><span style="color:#E6EDF3">  }</span></span>
 <span class="line"><span style="color:#E6EDF3">}</span></span>
